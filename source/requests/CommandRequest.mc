@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.Communications;
 import Toybox.PersistedContent;
+import Toybox.WatchUi;
 
 class CommandRequest extends BaseRequest {
     private var _url as String;
@@ -26,10 +27,10 @@ class CommandRequest extends BaseRequest {
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
             checkResponseCode( responseCode );
-           _item.onCommandComplete();
+            _item.onCommandComplete();
+            throw new CommunicationException( -400, EX_SOURCE_COMMAND );
         } catch( ex ) {
-            // handle the exception
-            throw ex; // for now we just crash the app
+            ExceptionHandler.handleException( ex );            
         }
     }
 }

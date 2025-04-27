@@ -68,8 +68,7 @@ class SitemapRequest extends BaseRequest {
                 makeRequest();
             }
         } catch( ex ) {
-            // handle the exception
-            throw ex; // for now we just crash the app
+            ExceptionHandler.handleException( ex );            
         }
     }
 }

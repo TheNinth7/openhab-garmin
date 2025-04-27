@@ -15,9 +15,12 @@ class BaseRequest {
             };
         }
     }
-    public function checkResponseCode( responseCode as Number ) as Void {
+
+    protected function checkResponseCode( responseCode as Number ) as Void {
         if( responseCode != 200 ) {
-            throw new CommunicationException( responseCode );
+            var source = ( self instanceof SitemapRequest ) ? EX_SOURCE_SITEMAP : EX_SOURCE_COMMAND;
+            throw new CommunicationException( responseCode, source );
         }
     }
+
 }
