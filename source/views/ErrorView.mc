@@ -20,6 +20,7 @@ class ErrorView extends WatchUi.View {
         var width = dc.getWidth() / Math.sqrt( 2 );
         new TextArea( {
             :text => text,
+            :font => [Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY],
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => WatchUi.LAYOUT_VALIGN_CENTER,
             :justification => Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,

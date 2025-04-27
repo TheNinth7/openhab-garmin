@@ -5,6 +5,10 @@ class PageMenu extends Menu2 {
     function initialize( sitemapPage as SitemapPage ) {
         Menu2.initialize( {
             :title => sitemapPage.label,
+            :footer => new Bitmap( {
+                :rezId => Rez.Drawables.OpenHabText,
+                :locX => WatchUi.LAYOUT_HALIGN_CENTER,
+                :locY => WatchUi.LAYOUT_VALIGN_CENTER } )
         } );
 
         var elements = sitemapPage.elements;
