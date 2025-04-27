@@ -9,26 +9,26 @@ class SitemapElement {
     public var id as Object;
     public var label as String;
 
-    function initialize( data as JsonObject ) {
+    protected function initialize( data as JsonObject ) {
         id = getString( data, ID, "Sitemap element: no " + ID + " found!" );
         label = getString( data, LABEL, "Sitemap element: no " + LABEL + " found!" );
     }
 
-    function getString( data as JsonObject, id as String, errorMessage as String ) as String {
+    protected function getString( data as JsonObject, id as String, errorMessage as String ) as String {
        var value = data[id] as String?;
         if( value == null || value.equals( "" ) ) {
             throw new JsonParsingException( errorMessage );
         }
         return value;
     }
-    function getObject( data as JsonObject, id as String, errorMessage as String ) as JsonObject {
+    protected function getObject( data as JsonObject, id as String, errorMessage as String ) as JsonObject {
         var value = data[id] as JsonObject?;
         if( value == null ) {
             throw new JsonParsingException( errorMessage );
         }
         return value;
     }
-    function getArray( data as JsonObject, id as String, errorMessage as String ) as JsonArray {
+    protected function getArray( data as JsonObject, id as String, errorMessage as String ) as JsonArray {
         var value = data[id] as JsonArray?;
         if( value == null || value.size() == 0 ) {
             throw new JsonParsingException( errorMessage );
