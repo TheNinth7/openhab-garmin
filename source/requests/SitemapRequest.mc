@@ -8,22 +8,22 @@ class SiteMapRequest {
     private var _sitemap as String;
     
     private var _menu as PageMenu?;
-    private var _timer as Timer.Timer = new Timer.Timer();
+    //private var _timer as Timer.Timer = new Timer.Timer();
 
     public function getMenu() as PageMenu? {
         return _menu;
     }
 
-    public function initialize( index as Number ) {
-        _url = "http://net-nas-1:8080";
-        _sitemap = "garmin_hierarchical";
+    public function initialize() {
+        _url = AppSettings.getUrl();
+        _sitemap = AppSettings.getSitemap();
         makeRequest();
-        _timer.start( method( :makeRequest ), 1000, true );
+        //_timer.start( method( :makeRequest ), 1000, true );
     }
 
     public function stop() as Void {
-        _timer.stop();
-        Communications.cancelAllRequests();
+        //_timer.stop();
+        // Communications.cancelAllRequests();
     }
 
     public function makeRequest() as Void {
@@ -64,6 +64,8 @@ class SiteMapRequest {
                 }
                 WatchUi.requestUpdate();
             }
+
+            makeRequest();
         } catch( ex ) {
             // handle the exception
             throw ex; // for now we just crash the app
