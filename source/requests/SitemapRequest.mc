@@ -23,6 +23,7 @@ class SitemapRequest extends BaseRequest {
     private function initialize() {
         BaseRequest.initialize();
         _url = AppSettings.getUrl() + "/rest/sitemaps/" + AppSettings.getSitemap();
+        _options[:responseType] = Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON;
     }
 
     public var isStopped as Boolean = true;
@@ -48,9 +49,7 @@ class SitemapRequest extends BaseRequest {
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
             if( ! isStopped ) {
-                if( responseCode != 200 ) {
-                    throw new CommunicationException( responseCode );
-                }
+                checkResponseCode( responseCode );
                 if( ! ( data instanceof Dictionary ) ) {
                     throw new JsonParsingException( "Unexpected response: " + data );
                 }
