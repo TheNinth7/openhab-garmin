@@ -28,7 +28,6 @@ class CommandRequest extends BaseRequest {
         try {
             checkResponseCode( responseCode );
             _item.onCommandComplete();
-            throw new CommunicationException( -400, EX_SOURCE_COMMAND );
         } catch( ex ) {
             ExceptionHandler.handleException( ex );            
         }
