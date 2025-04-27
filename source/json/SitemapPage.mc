@@ -12,11 +12,11 @@ class SitemapPage extends SitemapElement {
 
     function initialize( data as JsonObject ) {
         SitemapElement.initialize( data );
-        var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found!" );
+        var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found" );
 
         for( var i = 0; i < widgets.size(); i++ ) {
             var widget = widgets[i];
-            var type = getString( widget, TYPE, "Page '" + label + "': widget without type!" );
+            var type = getString( widget, TYPE, "Page '" + label + "': widget without type" );
             if( type.equals( TYPE_SWITCH ) ) {
                 elements.add( new SitemapSwitch( widget ) );
             } else if( type.equals( TYPE_FRAME ) ) {

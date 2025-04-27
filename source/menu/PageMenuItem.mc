@@ -8,7 +8,7 @@ class PageMenuItem extends MenuItem {
         return _menu;
     }
 
-    function initialize( sitemapPage as SitemapPage ) {
+    public function initialize( sitemapPage as SitemapPage ) {
         MenuItem.initialize(
             sitemapPage.label,
             null,
@@ -19,11 +19,11 @@ class PageMenuItem extends MenuItem {
         _menu = new PageMenu( sitemapPage );
     }
 
-    function isMyType( sitemapElement as SitemapElement ) as Boolean {
+    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return sitemapElement instanceof SitemapPage;
     }
 
-    function update( sitemapPage as SitemapPage ) as Boolean {
+    public function update( sitemapPage as SitemapPage ) as Boolean {
         setLabel( sitemapPage.label );
         return _menu.update( sitemapPage );
     }

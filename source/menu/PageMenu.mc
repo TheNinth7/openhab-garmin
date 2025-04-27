@@ -51,8 +51,8 @@ class PageMenu extends Menu2 {
     }
 
     private function createMenuItem( sitemapElement as SitemapElement, pageTitle as String ) as MenuItem {
-        if( sitemapElement instanceof SitemapSwitch ) {
-            return new SwitchMenuItem( sitemapElement );
+        if( OnOffMenuItem.isMyType( sitemapElement ) ) {
+            return new OnOffMenuItem( sitemapElement as SitemapSwitch );
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
         } else {

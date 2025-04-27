@@ -7,7 +7,7 @@ class SitemapHomepage extends SitemapPage {
 
     function initialize( data as JsonObject ) {
         SitemapPage.initialize( 
-            getObject( data, HOMEPAGE, "Homepage: homepage element missing!" )
+            getObject( data, HOMEPAGE, "Homepage: homepage element missing" )
         );
     }
 }

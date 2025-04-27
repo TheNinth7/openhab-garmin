@@ -1,17 +1,19 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class SwitchMenuItem extends ToggleMenuItem {
+class OnOffMenuItem extends ToggleMenuItem {
 
     private var _itemName as String;
     private var _commandRequest as CommandRequest?;
+
+    public static const ITEM_TYPE = "Switch";
 
     public function initialize( sitemapSwitch as SitemapSwitch ) {
         ToggleMenuItem.initialize(
             sitemapSwitch.label,
             null,
             sitemapSwitch.id, // identifier
-            sitemapSwitch.isEnabled,
+            sitemapSwitch.isOn(),
             null
         );
         _itemName = sitemapSwitch.itemName;
@@ -20,8 +22,10 @@ class SwitchMenuItem extends ToggleMenuItem {
         }
     }
 
-    public function isMyType( sitemapElement as SitemapElement ) as Boolean {
-        return sitemapElement instanceof SitemapSwitch;
+    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
+        return 
+               sitemapElement instanceof SitemapSwitch 
+            && sitemapElement.itemType.equals( ITEM_TYPE );
     }
 
     public function getItemName() as String {
@@ -46,7 +50,7 @@ class SwitchMenuItem extends ToggleMenuItem {
 
     public function update( sitemapSwitch as SitemapSwitch ) as Boolean {
         setLabel( sitemapSwitch.label );
-        setEnabled( sitemapSwitch.isEnabled );
+        setEnabled( sitemapSwitch.isOn() );
         return true;
     }
 }

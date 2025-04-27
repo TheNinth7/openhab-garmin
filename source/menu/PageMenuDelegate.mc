@@ -11,7 +11,7 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
         try {
             if( item instanceof PageMenuItem ) {
                 ViewHandler.pushView( item.getMenu(), new PageMenuDelegate(), WatchUi.SLIDE_LEFT );
-            } else if( item instanceof SwitchMenuItem ) {
+            } else if( item instanceof OnOffMenuItem ) {
                 item.processStateChange();
             }
         } catch( ex ) {

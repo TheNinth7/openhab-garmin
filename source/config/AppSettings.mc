@@ -30,14 +30,14 @@ class AppSettings {
     private var _index as Number = 0;
     
     private function initialize() {
-        url = getString( URL_PREFIX + _index, "Configuration: URL is missing!" );
-        sitemap = getString( SITEMAP_PREFIX + _index, "Configuration: sitemap is missing!" );
+        url = getString( URL_PREFIX + _index, "Configuration: URL is missing" );
+        sitemap = getString( SITEMAP_PREFIX + _index, "Configuration: sitemap is missing" );
         webhook = Properties.getValue( WEBHOOK_PREFIX + _index ) as String;
         vCanSendCommands = ! webhook.equals( "" );
         user = Properties.getValue( USER_PREFIX + _index ) as String;
         if( ! user.equals( "" ) ) {
             vNeedsBasicAuth = true;
-            password = getString( PASSWORD_PREFIX + _index, "Configuration: password is missing!" );
+            password = getString( PASSWORD_PREFIX + _index, "Configuration: password is missing" );
         }
     }
 

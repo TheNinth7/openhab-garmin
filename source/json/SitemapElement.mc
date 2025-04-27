@@ -10,8 +10,8 @@ class SitemapElement {
     public var label as String;
 
     protected function initialize( data as JsonObject ) {
-        id = getString( data, ID, "Sitemap element: no " + ID + " found!" );
-        label = getString( data, LABEL, "Sitemap element: no " + LABEL + " found!" );
+        id = getString( data, ID, "Sitemap element: no " + ID + " found" );
+        label = getString( data, LABEL, "Sitemap element: no " + LABEL + " found" );
     }
 
     protected function getString( data as JsonObject, id as String, errorMessage as String ) as String {
