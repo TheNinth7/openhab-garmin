@@ -21,31 +21,40 @@ class SiteMapRequest {
         //_timer.start( method( :makeRequest ), 1000, true );
     }
 
-    public function stop() as Void {
-        //_timer.stop();
-        // Communications.cancelAllRequests();
-    }
+    private var _isStopped as Boolean = false;
 
-    public function makeRequest() as Void {
-        var url = _url + "/rest/sitemaps/" + _sitemap;
-
-        var options = {
-            :method => Communications.HTTP_REQUEST_METHOD_GET,
-            :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
-        };
-
-        /*
-        if( siteConfig.needsBasicAuth() ) {
-            options[:headers] = { 
-                "Authorization" => "Basic " + StringUtil.encodeBase64( Lang.format( "$1$:$2$", [siteConfig.getUser(), siteConfig.getPassword() ] ) )
-            };
+    public function start() as Void {
+        if( _isStopped ) {
+            _isStopped = false;
+            makeRequest();
         }
-        */
-        Communications.makeWebRequest( url, null, options, method( :onReceive ) );
+    }
+
+    public function stop() as Void {
+        _isStopped = true;
+    }
+
+    private function makeRequest() as Void {
+        if( ! _isStopped ) {
+            var url = _url + "/rest/sitemaps/" + _sitemap;
+
+            var options = {
+                :method => Communications.HTTP_REQUEST_METHOD_GET,
+                :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
+            };
+
+            if( AppSettings.needsBasicAuth() ) {
+                options[:headers] = { 
+                    "Authorization" => "Basic " + StringUtil.encodeBase64( Lang.format( "$1$:$2$", [AppSettings.getUser(), AppSettings.getPassword() ] ) )
+                };
+            }
+
+            Communications.makeWebRequest( url, null, options, method( :onReceive ) );
+        }
     }
 
 
-    function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
+    public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
             if( responseCode != 200 ) {
                 throw new CommunicationException( responseCode );

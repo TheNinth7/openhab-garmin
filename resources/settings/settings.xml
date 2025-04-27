@@ -2,6 +2,8 @@
     <properties>
         <property id="url_0" type="string"></property>
         <property id="sitemap_0" type="string"></property>
+        <property id="user_0" type="string"></property>
+        <property id="password_0" type="string"></property>
     </properties>
 
     <settings>
@@ -10,6 +12,12 @@
         </setting>
         <setting propertyKey="@Properties.sitemap_0" title="Sitemap Name">
             <settingConfig type="alphaNumeric" required="true"/>
+        </setting>
+        <setting propertyKey="@Properties.user_0" title="User Name (Basic Authentication)">
+            <settingConfig type="alphaNumeric" required="false"/>
+        </setting>
+        <setting propertyKey="@Properties.password_0" title="Password">
+            <settingConfig type="password" required="false"/>
         </setting>
     </settings>
 </resources>
