@@ -9,6 +9,8 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
     function onSelect( item as WatchUi.MenuItem ) {
         if( item instanceof PageMenuItem ) {
             WatchUi.pushView( item.getMenu(), new PageMenuDelegate(), WatchUi.SLIDE_LEFT );
+        } else if( item instanceof SwitchMenuItem ) {
+            item.processStateChange();
         }
     }
 }

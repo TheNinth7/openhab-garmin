@@ -2,6 +2,7 @@
     <properties>
         <property id="url_0" type="string"></property>
         <property id="sitemap_0" type="string"></property>
+        <property id="webhook_0" type="string"></property>
         <property id="user_0" type="string"></property>
         <property id="password_0" type="string"></property>
     </properties>
@@ -12,6 +13,9 @@
         </setting>
         <setting propertyKey="@Properties.sitemap_0" title="Sitemap Name">
             <settingConfig type="alphaNumeric" required="true"/>
+        </setting>
+        <setting propertyKey="@Properties.webhook_0" title="Identifier of the webhook for sending commands. See the documentation for details.">
+            <settingConfig type="alphaNumeric" required="false"/>
         </setting>
         <setting propertyKey="@Properties.user_0" title="User Name (Basic Authentication)">
             <settingConfig type="alphaNumeric" required="false"/>

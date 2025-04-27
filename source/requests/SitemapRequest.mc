@@ -1,80 +1,73 @@
 import Toybox.Lang;
 import Toybox.Communications;
 import Toybox.PersistedContent;
-import Toybox.Timer;
 
-class SiteMapRequest {
-    private var _url as String;
-    private var _sitemap as String;
+class SitemapRequest extends BaseRequest {
+    private static var _instance as SitemapRequest?;
     
-    private var _menu as PageMenu?;
-    //private var _timer as Timer.Timer = new Timer.Timer();
-
-    public function getMenu() as PageMenu? {
-        return _menu;
+    private static function getInstance() as SitemapRequest {
+        if( _instance == null ) {
+            _instance = new SitemapRequest();
+        }
+        return _instance as SitemapRequest;
     }
 
-    public function initialize() {
-        _url = AppSettings.getUrl();
-        _sitemap = AppSettings.getSitemap();
-        makeRequest();
-        //_timer.start( method( :makeRequest ), 1000, true );
+    private var _url as String;
+
+    public var menu as PageMenu?;
+
+    public static function getMenu() as PageMenu? {
+        return getInstance().menu;
     }
 
-    private var _isStopped as Boolean = false;
+    private function initialize() {
+        BaseRequest.initialize();
+        _url = AppSettings.getUrl() + "/rest/sitemaps/" + AppSettings.getSitemap();
+    }
 
-    public function start() as Void {
-        if( _isStopped ) {
-            _isStopped = false;
-            makeRequest();
+    public var isStopped as Boolean = true;
+
+    public static function start() as Void {
+        var instance = getInstance();
+        if( instance.isStopped ) {
+            instance.isStopped = false;
+            instance.makeRequest();
         }
     }
 
-    public function stop() as Void {
-        _isStopped = true;
+    public static function stop() as Void {
+        getInstance().isStopped = true;
     }
 
-    private function makeRequest() as Void {
-        if( ! _isStopped ) {
-            var url = _url + "/rest/sitemaps/" + _sitemap;
-
-            var options = {
-                :method => Communications.HTTP_REQUEST_METHOD_GET,
-                :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
-            };
-
-            if( AppSettings.needsBasicAuth() ) {
-                options[:headers] = { 
-                    "Authorization" => "Basic " + StringUtil.encodeBase64( Lang.format( "$1$:$2$", [AppSettings.getUser(), AppSettings.getPassword() ] ) )
-                };
-            }
-
-            Communications.makeWebRequest( url, null, options, method( :onReceive ) );
+    public function makeRequest() as Void {
+        if( ! isStopped ) {
+            Communications.makeWebRequest( _url, null, _options, method( :onReceive ) );
         }
     }
-
 
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
-            if( responseCode != 200 ) {
-                throw new CommunicationException( responseCode );
-            }
-            if( ! ( data instanceof Dictionary ) ) {
-                throw new JsonParsingException( "Unexpected response: " + data );
-            }
-            var sitemapHomepage = new SitemapHomepage( data );
-            if( _menu == null ) {
-                _menu = new PageMenu( sitemapHomepage );
-                WatchUi.switchToView( _menu, new PageMenuDelegate(), WatchUi.SLIDE_IMMEDIATE );
-            } else {
-                var menu = _menu as PageMenu;
-                if( menu.update( sitemapHomepage ) == false ) {
-                    WatchUi.switchToView( menu, new PageMenuDelegate(), WatchUi.SLIDE_BLINK );
+            if( ! isStopped ) {
+                if( responseCode != 200 ) {
+                    throw new CommunicationException( responseCode );
                 }
-                WatchUi.requestUpdate();
-            }
+                if( ! ( data instanceof Dictionary ) ) {
+                    throw new JsonParsingException( "Unexpected response: " + data );
+                }
+                var sitemapHomepage = new SitemapHomepage( data );
+                if( menu == null ) {
+                    menu = new PageMenu( sitemapHomepage );
+                    WatchUi.switchToView( menu, new PageMenuDelegate(), WatchUi.SLIDE_IMMEDIATE );
+                } else {
+                    var lmenu = menu as PageMenu;
+                    if( lmenu.update( sitemapHomepage ) == false ) {
+                        WatchUi.switchToView( lmenu, new PageMenuDelegate(), WatchUi.SLIDE_BLINK );
+                    }
+                    WatchUi.requestUpdate();
+                }
 
-            makeRequest();
+                makeRequest();
+            }
         } catch( ex ) {
             // handle the exception
             throw ex; // for now we just crash the app

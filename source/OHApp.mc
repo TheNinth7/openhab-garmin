@@ -4,7 +4,7 @@ import Toybox.WatchUi;
 import Toybox.Timer;
 
 class OHApp extends Application.AppBase {
-    private var _sitemapRequest as SiteMapRequest?;
+    private var _SitemapRequest as SitemapRequest?;
 
     public function initialize() {
         AppBase.initialize();
@@ -17,16 +17,16 @@ class OHApp extends Application.AppBase {
 
     // onStop() is called when your application is exiting
     public function onStop(state as Dictionary?) as Void {
-        if( _sitemapRequest != null ) {
-            _sitemapRequest.stop();
+        if( _SitemapRequest != null ) {
+            _SitemapRequest.stop();
         }
     }
 
     // Return the initial view of your application here
     public function getInitialView() as [Views] or [Views, InputDelegates] {
         try {
-            _sitemapRequest = new SiteMapRequest();
-            var menu = _sitemapRequest.getMenu();
+            SitemapRequest.start();
+            var menu = SitemapRequest.getMenu();
             if( menu != null ) {
                 return [ menu, new PageMenuDelegate() ];
             } else {
