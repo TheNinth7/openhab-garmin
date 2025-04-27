@@ -4,7 +4,6 @@ import Toybox.WatchUi;
 import Toybox.Timer;
 
 class OHApp extends Application.AppBase {
-    private var _SitemapRequest as SitemapRequest?;
 
     public function initialize() {
         AppBase.initialize();
@@ -17,9 +16,7 @@ class OHApp extends Application.AppBase {
 
     // onStop() is called when your application is exiting
     public function onStop(state as Dictionary?) as Void {
-        if( _SitemapRequest != null ) {
-            _SitemapRequest.stop();
-        }
+        SitemapRequest.stop();
     }
 
     // Return the initial view of your application here
