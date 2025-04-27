@@ -11,7 +11,7 @@ class CommunicationException extends Exception {
         if ( _responseCode == -104 ) {
             return "No phone";
         } else if ( _responseCode == -400 ) {
-            return "Invalid response, maybe wrong sitemap name?";
+            return "Invalid response, check your app settings.";
         } else {
             return "Request failed: " + _responseCode;
         }
