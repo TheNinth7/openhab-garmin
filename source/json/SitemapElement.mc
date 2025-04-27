@@ -2,8 +2,18 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class SitemapElement {
-    function initialize() {
+
+    public var ID as String = "widgetId";
+    public var LABEL as String = "label";
+
+    public var id as Object;
+    public var label as String;
+
+    function initialize( data as JsonObject ) {
+        id = getString( data, ID, "Sitemap element: no " + ID + " found!" );
+        label = getString( data, LABEL, "Sitemap element: no " + LABEL + " found!" );
     }
+
     function getString( data as JsonObject, id as String, errorMessage as String ) as String {
        var value = data[id] as String?;
         if( value == null || value.equals( "" ) ) {

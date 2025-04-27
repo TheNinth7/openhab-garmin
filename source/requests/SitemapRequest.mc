@@ -16,7 +16,7 @@ class SiteMapRequest {
 
     public function initialize( index as Number ) {
         _url = "http://net-nas-1:8080";
-        _sitemap = "garmin";
+        _sitemap = "garmin_hierarchical";
         makeRequest();
         _timer.start( method( :makeRequest ), 1000, true );
     }
@@ -58,7 +58,10 @@ class SiteMapRequest {
                 _menu = new PageMenu( sitemapHomepage );
                 WatchUi.switchToView( _menu, new PageMenuDelegate(), WatchUi.SLIDE_IMMEDIATE );
             } else {
-                _menu.update( sitemapHomepage );
+                var menu = _menu as PageMenu;
+                if( menu.update( sitemapHomepage ) == false ) {
+                    WatchUi.switchToView( menu, new PageMenuDelegate(), WatchUi.SLIDE_BLINK );
+                }
                 WatchUi.requestUpdate();
             }
         } catch( ex ) {

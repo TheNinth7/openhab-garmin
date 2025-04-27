@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="50.789925mm"
+   height="50.790569mm"
+   viewBox="0 0 50.789925 50.790569"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4-beta (62f545ba5e, 2024-04-22)"
+   sodipodi:docname="openhab_square.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.763461"
+     inkscape:cx="-143.42579"
+     inkscape:cy="286.19668"
+     inkscape:window-width="1920"
+     inkscape:window-height="1111"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-142.61042,-72.760417)">
+    <g
+       id="logo_1_"
+       transform="matrix(0.26458333,0,0,0.26458333,98.894869,67.896631)">
+		<path
+   fill-rule="evenodd"
+   clip-rule="evenodd"
+   fill="#e64a19"
+   d="m 175.15576,155.42139 75.11035,-75.165531 10.93848,-10.937988 10.93848,10.937988 55.44531,55.444821 -0.0811,0.27979 -1.09375,3.22119 -1.24121,3.14404 -1.3955,3.06983 -1.53614,2.99511 -1.39648,2.42383 -59.63965,-59.639646 c -26.02344,26.042966 -52.0459,52.085446 -78.06836,78.126956 -3.00488,-4.42578 -5.7959,-8.98438 -7.98047,-13.90039 z"
+   id="path68" />
+
+		<path
+   fill-rule="evenodd"
+   clip-rule="evenodd"
+   fill="#474747"
+   d="m 261.20557,18.382812 c 52.86718,0 95.98047,43.115235 95.98047,95.982908 0,52.86426 -43.11329,95.98145 -95.98047,95.98145 -28.87696,0 -54.83887,-12.87598 -72.45801,-33.16797 l 3.3916,-3.4043 2.46191,-2.46289 2.4668,-2.46972 2.46777,-2.46778 0.10059,-0.0996 c 14.80273,17.52735 36.91797,28.69531 61.56934,28.69531 44.39648,0 80.60547,-36.20703 80.60547,-80.60449 0,-44.3999 -36.20899,-80.607908 -80.60547,-80.607908 -44.39844,0 -80.60743,36.208008 -80.60743,80.607908 0,5.97901 0.66504,11.80518 1.91163,17.4209 l -5.34815,5.35938 -7.13818,7.14404 c -3.10889,-9.42627 -4.79932,-19.48096 -4.79932,-29.92432 0,-52.867673 43.11328,-95.982908 95.98145,-95.982908 z"
+   id="path69" />
+
+	</g>
+  </g>
+</svg>

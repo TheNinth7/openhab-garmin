@@ -7,12 +7,19 @@ class SwitchMenuItem extends ToggleMenuItem {
         ToggleMenuItem.initialize(
             sitemapSwitch.label,
             null,
-            sitemapSwitch.itemName, // identifier
+            sitemapSwitch.id, // identifier
             sitemapSwitch.isEnabled,
             null
         );
     }
 
-    function update( data as JsonObject ) as Void {
+    function isMyType( sitemapElement as SitemapElement ) as Boolean {
+        return sitemapElement instanceof SitemapSwitch;
+    }
+
+    function update( sitemapSwitch as SitemapSwitch ) as Boolean {
+        setLabel( sitemapSwitch.label );
+        setEnabled( sitemapSwitch.isEnabled );
+        return true;
     }
 }

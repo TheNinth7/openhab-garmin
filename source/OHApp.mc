@@ -4,7 +4,10 @@ import Toybox.WatchUi;
 import Toybox.Timer;
 
 class OHApp extends Application.AppBase {
-    private var _sitemapRequest as SiteMapRequest;
+    private static var _sitemapRequest as SiteMapRequest;
+    public static function getSitemapRequest() as SiteMapRequest {
+        return _sitemapRequest;
+    }
 
     public function initialize() {
         AppBase.initialize();

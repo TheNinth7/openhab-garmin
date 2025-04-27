@@ -1,13 +1,19 @@
 import Toybox.Lang;
 
-class JsonParsingException extends Exception {
-    private var _msg as String;
-    function initialize( msg as String ) {
+class CommunicationException extends Exception {
+    private var _responseCode as Number;
+    function initialize( code as Number ) {
         Exception.initialize();
-        _msg = msg;
+        _responseCode = code;
     }
 
     function getErrorMessage() as String or Null {
-        return _msg;
+        if ( _responseCode == -104 ) {
+            return "No phone";
+        } else if ( _responseCode == -400 ) {
+            return "Invalid response, maybe wrong sitemap name?";
+        } else {
+            return "Request failed: " + _responseCode;
+        }
     }
 }

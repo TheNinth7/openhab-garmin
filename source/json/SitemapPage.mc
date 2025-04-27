@@ -4,17 +4,14 @@ import Toybox.WatchUi;
 class SitemapPage extends SitemapElement {
 
     private const WIDGETS = "widgets";
-    public var LABEL as String = "label";
     private const TYPE = "type";
     private const TYPE_FRAME = "Frame";
     private const TYPE_SWITCH = "Switch";
 
-    public var label as String;
     public var elements as Array<SitemapElement> = new Array<SitemapElement>[0];
 
     function initialize( data as JsonObject ) {
-        SitemapElement.initialize();
-        label = getString( data, LABEL, "Page: no " + LABEL + " found!" );
+        SitemapElement.initialize( data );
         var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found!" );
 
         for( var i = 0; i < widgets.size(); i++ ) {
