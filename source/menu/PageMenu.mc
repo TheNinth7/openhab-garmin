@@ -1,15 +1,9 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class PageMenu extends Menu2 {
+class PageMenu extends CustomMenu {
     function initialize( sitemapPage as SitemapPage ) {
-        Menu2.initialize( {
-            :title => sitemapPage.label,
-            :footer => new Bitmap( {
-                :rezId => Rez.Drawables.OpenHabText,
-                :locX => WatchUi.LAYOUT_HALIGN_CENTER,
-                :locY => WatchUi.LAYOUT_VALIGN_CENTER } )
-        } );
+        CustomMenu.initialize( 80, Graphics.COLOR_BLACK, {} )
 
         var elements = sitemapPage.elements;
         for( var i = 0; i < elements.size(); i++ ) {
@@ -52,7 +46,8 @@ class PageMenu extends Menu2 {
 
     private function createMenuItem( sitemapElement as SitemapElement, pageTitle as String ) as MenuItem {
         if( OnOffMenuItem.isMyType( sitemapElement ) ) {
-            return new OnOffMenuItem( sitemapElement as SitemapSwitch );
+            return new TestCustomMenuItem();
+            //return new OnOffMenuItem( sitemapElement as SitemapSwitch );
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
         } else {
