@@ -54,7 +54,7 @@ class PageMenu extends CustomMenu {
             if( itemIndex == -1 ) {
                 addItem( createMenuItem( element, sitemapPage.label ) );
             } else {
-                var item = getItem( itemIndex ) as OHMenuItem;
+                var item = getItem( itemIndex ) as BaseMenuItem;
                 if( item.isMyType( element ) ) {
                     if( item.update( element ) == false ) {
                         remainsValid = false;

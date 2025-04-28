@@ -10,13 +10,7 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
     public function onSelect( item as WatchUi.MenuItem ) {
         System.println( "PageMenuDelegate: onSelect" );
         try {
-            if( item instanceof PageMenuItem ) {
-                System.println( "PageMenuDelegate: opening page" );
-                ViewHandler.pushView( item.getMenu(), new PageMenuDelegate(), WatchUi.SLIDE_LEFT );
-            } else if( item instanceof OnOffMenuItem ) {
-                System.println( "PageMenuDelegate: processing on/off" );
-                item.processStateChange();
-            }
+            ( item as BaseMenuItem ).onSelect();
         } catch( ex ) {
             System.println( "PageMenuDelegate: exception" );
             ExceptionHandler.handleException( ex );

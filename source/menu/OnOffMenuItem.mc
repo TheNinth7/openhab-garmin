@@ -1,72 +1,51 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class OnOffMenuItem extends BaseMenuItem {
-    private var _itemName as String;
+class OnOffMenuItem extends SwitchMenuItem {
     private var _isEnabled as Boolean;
     private var _statusDrawable as OnOffStatusDrawable;
-    private var _commandRequest as CommandRequest?;
 
-    public static const ITEM_TYPE = "Switch";
+    private static const ITEM_STATE_ON = "ON";
+    private static const ITEM_STATE_OFF = "OFF";
 
-    private function parseItemState( itemState as String ) as Boolean {
-        return itemState.equals( SitemapSwitch.ITEM_STATE_ON );
+    public static function getItemType() as String {
+        return "Switch";
     }
 
-    public function initialize( sitemapSwitch as SitemapSwitch ) {
-        _isEnabled = parseItemState( sitemapSwitch.itemState );
-        _statusDrawable = new OnOffStatusDrawable( _isEnabled );
+    public function getNextCommand() as String {
+        return _isEnabled ? ITEM_STATE_OFF : ITEM_STATE_ON;
+    }
+    public function updateItemState( state as String ) as Void {
+        _isEnabled = parseItemState( state );
+        _statusDrawable.setEnabled( _isEnabled );
+    }
 
-        BaseMenuItem.initialize(
-            sitemapSwitch,
-            {
-                :label => sitemapSwitch.label,
-                :status => _statusDrawable
-            }
-        );
-        _itemName = sitemapSwitch.itemName;
-        if( AppSettings.canSendCommands() ) {
-            _commandRequest = new CommandRequest( self );
+    private function parseItemState( itemState as String ) as Boolean {
+        if( itemState.equals( ITEM_STATE_ON ) ) {
+            return true;            
+        } else if( itemState.equals( ITEM_STATE_OFF ) ) {
+            return false;
+        } else {
+            throw new GeneralException( "OnOffMenuItem: state '" + itemState + "' is not supported" );
         }
     }
 
-    public function isEnabled() as Boolean { return _isEnabled; }
-    public function setEnabled( isEnabled as Boolean ) as Void { 
-        _isEnabled = isEnabled; 
-        _statusDrawable.setEnabled( isEnabled );
+    public function initialize( sitemapSwitch as SitemapSwitch ) {
+        var itemState = sitemapSwitch.itemState;
+        if( ! ( itemState.equals( ITEM_STATE_ON ) || itemState.equals( ITEM_STATE_OFF ) ) ) {      
+            throw new JsonParsingException( "Switch '" + sitemapSwitch.label + "': invalid state '" + itemState + "'" );
+        }
+        _isEnabled = parseItemState( sitemapSwitch.itemState );
+        _statusDrawable = new OnOffStatusDrawable( _isEnabled );
+        SwitchMenuItem.initialize( sitemapSwitch, _statusDrawable );
     }
 
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
                sitemapElement instanceof SitemapSwitch 
-            && sitemapElement.itemType.equals( ITEM_TYPE );
+            && sitemapElement.itemType.equals( OnOffMenuItem.getItemType() );
     }
 
-    public function getItemName() as String {
-        return _itemName;
-    }
-
-    private var _newState as Boolean?;
-    public function processStateChange() as Void {
-        if( _newState == null && _commandRequest != null ) {
-            _newState = ! isEnabled();
-            ( _commandRequest as CommandRequest ).sendCommand( _newState ? "ON" : "OFF" );
-        }
-        //setEnabled( ! isEnabled() );
-    }
-    public function onCommandComplete() as Void {
-        if( _newState != null ) {
-            setEnabled( _newState );
-            _newState = null;
-            WatchUi.requestUpdate();
-        }
-    }
-
-    public function update( sitemapSwitch as SitemapSwitch ) as Boolean {
-        setCustomLabel( sitemapSwitch.label );
-        setEnabled( parseItemState( sitemapSwitch.itemState ) );
-        return true;
-    }
 }
 
 class OnOffStatusDrawable extends Text {

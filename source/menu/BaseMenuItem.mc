@@ -70,9 +70,13 @@ class BaseMenuItem extends CustomMenuItem {
         }
     }
 
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
-        return false;
+    public static function isMyType( sitemapElement as SitemapElement ) as Boolean { 
+        throw new AbstractMethodException( "BaseMenuItem.getItemType" );
     }
+    public function update( sitemapElement as SitemapElement ) as Boolean { 
+        throw new AbstractMethodException( "BaseMenuItem.update" );
+    }
+    public function onSelect() as Void;
 
     public function setCustomLabel( label as String ) as Void {
         _label = label;
@@ -80,21 +84,4 @@ class BaseMenuItem extends CustomMenuItem {
             _labelTextArea.setText( label );
         }
     }
-    /*
-    public function updateBaseItem( sitemapElement as SitemapElement, options as BaseMenuItemOptions ) as Boolean {
-        _icon = options[:icon];
-        var status = options[:status];
-
-        if( ! ( ( status == null && _status == null )
-             || ( status != null && _status != null ) ) ) 
-        {
-            _labelTextArea = null;
-        }
-
-        if( _labelTextArea != null ) {
-            _labelTextArea.setText( options[:label] as String );
-        }
-        return true;
-    }
-    */
 }

@@ -12,7 +12,6 @@ class CommandRequest extends BaseRequest {
         _url = AppSettings.getUrl() + "/webhook/" + AppSettings.getWebhook();
         //_options[:responseType] = Communications.HTTP_RESPONSE_CONTENT_TYPE_URL_ENCODED;
         _item = item;
-        item.getItemName();
     }
 
     public function sendCommand( cmd as String ) as Void {
