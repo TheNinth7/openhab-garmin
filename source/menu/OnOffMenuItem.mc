@@ -83,6 +83,7 @@ class OnOffStatusDrawable extends Bitmap {
         }
         var radius = dc.getWidth() / 2;
         var lowerYCenter = dc.getHeight() - radius;
+        //dc.setAntiAlias( true );
         dc.fillCircle( radius, radius, radius );
         dc.fillCircle( radius, lowerYCenter, radius );
         dc.fillRectangle( 0, radius, dc.getWidth(), lowerYCenter - radius );
