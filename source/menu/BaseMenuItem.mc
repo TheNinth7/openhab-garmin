@@ -23,28 +23,30 @@ class BaseMenuItem extends CustomMenuItem {
         _status = options[:status];
     }
 
-    private const ICON_WIDTH_PERCENTAGE = 0.2;
-    private const STATUS_WIDTH_PERCENTAGE = 0.2;
-    private const SPACING_PERCENTAGE = 0.05;
+    private const ICON_WIDTH_FACTOR = 0.2;
+    private const STATUS_WIDTH_FACTOR = 0.2;
+    private const SPACING_FACTOR = 0.03;
 
     private function initializeDrawables( dc as Dc ) as Void {
-        var titleWidth = dc.getWidth();
-        var titleLocX = 0;
+        var spacing = dc.getWidth() * SPACING_FACTOR;
+        var locX = spacing;
+        var titleWidth = dc.getWidth() - spacing;
         if( _icon != null ) {
-            _icon.setLocation( 0, 0 );
-            titleLocX = ( dc.getWidth() * ICON_WIDTH_PERCENTAGE ).toNumber();
-            titleWidth -= dc.getWidth() * ( ICON_WIDTH_PERCENTAGE + SPACING_PERCENTAGE );
+            _icon.setLocation( locX, 0 );
+            locX += ( dc.getWidth() * ICON_WIDTH_FACTOR ).toNumber() + spacing;
+            titleWidth -= locX;
         }
 
         if( _status != null ) {
-            _status.setLocation( dc.getWidth() * ( 1 - STATUS_WIDTH_PERCENTAGE ), WatchUi.LAYOUT_VALIGN_CENTER );
-            titleWidth -= dc.getWidth() * ( STATUS_WIDTH_PERCENTAGE + SPACING_PERCENTAGE );
+            var statusWidth = dc.getWidth() * STATUS_WIDTH_FACTOR;
+            ( _status as Drawable).setLocation( dc.getWidth() - statusWidth, WatchUi.LAYOUT_VALIGN_CENTER );
+            titleWidth -= statusWidth + spacing;
         }
 
         _labelTextArea = new TextArea( {
             :text => _label,
             :font => [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY],
-            :locX => titleLocX,
+            :locX => locX,
             :locY => 0,
             :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER,
             :color => Graphics.COLOR_WHITE,

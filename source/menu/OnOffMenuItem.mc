@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Graphics;
 
 class OnOffMenuItem extends SwitchMenuItem {
     private var _isEnabled as Boolean;
@@ -48,6 +49,52 @@ class OnOffMenuItem extends SwitchMenuItem {
 
 }
 
+class OnOffStatusDrawable extends Bitmap {
+    
+    private var _bufferedBitmap as BufferedBitmap;
+
+    private const HEIGHT = ( PageMenu.ITEM_HEIGHT * 0.8 ).toNumber();
+    private const WIDTH = ( PageMenu.ITEM_HEIGHT * 0.4 ).toNumber();
+    private const INNER_CIRCLE_FACTOR = 0.9;
+
+    public function initialize( isEnabled as Boolean ) {
+        _bufferedBitmap = Graphics.createBufferedBitmap( {
+            :width => WIDTH,
+            :height => HEIGHT,
+        } ).get() as BufferedBitmap;
+        
+        Bitmap.initialize( {
+            :bitmap => _bufferedBitmap
+        } );
+
+        setEnabled( isEnabled );
+    }
+
+    public function setEnabled( isEnabled as Boolean ) as Void {
+        var dc = _bufferedBitmap.getDc();
+        dc.clear();
+
+        if( isEnabled ) {
+            dc.setColor( 0xe64a19, Graphics.COLOR_BLACK );
+            // dc.setFill( 0xe64a19 );
+        } else {
+            dc.setColor( Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK );
+            // dc.setFill( Graphics.COLOR_LT_GRAY );
+        }
+        var radius = dc.getWidth() / 2;
+        var lowerYCenter = dc.getHeight() - radius;
+        dc.fillCircle( radius, radius, radius );
+        dc.fillCircle( radius, lowerYCenter, radius );
+        dc.fillRectangle( 0, radius, dc.getWidth(), lowerYCenter - radius );
+
+        dc.setColor( Graphics.COLOR_BLACK, Graphics.COLOR_BLACK );
+        // dc.setFill( Graphics.COLOR_BLACK );
+
+        var toggleCenter = isEnabled ? radius : lowerYCenter;
+        dc.fillCircle( radius, toggleCenter, radius * INNER_CIRCLE_FACTOR );
+    }
+}
+/* Simpler version showing ON and OFF as text
 class OnOffStatusDrawable extends Text {
     public function initialize( isEnabled as Boolean ) {
         Text.initialize( {
@@ -63,3 +110,4 @@ class OnOffStatusDrawable extends Text {
         return isEnabled ? "ON" : "OFF";
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 import Toybox.Lang;
 
 class A {
@@ -20,3 +21,4 @@ class C {
         B.doMore();
     }
 }
+*/

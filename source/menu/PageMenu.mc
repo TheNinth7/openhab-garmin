@@ -1,10 +1,13 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.System;
 
 class PageMenu extends CustomMenu {
     private var _title as Text;
 
-    private const ITEM_HEIGHT_PERCENTAGE = 0.2;
+    public static var ITEM_HEIGHT as Number = 
+        ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
+    public static const FOOTER_HEIGHT as Number = ( ITEM_HEIGHT * 1.85 ).toNumber();
 
     function initialize( sitemapPage as SitemapPage ) {
         _title = new Text( {
@@ -15,8 +18,6 @@ class PageMenu extends CustomMenu {
             :locY => WatchUi.LAYOUT_VALIGN_CENTER
         } );
 
-        var itemHeight = ( System.getDeviceSettings().screenHeight * ITEM_HEIGHT_PERCENTAGE ).toNumber();
-
         // The following options should alter the height of title and footer
         // footer works, title does not, so omitting this for now. Probably
         // a bug in the SDK.
@@ -24,7 +25,7 @@ class PageMenu extends CustomMenu {
         // :footerItemHeight => itemHeight
 
         CustomMenu.initialize( 
-            itemHeight,
+            ITEM_HEIGHT,
             Graphics.COLOR_BLACK, 
             {
                 :title => _title,
@@ -32,7 +33,7 @@ class PageMenu extends CustomMenu {
                     :rezId => Rez.Drawables.OpenHabText,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } ),
-                :footerItemHeight => ( itemHeight * 1.85 ).toNumber()
+                :footerItemHeight => ( FOOTER_HEIGHT ).toNumber()
             } );
 
         var elements = sitemapPage.elements;
