@@ -2,8 +2,35 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 class PageMenu extends CustomMenu {
+    private var _title as Text;
+
     function initialize( sitemapPage as SitemapPage ) {
-        CustomMenu.initialize( 80, Graphics.COLOR_BLACK, {} )
+        _title = new Text( {
+            :text => sitemapPage.label,
+            :color => Graphics.COLOR_WHITE,
+            :font => Graphics.FONT_SMALL,
+            :locX => WatchUi.LAYOUT_HALIGN_CENTER,
+            :locY => WatchUi.LAYOUT_VALIGN_CENTER
+        } );
+
+        var itemHeight = ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
+
+        // The following options should alter the height of title and footer
+        // footer works, title does not, so omitting this for now. Probably
+        // a bug in the SDK.
+        // :titleItemHeight => itemHeight,
+        // :footerItemHeight => itemHeight
+
+        CustomMenu.initialize( 
+            itemHeight,
+            Graphics.COLOR_BLACK, 
+            {
+                :title => _title,
+                :footer => new Bitmap( {
+                    :rezId => Rez.Drawables.OpenHabText,
+                    :locX => WatchUi.LAYOUT_HALIGN_CENTER,
+                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } )
+            } );
 
         var elements = sitemapPage.elements;
         for( var i = 0; i < elements.size(); i++ ) {
@@ -14,7 +41,7 @@ class PageMenu extends CustomMenu {
     function update( sitemapPage as SitemapPage ) as Boolean {
         var remainsValid = true;
 
-        setTitle( sitemapPage.label );
+        _title.setText( sitemapPage.label );
 
         var elements = sitemapPage.elements;
         var i = 0;
@@ -44,12 +71,13 @@ class PageMenu extends CustomMenu {
         return remainsValid;
     }
 
-    private function createMenuItem( sitemapElement as SitemapElement, pageTitle as String ) as MenuItem {
+    private function createMenuItem( sitemapElement as SitemapElement, pageTitle as String ) as CustomMenuItem {
         if( OnOffMenuItem.isMyType( sitemapElement ) ) {
             return new TestCustomMenuItem();
-            //return new OnOffMenuItem( sitemapElement as SitemapSwitch );
+            // return new OnOffMenuItem( sitemapElement as SitemapSwitch );
         } else if( sitemapElement instanceof SitemapPage ) {
-            return new PageMenuItem( sitemapElement );
+            return new TestCustomMenuItem();
+            // return new PageMenuItem( sitemapElement );
         } else {
             throw new JsonParsingException( "Page '" + pageTitle + "' contains item not supported by menu." );
         }

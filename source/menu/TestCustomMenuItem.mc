@@ -14,4 +14,13 @@ class TestCustomMenuItem extends CustomMenuItem {
         dc.drawRectangle( 0, 0, dc.getWidth(), dc.getHeight() );
         dc.drawText( dc.getWidth() / 2, dc.getHeight() / 2, Graphics.FONT_MEDIUM, "HUHU", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER );
     }
+
+    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
+        return true;
+    }
+
+    public function update( sitemapSwitch as SitemapSwitch ) as Boolean {
+        return true;
+    }
+
 }
