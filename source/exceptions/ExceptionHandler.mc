@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
+import Toybox.Timer;
 
 enum ExceptionSource {
     EX_SOURCE_SITEMAP,
@@ -18,8 +19,13 @@ public class ExceptionHandler {
             WatchUi.showToast( 
                 ex.getSource().toUpper() + "\n" + ex.getToastMessage().toUpper(), 
                 { :icon => Rez.Drawables.WarningIcon } );
+        } else if( ex instanceof PushViewException ) {
+            WatchUi.showToast( 
+                "PAGE ERROR", 
+                { :icon => Rez.Drawables.WarningIcon } );
         } else {
             ViewHandler.popToBottomAndSwitch( new ErrorView( ex ), null );
         }
     }
+
 }

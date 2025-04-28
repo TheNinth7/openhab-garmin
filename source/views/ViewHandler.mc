@@ -3,10 +3,14 @@ import Toybox.WatchUi;
 
 class ViewHandler {
     private static var _stackSize as Number = 0;
-    public static function pushView( view as Views, delegate as InputDelegates or Null, transition as SlideType ) as Boolean {
-        _stackSize++;
-        return WatchUi.pushView( view, delegate, transition );
+    public static function pushView( view as Views, delegate as InputDelegates or Null, transition as SlideType ) as Void {
+        if( WatchUi.pushView( view, delegate, transition ) ) {
+            _stackSize++;
+        } else {
+            throw new PushViewException( "ViewHandler: push view failed" );
+        } 
     }
+
     public static function popView( transition as SlideType ) as Void {
         _stackSize--;
         WatchUi.popView( transition );
