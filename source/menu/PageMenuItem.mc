@@ -1,7 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class PageMenuItem extends MenuItem {
+class PageMenuItem extends BaseMenuItem {
 
     private var _menu as PageMenu;
     public function getMenu() as PageMenu {
@@ -9,12 +9,7 @@ class PageMenuItem extends MenuItem {
     }
 
     public function initialize( sitemapPage as SitemapPage ) {
-        MenuItem.initialize(
-            sitemapPage.label,
-            null,
-            sitemapPage.id, // identifier
-            null
-        );
+        BaseMenuItem.initialize( sitemapPage, { :label => sitemapPage.label } );
 
         _menu = new PageMenu( sitemapPage );
     }
@@ -24,7 +19,7 @@ class PageMenuItem extends MenuItem {
     }
 
     public function update( sitemapPage as SitemapPage ) as Boolean {
-        setLabel( sitemapPage.label );
+        setCustomLabel( sitemapPage.label );
         return _menu.update( sitemapPage );
     }
 }

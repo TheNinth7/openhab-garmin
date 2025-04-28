@@ -4,6 +4,8 @@ import Toybox.WatchUi;
 class PageMenu extends CustomMenu {
     private var _title as Text;
 
+    private const ITEM_HEIGHT_PERCENTAGE = 0.2;
+
     function initialize( sitemapPage as SitemapPage ) {
         _title = new Text( {
             :text => sitemapPage.label,
@@ -13,12 +15,12 @@ class PageMenu extends CustomMenu {
             :locY => WatchUi.LAYOUT_VALIGN_CENTER
         } );
 
-        var itemHeight = ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
+        var itemHeight = ( System.getDeviceSettings().screenHeight * ITEM_HEIGHT_PERCENTAGE ).toNumber();
 
         // The following options should alter the height of title and footer
         // footer works, title does not, so omitting this for now. Probably
         // a bug in the SDK.
-        // :titleItemHeight => itemHeight,
+        // :labelItemHeight => itemHeight,
         // :footerItemHeight => itemHeight
 
         CustomMenu.initialize( 
@@ -29,7 +31,8 @@ class PageMenu extends CustomMenu {
                 :footer => new Bitmap( {
                     :rezId => Rez.Drawables.OpenHabText,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
-                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } )
+                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } ),
+                :footerItemHeight => ( itemHeight * 1.85 ).toNumber()
             } );
 
         var elements = sitemapPage.elements;
@@ -73,11 +76,9 @@ class PageMenu extends CustomMenu {
 
     private function createMenuItem( sitemapElement as SitemapElement, pageTitle as String ) as CustomMenuItem {
         if( OnOffMenuItem.isMyType( sitemapElement ) ) {
-            return new TestCustomMenuItem();
-            // return new OnOffMenuItem( sitemapElement as SitemapSwitch );
+            return new OnOffMenuItem( sitemapElement as SitemapSwitch );
         } else if( sitemapElement instanceof SitemapPage ) {
-            return new TestCustomMenuItem();
-            // return new PageMenuItem( sitemapElement );
+            return new PageMenuItem( sitemapElement );
         } else {
             throw new JsonParsingException( "Page '" + pageTitle + "' contains item not supported by menu." );
         }
