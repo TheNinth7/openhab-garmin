@@ -4,14 +4,16 @@ import Toybox.System;
 
 class PageMenu extends CustomMenu {
     private var _title as Text;
+    private var _label as String;
 
     public static var ITEM_HEIGHT as Number = 
         ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
     public static const FOOTER_HEIGHT as Number = ( ITEM_HEIGHT * 1.85 ).toNumber();
 
     function initialize( sitemapPage as SitemapPage ) {
+        _label = sitemapPage.label;
         _title = new Text( {
-            :text => sitemapPage.label,
+            :text => _label,
             :color => Graphics.COLOR_WHITE,
             :font => Graphics.FONT_SMALL,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
@@ -54,26 +56,33 @@ class PageMenu extends CustomMenu {
             var itemIndex = findItemById( element.id );
             if( itemIndex == -1 ) {
                 addItem( createMenuItem( element, sitemapPage.label ) );
+                Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
             } else {
                 var item = getItem( itemIndex ) as BaseMenuItem;
                 if( item.isMyType( element ) ) {
                     if( item.update( element ) == false ) {
                         remainsValid = false;
-                        Logger.debug( "PageMenu.update: invalid because item changed structure" );
+                        Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' invalid" );
                     }
                 } else {
-                    updateItem( createMenuItem( element, sitemapPage.label ), itemIndex );
-                    remainsValid = false;
-                    Logger.debug( "PageMenu.update: invalid because item changed type" );
+                    var newItem = createMenuItem( element, sitemapPage.label );
+                    if( item instanceof PageMenuItem || newItem instanceof PageMenuItem ) {
+                        remainsValid = false;
+                        Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
+
+                    }
+                    updateItem( newItem, itemIndex );
                 }
             }
         }
         // Remove all menu items that do not have a corresponding
         // sitemap element anymore
-        for( ; getItem( i ) != null; i++ ) {
+        while( getItem( i ) != null ) {
+            if( getItem( i ) instanceof PageMenuItem ) {
+                remainsValid = false;
+            }
             deleteItem( i );
-            remainsValid = false;
-            Logger.debug( "PageMenu.update: invalid because item was removed" );
+            Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item was removed" );
         }
         return remainsValid;
     }

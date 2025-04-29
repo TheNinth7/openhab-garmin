@@ -16,6 +16,10 @@ class BaseMenuItem extends CustomMenuItem {
     private var _labelTextArea as TextArea?;
     private var _status as Drawable?;
 
+    public function getLabel() as String {
+        return _label;
+    }
+
     protected function initialize( sitemapElement as SitemapElement, options as BaseMenuItemOptions ) {
         CustomMenuItem.initialize( sitemapElement.id, {} );
         _icon = options[:icon];
