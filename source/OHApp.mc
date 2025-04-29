@@ -17,13 +17,14 @@ class OHApp extends Application.AppBase {
     // onStop() is called when your application is exiting
     public function onStop(state as Dictionary?) as Void {
         SitemapRequest.stop();
+        SitemapRequest.persist();
     }
 
     // Return the initial view of your application here
     public function getInitialView() as [Views] or [Views, InputDelegates] {
         try {
+            var menu = SitemapRequest.initializeFromStorage();
             SitemapRequest.start();
-            var menu = SitemapRequest.getMenu();
             if( menu != null ) {
                 return [ menu, new PageMenuDelegate() ];
             } else {
@@ -33,6 +34,14 @@ class OHApp extends Application.AppBase {
             return [ new ErrorView( ex ) ];
         }
     }
+
+    (:release) function onAppUpdate() as Void {
+        Storage.clearValues();
+    }
+    (:release) function onSettingsChanged() as Void {
+        Storage.clearValues();
+    }
+
 }
 
 function getApp() as OHApp {

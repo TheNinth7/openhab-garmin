@@ -10,7 +10,6 @@ class CommandRequest extends BaseRequest {
     public function initialize( item as OHCommandMenuItem ) {
         BaseRequest.initialize();
         _url = AppSettings.getUrl() + "/webhook/" + AppSettings.getWebhook();
-        //_options[:responseType] = Communications.HTTP_RESPONSE_CONTENT_TYPE_URL_ENCODED;
         _item = item;
     }
 
@@ -20,7 +19,7 @@ class CommandRequest extends BaseRequest {
             "itemName" => _item.getItemName(),
             "command" => cmd
         };
-        Communications.makeWebRequest( _url, parameters, _options, method( :onReceive ) );
+        Communications.makeWebRequest( _url, parameters, getOptions(), method( :onReceive ) );
     }
 
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {

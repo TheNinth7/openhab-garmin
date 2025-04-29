@@ -2,7 +2,14 @@ import Toybox.Lang;
 import Toybox.Communications;
 
 class BaseRequest {
-    protected var _options as WebRequestOptions;
+    private var _options as WebRequestOptions;
+
+    protected function setOption( option as Symbol, value as Object ) as Void {
+        _options[option] = value;
+    }
+    protected function getOptions() as WebRequestOptions {
+        return _options;
+    }
 
     public function initialize() {
         _options = {

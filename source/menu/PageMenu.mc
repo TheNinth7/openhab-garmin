@@ -59,10 +59,12 @@ class PageMenu extends CustomMenu {
                 if( item.isMyType( element ) ) {
                     if( item.update( element ) == false ) {
                         remainsValid = false;
+                        Logger.debug( "PageMenu.update: invalid because item changed structure" );
                     }
                 } else {
                     updateItem( createMenuItem( element, sitemapPage.label ), itemIndex );
                     remainsValid = false;
+                    Logger.debug( "PageMenu.update: invalid because item changed type" );
                 }
             }
         }
@@ -71,6 +73,7 @@ class PageMenu extends CustomMenu {
         for( ; getItem( i ) != null; i++ ) {
             deleteItem( i );
             remainsValid = false;
+            Logger.debug( "PageMenu.update: invalid because item was removed" );
         }
         return remainsValid;
     }
