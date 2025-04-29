@@ -1,0 +1,144 @@
+{
+    "devices": {
+        "d2mach1": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "enduro3": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "epix2": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "epix2pro42mm": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "epix2pro47mm": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "epix2pro51mm": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "fenix7": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix7pro": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix7pronowifi": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix7s": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix7spro": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix7x": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix7xpro": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix7xpronowifi": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix843mm": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "fenix847mm": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "fenix8solar47mm": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenix8solar51mm": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fenixe": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "fr165": {
+            "screenHeight": "0",
+            "launcherIcon": "54x54"
+        },
+        "fr165m": {
+            "screenHeight": "0",
+            "launcherIcon": "54x54"
+        },
+        "fr255": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fr255m": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fr255s": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fr255sm": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fr265": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "fr265s": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "fr955": {
+            "screenHeight": "0",
+            "launcherIcon": "40x40"
+        },
+        "fr965": {
+            "screenHeight": "0",
+            "launcherIcon": "65x65"
+        },
+        "marq2": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "marq2aviator": {
+            "screenHeight": "0",
+            "launcherIcon": "60x60"
+        },
+        "venu3": {
+            "screenHeight": "0",
+            "launcherIcon": "70x70"
+        },
+        "venu3s": {
+            "screenHeight": "0",
+            "launcherIcon": "70x70"
+        },
+        "vivoactive5": {
+            "screenHeight": "0",
+            "launcherIcon": "56x56"
+        },
+        "vivoactive6": {
+            "screenHeight": "0",
+            "launcherIcon": "54x54"
+        }
+    }
+}

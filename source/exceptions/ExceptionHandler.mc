@@ -15,7 +15,8 @@ public class ExceptionHandler {
     }
 
     public static function handleException( ex as Exception ) as Void {
-        if( ex instanceof CommunicationException ) {
+        if( ex instanceof CommunicationException 
+            && WatchUi.getCurrentView()[0] instanceof PageMenu ) {
             WatchUi.showToast( 
                 ex.getSource().toUpper() + "\n" + ex.getToastMessage().toUpper(), 
                 { :icon => Rez.Drawables.WarningIcon } );

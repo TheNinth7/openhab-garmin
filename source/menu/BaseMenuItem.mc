@@ -24,7 +24,6 @@ class BaseMenuItem extends CustomMenuItem {
     }
 
     private const ICON_WIDTH_FACTOR = 0.2;
-    private const STATUS_WIDTH_FACTOR = 0.2;
     private const SPACING_FACTOR = 0.03;
 
     private function initializeDrawables( dc as Dc ) as Void {
@@ -38,9 +37,9 @@ class BaseMenuItem extends CustomMenuItem {
         }
 
         if( _status != null ) {
-            var statusWidth = dc.getWidth() * STATUS_WIDTH_FACTOR;
-            ( _status as Drawable).setLocation( dc.getWidth() - statusWidth, WatchUi.LAYOUT_VALIGN_CENTER );
-            titleWidth -= statusWidth + spacing;
+            var status = _status;
+            status.setLocation( dc.getWidth() - status.width - spacing*2, WatchUi.LAYOUT_VALIGN_CENTER );
+            titleWidth -= status.width + spacing*3;
         }
 
         _labelTextArea = new TextArea( {

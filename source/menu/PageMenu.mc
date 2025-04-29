@@ -32,8 +32,8 @@ class PageMenu extends CustomMenu {
                 :footer => new Bitmap( {
                     :rezId => Rez.Drawables.OpenHabText,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
-                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } ),
-                :footerItemHeight => ( FOOTER_HEIGHT ).toNumber()
+                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } )
+                //:footerItemHeight => ( FOOTER_HEIGHT ).toNumber()
             } );
 
         var elements = sitemapPage.elements;
