@@ -13,7 +13,7 @@ class SitemapBaseRequest extends BaseRequest {
 
     private var _sitemapHomepage as SitemapHomepage?;
 
-    protected function getSitemapHomepage() as SitemapHomepage? {
+    public function getSitemapHomepage() as SitemapHomepage? {
         return _sitemapHomepage;
     }
 
