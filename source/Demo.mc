@@ -1,24 +1,25 @@
 /*
 import Toybox.Lang;
+import Toybox.System;
 
 class A {
-    public static function doSomething() as Void {
-        throw new AbstractMethodException( "A.doSomething" );
-    } 
-    public static function doMore() as Void {
-        doSomething();
-    }
-}
-
-class B extends A {
-    public static function doSomething() as Void {
-        // this is what should get done
+    public static function doSomething( classref as B ) as Void {
+        classref.doSomething();
     } 
 }
 
-class C {
-    public function doItAll() as Void {
-        B.doMore();
-    }
+class B {
+    public static function doSomething() as Void {
+        System.println( "Hello World!");
+    } 
+}
+
+class B1 extends B {
+    private function initialize() {
+        B.initialize();
+     }
+    public static function doSomething() as Void {
+        System.println( "Hello Other World!");
+    } 
 }
 */
