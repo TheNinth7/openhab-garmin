@@ -9,9 +9,7 @@ class OnOffMenuItem extends SwitchMenuItem {
     private static const ITEM_STATE_ON = "ON";
     private static const ITEM_STATE_OFF = "OFF";
 
-    public static function getItemType() as String {
-        return "Switch";
-    }
+    public static const ITEM_TYPE = "Switch";
 
     public function getNextCommand() as String {
         return _isEnabled ? ITEM_STATE_OFF : ITEM_STATE_ON;
@@ -44,7 +42,7 @@ class OnOffMenuItem extends SwitchMenuItem {
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
                sitemapElement instanceof SitemapSwitch 
-            && sitemapElement.itemType.equals( OnOffMenuItem.getItemType() );
+            && sitemapElement.itemType.equals( ITEM_TYPE );
     }
 
 }

@@ -5,9 +5,6 @@ class SwitchMenuItem extends BaseMenuItem {
     private var _itemName as String;
     private var _commandRequest as CommandRequest?;
 
-    public static function getItemType() as String {
-        throw new AbstractMethodException( "SwitchMenuItem.getItemType" );
-    }
     public function getNextCommand() as String {
         throw new AbstractMethodException( "SwitchMenuItem.getNextCommand" );
     }
