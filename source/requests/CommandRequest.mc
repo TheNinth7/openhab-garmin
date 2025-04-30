@@ -24,7 +24,7 @@ class CommandRequest extends BaseRequest {
 
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
-            checkResponseCode( responseCode );
+            checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND );
             _item.onCommandComplete();
         } catch( ex ) {
             ExceptionHandler.handleException( ex );            

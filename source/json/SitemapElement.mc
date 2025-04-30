@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+(:glance)
 class SitemapElement {
 
     public var ID as String = "widgetId";

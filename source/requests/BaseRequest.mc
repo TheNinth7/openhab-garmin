@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.Communications;
 
+(:glance)
 class BaseRequest {
     private var _options as WebRequestOptions;
 
@@ -23,11 +24,9 @@ class BaseRequest {
         }
     }
 
-    protected function checkResponseCode( responseCode as Number ) as Void {
+    protected function checkResponseCode( responseCode as Number, source as CommunicationException.Source ) as Void {
         if( responseCode != 200 ) {
-            var source = ( self instanceof SitemapRequest ) ? EX_SOURCE_SITEMAP : EX_SOURCE_COMMAND;
             throw new CommunicationException( responseCode, source );
         }
     }
-
 }

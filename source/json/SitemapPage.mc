@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+(:glance)
 class SitemapPage extends SitemapElement {
 
     private const WIDGETS = "widgets";
@@ -10,7 +11,7 @@ class SitemapPage extends SitemapElement {
 
     public var elements as Array<SitemapElement> = new Array<SitemapElement>[0];
 
-    function initialize( data as JsonObject ) {
+    public function initialize( data as JsonObject ) {
         SitemapElement.initialize( data );
         var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found" );
 

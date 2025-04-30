@@ -1,5 +1,6 @@
 import Toybox.Lang;
 
+(:glance)
 class GeneralException extends Exception {
     private var _msg as String;
     function initialize( msg as String ) {

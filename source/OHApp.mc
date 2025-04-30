@@ -3,7 +3,10 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Timer;
 
+(:glance)
 class OHApp extends Application.AppBase {
+
+    private var _glanceView as GlanceSitemapView?;
 
     public function initialize() {
         AppBase.initialize();
@@ -15,15 +18,21 @@ class OHApp extends Application.AppBase {
     }
 
     // onStop() is called when your application is exiting
+    (:typecheck(disableGlanceCheck))
     public function onStop(state as Dictionary?) as Void {
-        SitemapRequest.stop();
-        SitemapRequest.persist();
+        if( _glanceView != null ) {
+            _glanceView.onHide();
+        } else {
+            SitemapRequest.stop();
+            SitemapRequest.staticPersist();
+        }
     }
 
     // Return the initial view of your application here
+    (:typecheck(disableGlanceCheck))
     public function getInitialView() as [Views] or [Views, InputDelegates] {
         try {
-            var menu = SitemapRequest.initializeFromStorage();
+            var menu = SitemapRequest.initializePageMenu();
             SitemapRequest.start();
             if( menu != null ) {
                 return [ menu, new PageMenuDelegate() ];
@@ -34,6 +43,12 @@ class OHApp extends Application.AppBase {
             return [ new ErrorView( ex ) ];
         }
     }
+
+    function getGlanceView() as [ GlanceView ] or [ GlanceView, GlanceViewDelegate ] or Null {
+        _glanceView = new GlanceSitemapView();
+        return [ _glanceView ];
+    }
+
 
     (:release) function onAppUpdate() as Void {
         Storage.clearValues();

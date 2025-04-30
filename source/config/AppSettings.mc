@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.Application.Properties;
 
+(:glance)
 class AppSettings {
     private static var _instance as AppSettings?;
     

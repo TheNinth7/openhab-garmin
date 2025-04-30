@@ -1,6 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+(:glance)
 class SitemapSwitch extends SitemapElement {
 
     private const ITEM = "item";
@@ -12,7 +13,7 @@ class SitemapSwitch extends SitemapElement {
     public var itemState as String;
     public var itemType as String;
     
-    function initialize( data as JsonObject ) {
+    public function initialize( data as JsonObject ) {
         SitemapElement.initialize( data );
         var item = getObject( data, ITEM, "Switch '" + label + "': no item found" );
         itemName = getString( item, ITEM_NAME, "Switch '" + label + "': item has no name" );

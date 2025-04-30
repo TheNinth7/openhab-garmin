@@ -8,7 +8,7 @@ class PageMenu extends CustomMenu {
 
     public static var ITEM_HEIGHT as Number = 
         ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
-    public static const FOOTER_HEIGHT as Number = ( ITEM_HEIGHT * 1.85 ).toNumber();
+    //public static const FOOTER_HEIGHT as Number = ( ITEM_HEIGHT * 1.85 ).toNumber();
 
     function initialize( sitemapPage as SitemapPage ) {
         _label = sitemapPage.label;
@@ -32,7 +32,7 @@ class PageMenu extends CustomMenu {
             {
                 :title => _title,
                 :footer => new Bitmap( {
-                    :rezId => Rez.Drawables.OpenHabText,
+                    :rezId => Rez.Drawables.logoOpenhabText,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } )
                 //:footerItemHeight => ( FOOTER_HEIGHT ).toNumber()
