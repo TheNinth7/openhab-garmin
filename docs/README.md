@@ -39,7 +39,7 @@ Garmin wearables rely on your smartphone for network access. If your phone can r
 - **iOS**: HTTP and HTTPS supported  
 - **Android**: Only HTTPS with a valid certificate is supported due to Garmin SDK limitations
 
-You can use [myopenHAB](https://www.myopenhab.org) to securely access your local openHAB instance over the Internet.
+You can use [myopenHAB](https://www.myopenhab.org) to securely access your local openHAB instance over the Internet using HTTPS.
 
 ---
 
@@ -51,8 +51,10 @@ After installing the app, the following settings are available:
 |---------------------|-------------|
 | **URL**             | Your openHAB URL in the format `https://host:port` or `http://host:port`. Note: HTTP only works with iOS. See [Connectivity](#connectivity) for details. |
 | **Webhook Identifier** | Required to send commands. Without it, the app can only display item states. See [Custom Webhook](#custom-webhook). |
-| **Username**        | For basic authentication (used with reverse proxies, etc.) |
+| **Username**        | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
 | **Password**        | Password for basic authentication |
+
+![App Settings](screenshots/4_App_settings.png)
 
 ---
 
