@@ -9,7 +9,7 @@
 
 ## 🧰 Resources
 
-- 💬 [openHAB Community Discussion](https://community.openhab.org/t/integrating-openhab-and-garmin/155748/18)  
+- 💬 [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891)  
 - 🐞 [Report Issues on GitHub](https://github.com/TheNinth7/ohg/issues)
 
 ---
