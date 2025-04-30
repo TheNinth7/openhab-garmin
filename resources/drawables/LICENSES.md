@@ -1,0 +1,1 @@
+lightbulb by Adrien Coquet from <a href="https://thenounproject.com/browse/icons/term/lightbulb/" target="_blank" title="lightbulb Icons">Noun Project</a> (CC BY 3.0)
