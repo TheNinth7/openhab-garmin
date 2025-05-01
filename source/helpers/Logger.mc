@@ -5,6 +5,7 @@ import Toybox.Time;
 import Toybox.Time.Gregorian;
 import Toybox.System;
 
+(:glance)
 public class Logger {
 
     // Info should be used in places where the output shall remain

@@ -17,6 +17,7 @@ class AppSettings {
     private const USER_PREFIX = "user_";
     private const PASSWORD_PREFIX = "password_";
     private const WEBHOOK_PREFIX = "webhook_";
+    private const INTERVAL_PREFIX = "pollingInterval_";
 
     public var url as String;
     public var sitemap as String;
@@ -27,6 +28,7 @@ class AppSettings {
     
     public var vCanSendCommands as Boolean = false;
     public var webhook as String;
+    public var pollingInterval as Number;
 
     private var _index as Number = 0;
     
@@ -40,6 +42,7 @@ class AppSettings {
             vNeedsBasicAuth = true;
             password = getString( PASSWORD_PREFIX + _index, "Configuration: password is missing" );
         }
+        pollingInterval = Properties.getValue( INTERVAL_PREFIX + _index ) as Number;
     }
 
     public static function getUrl() as String { return getInstance().url; }
@@ -51,6 +54,8 @@ class AppSettings {
     public static function needsBasicAuth() as Boolean { return getInstance().vNeedsBasicAuth; }
     public static function getUser() as String { return getInstance().user; }
     public static function getPassword() as String { return getInstance().password as String; }
+
+    public static function getPollingInterval() as Number { return getInstance().pollingInterval; }
 
     private function getString( name as String, errorMessage as String ) as String {
         var value = Properties.getValue( name ) as String;

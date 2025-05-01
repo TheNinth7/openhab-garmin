@@ -50,9 +50,11 @@ After installing the app, the following settings are available:
 | Setting             | Description |
 |---------------------|-------------|
 | **URL**             | Your openHAB URL in the format `https://host:port` or `http://host:port`. Note: HTTP only works with iOS. See [Connectivity](#connectivity) for details. |
+| **Sitemap Name** | Name of the sitemap to display. See [Configuration](#️-configuration) for details. | 
 | **Webhook Identifier** | Required to send commands. Without it, the app can only display item states. See [Custom Webhook](#custom-webhook). |
 | **Username**        | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
 | **Password**        | Password for basic authentication |
+| **Polling Interval (ms)** | Interval between data requests to your openHAB instance. Set to 0 to fetch new data immediately after the previous response is processed. **Note:** When using **myopenhab.org**, it’s recommended to use the default (3000 ms) or a higher value. Lower intervals may trigger errors due to rate limiting by myopenhab.org. |
 
 ![App Settings](screenshots/app-settings/app-settings.png)
 

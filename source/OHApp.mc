@@ -23,8 +23,8 @@ class OHApp extends Application.AppBase {
         if( _glanceView != null ) {
             _glanceView.onHide();
         } else {
-            SitemapRequest.stop();
-            SitemapRequest.staticPersist();
+            SitemapRequest.getInstance().stop();
+            SitemapRequest.getInstance().persist();
         }
     }
 
@@ -33,8 +33,9 @@ class OHApp extends Application.AppBase {
     public function getInitialView() as [Views] or [Views, InputDelegates] {
         try {
             var menu = SitemapRequest.initializePageMenu();
-            SitemapRequest.start();
+            SitemapRequest.getInstance().start();
             if( menu != null ) {
+                ExceptionHandler.setUseToasts( true );
                 return [ menu, new PageMenuDelegate() ];
             } else {
                 return [ new LoadingView() ];
