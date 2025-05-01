@@ -54,7 +54,7 @@ After installing the app, the following settings are available:
 | **Username**        | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
 | **Password**        | Password for basic authentication |
 
-![App Settings](screenshots/4_App_settings.png)
+![App Settings](screenshots/app-settings/app-settings.png)
 
 ---
 
@@ -76,39 +76,65 @@ Ohg uses your openHAB sitemap to determine the structure of the app's interface.
 
 ### Sitemap Definition
 
-The sitemap name (e.g. `garmin`) must match the one configured in the app. The label is shown in the app UI.
+The sitemap name (e.g. `garmin`) must match the one configured in the app.
 
 ```xtend
 sitemap garmin label="My Home" {
 }
 ```
 
+The label is shown in the app UI, for example in the glance:
+
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/app/1-glance.png"></td>
+    <td></td>
+  </tr>
+</table>
+
 ### Supported Elements
 
-Currently supported element types:
+Currently supported element types and parameters:
 - [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame)
-- [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) (linked to [Switch items](https://www.openhab.org/docs/configuration/items.html))
+  - `label`
+
+- [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) linked to [Switch items](https://www.openhab.org/docs/configuration/items.html)
+- `label`
+- `item`
+
+- [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text)
+  - `label`
+  - `item`
 
 ### Example Sitemap
 
 ```xtend
-sitemap garmin label="MyHome" {
-  Frame label="Outside" {
-    Switch item=GarageDoors label="Garage Doors"
-  }
-  Frame label="Ground Floor" {
-    Switch item=LightCouch label="Couch Light"
-  }
-  Frame label="First Floor" {
-    Switch item=LightBedroom label="Bedroom Light"
-    Switch item=StudyLight label="Study Light"
-    Switch item=BathroomLight label="Bathroom Light"
-  }
+sitemap garmin_demo label="My Home" {
+	Frame label="Entrance Gates" {
+		Switch item=EntranceGatesTrigger label="Open/Close"
+		Text item=EntranceGateStatus label="Status"
+	}
+	Frame label="Ground Floor" {
+		Switch item=LightCouch label="Couch Light"
+	}
+	Frame label="First Floor" icon="folder" {
+		Switch item=LightBedroom label="Bedroom Light"
+		Switch item=LightStudy label="Study Light"
+		Switch item=LightGallery label="Gallery Light"
+	}
 }
 ```
-
-- `item`: the item to be controlled
-- `label`: the name shown in the app
+This configuration produces the following display in the UI:
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
+    <td><img src="screenshots/app/3-entrance-gates.png"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/app/4-first-floor-1.png"></td>
+    <td><img src="screenshots/app/4-first-floor-2.png"></td>
+  </tr>
+</table>
 
 ---
 
@@ -122,7 +148,7 @@ Until then, you can set up a custom Webhook:
 
 Install the [Webhook HTTP binding](https://community.openhab.org/t/webhook-http-binding/152184).
 
-![Webhook Installation](screenshots/1_Webhook_installation.png)
+![Webhook Installation](screenshots/custom-webhook/1_Webhook_installation.png)
 
 ---
 
@@ -130,7 +156,7 @@ Install the [Webhook HTTP binding](https://community.openhab.org/t/webhook-http-
 
 Create a new Webhook Thing.
 
-![Thing Creation](screenshots/2_1_Thing_creation.png)
+![Thing Creation](screenshots/custom-webhook/2_1_Thing_creation.png)
 
 Go to the **Code** tab and enter the following YAML (replace `UID` with your own):
 
@@ -162,7 +188,7 @@ channels:
         }
 ```
 
-![Thing Channels](screenshots/2_4_Thing_channels.png)
+![Thing Channels](screenshots/custom-webhook/2_4_Thing_channels.png)
 
 ---
 
@@ -213,7 +239,7 @@ https://yourserver:yourport/webhook/d1097152a4?action=toggle&itemName=LightBedro
 
 Then enter the Webhook ID (`d1097152a4`) in the app settings:
 
-![App Settings](screenshots/4_App_settings.png)
+![App Settings](screenshots/app-settings/app-settings.png)
 
 ---
 

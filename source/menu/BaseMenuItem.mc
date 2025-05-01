@@ -15,7 +15,6 @@ class BaseMenuItem extends CustomMenuItem {
     private var _label as String;
     private var _labelTextArea as TextArea?;
     private var _status as Drawable?;
-
     public function getLabel() as String {
         return _label;
     }
@@ -31,18 +30,22 @@ class BaseMenuItem extends CustomMenuItem {
     private const SPACING_FACTOR = 0.03;
 
     private function initializeDrawables( dc as Dc ) as Void {
-        var spacing = dc.getWidth() * SPACING_FACTOR;
+        var dcWidth = dc.getWidth();
+        var spacing = ( dcWidth * SPACING_FACTOR ).toNumber();
         var locX = spacing;
-        var titleWidth = dc.getWidth() - spacing;
+        var titleWidth = dcWidth - spacing;
         if( _icon != null ) {
             _icon.setLocation( locX, 0 );
-            locX += ( dc.getWidth() * ICON_WIDTH_FACTOR ).toNumber() + spacing;
+            locX += ( dcWidth * ICON_WIDTH_FACTOR ).toNumber() + spacing;
             titleWidth -= locX;
         }
 
         if( _status != null ) {
             var status = _status;
-            status.setLocation( dc.getWidth() - status.width - spacing*2, WatchUi.LAYOUT_VALIGN_CENTER );
+            if( status instanceof TextStatusDrawable ) {
+                status.setAvailableWidth( titleWidth - spacing*3 );
+            }
+            status.setLocation( dcWidth - status.width - spacing*2, WatchUi.LAYOUT_VALIGN_CENTER );
             titleWidth -= status.width + spacing*3;
         }
 

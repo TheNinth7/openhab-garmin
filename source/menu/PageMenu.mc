@@ -90,6 +90,8 @@ class PageMenu extends CustomMenu {
     private function createMenuItem( sitemapElement as SitemapElement, pageTitle as String ) as CustomMenuItem {
         if( OnOffMenuItem.isMyType( sitemapElement ) ) {
             return new OnOffMenuItem( sitemapElement as SitemapSwitch );
+        } else if( TextMenuItem.isMyType( sitemapElement ) ) {
+            return new TextMenuItem( sitemapElement as SitemapText );
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
         } else {
