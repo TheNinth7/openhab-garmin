@@ -7,6 +7,20 @@
 
 ---
 
+## 📖 Table of Contents
+
+🧰 [Resources](#-resources)
+🚧 [Development Status](#-development-status)
+🌐 [Connectivity](#-connectivity)
+⚙️ [Configuration](#️-configuration)
+🔐 [Using myopenHAB](#-using-myopenhab)
+🧭 [Sitemap Features](#-sitemap-setup)
+🛠️ [Custom Webhook](#️-custom-webhook)
+🚨 [Troubleshooting](#-troubleshooting)
+📄 [License](#-license)
+
+---
+
 ## 🧰 Resources
 
 - 💬 [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891)  
@@ -73,7 +87,7 @@ To connect using [myopenHAB](https://myopenhab.org):
 
 ## 🧭 Sitemap Setup
 
-Ohg uses your openHAB sitemap to determine the structure of the app's interface.  
+The app uses your openHAB sitemap to determine the structure of the app's interface.  
 📘 [openHAB Sitemaps Documentation](https://www.openhab.org/docs/ui/sitemaps.html)
 
 ### Sitemap Definition
@@ -244,6 +258,69 @@ https://yourserver:yourport/webhook/d1097152a4?action=toggle&itemName=LightBedro
 Then enter the Webhook ID (`d1097152a4`) in the app settings:
 
 ![App Settings](screenshots/app-settings/app-settings.png)
+
+---
+
+## 🚨 Troubleshooting
+
+This section explains how the app handles errors and lists common issues you might encounter.
+
+### How the App Handles Errors
+
+The app distinguishes between **temporary (non-fatal)** and **critical (fatal)** errors:
+
+* **Non-fatal errors** trigger a toast notification at the top of the screen, allowing you to continue using the app.
+* **Fatal errors** display a full-screen error view, halting further use until the issue is resolved.
+
+**Non-fatal errors include:**
+
+* Most communication-related issues when requesting the sitemap.
+* All communication-related issues when sending a command.
+
+> Note: Non-fatal errors become **fatal** if they persist for more than 10 seconds.
+
+**Immediately fatal errors include:**
+
+* Certain communication errors when requesting the sitemap, specifically:
+
+  * Error `-1001` (see below)
+  * HTTP error `404`
+* Errors encountered while parsing the sitemap.
+* Any other unexpected errors or exceptions.
+
+---
+
+### Communication Error Codes
+
+To save space, communication errors shown in toast notifications follow this format:
+
+`X:NNNNN`
+
+* `X` indicates the source of the error:
+
+  * `S` = sitemap polling
+  * `C` = command sending
+* `NNNNN` is the error code:
+
+  * Positive values = HTTP status codes
+  * Negative values = Garmin SDK error codes
+
+For a full list of Garmin SDK error codes, see the **Constant Summary** section here:
+👉 [Garmin Communications API Docs](https://developer.garmin.com/connect-iq/api-docs/Toybox/Communications.html)
+
+**Special shortcodes:**
+
+* `NO PHONE` – The watch is not connected to the smartphone.
+* `EMRES` – The response was empty.
+* `INVRES` – The response was invalid.
+
+---
+
+### Common Issues
+
+| Error             | Description                                                                                                                                                                                                                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `EMRES/myopenHAB` | myopenHAB currently has an intermittent issue where sitemap requests may return empty responses. The app will show a non-fatal `EMRES` notification. Usually, the next request succeeds, preventing escalation to a fatal error. [More info](https://github.com/openhab/openhab-cloud/issues/496) |
 
 ---
 
