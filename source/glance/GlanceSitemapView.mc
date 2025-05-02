@@ -42,9 +42,4 @@ class GlanceSitemapView extends WatchUi.GlanceView {
         }
         _textArea.draw( dc );
     }
-
-    public function onHide() as Void {
-        _sitemapRequest.persist();
-    }
-
 }

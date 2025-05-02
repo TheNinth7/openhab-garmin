@@ -31,6 +31,7 @@ class CommunicationException extends CommunicationBaseException {
     }
 
     public function isFatal() as Boolean {
+        return false;
         return 
             ( _responseCode == -1001 ) 
             || ( _responseCode == 404 ); 

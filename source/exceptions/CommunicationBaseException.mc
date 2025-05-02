@@ -17,6 +17,10 @@ class CommunicationBaseException extends Exception {
         _source = source;
     }
 
+    public function isFrom( source as Source ) as Boolean {
+        return _source == source;
+    }
+
     public function getSourceName() as String {
         return SOURCE_NAMES[_source];
     }

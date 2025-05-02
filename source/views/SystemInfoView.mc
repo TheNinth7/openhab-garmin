@@ -11,7 +11,7 @@ class SystemInfoView extends WatchUi.View {
     function onUpdate( dc as Dc ) as Void {
         dc.clear();
         var text = "ohg " + Application.loadResource( Rez.Strings.AppVersion ) as String + 
-                   "\nerror count=" + ExceptionHandler.getCommunicationErrorCount();
+                   "\nerror count=" + SitemapErrorCountStore.get();
         new TextArea( {
             :text => text,
             :color => Graphics.COLOR_WHITE,

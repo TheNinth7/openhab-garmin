@@ -7,11 +7,9 @@ import Toybox.Timer;
 
 (:glance)
 class SitemapBaseRequest extends BaseRequest {
-    private static const STORAGE_JSON as String = "json";
     private static const SOURCE as CommunicationBaseException.Source = CommunicationBaseException.EX_SOURCE_SITEMAP;
 
     private var _url as String;
-    private var _json as JsonObject?;
 
     private var _sitemapHomepage as SitemapHomepage?;
 
@@ -30,7 +28,10 @@ class SitemapBaseRequest extends BaseRequest {
         throw new AbstractMethodException( "BaseSitemapRequest.onException" );
     }
 
-    protected function onSuccess() as Void;
+    public function onSuccess() as Void {
+        Logger.debug( "BaseSitemapRequest.onSuccess");
+        SitemapErrorCountStore.reset();
+    }
 
     protected function initialize( minimumPollingInterval as Number? ) {
         BaseRequest.initialize();
@@ -40,10 +41,8 @@ class SitemapBaseRequest extends BaseRequest {
             _pollingInterval = minimumPollingInterval;
         }
 
-        _json = Storage.getValue( STORAGE_JSON ) as JsonObject?;
-        if( _json != null ) {
-            _sitemapHomepage = new SitemapHomepage( _json );
-        }
+        _sitemapHomepage = SitemapStore.get();
+
         _url = AppSettings.getUrl() + "/rest/sitemaps/" + AppSettings.getSitemap();
         setOption( :responseType, Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON );
     }
@@ -71,9 +70,9 @@ class SitemapBaseRequest extends BaseRequest {
         if( ! _isStopped ) {
             try {
                 checkResponseCode( responseCode, SOURCE );
-                checkResponse( data, SOURCE );
-                _json = data as JsonObject;
-                _sitemapHomepage = new SitemapHomepage( _json );
+                var json = checkResponse( data, SOURCE );
+                SitemapStore.update( json );
+                _sitemapHomepage = new SitemapHomepage( json );
                 onSitemapUpdate( _sitemapHomepage );
                 onSuccess();
             } catch( ex ) {
@@ -86,12 +85,6 @@ class SitemapBaseRequest extends BaseRequest {
             } else {
                 makeRequest();
             }
-        }
-    }
-
-    public function persist() as Void {
-        if( _json != null ) {
-            Storage.setValue( STORAGE_JSON as String, _json as Dictionary<Application.PropertyKeyType, Application.PropertyValueType> );
         }
     }
 }

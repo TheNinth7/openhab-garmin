@@ -30,10 +30,11 @@ class BaseRequest {
         }
     }
 
-    protected function checkResponse( data as Object?, source as CommunicationBaseException.Source ) as Void {
+    protected function checkResponse( data as Object?, source as CommunicationBaseException.Source ) as JsonObject {
         if( ! ( data instanceof Dictionary ) ) {
             throw new UnexpectedResponseException( data, source );
         }
+        return data as JsonObject;
     }
 
 }

@@ -5,17 +5,16 @@ import Toybox.Timer;
 (:glance)
 class GlanceSitemapRequest extends SitemapBaseRequest {
     private var _exception as Exception?;
-    private const TIMER_INTERVAL = 3000;
+    private const MINIMUM_POLLING_INTERVAL = 3000;
 
-    public function checkForException() as Void {
-        if( _exception != null ) {
-            throw _exception;
-        }
+    public function consumeException() as Exception? {
+        var ex = _exception;
+        return ex;
     }
     
     public function initialize() {
         try {
-            SitemapBaseRequest.initialize( TIMER_INTERVAL );
+            SitemapBaseRequest.initialize( MINIMUM_POLLING_INTERVAL );
             start();
         } catch( ex ) {
             _exception = ex;
@@ -31,5 +30,6 @@ class GlanceSitemapRequest extends SitemapBaseRequest {
     public function onException( ex as Exception ) {
         Logger.debug( "GlanceSitemapRequest.onException");
         _exception = ex;
+        SitemapErrorCountStore.increment();
     }
 }

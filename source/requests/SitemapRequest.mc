@@ -51,11 +51,6 @@ class SitemapRequest extends SitemapBaseRequest {
         }
     }
 
-    public function onSuccess() as Void {
-        Logger.debug( "SitemapRequest.onSuccess");
-        ExceptionHandler.resetCommunicationErrorCount();
-    }
-
     public function onException( ex as Exception ) as Void {
         ExceptionHandler.handleException( ex );            
     }
