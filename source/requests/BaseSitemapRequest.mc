@@ -8,6 +8,7 @@ import Toybox.Timer;
 (:glance)
 class SitemapBaseRequest extends BaseRequest {
     private static const STORAGE_JSON as String = "json";
+    private static const SOURCE as CommunicationBaseException.Source = CommunicationBaseException.EX_SOURCE_SITEMAP;
 
     private var _url as String;
     private var _json as JsonObject?;
@@ -69,13 +70,12 @@ class SitemapBaseRequest extends BaseRequest {
         Logger.debug( "BaseSitemapRequest.onReceive");
         if( ! _isStopped ) {
             try {
-                checkResponseCode( responseCode, CommunicationException.EX_SOURCE_SITEMAP );
-                if( ! ( data instanceof Dictionary ) ) {
-                    throw new JsonParsingException( "Unexpected response: " + data );
-                }
-                _json = data;
-                _sitemapHomepage = new SitemapHomepage( data );
+                checkResponseCode( responseCode, SOURCE );
+                checkResponse( data, SOURCE );
+                _json = data as JsonObject;
+                _sitemapHomepage = new SitemapHomepage( _json );
                 onSitemapUpdate( _sitemapHomepage );
+                onSuccess();
             } catch( ex ) {
                 onException( ex );
             }
@@ -86,8 +86,6 @@ class SitemapBaseRequest extends BaseRequest {
             } else {
                 makeRequest();
             }
-            
-            onSuccess();
         }
     }
 

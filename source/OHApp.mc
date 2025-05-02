@@ -54,7 +54,8 @@ class OHApp extends Application.AppBase {
     (:release) function onAppUpdate() as Void {
         Storage.clearValues();
     }
-    (:release) function onSettingsChanged() as Void {
+    function onSettingsChanged() as Void {
+        Logger.debug( "OHApp.onSettingsChanged" );
         Storage.clearValues();
     }
 

@@ -24,9 +24,16 @@ class BaseRequest {
         }
     }
 
-    protected function checkResponseCode( responseCode as Number, source as CommunicationException.Source ) as Void {
+    protected function checkResponseCode( responseCode as Number, source as CommunicationBaseException.Source ) as Void {
         if( responseCode != 200 ) {
             throw new CommunicationException( responseCode, source );
         }
     }
+
+    protected function checkResponse( data as Object?, source as CommunicationBaseException.Source ) as Void {
+        if( ! ( data instanceof Dictionary ) ) {
+            throw new UnexpectedResponseException( data, source );
+        }
+    }
+
 }

@@ -1,22 +1,13 @@
 import Toybox.Lang;
 
 (:glance)
-class CommunicationException extends Exception {
-    enum Source {
-        EX_SOURCE_SITEMAP,
-        EX_SOURCE_COMMAND
-    }
+class CommunicationException extends CommunicationBaseException {
 
     private var _responseCode as Number;
-    private var _source as Source;
 
-    private const SOURCE_NAMES = [ "Sitemap", "Command" ];
-    private const SOURCE_SHORTCODE = [ "S", "C" ];
-
-    public function initialize( code as Number, source as Source ) {
-        Exception.initialize();
+    public function initialize( code as Number, source as CommunicationBaseException.Source ) {
+        CommunicationBaseException.initialize( source );
         _responseCode = code;
-        _source = source;
     }
 
     public function getErrorMessage() as String or Null {
@@ -28,14 +19,21 @@ class CommunicationException extends Exception {
         } else {
             errorMsg = "Request failed with code " + _responseCode;
         }
-        return SOURCE_NAMES[_source] + ": " + errorMsg;
+        return getSourceName() + ": " + errorMsg;
     }
 
     public function getToastMessage() as String {
         if ( _responseCode == -104 ) {
             return "No phone";
         } else {
-            return SOURCE_SHORTCODE[_source] + _responseCode.toString();
+            return getSourceShortCode() + _responseCode.toString();
         }
     }
+
+    public function isFatal() as Boolean {
+        return 
+            ( _responseCode == -1001 ) 
+            || ( _responseCode == 404 ); 
+    }
+
 }
