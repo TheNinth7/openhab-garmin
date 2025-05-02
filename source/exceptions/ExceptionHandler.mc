@@ -3,7 +3,6 @@ import Toybox.WatchUi;
 import Toybox.Math;
 
 public class ExceptionHandler {
-
     private static const FATAL_SITEMAP_ERROR_TIME = 10000;
     private static const FATAL_SITEMAP_ERROR_COUNT = Math.round( FATAL_SITEMAP_ERROR_TIME / AppSettings.getPollingInterval() ).toNumber();
 
@@ -29,7 +28,7 @@ public class ExceptionHandler {
         } else {
             Logger.debug( "ExceptionHandler: showing error view" );
             SitemapStore.delete();
-            ViewHandler.popToBottomAndSwitch( new ErrorView( ex ), null );
+            ViewHandler.showOrUpdateErrorView( ex );
             _useToasts = false;
         }
     }

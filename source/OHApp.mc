@@ -38,7 +38,7 @@ class OHApp extends Application.AppBase {
                 return [ new LoadingView() ];
             }
         } catch( ex ) {
-            return [ new ErrorView( ex ) ];
+            return [ ViewHandler.createOrUpdateErrorView( ex ) ];
         }
     }
 

@@ -12,6 +12,11 @@ class ErrorView extends WatchUi.View {
         _exception = exception;
     }
 
+    public function update( exception as Exception ) as Void {
+        _exception = exception;
+        WatchUi.requestUpdate();
+    }
+
     public function onUpdate( dc as Dc ) as Void {
         dc.setColor( Graphics.COLOR_RED, Graphics.COLOR_BLACK );
         dc.clear();

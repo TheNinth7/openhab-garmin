@@ -50,7 +50,7 @@ After installing the app, the following settings are available:
 | Setting             | Description |
 |---------------------|-------------|
 | **URL**             | Your openHAB URL in the format `https://host:port` or `http://host:port`. Note: HTTP only works with iOS. See [Connectivity](#connectivity) for details. |
-| **Sitemap Name** | Name of the sitemap to display. See [Configuration](#️-configuration) for details. | 
+| **Sitemap Name** | Name of the sitemap to display. See [Sitemap Setup](#-sitemap-setup) for details. | 
 | **Webhook Identifier** | Required to send commands. Without it, the app can only display item states. See [Custom Webhook](#custom-webhook). |
 | **Username**        | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
 | **Password**        | Password for basic authentication |
@@ -78,14 +78,16 @@ Ohg uses your openHAB sitemap to determine the structure of the app's interface.
 
 ### Sitemap Definition
 
-The sitemap name (e.g. `garmin`) must match the one configured in the app.
+The sitemap name configured in the app must match the filename of the sitemap, excluding the `.sitemap` extension.
+
+For example, if the file is named `garmin_demo.sitemap`, set the sitemap name in the app settings to `garmin_demo`.
+
+The label defined within the sitemap file is displayed in the app UI, such as in glances and other views.
 
 ```xtend
-sitemap garmin label="My Home" {
+sitemap garmin_demo label="My Home" {
 }
 ```
-
-The label is shown in the app UI, for example in the glance:
 
 <table>
   <tr>
