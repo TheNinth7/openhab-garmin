@@ -19,6 +19,6 @@ class UnexpectedResponseException extends CommunicationBaseException {
     }
 
     public function getToastMessage() as String {
-        return getSourceShortCode() + ( _data == null ? "EMRES" : "UNRES" );
+        return getSourceShortCode() + ":" + ( _data == null ? "EMRES" : "UNRES" );
     }
 }
