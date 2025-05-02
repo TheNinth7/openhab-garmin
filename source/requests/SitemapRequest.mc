@@ -49,6 +49,7 @@ class SitemapRequest extends SitemapBaseRequest {
                 ViewHandler.popToBottomAndSwitch( homepage, new PageMenuDelegate() );
             } else if( ViewHandler.showsErrorView() ) {
                 ViewHandler.replaceErrorView( homepage, new PageMenuDelegate() );
+                ExceptionHandler.setUseToasts( true );
             }
             WatchUi.requestUpdate();
         }

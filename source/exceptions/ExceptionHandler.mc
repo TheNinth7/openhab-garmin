@@ -13,7 +13,13 @@ public class ExceptionHandler {
 
     public static function handleException( ex as Exception ) as Void {
         Logger.debugException( ex );
-        SitemapErrorCountStore.increment();
+        
+        if( ex instanceof CommunicationBaseException 
+            && ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP ) )
+            {
+                SitemapErrorCountStore.increment();
+            }
+        
         Logger.debug( "ExceptionHandler: " + SitemapErrorCountStore.get() + "/" + FATAL_SITEMAP_ERROR_COUNT );
         if( ex instanceof CommunicationBaseException 
             &&  ( !ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP )

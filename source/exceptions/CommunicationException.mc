@@ -23,18 +23,21 @@ class CommunicationException extends CommunicationBaseException {
     }
 
     public function getToastMessage() as String {
+        var errorMsg;
         if ( _responseCode == -104 ) {
             return "No phone";
+        } else if ( _responseCode == -400 ) {
+            errorMsg = "INVRES";
         } else {
-            return getSourceShortCode() + _responseCode.toString();
+            errorMsg = _responseCode.toString();
         }
+        return getSourceShortCode() + ":" + errorMsg;
     }
 
     public function isFatal() as Boolean {
-        return false;
+        // return false; // activate this to use -1001 in simulator to test non-fatal errors
         return 
             ( _responseCode == -1001 ) 
             || ( _responseCode == 404 ); 
     }
-
 }
