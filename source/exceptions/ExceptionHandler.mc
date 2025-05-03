@@ -28,6 +28,7 @@ public class ExceptionHandler {
             && _useToasts ) 
             {
             Logger.debug( "ExceptionHandler: showing toast" );
+ 
             WatchUi.showToast( 
                 ex.getToastMessage().toUpper(), 
                 { :icon => Rez.Drawables.iconWarning } );

@@ -18,6 +18,7 @@ class ErrorView extends WatchUi.View {
     }
 
     public function onUpdate( dc as Dc ) as Void {
+        Logger.debug( "ErrorView.onUpdate" );
         dc.setColor( Graphics.COLOR_RED, Graphics.COLOR_BLACK );
         dc.clear();
         var text = _exception.getErrorMessage();
