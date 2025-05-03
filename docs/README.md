@@ -15,11 +15,13 @@
 
 🌐 [Connectivity](#-connectivity)
 
-⚙️ [Configuration](#️-configuration)
+📋 [Configuration](#️-configuration)
 
 🔐 [Using myopenHAB](#-using-myopenhab)
 
-🧭 [Sitemap Features](#-sitemap-setup)
+🧭 [Sitemap Setup](#-sitemap-setup)
+
+⚙️ [Settings View](#settings-view)
 
 🛠️ [Custom Webhook](#️-custom-webhook)
 
@@ -44,13 +46,12 @@
 
 ### ✅ Current Features
 - Display a single openHAB sitemap
-- View frames and switch elements
-- Monitor switch status
-- Control (toggle) switches via custom Webhook
+- Support for frames, switch and text elements
+- Send commands via custom Webhook
 
 ### 📋 Planned Features
 - Support for additional sitemap element types
-- Command support via openHAB REST API
+- Send commands via the openHAB REST API once available ([details](https://github.com/openhab/openhab-core/pull/4760))
 - Multi-sitemap and multi-server support
 
 ---
@@ -67,7 +68,7 @@ You can use [myopenHAB](https://www.myopenhab.org) to securely access your local
 
 ---
 
-## ⚙️ Configuration
+## 📋 Configuration
 
 After installing the app, the following settings are available:
 
@@ -97,7 +98,7 @@ To connect using [myopenHAB](https://myopenhab.org):
 
 ## 🧭 Sitemap Setup
 
-The app uses your openHAB sitemap to determine the structure of the app's interface.  
+The app uses an openHAB sitemap to determine the structure of the app's interface.  
 📘 [openHAB Sitemaps Documentation](https://www.openhab.org/docs/ui/sitemaps.html)
 
 ### Sitemap Definition
@@ -161,6 +162,21 @@ This configuration produces the following display in the UI:
   <tr>
     <td width="50%"><img src="screenshots/app/4-first-floor-1.png"></td>
     <td><img src="screenshots/app/4-first-floor-2.png"></td>
+  </tr>
+</table>
+
+---
+
+## ⚙️ Settings View
+
+To access the settings menu, scroll down on the home screen and continue past the ⚙️ icon.
+
+It currently displays the app version and server URL. Additional features may be added in the future when the app evolves.
+
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/app/5-settings-1.png"></td>
+    <td><img src="screenshots/app/5-settings-1.png"></td>
   </tr>
 </table>
 
@@ -324,8 +340,8 @@ For a full list of Garmin SDK error codes, see the **Constant Summary** section 
 
 The following error codes are used for common communication issues and those without specific error codes:
 
-* `NO PHONE` – The watch is not connected to the smartphone (= -104 or -2).
-* `INVRES` – The response was invalid (= -400).
+* `NO PHONE` – The watch is not connected to the smartphone (error codes `-104` and `-2`).
+* `INVRES` – The response was invalid (error code `-400`).
 * `EMRES` – The response was empty.
 
 ---
