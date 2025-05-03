@@ -43,7 +43,12 @@ class SitemapBaseRequest extends BaseRequest {
 
         _sitemapHomepage = SitemapStore.get();
 
-        _url = AppSettings.getUrl() + "/rest/sitemaps/" + AppSettings.getSitemap();
+        _url = AppSettings.getUrl();
+        var lastChar = _url.substring( _url.length()-1, null );
+        if( lastChar != null && ! lastChar.equals( "/" ) ) {
+            _url += "/";
+        }
+        _url += "rest/sitemaps/" + AppSettings.getSitemap();
         setOption( :responseType, Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON );
     }
 
