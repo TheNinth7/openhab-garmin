@@ -372,12 +372,16 @@ The in-app iconography is attributed to the following sources:
 
 ![Lightbulb Off](iconography/light-bulb-off.svg)
 
-[Lightbulb](https://thenounproject.com/icon/lightbulb-3194358/) by [Adrien Coquet](https://thenounproject.com/creator/coquet_adrien/) from [Noun Project](https://thenounproject.com/browse/icons/term/lightbulb/) (CC BY 3.0)
+[Lightbulb](https://thenounproject.com/icon/lightbulb-3194358/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/lightbulb/) (CC BY 3.0)
 
 ![Folder](iconography/folder.svg)
 
-[Folder](https://thenounproject.com/icon/folder-1637828/) by [Adrien Coquet](https://thenounproject.com/creator/coquet_adrien/) from [Noun Project](https://thenounproject.com/browse/icons/term/folder/) (CC BY 3.0)
+[Folder](https://thenounproject.com/icon/folder-1637828/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/folder/) (CC BY 3.0)
 
 ![Settings](iconography/settings.svg)
 
-[Settings](https://thenounproject.com/icon/settings-1939978/) by [Adrien Coquet](https://thenounproject.com/creator/coquet_adrien/) from [Noun Project](https://thenounproject.com/browse/icons/term/settings/) (CC BY 3.0)
+[Settings](https://thenounproject.com/icon/settings-1939978/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/down/) (CC BY 3.0)
+
+![Down](iconography/down.svg)
+
+[Down](https://thenounproject.com/icon/down-1896670/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/settings/) (CC BY 3.0)
