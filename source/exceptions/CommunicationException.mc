@@ -12,7 +12,7 @@ class CommunicationException extends CommunicationBaseException {
 
     public function getErrorMessage() as String or Null {
         var errorMsg;
-        if ( _responseCode == -104 ) {
+        if ( _responseCode == -104 || _responseCode == -2 ) {
             return "No phone";
         } else if ( _responseCode == -400 ) {
             errorMsg = "Invalid response, check your app settings.";
@@ -24,7 +24,7 @@ class CommunicationException extends CommunicationBaseException {
 
     public function getToastMessage() as String {
         var errorMsg;
-        if ( _responseCode == -104 ) {
+        if ( _responseCode == -104 || _responseCode == -2 ) {
             return "No phone";
         } else if ( _responseCode == -400 ) {
             errorMsg = "INVRES";
