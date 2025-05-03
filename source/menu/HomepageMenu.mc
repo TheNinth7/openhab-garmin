@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.System;
 
-class PageMenu extends BasePageMenu {
+class HomepageMenu extends BasePageMenu {
     public function initialize( sitemapPage as SitemapPage ) {
         BasePageMenu.initialize( 
             sitemapPage, 
