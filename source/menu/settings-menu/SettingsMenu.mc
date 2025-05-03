@@ -2,13 +2,24 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.System;
 
-class SettingsMenu extends Menu2 {
+class SettingsMenu extends CustomMenu {
 
     private var _itemCount as Number = 0;
 
+    public static var ITEM_HEIGHT as Number = 
+        ( System.getDeviceSettings().screenHeight * 0.3 ).toNumber();
+
     public function initialize() {
-        Menu2.initialize( {
-                :title => "Settings",
+        CustomMenu.initialize( 
+            ITEM_HEIGHT,
+            Graphics.COLOR_BLACK, 
+            {
+                :title => new Text( {
+                    :text => "Settings",
+                    :color => Graphics.COLOR_WHITE,
+                    :font => Graphics.FONT_SMALL,
+                    :locX => WatchUi.LAYOUT_HALIGN_CENTER,
+                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } ),
                 :footer => new Bitmap( {
                     :rezId => Rez.Drawables.logoOpenhabText,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
@@ -16,19 +27,15 @@ class SettingsMenu extends Menu2 {
             } );
 
         _itemCount++;
-        addItem( new MenuItem(
+        addItem( new SettingsTextMenuItem(
             "App Version",
-            Application.loadResource( Rez.Strings.AppVersion ) as String,
-            null,
-            null
+            Application.loadResource( Rez.Strings.AppVersion ) as String
         ) );
 
         _itemCount++;
-        addItem( new MenuItem(
+        addItem( new SettingsTextMenuItem(
             "Server",
-            AppSettings.getUrl(),
-            null,
-            null
+            AppSettings.getUrl()
         ) );
     }
 
