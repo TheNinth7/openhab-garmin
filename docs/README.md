@@ -294,13 +294,13 @@ The app distinguishes between **temporary (non-fatal)** and **critical (fatal)**
 
 To save space, communication errors shown in toast notifications follow this format:
 
-`X:NNNNN`
+`X:NNNNNN`
 
 * `X` indicates the source of the error:
 
   * `S` = sitemap polling
   * `C` = command sending
-* `NNNNN` is the error code:
+* `NNNNNN` is the error code:
 
   * Positive values = HTTP status codes
   * Negative values = Garmin SDK error codes
@@ -308,19 +308,21 @@ To save space, communication errors shown in toast notifications follow this for
 For a full list of Garmin SDK error codes, see the **Constant Summary** section here:
 👉 [Garmin Communications API Docs](https://developer.garmin.com/connect-iq/api-docs/Toybox/Communications.html)
 
-**Special shortcodes:**
+**Special error codes:**
 
-* `NO PHONE` – The watch is not connected to the smartphone.
+The following error codes are used for common communication issues and those without specific error codes:
+
+* `NO PHONE` – The watch is not connected to the smartphone (= -104).
+* `INVRES` – The response was invalid (= -400).
 * `EMRES` – The response was empty.
-* `INVRES` – The response was invalid.
 
 ---
 
 ### Common Issues
 
-| Error             | Description                                                                                                                                                                                                                                                                                       |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `EMRES/myopenHAB` | myopenHAB currently has an intermittent issue where sitemap requests may return empty responses. The app will show a non-fatal `EMRES` notification. Usually, the next request succeeds, preventing escalation to a fatal error. [More info](https://github.com/openhab/openhab-cloud/issues/496) |
+| Error | Description |
+| ----- | ----------- |
+| `S:EMRES/myopenHAB` | myopenHAB currently has an intermittent issue where sitemap requests may return empty responses. The app will show a non-fatal `S:EMRES` notification. Usually, the next request succeeds, preventing escalation to a fatal error. [More info](https://github.com/openhab/openhab-cloud/issues/496) |
 
 ---
 
