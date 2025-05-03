@@ -3,7 +3,7 @@
     <bitmap id="logoOpenhabSquare" scaleX="10%" filename="../../resources/drawables/openhab_logo_light.svg" dithering="none" />
     <bitmap id="iconWarning" personality="system_icon_light__warning" />
     <bitmap id="iconInfo" personality="system_icon_light__about" />
-    <bitmap id="menuSettings" scaleY="10%" filename="settings.svg" dithering="none" />
+    <bitmap id="menuDownToSettings" scaleY="15%" filename="down-to-settings.svg" dithering="none" />
     <bitmap id="menuFolder" scaleY="20%" filename="folder.svg" dithering="none" />
     <bitmap id="menuLightbulbOn" scaleY="20%" filename="light-bulb-on.svg" dithering="none" />
     <bitmap id="menuLightbulbOff" scaleY="20%" filename="light-bulb-off.svg" dithering="none"/>

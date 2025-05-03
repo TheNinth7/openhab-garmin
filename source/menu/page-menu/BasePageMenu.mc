@@ -5,6 +5,7 @@ import Toybox.System;
 class BasePageMenu extends CustomMenu {
     private var _title as Text;
     private var _label as String;
+    private var _itemCount as Number = 0;
 
     public static var ITEM_HEIGHT as Number = 
         ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
@@ -18,7 +19,7 @@ class BasePageMenu extends CustomMenu {
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => WatchUi.LAYOUT_VALIGN_CENTER
         } );
-
+        
         CustomMenu.initialize( 
             ITEM_HEIGHT,
             Graphics.COLOR_BLACK, 
@@ -29,6 +30,7 @@ class BasePageMenu extends CustomMenu {
 
         var elements = sitemapPage.elements;
         for( var i = 0; i < elements.size(); i++ ) {
+            _itemCount++;
             addItem( createMenuItem( elements[i], sitemapPage.label ) );
         }
     }
@@ -44,6 +46,7 @@ class BasePageMenu extends CustomMenu {
             var element = elements[i];
             var itemIndex = findItemById( element.id );
             if( itemIndex == -1 ) {
+                _itemCount++;
                 addItem( createMenuItem( element, sitemapPage.label ) );
                 Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
             } else {
@@ -70,6 +73,7 @@ class BasePageMenu extends CustomMenu {
             if( getItem( i ) instanceof PageMenuItem ) {
                 remainsValid = false;
             }
+            _itemCount--;
             deleteItem( i );
             Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item was removed" );
         }
@@ -86,5 +90,13 @@ class BasePageMenu extends CustomMenu {
         } else {
             throw new JsonParsingException( "Page '" + pageTitle + "' contains item not supported by menu." );
         }
+    }
+
+    public function focusFirst() as Void {
+        setFocus( 0 );
+    }
+
+    public function focusLast() as Void {
+        setFocus( _itemCount - 1 );
     }
 }

@@ -3,11 +3,11 @@ import Toybox.WatchUi;
 import Toybox.System;
 
 class HomepageMenu extends BasePageMenu {
-    public function initialize( sitemapPage as SitemapPage ) {
+    public function initialize( sitemapHomepage as SitemapHomepage ) {
         BasePageMenu.initialize( 
-            sitemapPage, 
+            sitemapHomepage, 
             new Bitmap( {
-                    :rezId => Rez.Drawables.logoOpenhabText,
+                    :rezId => Rez.Drawables.menuDownToSettings,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } ) );
     }

@@ -35,7 +35,7 @@ public class ExceptionHandler {
         } else {
             Logger.debug( "ExceptionHandler: showing error view" );
             SitemapStore.delete();
-            ViewHandler.showOrUpdateErrorView( ex );
+            ErrorViewHandler.showOrUpdateErrorView( ex );
             _useToasts = false;
         }
     }

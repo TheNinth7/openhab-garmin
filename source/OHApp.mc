@@ -29,16 +29,16 @@ class OHApp extends Application.AppBase {
     (:typecheck(disableGlanceCheck))
     public function getInitialView() as [Views] or [Views, InputDelegates] {
         try {
-            var menu = SitemapRequest.initializePageMenu();
+            var menu = SitemapRequest.initializeMenu();
             SitemapRequest.getInstance().start();
             if( menu != null ) {
                 ExceptionHandler.setUseToasts( true );
-                return [ menu, new PageMenuDelegate() ];
+                return [ menu, new HomepageMenuDelegate() ];
             } else {
                 return [ new LoadingView() ];
             }
         } catch( ex ) {
-            return [ ViewHandler.createOrUpdateErrorView( ex ) ];
+            return [ ErrorViewHandler.createOrUpdateErrorView( ex ) ];
         }
     }
 

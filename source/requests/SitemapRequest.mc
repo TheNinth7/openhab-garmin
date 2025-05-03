@@ -4,7 +4,7 @@ import Toybox.Timer;
 
 class SitemapRequest extends SitemapBaseRequest {
     private static var _instance as SitemapRequest?;
-    private static var _homePageMenu as PageMenu?;
+    private static var _homepageMenu as HomepageMenu?;
 
     public static function getInstance() as SitemapRequest {
         if( _instance == null ) {
@@ -13,16 +13,16 @@ class SitemapRequest extends SitemapBaseRequest {
         return _instance as SitemapRequest;
     }
 
-    public static function initializePageMenu() as PageMenu? {
+    public static function initializeMenu() as HomepageMenu? {
         try {
             var sitemapHomepage = getInstance().getSitemapHomepage();
             if( sitemapHomepage != null ) {
-                _homePageMenu = new PageMenu( sitemapHomepage );
+                _homepageMenu = new HomepageMenu( sitemapHomepage );
             }
         } catch( ex ) {
             Logger.debugException( ex );
         }
-        return _homePageMenu;
+        return _homepageMenu;
     }
 
     private function initialize() {
@@ -31,27 +31,29 @@ class SitemapRequest extends SitemapBaseRequest {
 
     public function onSitemapUpdate( sitemapHomepage as SitemapHomepage ) as Void {
         Logger.debug( "SitemapRequest.onSitemapUpdate");
-        if( _homePageMenu == null ) {
+        if( _homepageMenu == null ) {
             // There is no menu yet, so we need to switch
             // from the LoadingView to the menu
-            _homePageMenu = new PageMenu( sitemapHomepage );
-            WatchUi.switchToView( _homePageMenu, new PageMenuDelegate(), WatchUi.SLIDE_BLINK );
+            _homepageMenu = new HomepageMenu( sitemapHomepage );
+            WatchUi.switchToView( _homepageMenu, new HomepageMenuDelegate(), WatchUi.SLIDE_BLINK );
             ExceptionHandler.setUseToasts( true );
         } else {
             // To satisfy the typechecker, we get the member variable into a local variable
-            var homepage = _homePageMenu as PageMenu;
+            var homepage = _homepageMenu as PageMenu;
             var remainsValid = homepage.update( sitemapHomepage );
-            if( ! remainsValid && ! ViewHandler.showsErrorView() ) {
-                Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
-                // If update returns false, the menu structure has changed
-                // and we therefore replace the current view stack with
-                // the homepage
-                ViewHandler.popToBottomAndSwitch( homepage, new PageMenuDelegate() );
-            } else if( ViewHandler.showsErrorView() ) {
-                ViewHandler.replaceErrorView( homepage, new PageMenuDelegate() );
-                ExceptionHandler.setUseToasts( true );
+            if( ! SettingsMenuHandler.showsSettings() ) {
+                if( ! remainsValid && ! ErrorViewHandler.showsErrorView() ) {
+                    Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
+                    // If update returns false, the menu structure has changed
+                    // and we therefore replace the current view stack with
+                    // the homepage
+                    ViewHandler.popToBottomAndSwitch( homepage, new HomepageMenuDelegate() );
+                } else if( ErrorViewHandler.showsErrorView() ) {
+                    ErrorViewHandler.replaceErrorView( homepage, new HomepageMenuDelegate() );
+                    ExceptionHandler.setUseToasts( true );
+                }
+                WatchUi.requestUpdate();
             }
-            WatchUi.requestUpdate();
         }
     }
 

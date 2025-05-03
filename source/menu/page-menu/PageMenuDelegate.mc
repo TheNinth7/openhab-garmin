@@ -7,7 +7,7 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
         Menu2InputDelegate.initialize();
     }
 
-    public function onSelect( item as WatchUi.MenuItem ) {
+    public function onSelect( item as WatchUi.MenuItem ) as Void {
         // Logger.debug( "PageMenuDelegate: onSelect" );
         try {
             ( item as BaseMenuItem ).onSelect();
@@ -17,7 +17,7 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
         }
     }
 
-    public function onBack() {
+    public function onBack() as Void {
         ViewHandler.popView( WatchUi.SLIDE_RIGHT );
     }
 
