@@ -10,13 +10,21 @@
 ## 📖 Table of Contents
 
 🧰 [Resources](#-resources)
+
 🚧 [Development Status](#-development-status)
+
 🌐 [Connectivity](#-connectivity)
+
 ⚙️ [Configuration](#️-configuration)
+
 🔐 [Using myopenHAB](#-using-myopenhab)
+
 🧭 [Sitemap Features](#-sitemap-setup)
+
 🛠️ [Custom Webhook](#️-custom-webhook)
+
 🚨 [Troubleshooting](#-troubleshooting)
+
 📄 [License](#-license)
 
 ---
@@ -277,7 +285,7 @@ The app distinguishes between **temporary (non-fatal)** and **critical (fatal)**
 * Most communication-related issues when requesting the sitemap.
 * All communication-related issues when sending a command.
 
-> Note: Non-fatal errors become **fatal** if they persist for more than 10 seconds.
+> Note: Non-fatal errors related to requesting the sitemap will become fatal if they persist for more than 10 seconds.
 
 **Immediately fatal errors include:**
 
@@ -287,6 +295,8 @@ The app distinguishes between **temporary (non-fatal)** and **critical (fatal)**
   * HTTP error `404`
 * Errors encountered while parsing the sitemap.
 * Any other unexpected errors or exceptions.
+
+> Note: Even after a fatal error, the app continues querying the sitemap. If a response is successfully processed, it returns to displaying the sitemap.
 
 ---
 
@@ -312,7 +322,7 @@ For a full list of Garmin SDK error codes, see the **Constant Summary** section 
 
 The following error codes are used for common communication issues and those without specific error codes:
 
-* `NO PHONE` – The watch is not connected to the smartphone (= -104).
+* `NO PHONE` – The watch is not connected to the smartphone (= -104 or -2).
 * `INVRES` – The response was invalid (= -400).
 * `EMRES` – The response was empty.
 
