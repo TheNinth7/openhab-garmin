@@ -1,6 +1,18 @@
 project.manifest = manifest.xml
 project.typecheck = 3
 
+Ciq510Plus=exclForCiq510Plus
+CiqPre510=exclForCiqPre510
+
+base.excludeAnnotations = $(Ciq510Plus)
+
+fenix6pro.resourcePath=resources;resources-devices/fenix6pro
+fenix6pro.excludeAnnotations = $(CiqPre510)
+fenix6spro.resourcePath=resources;resources-devices/fenix6spro
+fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
+fenix6xpro.resourcePath=resources;resources-devices/fenix6xpro
+fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
+
 d2mach1.resourcePath=resources;resources-devices/d2mach1
 enduro3.resourcePath=resources;resources-devices/enduro3
 epix2.resourcePath=resources;resources-devices/epix2

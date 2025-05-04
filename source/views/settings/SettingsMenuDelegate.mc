@@ -27,4 +27,14 @@ class SettingsMenuDelegate extends PageMenuDelegate {
     public function onBack() as Void {
         onPreviousPage();
     }
+
+    (:exclForCiq510Plus)
+    public function onWrap( key as Key ) as Boolean {
+        if( key == KEY_DOWN ) {
+            onNextPage();
+        } else if( key == KEY_UP ) {
+            onPreviousPage();
+        }
+        return false;
+    }
 }

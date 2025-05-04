@@ -2,6 +2,23 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
 
+(:exclForCiq510Plus)
+class OnOffBufferedBitmap extends BufferedBitmap {
+    private var _height as Number;
+    private var _width as Number;
+    public function initialize( options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) {
+        BufferedBitmap.initialize( options );
+        _height = options[:height] as Number;
+        _width = options[:width] as Number;
+    }
+    public function getHeight() as Number {
+        return _height;        
+    }
+    public function getWidth() as Number {
+        return _width;
+    }
+}
+
 class OnOffStatusDrawable extends Bitmap {
     
     private var _bufferedBitmap as BufferedBitmap;
@@ -12,16 +29,31 @@ class OnOffStatusDrawable extends Bitmap {
     private const INNER_CIRCLE_FACTOR = 0.75;
 
     public function initialize( isEnabled as Boolean ) {
-        _bufferedBitmap = Graphics.createBufferedBitmap( {
+        var options = {
             :width => WIDTH,
             :height => HEIGHT,
-        } ).get() as BufferedBitmap;
+        };
+
+        if( Graphics has :createBufferedBitmap ) {
+            _bufferedBitmap = Graphics.createBufferedBitmap( options ).get() as BufferedBitmap;
+        } else {
+            _bufferedBitmap = createOnOffBufferedBitmap( options );
+        }
         
         Bitmap.initialize( {
             :bitmap => _bufferedBitmap
         } );
 
         setEnabled( isEnabled );
+    }
+
+    (:exclForCiq510Plus)
+    private function createOnOffBufferedBitmap(  options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
+        return new OnOffBufferedBitmap( options );
+    }
+    (:exclForCiqPre510)
+    private function createOnOffBufferedBitmap(  options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
+        throw new GeneralException( "Device is CiqPre510, but has no Graphics.createBufferedBitmap" );
     }
 
     public function setEnabled( isEnabled as Boolean ) as Void {
