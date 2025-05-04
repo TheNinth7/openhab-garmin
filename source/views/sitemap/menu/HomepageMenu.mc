@@ -12,7 +12,7 @@ class HomepageMenu extends BasePageMenu {
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } ) );
     }
 
-    public function onShow as Void {
+    public function onShow() as Void {
         ExceptionHandler.setUseToasts( true );
     }
 }
