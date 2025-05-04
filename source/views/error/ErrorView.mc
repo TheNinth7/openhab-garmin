@@ -13,7 +13,7 @@ class ErrorView extends WatchUi.View {
     }
 
     public function onShow() as Void {
-        ExceptionHandler.setUseToasts( false );
+        ToastHandler.setUseToasts( false );
     }
 
     public function update( exception as Exception ) as Void {

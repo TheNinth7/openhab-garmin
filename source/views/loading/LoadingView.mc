@@ -8,7 +8,7 @@ class LoadingView extends WatchUi.View {
     }
 
     public function onShow() as Void {
-        ExceptionHandler.setUseToasts( false );
+        ToastHandler.setUseToasts( false );
     }
 
     function onUpdate( dc as Dc ) as Void {

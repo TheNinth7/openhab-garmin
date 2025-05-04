@@ -29,14 +29,34 @@ class OHApp extends Application.AppBase {
     (:typecheck(disableGlanceCheck))
     public function getInitialView() as [Views] or [Views, InputDelegates] {
         try {
+            // First we initialize the menu from storage
             var menu = SitemapRequest.initializeMenu();
+            var hasMenu = menu != null;
+
+            // Then we start the sitemap request
             SitemapRequest.getInstance().start();
-            if( menu != null ) {
-                return [ menu, new HomepageMenuDelegate() ];
+            
+            // Starting the sitemap request may return an immediate error, which
+            // SitemapRequest.onReceive reports to the ExceptionHandler via
+            // handleException, and the ExceptionHandler stores it
+            // consumeException then acts on the exception, and based if toasts
+            // shall be used displays a toast for non-fatal errors, and in all
+            // other cases returns an errorView for display.
+            var errorView = ExceptionHandler.consumeStartupException( hasMenu );
+
+            if( errorView != null ) {
+                // If there is an error view, display it
+                return [errorView];
+            } else if( hasMenu ) {
+                // If there is HomepageMenu, display it
+                return [ menu as View, new HomepageMenuDelegate() ];
             } else {
+                // Otherwise show the loading view
                 return [ new LoadingView() ];
             }
         } catch( ex ) {
+            // Any exceptions occuring in this function are 
+            // also displayed as error view
             return [ ErrorViewHandler.createOrUpdateErrorView( ex ) ];
         }
     }

@@ -39,7 +39,7 @@ public class Logger {
         if( errorMsg != null ) {
             debug( errorMsg );
         }
-        ex.printStackTrace();
+        //ex.printStackTrace();
         System.println(" ");
     }
   

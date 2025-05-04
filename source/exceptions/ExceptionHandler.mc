@@ -2,41 +2,77 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Math;
 
-public class ExceptionHandler {
-    private static const FATAL_SITEMAP_ERROR_TIME = 10000;
-    private static const FATAL_SITEMAP_ERROR_COUNT = Math.round( FATAL_SITEMAP_ERROR_TIME / AppSettings.getPollingInterval() ).toNumber();
-
-    private static var _useToasts as Boolean = false;
+public class ToastHandler {
+    private static var _useToasts as Boolean = true;
+    public static function useToasts() as Boolean { 
+        return _useToasts; 
+    }
     public static function setUseToasts( useToasts as Boolean ) as Void { 
         _useToasts = useToasts; 
     }
 
+    public static function showWarning( warning as String ) as Void {
+        WatchUi.showToast( 
+            warning.toUpper(), 
+            { :icon => Rez.Drawables.iconWarning } );
+    }
+}
+
+public class ExceptionHandler {
+    private static const FATAL_SITEMAP_ERROR_TIME = 10000;
+    private static const FATAL_SITEMAP_ERROR_COUNT = Math.round( FATAL_SITEMAP_ERROR_TIME / AppSettings.getPollingInterval() ).toNumber();
+
+    public static function errorCountIsNotYetFatal() as Boolean {
+        return SitemapErrorCountStore.get() < FATAL_SITEMAP_ERROR_COUNT;
+    }
+
+    private static var _startupException as [Exception, Boolean]?;
+    public static function consumeStartupException( useToast as Boolean ) as ErrorView? {
+        if( _startupException != null ) {
+            var startupException = _startupException;
+            _startupException = null;
+            var ex = startupException[0];
+            if( useToast && !startupException[1] && ex instanceof CommunicationBaseException ) {
+                ToastHandler.showWarning( ex.getToastMessage() );
+            } else {
+                return ErrorViewHandler.createOrUpdateErrorView( ex );
+            }
+        }
+        return null;
+    }
+    
     public static function handleException( ex as Exception ) as Void {
         Logger.debugException( ex );
-        
+
         if( ex instanceof CommunicationBaseException 
             && ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP ) )
-            {
-                SitemapErrorCountStore.increment();
-            }
+        {
+            SitemapErrorCountStore.increment();
+        }
         
-        Logger.debug( "ExceptionHandler: " + SitemapErrorCountStore.get() + "/" + FATAL_SITEMAP_ERROR_COUNT );
+        Logger.debug( "ExceptionHandler: exception #" + SitemapErrorCountStore.get() + "/" + FATAL_SITEMAP_ERROR_COUNT );
         if( ex instanceof CommunicationBaseException 
             &&  ( !ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP )
-                  || SitemapErrorCountStore.get() < FATAL_SITEMAP_ERROR_COUNT )
+                || errorCountIsNotYetFatal() )
             && !ex.isFatal()
-            && _useToasts ) 
+            && ToastHandler.useToasts() ) 
             {
-            Logger.debug( "ExceptionHandler: showing toast" );
- 
-            WatchUi.showToast( 
-                ex.getToastMessage().toUpper(), 
-                { :icon => Rez.Drawables.iconWarning } );
+            Logger.debug( "ExceptionHandler: non-fatal error: " + ex.getToastMessage().toUpper() );
+            if( WatchUi.getCurrentView()[0] == null ) {
+                Logger.debug( "ExceptionHandler: storing non-fatal startup exception" );
+                _startupException = [ex, false];
+            } else {
+                ToastHandler.showWarning( ex.getToastMessage() );
+            }
         } else {
-            Logger.debug( "ExceptionHandler: showing error view" );
+            Logger.debug( "ExceptionHandler: fatal error" );
             SitemapStore.delete();
-            ErrorViewHandler.showOrUpdateErrorView( ex );
-            _useToasts = false;
+            if( WatchUi.getCurrentView()[0] == null ) {
+                Logger.debug( "ExceptionHandler: storing fatal startup exception" );
+                _startupException = [ex, true];
+            } else {
+                ErrorViewHandler.showOrUpdateErrorView( ex );
+            }
         }
     }
 }

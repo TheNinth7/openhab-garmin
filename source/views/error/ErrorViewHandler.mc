@@ -3,13 +3,14 @@ import Toybox.WatchUi;
 
 class ErrorViewHandler {
     private static var _errorView as ErrorView?;
+    
     public static function createOrUpdateErrorView( ex as Exception ) as ErrorView {
         if( _errorView == null ) {
-            Logger.debug( "ViewHandler: updating error view" );
+            Logger.debug( "ErrorViewHandler.createOrUpdateErrorView: creating error view" );
             _errorView = new ErrorView( ex );
         } else {
             _errorView.update( ex );
-            Logger.debug( "ViewHandler: updating error view" );
+            Logger.debug( "ErrorViewHandler.createOrUpdateErrorView: updating error view" );
         }
         return _errorView as ErrorView;
     }
@@ -18,7 +19,8 @@ class ErrorViewHandler {
         var alreadyShowsErrorView = _errorView != null;
         createOrUpdateErrorView( ex );
         if( ! alreadyShowsErrorView ) {
-            ViewHandler.popToBottomAndSwitch( createOrUpdateErrorView( ex ), null );
+            Logger.debug( "ErrorViewHandler.showOrUpdateErrorView: switching to error view" );
+            ViewHandler.popToBottomAndSwitch( _errorView as ErrorView, null );
         }
     }
 

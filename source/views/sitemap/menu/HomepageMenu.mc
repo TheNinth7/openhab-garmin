@@ -13,6 +13,6 @@ class HomepageMenu extends BasePageMenu {
     }
 
     public function onShow() as Void {
-        ExceptionHandler.setUseToasts( true );
+        ToastHandler.setUseToasts( true );
     }
 }
