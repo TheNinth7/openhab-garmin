@@ -11,4 +11,8 @@ class HomepageMenu extends BasePageMenu {
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } ) );
     }
+
+    public function onShow as Void {
+        ExceptionHandler.setUseToasts( true );
+    }
 }

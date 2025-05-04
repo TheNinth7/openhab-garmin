@@ -12,6 +12,10 @@ class ErrorView extends WatchUi.View {
         _exception = exception;
     }
 
+    public function onShow() as Void {
+        ExceptionHandler.setUseToasts( false );
+    }
+
     public function update( exception as Exception ) as Void {
         _exception = exception;
         WatchUi.requestUpdate();

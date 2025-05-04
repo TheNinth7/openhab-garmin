@@ -32,7 +32,6 @@ class OHApp extends Application.AppBase {
             var menu = SitemapRequest.initializeMenu();
             SitemapRequest.getInstance().start();
             if( menu != null ) {
-                ExceptionHandler.setUseToasts( true );
                 return [ menu, new HomepageMenuDelegate() ];
             } else {
                 return [ new LoadingView() ];

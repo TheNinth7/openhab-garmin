@@ -36,7 +36,6 @@ class SitemapRequest extends SitemapBaseRequest {
             // from the LoadingView to the menu
             _homepageMenu = new HomepageMenu( sitemapHomepage );
             WatchUi.switchToView( _homepageMenu, new HomepageMenuDelegate(), WatchUi.SLIDE_BLINK );
-            ExceptionHandler.setUseToasts( true );
         } else {
             // To satisfy the typechecker, we get the member variable into a local variable
             var homepage = _homepageMenu as PageMenu;
@@ -50,7 +49,6 @@ class SitemapRequest extends SitemapBaseRequest {
                     ViewHandler.popToBottomAndSwitch( homepage, new HomepageMenuDelegate() );
                 } else if( ErrorViewHandler.showsErrorView() ) {
                     ErrorViewHandler.replaceErrorView( homepage, new HomepageMenuDelegate() );
-                    ExceptionHandler.setUseToasts( true );
                 }
                 WatchUi.requestUpdate();
             }

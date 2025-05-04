@@ -7,6 +7,10 @@ class LoadingView extends WatchUi.View {
         View.initialize();
     }
 
+    public function onShow() as Void {
+        ExceptionHandler.setUseToasts( false );
+    }
+
     function onUpdate( dc as Dc ) as Void {
         dc.setColor( Graphics.COLOR_WHITE, Graphics.COLOR_BLACK );
         dc.clear();
