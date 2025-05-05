@@ -8,10 +8,10 @@ base.excludeAnnotations = $(Ciq510Plus)
 
 fenix6pro.resourcePath=resources;resources-launcher-icon/40x40
 fenix6pro.excludeAnnotations = $(CiqPre510)
-fenix6spro.resourcePath=$(fenix6pro.resourcePath)
+fenix6spro.resourcePath=resources;resources-launcher-icon/40x40
 fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
-fenix6xpro.resourcePath=resources;resources-devices/fenix6xpro
-fenix6pro.excludeAnnotations = $(fenix6pro.resourcePath)
+fenix6xpro.resourcePath=resources;resources-launcher-icon/40x40
+fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
 
 d2mach1.resourcePath=resources;resources-launcher-icon/40x40
 enduro3.resourcePath=resources;resources-launcher-icon/40x40
@@ -44,6 +44,11 @@ fr955.resourcePath=resources;resources-launcher-icon/40x40
 fr965.resourcePath=resources;resources-launcher-icon/65x65
 marq2.resourcePath=resources;resources-launcher-icon/60x60
 marq2aviator.resourcePath=resources;resources-launcher-icon/60x60
+venu2.resourcePath=resources;resources-launcher-icon/70x70
+venu2s.resourcePath=resources;resources-launcher-icon/61x61
+venu2plus.resourcePath=resources;resources-launcher-icon/70x70
+venusq2.resourcePath=resources;resources-launcher-icon/40x40
+venusq2m.resourcePath=resources;resources-launcher-icon/40x40
 venu3.resourcePath=resources;resources-launcher-icon/70x70
 venu3s.resourcePath=resources;resources-launcher-icon/70x70
 vivoactive5.resourcePath=resources;resources-launcher-icon/56x56

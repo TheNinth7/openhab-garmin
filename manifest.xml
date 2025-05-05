@@ -52,8 +52,13 @@
             <iq:product id="fr965"/>
             <iq:product id="marq2"/>
             <iq:product id="marq2aviator"/>
+            <iq:product id="venu2"/>
+            <iq:product id="venu2plus"/>
+            <iq:product id="venu2s"/>
             <iq:product id="venu3"/>
             <iq:product id="venu3s"/>
+            <iq:product id="venusq2"/>
+            <iq:product id="venusq2m"/>
             <iq:product id="vivoactive5"/>
             <iq:product id="vivoactive6"/>
         </iq:products>
