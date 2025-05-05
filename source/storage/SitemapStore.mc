@@ -35,9 +35,8 @@ class SitemapStore  {
         _label = label;
     }
 
-    public static function delete() as Void {
+    public static function deleteJson() as Void {
         Storage.deleteValue( STORAGE_JSON );
-        Storage.deleteValue( STORAGE_LABEL );
     }
 
     public static function persist() as Void {

@@ -66,7 +66,7 @@ public class ExceptionHandler {
             }
         } else {
             Logger.debug( "ExceptionHandler: fatal error" );
-            SitemapStore.delete();
+            SitemapStore.deleteJson();
             if( WatchUi.getCurrentView()[0] == null ) {
                 Logger.debug( "ExceptionHandler: storing fatal startup exception" );
                 _startupException = [ex, true];
