@@ -6,12 +6,11 @@ import Toybox.Application.Properties;
 
 (:glance) 
 class GlanceSitemapView extends WatchUi.GlanceView {
-    private var _sitemapRequest as GlanceSitemapRequest;
     private var _textArea as TextArea;
 
     public function initialize() {
         GlanceView.initialize();
-        _sitemapRequest = new GlanceSitemapRequest();
+        new GlanceSitemapRequest();
         _textArea = new TextArea( { 
             :backgroundColor => Graphics.COLOR_TRANSPARENT,
             :font => [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE],
@@ -28,9 +27,9 @@ class GlanceSitemapView extends WatchUi.GlanceView {
         }
         try {
             _textArea.setColor( Graphics.COLOR_WHITE );
-            var sitemapHomepage = _sitemapRequest.getSitemapHomepage();
-            if( sitemapHomepage != null ) {
-                _textArea.setText( sitemapHomepage.label );
+            var label = SitemapStore.getLabel();
+            if( label != null ) {
+                _textArea.setText( label );
             } else {
                 _textArea.setText( "openHAB" );
             }

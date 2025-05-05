@@ -6,7 +6,10 @@ import Toybox.Timer;
 (:glance)
 class OHApp extends Application.AppBase {
 
-    private var _glanceView as GlanceSitemapView?;
+    private static var _glanceView as GlanceSitemapView?;
+    public static function isGlance() as Boolean {
+        return _glanceView != null;
+    }
 
     public function initialize() {
         AppBase.initialize();
@@ -75,8 +78,4 @@ class OHApp extends Application.AppBase {
         Storage.clearValues();
     }
 
-}
-
-function getApp() as OHApp {
-    return Application.getApp() as OHApp;
 }

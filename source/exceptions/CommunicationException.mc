@@ -10,6 +10,10 @@ class CommunicationException extends CommunicationBaseException {
         _responseCode = code;
     }
 
+    public function getResponseCode() as Number {
+        return _responseCode;
+    }
+
     public function getErrorMessage() as String or Null {
         var errorMsg;
         if ( _responseCode == -104 || _responseCode == -2 ) {

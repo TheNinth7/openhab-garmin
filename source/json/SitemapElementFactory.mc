@@ -1,7 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-(:glance)
 class SitemapElementFactory {
 
     private static const TYPE_FRAME = "Frame";

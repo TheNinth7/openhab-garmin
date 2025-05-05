@@ -29,7 +29,15 @@ class GlanceSitemapRequest extends SitemapBaseRequest {
 
     public function onException( ex as Exception ) {
         Logger.debug( "GlanceSitemapRequest.onException");
-        _exception = ex;
-        SitemapErrorCountStore.increment();
+        Logger.debugException( ex );
+        // Out of memory is ignored in the glance. If the glance does not have enough memory,
+        // the response is simply not processed - basically the widget has to deal with 
+        // sitemap loading on its own, without preloading from the Glance.
+        if( ex instanceof CommunicationException && ex.getResponseCode() == -403 ) {
+            stop();
+        } else {
+            _exception = ex;
+            SitemapErrorCountStore.increment();
+        }
     }
 }

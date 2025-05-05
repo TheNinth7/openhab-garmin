@@ -1,7 +1,6 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-(:glance)
 class SitemapPrimitiveElement extends SitemapElement {
 
     private const ITEM = "item";

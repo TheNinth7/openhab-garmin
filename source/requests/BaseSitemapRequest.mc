@@ -11,14 +11,12 @@ class SitemapBaseRequest extends BaseRequest {
 
     private var _url as String;
 
-    private var _sitemapHomepage as SitemapHomepage?;
-
     private var _isStopped as Boolean = true;
     private var _pollingInterval as Number;
     private var _timer as Timer.Timer = new Timer.Timer();
 
     public function getSitemapHomepage() as SitemapHomepage? {
-        return _sitemapHomepage;
+        return SitemapStore.getHomepage();
     }
 
     protected function onSitemapUpdate( sitemapHomepage as SitemapHomepage ) as Void {
@@ -41,7 +39,6 @@ class SitemapBaseRequest extends BaseRequest {
             _pollingInterval = minimumPollingInterval;
         }
 
-        _sitemapHomepage = SitemapStore.get();
 
         _url = AppSettings.getUrl();
         var lastChar = _url.substring( _url.length()-1, null );
@@ -76,9 +73,10 @@ class SitemapBaseRequest extends BaseRequest {
             try {
                 checkResponseCode( responseCode, SOURCE );
                 var json = checkResponse( data, SOURCE );
-                SitemapStore.update( json );
-                _sitemapHomepage = new SitemapHomepage( json );
-                onSitemapUpdate( _sitemapHomepage );
+                SitemapStore.updateJson( json );
+                var sitemapHomepage = new SitemapHomepage( json );
+                SitemapStore.updateLabel( sitemapHomepage.label );
+                onSitemapUpdate( sitemapHomepage as SitemapHomepage );
                 onSuccess();
             } catch( ex ) {
                 onException( ex );
