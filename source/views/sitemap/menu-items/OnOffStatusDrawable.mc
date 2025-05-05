@@ -51,9 +51,9 @@ class OnOffStatusDrawable extends Bitmap {
     private function createOnOffBufferedBitmap(  options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
         return new OnOffBufferedBitmap( options );
     }
-    (:exclForCiqPre510)
+    (:exclForCiqPre400)
     private function createOnOffBufferedBitmap(  options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
-        throw new GeneralException( "Device is CiqPre510, but has no Graphics.createBufferedBitmap" );
+        throw new GeneralException( "Device is CiqPre400, but has no Graphics.createBufferedBitmap" );
     }
 
     public function setEnabled( isEnabled as Boolean ) as Void {

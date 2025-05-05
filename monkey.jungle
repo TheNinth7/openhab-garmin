@@ -2,23 +2,23 @@ project.manifest = manifest.xml
 project.typecheck = 3
 
 Ciq510Plus=exclForCiq510Plus
-CiqPre510=exclForCiqPre510
+CiqPre400=exclForCiqPre400
 
 base.excludeAnnotations = $(Ciq510Plus)
 
 fenix6pro.resourcePath=resources;resources-launcher-icon/40x40
-fenix6pro.excludeAnnotations = $(CiqPre510)
+fenix6pro.excludeAnnotations = $(CiqPre400)
 fenix6spro.resourcePath=resources;resources-launcher-icon/40x40
 fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
 fenix6xpro.resourcePath=resources;resources-launcher-icon/40x40
 fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
 
-d2mach1.resourcePath=resources;resources-launcher-icon/40x40
+d2mach1.resourcePath=resources;resources-launcher-icon/60x60
 enduro3.resourcePath=resources;resources-launcher-icon/40x40
 epix2.resourcePath=resources;resources-launcher-icon/60x60
 epix2pro42mm.resourcePath=resources;resources-launcher-icon/60x60
 epix2pro47mm.resourcePath=resources;resources-launcher-icon/60x60
-epix2pro51mm.resourcePath=resources;resources-launcher-icon/60x60
+epix2pro51mm.resourcePath=resources;resources-launcher-icon/60x60   
 fenix7.resourcePath=resources;resources-launcher-icon/40x40
 fenix7pro.resourcePath=resources;resources-launcher-icon/40x40
 fenix7pronowifi.resourcePath=resources;resources-launcher-icon/40x40
