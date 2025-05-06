@@ -1,17 +1,9 @@
-import Toybox.WatchUi;
-import Toybox.System;
 import Toybox.Lang;
 
-import Toybox.WatchUi;
-import Toybox.System;
-import Toybox.Lang;
-
-class SettingsMenuDelegate extends PageMenuDelegate {
+(:exclForTouch)
+class ButtonSettingsMenuDelegate extends BaseSettingsMenuDelegate {
     public function initialize() {
-        PageMenuDelegate.initialize();
-    }
-
-    public function onSelect( item as MenuItem ) as Void {
+        BaseSettingsMenuDelegate.initialize();
     }
 
     public function onNextPage() as Boolean {

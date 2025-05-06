@@ -1,12 +1,15 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class PageMenuItem extends BaseMenuItem {
+class PageMenuItem extends BaseSitemapMenuItem {
 
     private var _menu as PageMenu;
 
     public function initialize( sitemapPage as SitemapPage ) {
-        BaseMenuItem.initialize( sitemapPage, { :label => sitemapPage.label } );
+        BaseSitemapMenuItem.initialize( { 
+            :id => sitemapPage.id,
+            :label => sitemapPage.label 
+        } );
 
         _menu = new PageMenu( sitemapPage );
     }

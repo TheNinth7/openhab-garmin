@@ -24,7 +24,7 @@ class ErrorViewHandler {
         }
     }
 
-    public static function showsErrorView() as Boolean {
+    public static function isShowingErrorView() as Boolean {
         return _errorView != null;
     }
 

@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
 
-(:exclForCiq510Plus)
+(:exclForCiq400Plus)
 class OnOffBufferedBitmap extends BufferedBitmap {
     private var _height as Number;
     private var _width as Number;
@@ -47,7 +47,7 @@ class OnOffStatusDrawable extends Bitmap {
         setEnabled( isEnabled );
     }
 
-    (:exclForCiq510Plus)
+    (:exclForCiq400Plus)
     private function createOnOffBufferedBitmap(  options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
         return new OnOffBufferedBitmap( options );
     }

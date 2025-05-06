@@ -1,13 +1,18 @@
 project.manifest = manifest.xml
 project.typecheck = 3
 
-Ciq510Plus=exclForCiq510Plus
 CiqPre400=exclForCiqPre400
+Ciq400Plus=exclForCiq400Plus
+Ciq510Plus=exclForCiq510Plus;exclForCiq400Plus
 
-base.excludeAnnotations = $(Ciq510Plus)
+
+Touch=exclForTouch
+Button=exclForButton
+
+base.excludeAnnotations = $(Ciq510Plus);$(Button)
 
 fenix6pro.resourcePath=resources;resources-launcher-icon/40x40;resources-devices/fenix6pro
-fenix6pro.excludeAnnotations = $(CiqPre400)
+fenix6pro.excludeAnnotations = $(CiqPre400);$(Button)
 fenix6spro.resourcePath=$(fenix6pro.resourcePath)
 fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
 fenix6xpro.resourcePath=$(fenix6pro.resourcePath)
@@ -44,12 +49,20 @@ fr955.resourcePath=resources;resources-launcher-icon/40x40
 fr965.resourcePath=resources;resources-launcher-icon/65x65
 marq2.resourcePath=resources;resources-launcher-icon/60x60
 marq2aviator.resourcePath=resources;resources-launcher-icon/60x60
+
 venu2.resourcePath=resources;resources-launcher-icon/70x70
+venu2.excludeAnnotations = $(Ciq400Plus);$(Touch)
 venu2s.resourcePath=resources;resources-launcher-icon/61x61
+venu2s.excludeAnnotations = $(Ciq400Plus);$(Touch)
 venu2plus.resourcePath=resources;resources-launcher-icon/70x70
+venu2plus.excludeAnnotations = $(Ciq400Plus);$(Touch)
 venusq2.resourcePath=resources;resources-launcher-icon/40x40
+venusq2.excludeAnnotations = $(Ciq400Plus);$(Touch)
 venusq2m.resourcePath=resources;resources-launcher-icon/40x40
+venusq2m.excludeAnnotations = $(Ciq400Plus);$(Touch)
 venu3.resourcePath=resources;resources-launcher-icon/70x70
+venu3.excludeAnnotations = $(Ciq510Plus);$(Touch)
 venu3s.resourcePath=resources;resources-launcher-icon/70x70
+venu3s.excludeAnnotations = $(Ciq510Plus);$(Touch)
 vivoactive5.resourcePath=resources;resources-launcher-icon/56x56
 vivoactive6.resourcePath=resources;resources-launcher-icon/54x54

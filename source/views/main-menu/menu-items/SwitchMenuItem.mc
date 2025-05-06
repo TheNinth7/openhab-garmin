@@ -1,7 +1,7 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class SwitchMenuItem extends BaseMenuItem {
+class SwitchMenuItem extends BaseSitemapMenuItem {
     private var _itemName as String;
     private var _commandRequest as CommandRequest?;
 
@@ -14,9 +14,9 @@ class SwitchMenuItem extends BaseMenuItem {
     
     protected function initialize( sitemapSwitch as SitemapSwitch, statusDrawable as Drawable ) {
         _itemName = sitemapSwitch.itemName;
-        BaseMenuItem.initialize(
-            sitemapSwitch,
+        BaseSitemapMenuItem.initialize(
             {
+                :id => sitemapSwitch.id,
                 :label => sitemapSwitch.label,
                 :status => statusDrawable
             }

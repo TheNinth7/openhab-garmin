@@ -10,7 +10,7 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
     public function onSelect( item as WatchUi.MenuItem ) as Void {
         // Logger.debug( "PageMenuDelegate: onSelect" );
         try {
-            ( item as BaseMenuItem ).onSelect();
+            ( item as BaseSitemapMenuItem ).onSelect();
         } catch( ex ) {
             // Logger.debug( "PageMenuDelegate: exception" );
             ExceptionHandler.handleException( ex );

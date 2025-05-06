@@ -3,11 +3,17 @@ import Toybox.WatchUi;
 
 class SettingsMenuHandler {
     private static var _settingsMenu as SettingsMenu = new SettingsMenu();
-    private static var _settingsMenuDelegate as SettingsMenuDelegate = new SettingsMenuDelegate();
+    
+    (:exclForTouch)
+    private static var _settingsMenuDelegate as ButtonSettingsMenuDelegate = new ButtonSettingsMenuDelegate();
+
+    (:exclForButton)
+    private static var _settingsMenuDelegate as TouchSettingsMenuDelegate = new TouchSettingsMenuDelegate();
+
     private static var _showsSettings as Boolean = false;
     private static var _viewBeforeSettings as HomepageMenu?;
 
-    public static function showsSettings() as Boolean {
+    public static function isShowingSettings() as Boolean {
         return _showsSettings;
     }
     public static function showSettings( slide as SlideType ) as Void {
@@ -24,8 +30,10 @@ class SettingsMenuHandler {
             _settingsMenu.focusFirst();
         } else if( slide == WatchUi.SLIDE_DOWN ){
             _settingsMenu.focusLast();
+        } else if( slide == WatchUi.SLIDE_LEFT ){
+            // do nothing
         } else {
-            throw new GeneralException( "showSettings only supports SLIDE_UP or SLIDE_DOWN" );
+            throw new GeneralException( "showSettings only supports SLIDE_UP, SLIDE_DOWN or SLIDE_LEFT" );
         }
         ViewHandler.pushView( _settingsMenu, _settingsMenuDelegate, slide );
     }
@@ -40,8 +48,10 @@ class SettingsMenuHandler {
             viewBeforeSettings.focusFirst();
         } else if( slide == WatchUi.SLIDE_DOWN ){
             viewBeforeSettings.focusLast();
+        } else if( slide == WatchUi.SLIDE_RIGHT ){
+            // do nothing
         } else {
-            throw new GeneralException( "hideSettings only supports SLIDE_UP or SLIDE_DOWN" );
+            throw new GeneralException( "hideSettings only supports SLIDE_UP, SLIDE_DOWN or SLIDE_RIGHT" );
         }
     }
 }

@@ -7,21 +7,24 @@ class HomepageMenuDelegate extends PageMenuDelegate {
         PageMenuDelegate.initialize();
     }
 
+    (:exclForTouch)
     public function onNextPage() as Boolean {
         SettingsMenuHandler.showSettings( WatchUi.SLIDE_UP );
         return true;
     }
 
+    (:exclForTouch)
     public function onFooter() as Void {
         onNextPage();
     }
 
+    (:exclForTouch)
     public function onPreviousPage() as Boolean {
         SettingsMenuHandler.showSettings( WatchUi.SLIDE_DOWN );
         return true;
     }
 
-    (:exclForCiq510Plus)
+    (:exclForCiq510Plus :exclForTouch)
     public function onWrap( key as Key ) as Boolean {
         if( key == KEY_DOWN ) {
             onNextPage();

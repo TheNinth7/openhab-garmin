@@ -40,14 +40,14 @@ class SitemapRequest extends SitemapBaseRequest {
             // To satisfy the typechecker, we get the member variable into a local variable
             var homepage = _homepageMenu as PageMenu;
             var remainsValid = homepage.update( sitemapHomepage );
-            if( ! SettingsMenuHandler.showsSettings() ) {
-                if( ! remainsValid && ! ErrorViewHandler.showsErrorView() ) {
+            if( ! SettingsMenuHandler.isShowingSettings() ) {
+                if( ! remainsValid && ! ErrorViewHandler.isShowingErrorView() ) {
                     Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
                     // If update returns false, the menu structure has changed
                     // and we therefore replace the current view stack with
                     // the homepage
                     ViewHandler.popToBottomAndSwitch( homepage, new HomepageMenuDelegate() );
-                } else if( ErrorViewHandler.showsErrorView() ) {
+                } else if( ErrorViewHandler.isShowingErrorView() ) {
                     ErrorViewHandler.replaceErrorView( homepage, new HomepageMenuDelegate() );
                 }
                 WatchUi.requestUpdate();

@@ -1,15 +1,15 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class TextMenuItem extends BaseMenuItem {
+class TextMenuItem extends BaseSitemapMenuItem {
     private var _statusTextArea as TextStatusDrawable;
 
     public function initialize( sitemapText as SitemapText ) {
         var parsedLabel = parseLabel( sitemapText.label );
         _statusTextArea = new TextStatusDrawable( parsedLabel );
-        BaseMenuItem.initialize(
-            sitemapText,
+        BaseSitemapMenuItem.initialize(
             {
+                :id => sitemapText.id,
                 :label => parsedLabel[0],
                 :status => _statusTextArea
             }

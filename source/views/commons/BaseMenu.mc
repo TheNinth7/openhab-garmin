@@ -49,7 +49,7 @@ class BaseMenu extends CustomMenu {
         dc.setColor( Graphics.COLOR_WHITE, AppProperties.getMenuTitleBackgroundColor() );
         dc.clear();
         if( _title.locY == 0 ) {
-            _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, clipHeight * 0.5 - Graphics.getFontHeight( TITLE_FONT ) / 2.5 );
+            _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, clipHeight * 0.5 - Graphics.getFontHeight( TITLE_FONT ) / 2 + Graphics.getFontDescent( TITLE_FONT ) );
         }
         //dc.drawLine( 0, clipHeight*0.5, dc.getWidth(), clipHeight*0.5 );
         _title.draw( dc );
@@ -63,6 +63,10 @@ class BaseMenu extends CustomMenu {
     public function deleteItem( index as Number ) as Boolean or Null {
         _itemCount--;
         return CustomMenu.deleteItem( index );
+    }
+    (:exclForButton)
+    public function getItemCount() as Number {
+        return _itemCount;
     }
     public function focusFirst() as Void {
         setFocus( 0 );

@@ -38,7 +38,7 @@ class BasePageMenu extends BaseMenu {
                 addItem( createMenuItem( element, sitemapPage.label ) );
                 Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
             } else {
-                var item = getItem( itemIndex ) as BaseMenuItem;
+                var item = getItem( itemIndex ) as BaseSitemapMenuItem;
                 if( item.isMyType( element ) ) {
                     if( item.update( element ) == false ) {
                         remainsValid = false;

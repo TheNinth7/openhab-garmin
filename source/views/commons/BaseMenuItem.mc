@@ -3,41 +3,49 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 
 typedef BaseMenuItemOptions as {
-    :icon as Drawable?,
+    :id as Object,
+    :icon as ResourceId?,
     :label as String,
+    :labelColor as ColorType?,
     :status as Drawable?
 };
-
 
 class BaseMenuItem extends CustomMenuItem {
 
     private var _icon as Drawable?;
     private var _label as String;
+    private var _labelColor as ColorType;
     private var _labelTextArea as TextArea?;
     private var _status as Drawable?;
     public function getLabel() as String {
         return _label;
     }
 
-    protected function initialize( sitemapElement as SitemapElement, options as BaseMenuItemOptions ) {
-        CustomMenuItem.initialize( sitemapElement.id, {} );
-        _icon = options[:icon];
+    protected function initialize( options as BaseMenuItemOptions ) {
+        CustomMenuItem.initialize( options[:id] as String, {} );
+
+        if( options[:icon] != null ) {
+            _icon = new Bitmap( {
+                :bitmap => WatchUi.loadResource( options[:icon] as ResourceId ) as BitmapResource
+            } );
+        }
+        
         _label = options[:label] as String;
         _status = options[:status];
+        var labelColor = options[:labelColor] as ColorType?;
+        _labelColor = labelColor != null ? labelColor : Graphics.COLOR_WHITE;
     }
 
-    private const ICON_WIDTH_FACTOR = 0.2;
+    private const ICON_WIDTH_FACTOR = 0.1;
     private const SPACING_FACTOR = 0.03;
 
     private function initializeDrawables( dc as Dc ) as Void {
         var dcWidth = dc.getWidth();
         var spacing = ( dcWidth * SPACING_FACTOR ).toNumber();
-        var locX = ( dcWidth * AppProperties.getMenuItemLeftPaddingFactor() ).toNumber();
-        System.println( "****** paddingFactor=" + AppProperties.getMenuItemLeftPaddingFactor() );
-        System.println( "****** locX=" + locX );
-        var titleWidth = dcWidth - spacing;
+        var locX = ( dcWidth * AppProperties.getMenuItemLeftPaddingFactor() ).toNumber();       var titleWidth = dcWidth - spacing;
         if( _icon != null ) {
-            _icon.setLocation( locX, 0 );
+            var icon = _icon;
+            icon.setLocation( locX, ( ( (dc.getHeight()/2) - icon.height/2 ) * 1.1 ).toNumber() );
             locX += ( dcWidth * ICON_WIDTH_FACTOR ).toNumber() + spacing;
             titleWidth -= locX;
         }
@@ -57,7 +65,7 @@ class BaseMenuItem extends CustomMenuItem {
             :locX => locX,
             :locY => 0,
             :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER,
-            :color => Graphics.COLOR_WHITE,
+            :color => _labelColor,
             :backgroundColor => Graphics.COLOR_BLACK,
             :width => titleWidth,
             :height => dc.getHeight()
@@ -80,12 +88,6 @@ class BaseMenuItem extends CustomMenuItem {
         }
     }
 
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean { 
-        throw new AbstractMethodException( "BaseMenuItem.getItemType" );
-    }
-    public function update( sitemapElement as SitemapElement ) as Boolean { 
-        throw new AbstractMethodException( "BaseMenuItem.update" );
-    }
     public function onSelect() as Void;
 
     public function setCustomLabel( label as String ) as Void {
