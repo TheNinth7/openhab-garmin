@@ -1,36 +1,25 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.System;
+import Toybox.Graphics;
 
-class BasePageMenu extends CustomMenu {
-    private var _title as Text;
+class BasePageMenu extends BaseMenu {
     private var _label as String;
-    private var _itemCount as Number = 0;
 
     public static var ITEM_HEIGHT as Number = 
         ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
 
-    protected function initialize( sitemapPage as SitemapPage, footer as Drawable ) {
+    protected function initialize( sitemapPage as SitemapPage, footer as Drawable? ) {
         _label = sitemapPage.label;
-        _title = new Text( {
-            :text => _label,
-            :color => Graphics.COLOR_WHITE,
-            :font => Graphics.FONT_SMALL,
-            :locX => WatchUi.LAYOUT_HALIGN_CENTER,
-            :locY => WatchUi.LAYOUT_VALIGN_CENTER
-        } );
         
-        CustomMenu.initialize( 
-            ITEM_HEIGHT,
-            Graphics.COLOR_BLACK, 
-            {
-                :title => _title,
+        BaseMenu.initialize( {
+                :text => _label,
+                :itemHeight => ITEM_HEIGHT,
                 :footer => footer
             } );
 
         var elements = sitemapPage.elements;
         for( var i = 0; i < elements.size(); i++ ) {
-            _itemCount++;
             addItem( createMenuItem( elements[i], sitemapPage.label ) );
         }
     }
@@ -38,7 +27,7 @@ class BasePageMenu extends CustomMenu {
     public function update( sitemapPage as SitemapPage ) as Boolean {
         var remainsValid = true;
 
-        _title.setText( sitemapPage.label );
+        setTitleAsString( sitemapPage.label );
 
         var elements = sitemapPage.elements;
         var i = 0;
@@ -46,7 +35,6 @@ class BasePageMenu extends CustomMenu {
             var element = elements[i];
             var itemIndex = findItemById( element.id );
             if( itemIndex == -1 ) {
-                _itemCount++;
                 addItem( createMenuItem( element, sitemapPage.label ) );
                 Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
             } else {
@@ -73,7 +61,6 @@ class BasePageMenu extends CustomMenu {
             if( getItem( i ) instanceof PageMenuItem ) {
                 remainsValid = false;
             }
-            _itemCount--;
             deleteItem( i );
             Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item was removed" );
         }
@@ -90,13 +77,5 @@ class BasePageMenu extends CustomMenu {
         } else {
             throw new JsonParsingException( "Page '" + pageTitle + "' contains item not supported by menu." );
         }
-    }
-
-    public function focusFirst() as Void {
-        setFocus( 0 );
-    }
-
-    public function focusLast() as Void {
-        setFocus( _itemCount - 1 );
     }
 }
