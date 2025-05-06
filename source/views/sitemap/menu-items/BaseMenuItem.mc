@@ -32,7 +32,9 @@ class BaseMenuItem extends CustomMenuItem {
     private function initializeDrawables( dc as Dc ) as Void {
         var dcWidth = dc.getWidth();
         var spacing = ( dcWidth * SPACING_FACTOR ).toNumber();
-        var locX = spacing;
+        var locX = ( dcWidth * AppProperties.getMenuItemLeftPaddingFactor() ).toNumber();
+        System.println( "****** paddingFactor=" + AppProperties.getMenuItemLeftPaddingFactor() );
+        System.println( "****** locX=" + locX );
         var titleWidth = dcWidth - spacing;
         if( _icon != null ) {
             _icon.setLocation( locX, 0 );

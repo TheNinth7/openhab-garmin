@@ -6,11 +6,11 @@ CiqPre400=exclForCiqPre400
 
 base.excludeAnnotations = $(Ciq510Plus)
 
-fenix6pro.resourcePath=resources;resources-launcher-icon/40x40
+fenix6pro.resourcePath=resources;resources-launcher-icon/40x40;resources-devices/fenix6pro
 fenix6pro.excludeAnnotations = $(CiqPre400)
-fenix6spro.resourcePath=resources;resources-launcher-icon/40x40
+fenix6spro.resourcePath=$(fenix6pro.resourcePath)
 fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
-fenix6xpro.resourcePath=resources;resources-launcher-icon/40x40
+fenix6xpro.resourcePath=$(fenix6pro.resourcePath)
 fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
 
 d2mach1.resourcePath=resources;resources-launcher-icon/60x60
