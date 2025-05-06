@@ -65,4 +65,6 @@ venu3.excludeAnnotations = $(Ciq510Plus);$(Touch)
 venu3s.resourcePath=resources;resources-launcher-icon/70x70
 venu3s.excludeAnnotations = $(Ciq510Plus);$(Touch)
 vivoactive5.resourcePath=resources;resources-launcher-icon/56x56
+vivoactive5.excludeAnnotations = $(Ciq510Plus);$(Touch)
 vivoactive6.resourcePath=resources;resources-launcher-icon/54x54
+vivoactive6.excludeAnnotations = $(Ciq510Plus);$(Touch)
