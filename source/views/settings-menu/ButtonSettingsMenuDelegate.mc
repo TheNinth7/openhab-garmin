@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.WatchUi;
 
 (:exclForTouch)
 class ButtonSettingsMenuDelegate extends BaseSettingsMenuDelegate {

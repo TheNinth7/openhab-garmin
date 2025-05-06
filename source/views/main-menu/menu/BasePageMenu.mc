@@ -13,21 +13,22 @@ class BasePageMenu extends BaseMenu {
         _label = sitemapPage.label;
         
         BaseMenu.initialize( {
-                :text => _label,
+                :title => _label,
                 :itemHeight => ITEM_HEIGHT,
                 :footer => footer
             } );
 
         var elements = sitemapPage.elements;
         for( var i = 0; i < elements.size(); i++ ) {
-            addItem( createMenuItem( elements[i], sitemapPage.label ) );
+            addItem( createMenuItem( elements[i] ) );
         }
     }
 
     public function update( sitemapPage as SitemapPage ) as Boolean {
-        var remainsValid = true;
+        _label = sitemapPage.label;
+        setTitleAsString( _label );
 
-        setTitleAsString( sitemapPage.label );
+        var remainsValid = true;
 
         var elements = sitemapPage.elements;
         var i = 0;
@@ -35,7 +36,7 @@ class BasePageMenu extends BaseMenu {
             var element = elements[i];
             var itemIndex = findItemById( element.id );
             if( itemIndex == -1 ) {
-                addItem( createMenuItem( element, sitemapPage.label ) );
+                addItem( createMenuItem( element ) );
                 Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
             } else {
                 var item = getItem( itemIndex ) as BaseSitemapMenuItem;
@@ -45,7 +46,7 @@ class BasePageMenu extends BaseMenu {
                         Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' invalid" );
                     }
                 } else {
-                    var newItem = createMenuItem( element, sitemapPage.label );
+                    var newItem = createMenuItem( element );
                     if( item instanceof PageMenuItem || newItem instanceof PageMenuItem ) {
                         remainsValid = false;
                         Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
@@ -67,7 +68,7 @@ class BasePageMenu extends BaseMenu {
         return remainsValid;
     }
 
-    private function createMenuItem( sitemapElement as SitemapElement, pageTitle as String ) as CustomMenuItem {
+    private function createMenuItem( sitemapElement as SitemapElement ) as CustomMenuItem {
         if( OnOffMenuItem.isMyType( sitemapElement ) ) {
             return new OnOffMenuItem( sitemapElement as SitemapSwitch );
         } else if( TextMenuItem.isMyType( sitemapElement ) ) {
@@ -75,7 +76,7 @@ class BasePageMenu extends BaseMenu {
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
         } else {
-            throw new JsonParsingException( "Page '" + pageTitle + "' contains item not supported by menu." );
+            throw new JsonParsingException( "Page '" + _label + "' contains item not supported by menu." );
         }
     }
 }
