@@ -1,0 +1,6 @@
+<resources>
+    <properties>
+        <property id="menuTitleBackgroundColor" type="number">0x212021</property>
+        <property id="menuItemLeftPadding" type="number">0</property>
+    </properties>
+</resources>

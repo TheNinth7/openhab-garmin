@@ -14,7 +14,6 @@ class BaseMenu extends CustomMenu {
     private var _title as Text;
     private static const TITLE_FONT = Graphics.FONT_SMALL;  
     private static const TITLE_HEIGHT_FACTOR = 0.8;
-    private static const TITLE_BG_COLOR = 0x212021;
 
     protected function initialize( options as BaseMenuOptions ) {
         _title = new Text( {
@@ -47,7 +46,7 @@ class BaseMenu extends CustomMenu {
     public function drawTitle( dc as Dc ) as Void {
         var clipHeight = dc.getHeight() * TITLE_HEIGHT_FACTOR;
         dc.setClip( 0, 0, dc.getWidth(), clipHeight );
-        dc.setColor( Graphics.COLOR_WHITE, TITLE_BG_COLOR );
+        dc.setColor( Graphics.COLOR_WHITE, AppProperties.getMenuTitleBackgroundColor() );
         dc.clear();
         if( _title.locY == 0 ) {
             _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, clipHeight * 0.5 - Graphics.getFontHeight( TITLE_FONT ) / 2.5 );
