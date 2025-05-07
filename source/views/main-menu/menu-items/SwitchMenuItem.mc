@@ -49,6 +49,10 @@ class SwitchMenuItem extends BaseSitemapMenuItem {
         }
     }
 
+    public function onException( ex as Exception ) as Void {
+        _newState = null;
+    }
+
     public function update( sitemapElement as SitemapElement ) as Boolean {
         var sitemapSwitch = sitemapElement as SitemapSwitch;
         setCustomLabel( sitemapSwitch.label );

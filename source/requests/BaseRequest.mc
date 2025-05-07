@@ -20,9 +20,9 @@ class BaseRequest {
         }
     }
 
-    public function initialize() {
+    public function initialize( method as Communications.HttpRequestMethod ) {
         _options = {
-            :method => Communications.HTTP_REQUEST_METHOD_GET
+            :method => method
         };
 
         if( AppSettings.needsBasicAuth() ) {

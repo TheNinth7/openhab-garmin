@@ -32,14 +32,14 @@ class SitemapBaseRequest extends BaseRequest {
     }
 
     protected function initialize( minimumPollingInterval as Number? ) {
-        BaseRequest.initialize();
+        BaseRequest.initialize( Communications.HTTP_REQUEST_METHOD_GET );
+        setOption( :responseType, Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON );
 
         _pollingInterval = AppSettings.getPollingInterval();
         if( minimumPollingInterval != null && _pollingInterval < minimumPollingInterval ) {
             _pollingInterval = minimumPollingInterval;
         }
         _url = AppSettings.getUrl() + "rest/sitemaps/" + AppSettings.getSitemap();
-        setOption( :responseType, Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON );
     }
 
     public function start() as Void {

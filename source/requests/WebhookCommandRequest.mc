@@ -3,31 +3,22 @@ import Toybox.Communications;
 import Toybox.PersistedContent;
 import Toybox.WatchUi;
 
-class WebhookCommandRequest extends BaseRequest {
-    private var _url as String;
-    private var _item as CommandMenuItemInterface;  
+class WebhookCommandRequest extends BaseCommandRequest {
+    private var _parameters as Dictionary = {};
 
     public function initialize( item as CommandMenuItemInterface ) {
-        BaseRequest.initialize();
-        _url = AppSettings.getUrl() + "webhook/" + AppSettings.getWebhook();
-        _item = item;
+        BaseCommandRequest.initialize( 
+            item, 
+            AppSettings.getUrl() + "webhook/" + AppSettings.getWebhook(),
+            Communications.HTTP_REQUEST_METHOD_GET 
+        );
+        _parameters["action"] = "sendCommand";
+        _parameters["itemName"] = item.getItemName();
     }
 
     public function sendCommand( cmd as String ) as Void {
-        var parameters = {
-            "action" => "sendCommand",
-            "itemName" => _item.getItemName(),
-            "command" => cmd
-        };
-        Communications.makeWebRequest( _url, parameters, getBaseOptions(), method( :onReceive ) );
-    }
-
-    public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
-        try {
-            checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND );
-            _item.onCommandComplete();
-        } catch( ex ) {
-            ExceptionHandler.handleException( ex );            
-        }
+        _parameters["command"] = cmd;
+        makeWebRequest( _parameters as Dictionary<Object,Object> );
+        _parameters["command"] = null;
     }
 }

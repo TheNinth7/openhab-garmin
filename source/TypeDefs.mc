@@ -7,6 +7,7 @@ typedef JsonArray as Array<JsonObject>;
 typedef CommandMenuItemInterface as interface {
     function getItemName() as String;
     function onCommandComplete() as Void;
+    function onException( ex as Exception ) as Void;
 };
 
 typedef CommandRequestInterface as interface {
