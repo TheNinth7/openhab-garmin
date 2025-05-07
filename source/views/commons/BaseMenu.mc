@@ -33,6 +33,7 @@ class BaseMenu extends CustomMenu {
             options[:itemHeight] as Number,
             Graphics.COLOR_BLACK, 
             {
+                :titleItemHeight => 30,
                 :footer => footer
             } );
     }
