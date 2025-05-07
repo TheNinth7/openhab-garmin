@@ -3,7 +3,7 @@ import Toybox.WatchUi;
 
 class SwitchMenuItem extends BaseSitemapMenuItem {
     private var _itemName as String;
-    private var _commandRequest as WebhookCommandRequest?;
+    private var _commandRequest as CommandRequestInterface?;
 
     public function getNextCommand() as String {
         throw new AbstractMethodException( "SwitchMenuItem.getNextCommand" );
@@ -21,7 +21,10 @@ class SwitchMenuItem extends BaseSitemapMenuItem {
                 :status => statusDrawable
             }
         );
-        if( AppSettings.canSendCommands() ) {
+        
+        if( AppSettings.supportsRestApi() ) {
+            _commandRequest = new NativeCommandRequest( self );
+        } else if( AppSettings.supportsWebhook() ) {
             _commandRequest = new WebhookCommandRequest( self );
         }
     }

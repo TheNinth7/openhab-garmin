@@ -2,6 +2,7 @@
     <properties>
         <property id="url_0" type="string"></property>
         <property id="sitemap_0" type="string"></property>
+        <property id="restapi_0" type="boolean">false</property>
         <property id="webhook_0" type="string"></property>
         <property id="user_0" type="string"></property>
         <property id="password_0" type="string"></property>
@@ -14,6 +15,9 @@
         </setting>
         <setting propertyKey="@Properties.sitemap_0" title="Sitemap Name">
             <settingConfig type="alphaNumeric" required="true"/>
+        </setting>
+        <setting propertyKey="@Properties.restapi_0" title="Enable if your openHAB supports the new JSON REST API. Currently for developer use only.">
+            <settingConfig type="boolean" required="false"/>
         </setting>
         <setting propertyKey="@Properties.webhook_0" title="Identifier of the Webhook for sending commands. See the documentation for setup details.">
             <settingConfig type="alphaNumeric" required="false"/>

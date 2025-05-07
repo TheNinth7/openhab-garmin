@@ -16,6 +16,7 @@ class AppSettings {
     private const SITEMAP_PREFIX = "sitemap_";
     private const USER_PREFIX = "user_";
     private const PASSWORD_PREFIX = "password_";
+    private const RESTAPI_PREFIX = "restapi_";
     private const WEBHOOK_PREFIX = "webhook_";
     private const INTERVAL_PREFIX = "pollingInterval_";
 
@@ -26,8 +27,10 @@ class AppSettings {
     public var user as String;
     public var password as String?;
     
-    public var vCanSendCommands as Boolean = false;
-    public var webhook as String;
+    public var vSupportsRESTAPI as Boolean = false;
+    public var vSupportsWebHook as Boolean = false;
+    public var webhook as String = "";
+    
     public var pollingInterval as Number;
 
     private var _index as Number = 0;
@@ -40,8 +43,12 @@ class AppSettings {
         }
 
         sitemap = getString( SITEMAP_PREFIX + _index, "Configuration: sitemap is missing" );
-        webhook = Properties.getValue( WEBHOOK_PREFIX + _index ) as String;
-        vCanSendCommands = ! webhook.equals( "" );
+        
+        vSupportsRESTAPI = Properties.getValue( RESTAPI_PREFIX + _index ) as Boolean;
+        if( ! vSupportsRESTAPI ) {
+            webhook = Properties.getValue( WEBHOOK_PREFIX + _index ) as String;
+            vSupportsWebHook = ! webhook.equals( "" );
+        }
         user = Properties.getValue( USER_PREFIX + _index ) as String;
         if( ! user.equals( "" ) ) {
             vNeedsBasicAuth = true;
@@ -53,7 +60,8 @@ class AppSettings {
     public static function getUrl() as String { return getInstance().url; }
     public static function getSitemap() as String { return getInstance().sitemap; }
     
-    public static function canSendCommands() as Boolean { return getInstance().vCanSendCommands; }
+    public static function supportsRestApi() as Boolean { return getInstance().vSupportsRESTAPI; }
+    public static function supportsWebhook() as Boolean { return getInstance().vSupportsWebHook; }
     public static function getWebhook() as String { return getInstance().webhook; }
 
     public static function needsBasicAuth() as Boolean { return getInstance().vNeedsBasicAuth; }
