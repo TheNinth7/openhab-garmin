@@ -1,5 +1,5 @@
 <resources>
     <properties>
-        <property id="menuItemLeftPaddingFactor" type="float">0.06</property>
+        <property id="menuItemLeftPaddingFactor" type="float">0.03</property>
     </properties>
 </resources>
