@@ -12,6 +12,10 @@ Button=exclForButton
 base.excludeAnnotations = $(Ciq510Plus);$(Button)
 base.sourcePath = source;constants
 
+edgeexplore2.resourcePath=resources;resources-launcher-icon/36x36
+edgeexplore2.excludeAnnotations = $(Ciq400Plus);$(Touch)
+
+
 fenix6pro.resourcePath=resources;resources-launcher-icon/40x40
 fenix6pro.excludeAnnotations = $(CiqPre400);$(Button)
 fenix6spro.resourcePath=$(fenix6pro.resourcePath)
