@@ -76,7 +76,7 @@ class BasePageMenu extends BaseMenu {
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
         } else {
-            throw new JsonParsingException( "Page '" + _label + "' contains item not supported by menu." );
+            throw new JsonParsingException( "Element '" + sitemapElement.label + "' on page '" + _label + "' is not supported" );
         }
     }
 }
