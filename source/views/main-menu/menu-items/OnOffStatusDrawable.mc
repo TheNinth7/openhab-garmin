@@ -23,8 +23,8 @@ class OnOffStatusDrawable extends Bitmap {
     
     private var _bufferedBitmap as BufferedBitmap;
 
-    private const HEIGHT = ( PageMenu.ITEM_HEIGHT * 0.8 ).toNumber();
-    private const WIDTH = ( PageMenu.ITEM_HEIGHT * 0.45 ).toNumber();
+    private const HEIGHT = ( Constants.UI_MENU_ITEM_HEIGHT * 0.8 ).toNumber();
+    private const WIDTH = ( Constants.UI_MENU_ITEM_HEIGHT * 0.45 ).toNumber();
     private const OUTER_CIRCLE_FACTOR = 0.8;
     private const INNER_CIRCLE_FACTOR = 0.75;
 

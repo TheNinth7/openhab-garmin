@@ -3,7 +3,7 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 
 class TextStatusDrawable extends TextArea {
-    private const HEIGHT = ( PageMenu.ITEM_HEIGHT * 0.8 ).toNumber();
+    private const HEIGHT = ( Constants.UI_MENU_ITEM_HEIGHT * 0.8 ).toNumber();
     private var _text as String;
     private var _label as String;
 
@@ -19,7 +19,7 @@ class TextStatusDrawable extends TextArea {
             :text => _text,
             :color => Graphics.COLOR_LT_GRAY,
             :backgroundColor => Graphics.COLOR_BLACK,
-            :font => [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY],
+            :font => Constants.UI_MENU_ITEM_FONTS,
             :justification => Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER,
             :height => HEIGHT
         } );

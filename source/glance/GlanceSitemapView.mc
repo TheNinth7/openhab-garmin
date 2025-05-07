@@ -13,7 +13,7 @@ class GlanceSitemapView extends WatchUi.GlanceView {
         new GlanceSitemapRequest();
         _textArea = new TextArea( { 
             :backgroundColor => Graphics.COLOR_TRANSPARENT,
-            :font => [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE],
+            :font => GlanceConstants.UI_GLANCE_ITEM_FONTS,
             :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => WatchUi.LAYOUT_VALIGN_CENTER

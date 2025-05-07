@@ -24,7 +24,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
 
         _labelTextArea = new Text( {
             :text => _label,
-            :font => Graphics.FONT_SMALL,
+            :font => Constants.UI_MENU_ITEM_FONTS[0],
             :locX => locX,
             :locY => yCenter - Graphics.getFontHeight( Graphics.FONT_SMALL ),
             :justification => Graphics.TEXT_JUSTIFY_LEFT,
@@ -35,7 +35,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
         } );
         _subLabelTextArea = new TextArea( {
             :text => _subLabel,
-            :font => [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY],
+            :font => Constants.UI_MENU_ITEM_FONTS,
             :locX => locX,
             :locY => yCenter,
             :justification => Graphics.TEXT_JUSTIFY_LEFT,

@@ -6,15 +6,12 @@ import Toybox.Graphics;
 class BasePageMenu extends BaseMenu {
     private var _label as String;
 
-    public static var ITEM_HEIGHT as Number = 
-        ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
-
     protected function initialize( sitemapPage as SitemapPage, footer as Drawable? ) {
         _label = sitemapPage.label;
         
         BaseMenu.initialize( {
                 :title => _label,
-                :itemHeight => ITEM_HEIGHT,
+                :itemHeight => Constants.UI_MENU_ITEM_HEIGHT,
                 :footer => footer
             } );
 

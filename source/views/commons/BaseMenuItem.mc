@@ -57,23 +57,24 @@ class BaseMenuItem extends CustomMenuItem {
 
         if( _status != null ) {
             var status = _status;
+            var statusPaddingRight = ( dcWidth * Constants.UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR ).toNumber();
             if( status instanceof TextStatusDrawable ) {
-                status.setAvailableWidth( titleWidth - spacing*2 );
+                status.setAvailableWidth( titleWidth - spacing - statusPaddingRight );
             }
-            status.setLocation( dcWidth - paddingRight - spacing - status.width, WatchUi.LAYOUT_VALIGN_CENTER );
-            titleWidth -= status.width + spacing*2;
+            status.setLocation( dcWidth - paddingRight - statusPaddingRight - status.width, WatchUi.LAYOUT_VALIGN_CENTER );
+            titleWidth -= status.width + spacing + statusPaddingRight;
         }
 
         _labelTextArea = new TextArea( {
             :text => _label,
-            :font => [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY],
+            :font => Constants.UI_MENU_ITEM_FONTS,
             :locX => locX,
-            :locY => 0,
+            :locY => WatchUi.LAYOUT_VALIGN_CENTER,
             :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER,
             :color => _labelColor,
             :backgroundColor => Graphics.COLOR_BLACK,
             :width => titleWidth,
-            :height => dc.getHeight()
+            :height => ( dc.getHeight() * Constants.UI_MENU_ITEM_LABEL_HEIGHT_FACTOR ).toNumber()
         } );
     }
 

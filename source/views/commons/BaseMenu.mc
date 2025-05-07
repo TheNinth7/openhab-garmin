@@ -33,7 +33,6 @@ class BaseMenu extends CustomMenu {
             options[:itemHeight] as Number,
             Graphics.COLOR_BLACK, 
             {
-                :titleItemHeight => 30,
                 :footer => footer
             } );
     }
@@ -48,7 +47,13 @@ class BaseMenu extends CustomMenu {
         dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
         dc.clear();
         if( _title.locY == 0 ) {
-            _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, clipHeight * 0.5 - Graphics.getFontHeight( Constants.UI_MENU_TITLE_FONT ) / 2 + Graphics.getFontDescent( Constants.UI_MENU_TITLE_FONT ) );
+            var locY;
+            if( Constants.UI_MENU_TITLE_HEIGHT_FACTOR == 1 ) {
+                locY = WatchUi.LAYOUT_VALIGN_CENTER;
+            } else {
+                locY = clipHeight * 0.5 - Graphics.getFontHeight( Constants.UI_MENU_TITLE_FONT ) / 2 + Graphics.getFontDescent( Constants.UI_MENU_TITLE_FONT );
+            }
+            _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, locY );
         }
         //dc.drawLine( 0, clipHeight*0.5, dc.getWidth(), clipHeight*0.5 );
         _title.draw( dc );

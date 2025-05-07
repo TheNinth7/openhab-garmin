@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.Graphics;
+import Toybox.System;
 
 class DefaultConstants {
     protected function initialize() {}
@@ -10,9 +11,14 @@ class DefaultConstants {
     // total available space is used, the remaining 20% server as spacing towards
     // the menu items
     public static const UI_MENU_TITLE_HEIGHT_FACTOR as Float = 0.8;
-
     public static const UI_MENU_TITLE_FONT as FontDefinition = Graphics.FONT_SMALL;  
-    
+    public static const UI_MENU_ITEM_FONTS as Array<FontDefinition> = [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
+
+    public static const UI_MENU_ITEM_HEIGHT_FACTOR as Float = 0.2;
+
+    public static const UI_MENU_ITEM_HEIGHT as Number = 
+        ( System.getDeviceSettings().screenHeight * UI_MENU_ITEM_HEIGHT_FACTOR ).toNumber();
+
     // These factors determine the padding to the left and right of menu items,
     // based on the total width of the menu item Dc
     // ATTENTION: for some devices there is a discrepancy between the
@@ -20,5 +26,9 @@ class DefaultConstants {
     public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.03;
     public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.03;
     // Spacing between the menu item elements (icon, label, status)
+    public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.03;
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.03;
+
+    // The height the label should occupy, relative to the menu item Dc height
+    public static const UI_MENU_ITEM_LABEL_HEIGHT_FACTOR as Float = 1.0;
 }

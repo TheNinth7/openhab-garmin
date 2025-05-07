@@ -1,0 +1,12 @@
+<drawables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <bitmap id="logoOpenhabText" scaleX="40%" filename="../svg/openhab_text_light.svg" dithering="none" />
+    <bitmap id="logoOpenhabSquare" scaleX="10%" filename="../svg/openhab_logo_light.svg" dithering="none" />
+    <bitmap id="iconWarning" personality="system_icon_light__warning" />
+    <bitmap id="iconInfo" personality="system_icon_light__about" />
+    <bitmap id="menuDownToSettings" scaleY="15%" filename="../svg/down-to-settings.svg" dithering="none" />
+    <bitmap id="menuSettings" scaleX="10%" filename="../svg/settings.svg" dithering="none" />
+    <bitmap id="menuFolder" scaleY="20%" filename="../svg/folder.svg" dithering="none" />
+    <bitmap id="menuFolder" scaleY="20%" filename="../svg/folder.svg" dithering="none" />
+    <bitmap id="menuLightbulbOn" scaleY="20%" filename="../svg/light-bulb-on.svg" dithering="none" />
+    <bitmap id="menuLightbulbOff" scaleY="20%" filename="../svg/light-bulb-off.svg" dithering="none"/>
+</drawables>
