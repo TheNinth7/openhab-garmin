@@ -14,7 +14,7 @@ class HomepageMenu extends BasePageMenu {
     }
 
     (:exclForButton)
-    private var _settingsMenuItem as SettingsMenuItem = new SettingsMenuItem();    
+    private var _settingsMenuItem as SettingsMenuItem = new SettingsMenuItem( self );    
     (:exclForButton)
     public function initialize( sitemapHomepage as SitemapHomepage ) {
         BasePageMenu.initialize( sitemapHomepage, null );

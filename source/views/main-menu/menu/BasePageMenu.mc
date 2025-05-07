@@ -74,7 +74,7 @@ class BasePageMenu extends BaseMenu {
         } else if( TextMenuItem.isMyType( sitemapElement ) ) {
             return new TextMenuItem( sitemapElement as SitemapText );
         } else if( sitemapElement instanceof SitemapPage ) {
-            return new PageMenuItem( sitemapElement );
+            return new PageMenuItem( sitemapElement, self );
         } else {
             throw new JsonParsingException( "Element '" + sitemapElement.label + "' on page '" + _label + "' is not supported" );
         }

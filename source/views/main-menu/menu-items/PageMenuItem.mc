@@ -1,13 +1,14 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class PageMenuItem extends BaseSitemapMenuItem {
+class PageMenuItem extends BaseViewMenuItem {
 
     private var _menu as PageMenu;
 
-    public function initialize( sitemapPage as SitemapPage ) {
-        BaseSitemapMenuItem.initialize( { 
+    public function initialize( sitemapPage as SitemapPage, parentMenu as CustomMenu ) {
+        BaseViewMenuItem.initialize( { 
             :id => sitemapPage.id,
+            :parentMenu => parentMenu,
             :label => sitemapPage.label 
         } );
 
@@ -25,6 +26,7 @@ class PageMenuItem extends BaseSitemapMenuItem {
     }
 
     public function onSelect() as Void {
+        BaseViewMenuItem.onSelect();
         ViewHandler.pushView( _menu, new PageMenuDelegate(), WatchUi.SLIDE_LEFT );
     }
 }

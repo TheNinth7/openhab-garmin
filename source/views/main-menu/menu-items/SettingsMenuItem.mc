@@ -2,9 +2,10 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 (:exclForButton)
-class SettingsMenuItem extends BaseSitemapMenuItem {
-    public function initialize() {
-        BaseSitemapMenuItem.initialize( { 
+class SettingsMenuItem extends BaseViewMenuItem {
+    public function initialize( parentMenu as CustomMenu ) {
+        BaseViewMenuItem.initialize( { 
+            :parentMenu => parentMenu,
             :id => "__settings__",
             :icon => Rez.Drawables.menuSettings,
             :label => "Settings",
@@ -13,6 +14,7 @@ class SettingsMenuItem extends BaseSitemapMenuItem {
     }
 
     public function onSelect() as Void {
+        BaseViewMenuItem.onSelect();
         SettingsMenuHandler.showSettings( WatchUi.SLIDE_LEFT );
     }
 }
