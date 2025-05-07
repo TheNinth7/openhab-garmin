@@ -3,7 +3,7 @@ import Toybox.WatchUi;
 
 class SwitchMenuItem extends BaseSitemapMenuItem {
     private var _itemName as String;
-    private var _commandRequest as CommandRequest?;
+    private var _commandRequest as WebhookCommandRequest?;
 
     public function getNextCommand() as String {
         throw new AbstractMethodException( "SwitchMenuItem.getNextCommand" );
@@ -22,7 +22,7 @@ class SwitchMenuItem extends BaseSitemapMenuItem {
             }
         );
         if( AppSettings.canSendCommands() ) {
-            _commandRequest = new CommandRequest( self );
+            _commandRequest = new WebhookCommandRequest( self );
         }
     }
 
@@ -34,7 +34,7 @@ class SwitchMenuItem extends BaseSitemapMenuItem {
     public function onSelect() as Void {
         if( _newState == null && _commandRequest != null ) {
             _newState = getNextCommand();
-            ( _commandRequest as CommandRequest ).sendCommand( _newState );
+            ( _commandRequest as WebhookCommandRequest ).sendCommand( _newState );
         }
     }
     

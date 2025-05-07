@@ -8,8 +8,16 @@ class BaseRequest {
     protected function setOption( option as Symbol, value as Object ) as Void {
         _options[option] = value;
     }
-    protected function getOptions() as WebRequestOptions {
+    protected function getBaseOptions() as WebRequestOptions {
         return _options;
+    }
+    protected function setHeader( name as String, value as String or Communications.HttpRequestContentType ) as Void {
+        if( _options[:headers] == null ) {
+            _options[:headers] = { name => value };
+        } else {
+            var options = _options[:headers] as Dictionary;
+            options[name] = value;
+        }
     }
 
     public function initialize() {

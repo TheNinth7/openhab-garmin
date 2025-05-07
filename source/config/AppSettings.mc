@@ -34,6 +34,11 @@ class AppSettings {
     
     private function initialize() {
         url = getString( URL_PREFIX + _index, "Configuration: URL is missing" );
+        var lastChar = url.substring( url.length()-1, null );
+        if( lastChar != null && ! lastChar.equals( "/" ) ) {
+            url += "/";
+        }
+
         sitemap = getString( SITEMAP_PREFIX + _index, "Configuration: sitemap is missing" );
         webhook = Properties.getValue( WEBHOOK_PREFIX + _index ) as String;
         vCanSendCommands = ! webhook.equals( "" );

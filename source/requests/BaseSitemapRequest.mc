@@ -38,14 +38,7 @@ class SitemapBaseRequest extends BaseRequest {
         if( minimumPollingInterval != null && _pollingInterval < minimumPollingInterval ) {
             _pollingInterval = minimumPollingInterval;
         }
-
-
-        _url = AppSettings.getUrl();
-        var lastChar = _url.substring( _url.length()-1, null );
-        if( lastChar != null && ! lastChar.equals( "/" ) ) {
-            _url += "/";
-        }
-        _url += "rest/sitemaps/" + AppSettings.getSitemap();
+        _url = AppSettings.getUrl() + "rest/sitemaps/" + AppSettings.getSitemap();
         setOption( :responseType, Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON );
     }
 
@@ -63,7 +56,7 @@ class SitemapBaseRequest extends BaseRequest {
     public function makeRequest() as Void {
         Logger.debug( "BaseSitemapRequest.makeRequest");
         if( ! _isStopped ) {
-            Communications.makeWebRequest( _url, null, getOptions(), method( :onReceive ) );
+            Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
         }
     }
 
