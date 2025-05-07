@@ -19,7 +19,8 @@ class SettingsTextMenuItem extends CustomMenuItem {
         var dcWidth = dc.getWidth();
         var yCenter = ( dc.getHeight()/2 ).toNumber();
 
-        var locX = ( dcWidth * AppProperties.getMenuItemLeftPaddingFactor() ).toNumber();
+        var locX = ( dcWidth * Constants.UI_MENU_ITEM_PADDING_LEFT_FACTOR ).toNumber();
+        var width = dcWidth - locX - ( dcWidth * Constants.UI_MENU_ITEM_PADDING_RIGHT_FACTOR ).toNumber();
 
         _labelTextArea = new Text( {
             :text => _label,
@@ -29,7 +30,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
             :justification => Graphics.TEXT_JUSTIFY_LEFT,
             :color => Graphics.COLOR_WHITE,
             :backgroundColor => Graphics.COLOR_BLACK,
-            :width => dcWidth,
+            :width => width,
             :height => yCenter
         } );
         _subLabelTextArea = new TextArea( {
@@ -40,7 +41,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
             :justification => Graphics.TEXT_JUSTIFY_LEFT,
             :color => Graphics.COLOR_WHITE,
             :backgroundColor => Graphics.COLOR_BLACK,
-            :width => dc.getWidth(),
+            :width => width,
             :height => yCenter
         } );
     }

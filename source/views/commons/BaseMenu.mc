@@ -12,14 +12,12 @@ typedef BaseMenuOptions as {
 class BaseMenu extends CustomMenu {
 
     private var _title as Text;
-    private static const TITLE_FONT = Graphics.FONT_SMALL;  
-    private static const TITLE_HEIGHT_FACTOR = 0.8;
 
     protected function initialize( options as BaseMenuOptions ) {
         _title = new Text( {
             :text => options[:title] as String,
             :color => Graphics.COLOR_WHITE,
-            :font => TITLE_FONT
+            :font => Constants.UI_MENU_TITLE_FONT
         } );
         
         var footer = options[:footer] as Drawable?;
@@ -44,12 +42,12 @@ class BaseMenu extends CustomMenu {
         _title.setText( title );
     }
     public function drawTitle( dc as Dc ) as Void {
-        var clipHeight = dc.getHeight() * TITLE_HEIGHT_FACTOR;
+        var clipHeight = dc.getHeight() * Constants.UI_MENU_TITLE_HEIGHT_FACTOR;
         dc.setClip( 0, 0, dc.getWidth(), clipHeight );
-        dc.setColor( Graphics.COLOR_WHITE, AppProperties.getMenuTitleBackgroundColor() );
+        dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
         dc.clear();
         if( _title.locY == 0 ) {
-            _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, clipHeight * 0.5 - Graphics.getFontHeight( TITLE_FONT ) / 2 + Graphics.getFontDescent( TITLE_FONT ) );
+            _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, clipHeight * 0.5 - Graphics.getFontHeight( Constants.UI_MENU_TITLE_FONT ) / 2 + Graphics.getFontDescent( Constants.UI_MENU_TITLE_FONT ) );
         }
         //dc.drawLine( 0, clipHeight*0.5, dc.getWidth(), clipHeight*0.5 );
         _title.draw( dc );

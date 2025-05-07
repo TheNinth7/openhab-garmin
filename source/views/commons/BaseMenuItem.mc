@@ -38,12 +38,12 @@ class BaseMenuItem extends CustomMenuItem {
     }
 
     private const ICON_WIDTH_FACTOR = 0.1;
-    private const SPACING_FACTOR = 0.03;
 
     private function initializeDrawables( dc as Dc ) as Void {
         var dcWidth = dc.getWidth();
-        var spacing = ( dcWidth * SPACING_FACTOR ).toNumber();
-        var locX = ( dcWidth * AppProperties.getMenuItemLeftPaddingFactor() ).toNumber();       var titleWidth = dcWidth - spacing;
+        var spacing = ( dcWidth * Constants.UI_MENU_ITEM_SPACING_FACTOR ).toNumber();
+        var locX = ( dcWidth * Constants.UI_MENU_ITEM_PADDING_LEFT_FACTOR ).toNumber();
+        var titleWidth = dcWidth - locX;
         if( _icon != null ) {
             var icon = _icon;
             icon.setLocation( locX, ( ( (dc.getHeight()/2) - icon.height/2 ) * 1.1 ).toNumber() );
@@ -51,13 +51,17 @@ class BaseMenuItem extends CustomMenuItem {
             titleWidth -= locX;
         }
 
+        var paddingRight = ( dcWidth * Constants.UI_MENU_ITEM_PADDING_RIGHT_FACTOR ).toNumber();
+
+        titleWidth -= paddingRight;
+
         if( _status != null ) {
             var status = _status;
             if( status instanceof TextStatusDrawable ) {
-                status.setAvailableWidth( titleWidth - spacing*3 );
+                status.setAvailableWidth( titleWidth - spacing*2 );
             }
-            status.setLocation( dcWidth - status.width - spacing*2, WatchUi.LAYOUT_VALIGN_CENTER );
-            titleWidth -= status.width + spacing*3;
+            status.setLocation( dcWidth - paddingRight - spacing - status.width, WatchUi.LAYOUT_VALIGN_CENTER );
+            titleWidth -= status.width + spacing*2;
         }
 
         _labelTextArea = new TextArea( {

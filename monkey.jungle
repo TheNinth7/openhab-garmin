@@ -10,6 +10,7 @@ Touch=exclForTouch
 Button=exclForButton
 
 base.excludeAnnotations = $(Ciq510Plus);$(Button)
+base.sourcePath = source;constants
 
 fenix6pro.resourcePath=resources;resources-launcher-icon/40x40
 fenix6pro.excludeAnnotations = $(CiqPre400);$(Button)
