@@ -3,6 +3,13 @@ import Toybox.WatchUi;
 
 class BaseViewMenuItem extends BaseSitemapMenuItem {
 
+    // The touch implementation is experimental
+    // Intention is to ensure that when returning, the selected
+    // item is in focus. In the simulator this did not help,
+    // but maybe it does on the real device
+
+    // If it does not work, this whole class can be scrapped
+
     (:exclForButton)
     var _parentMenu as CustomMenu;
 
@@ -25,8 +32,8 @@ class BaseViewMenuItem extends BaseSitemapMenuItem {
         if( index == -1 ) {
             throw new GeneralException( "BaseViewMenuItem was not added to parent menu" );
         }
-        System.println( "******** focus set to " + index );
         _parentMenu.setFocus( index );
+        onSelectImpl();
     }
 
     (:exclForTouch)
@@ -35,5 +42,11 @@ class BaseViewMenuItem extends BaseSitemapMenuItem {
     }
 
     (:exclForTouch)
-    public function onSelect() as Void {}
+    public function onSelect() as Void {
+        onSelectImpl();
+    }
+
+    protected function onSelectImpl() as Void {
+        throw new AbstractMethodException( "BaseViewMenuItem.onSelectImpl" );
+    }
 }

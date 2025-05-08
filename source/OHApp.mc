@@ -52,7 +52,7 @@ class OHApp extends Application.AppBase {
                 return [errorView];
             } else if( hasMenu ) {
                 // If there is HomepageMenu, display it
-                return [ menu as View, new HomepageMenuDelegate() ];
+                return [ menu as View, HomepageMenuDelegate.get() ];
             } else {
                 // Otherwise show the loading view
                 return [ new LoadingView() ];

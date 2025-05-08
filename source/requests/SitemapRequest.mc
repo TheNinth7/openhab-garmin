@@ -35,7 +35,7 @@ class SitemapRequest extends SitemapBaseRequest {
             // There is no menu yet, so we need to switch
             // from the LoadingView to the menu
             _homepageMenu = new HomepageMenu( sitemapHomepage );
-            WatchUi.switchToView( _homepageMenu, new HomepageMenuDelegate(), WatchUi.SLIDE_BLINK );
+            WatchUi.switchToView( _homepageMenu, HomepageMenuDelegate.get(), WatchUi.SLIDE_BLINK );
         } else {
             // To satisfy the typechecker, we get the member variable into a local variable
             var homepage = _homepageMenu as PageMenu;
@@ -46,9 +46,9 @@ class SitemapRequest extends SitemapBaseRequest {
                     // If update returns false, the menu structure has changed
                     // and we therefore replace the current view stack with
                     // the homepage
-                    ViewHandler.popToBottomAndSwitch( homepage, new HomepageMenuDelegate() );
+                    ViewHandler.popToBottomAndSwitch( homepage, HomepageMenuDelegate.get() );
                 } else if( ErrorViewHandler.isShowingErrorView() ) {
-                    ErrorViewHandler.replaceErrorView( homepage, new HomepageMenuDelegate() );
+                    ErrorViewHandler.replaceErrorView( homepage, HomepageMenuDelegate.get() );
                 }
                 WatchUi.requestUpdate();
             }

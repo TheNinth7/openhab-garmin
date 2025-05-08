@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.System;
 
-class Constants extends DefaultConstants {
+class EdgeDefaultConstants extends DefaultConstants {
     protected function initialize() { DefaultConstants.initialize(); }
 
     public static const UI_MENU_TITLE_HEIGHT as Number = 

@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
 
-class SettingsTextMenuItem extends CustomMenuItem {
+class SettingsTextMenuItem extends BaseMenuItem {
 
     private var _label as String;
     private var _subLabel as String;
@@ -10,7 +10,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
     private var _subLabelTextArea as TextArea?;
 
     public function initialize( label as String, subLabel as String ) {
-        CustomMenuItem.initialize( null, {} );
+        BaseMenuItem.initialize( { :id => label } );
         _label = label;
         _subLabel = subLabel;
     }
@@ -46,7 +46,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
         } );
     }
 
-    public function draw( dc as Dc ) as Void {
+    public function drawImpl( dc as Dc ) as Void {
         if( _labelTextArea == null ) {
             initializeDrawables( dc );
         }

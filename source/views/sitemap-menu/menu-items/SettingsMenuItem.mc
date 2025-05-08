@@ -13,8 +13,7 @@ class SettingsMenuItem extends BaseViewMenuItem {
         } );
     }
 
-    public function onSelect() as Void {
-        BaseViewMenuItem.onSelect();
+    public function onSelectImpl() as Void {
         SettingsMenuHandler.showSettings( WatchUi.SLIDE_LEFT );
     }
 }

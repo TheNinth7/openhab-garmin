@@ -7,7 +7,7 @@ import Toybox.System;
 import Toybox.Lang;
 
 class BaseSettingsMenuDelegate extends PageMenuDelegate {
-    public function initialize() {
+    protected function initialize() {
         PageMenuDelegate.initialize();
     }
 

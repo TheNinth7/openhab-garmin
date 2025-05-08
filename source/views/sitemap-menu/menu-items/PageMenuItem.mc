@@ -25,8 +25,7 @@ class PageMenuItem extends BaseViewMenuItem {
         return _menu.update( sitemapPage );
     }
 
-    public function onSelect() as Void {
-        BaseViewMenuItem.onSelect();
-        ViewHandler.pushView( _menu, new PageMenuDelegate(), WatchUi.SLIDE_LEFT );
+    public function onSelectImpl() as Void {
+        ViewHandler.pushView( _menu, PageMenuDelegate.get(), WatchUi.SLIDE_LEFT );
     }
 }
