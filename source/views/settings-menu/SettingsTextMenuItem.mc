@@ -29,7 +29,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
             :locY => yCenter - Graphics.getFontHeight( Constants.UI_MENU_ITEM_FONTS[0] ),
             :justification => Graphics.TEXT_JUSTIFY_LEFT,
             :color => Graphics.COLOR_WHITE,
-            :backgroundColor => Graphics.COLOR_BLACK,
+            :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR,
             :width => width,
             :height => yCenter
         } );
@@ -40,7 +40,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
             :locY => yCenter,
             :justification => Graphics.TEXT_JUSTIFY_LEFT,
             :color => Graphics.COLOR_WHITE,
-            :backgroundColor => Graphics.COLOR_BLACK,
+            :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR,
             :width => width,
             :height => yCenter
         } );

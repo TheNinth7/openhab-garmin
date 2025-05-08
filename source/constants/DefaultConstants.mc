@@ -36,4 +36,5 @@ class DefaultConstants {
     public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.03;
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.03;
 
+    public static const UI_MENU_ITEM_BG_COLOR = Graphics.COLOR_TRANSPARENT;
 }

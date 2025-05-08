@@ -61,10 +61,10 @@ class OnOffStatusDrawable extends Bitmap {
         dc.clear();
 
         if( isEnabled ) {
-            dc.setColor( 0xe64a19, Graphics.COLOR_BLACK );
+            dc.setColor( 0xe64a19, Constants.UI_MENU_ITEM_BG_COLOR );
             // dc.setFill( 0xe64a19 );
         } else {
-            dc.setColor( Graphics.COLOR_LT_GRAY, Graphics.COLOR_BLACK );
+            dc.setColor( Graphics.COLOR_LT_GRAY, Constants.UI_MENU_ITEM_BG_COLOR );
             // dc.setFill( Graphics.COLOR_LT_GRAY );
         }
         
@@ -81,8 +81,8 @@ class OnOffStatusDrawable extends Bitmap {
         // trial and error and tested on different devices
         dc.fillRectangle( xCenter-radius-1, upperYCenter, radius*2 + 3, lowerYCenter - upperYCenter );
 
-        dc.setColor( Graphics.COLOR_BLACK, Graphics.COLOR_BLACK );
-        // dc.setFill( Graphics.COLOR_BLACK );
+        dc.setColor( Graphics.COLOR_BLACK, Constants.UI_MENU_ITEM_BG_COLOR );
+        // dc.setFill( Constants.UI_MENU_ITEM_BG_COLOR );
 
         var toggleCenter = isEnabled ? upperYCenter : lowerYCenter;
         dc.fillCircle( xCenter, toggleCenter, radius * INNER_CIRCLE_FACTOR );

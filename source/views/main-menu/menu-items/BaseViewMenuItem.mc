@@ -26,7 +26,7 @@ class BaseViewMenuItem extends BaseSitemapMenuItem {
             throw new GeneralException( "BaseViewMenuItem was not added to parent menu" );
         }
         System.println( "******** focus set to " + index );
-        //_parentMenu.setFocus( index );
+        _parentMenu.setFocus( index );
     }
 
     (:exclForTouch)

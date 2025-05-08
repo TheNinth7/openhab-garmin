@@ -72,13 +72,26 @@ class BaseMenuItem extends CustomMenuItem {
             :locY => WatchUi.LAYOUT_VALIGN_CENTER,
             :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER,
             :color => _labelColor,
-            :backgroundColor => Graphics.COLOR_BLACK,
+            :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR,
             :width => titleWidth,
             :height => dc.getHeight()
         } );
     }
 
     public function draw( dc as Dc ) as Void {
+        if( isFocused() ) {
+            System.println( "****** item in focus: " + getId() );
+            //dc.setColor( Graphics.COLOR_WHITE, Graphics.COLOR_BLUE );
+            //dc.clear();
+        }
+
+        /*
+        if( isSelected() ) {
+            dc.setColor( Graphics.COLOR_WHITE, Graphics.COLOR_RED );
+            dc.clear();
+        }
+        */
+
         if( _labelTextArea == null ) {
             initializeDrawables( dc );
         }

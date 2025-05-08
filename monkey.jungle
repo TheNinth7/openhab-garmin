@@ -12,11 +12,9 @@ Button=exclForButton
 base.excludeAnnotations = $(Ciq510Plus);$(Button)
 base.sourcePath = source;constants/base
 
-edgeexplore2.resourcePath=resources/base;resources/edge;resources/launcher-icons/36x36
-edgeexplore2.excludeAnnotations = $(Ciq400Plus);$(Touch)
-edgeexplore2.sourcePath = source;constants/edge
+# Watches
 
-
+# CiqPre400/Button
 fenix6pro.resourcePath=resources/base;resources/launcher-icons/40x40
 fenix6pro.excludeAnnotations = $(CiqPre400);$(Button)
 fenix6spro.resourcePath=$(fenix6pro.resourcePath)
@@ -24,6 +22,7 @@ fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
 fenix6xpro.resourcePath=$(fenix6pro.resourcePath)
 fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
 
+# Ciq510Plus/Button
 d2mach1.resourcePath=resources/base;resources/launcher-icons/60x60
 enduro3.resourcePath=resources/base;resources/launcher-icons/40x40
 epix2.resourcePath=resources/base;resources/launcher-icons/60x60
@@ -56,6 +55,7 @@ fr965.resourcePath=resources/base;resources/launcher-icons/65x65
 marq2.resourcePath=resources/base;resources/launcher-icons/60x60
 marq2aviator.resourcePath=resources/base;resources/launcher-icons/60x60
 
+# Ciq400Plus/Touc
 venu2.resourcePath=resources/base;resources/launcher-icons/70x70
 venu2.excludeAnnotations = $(Ciq400Plus);$(Touch)
 venu2s.resourcePath=resources/base;resources/launcher-icons/61x61
@@ -66,6 +66,8 @@ venusq2.resourcePath=resources/base;resources/launcher-icons/40x40
 venusq2.excludeAnnotations = $(Ciq400Plus);$(Touch)
 venusq2m.resourcePath=resources/base;resources/launcher-icons/40x40
 venusq2m.excludeAnnotations = $(Ciq400Plus);$(Touch)
+
+# Ciq510Plus/Touch
 venu3.resourcePath=resources/base;resources/launcher-icons/70x70
 venu3.excludeAnnotations = $(Ciq510Plus);$(Touch)
 venu3s.resourcePath=resources/base;resources/launcher-icons/70x70
@@ -74,3 +76,25 @@ vivoactive5.resourcePath=resources/base;resources/launcher-icons/56x56
 vivoactive5.excludeAnnotations = $(Ciq510Plus);$(Touch)
 vivoactive6.resourcePath=resources/base;resources/launcher-icons/54x54
 vivoactive6.excludeAnnotations = $(Ciq510Plus);$(Touch)
+
+# Cycling Computers
+
+edgeexplore2.resourcePath=resources/base;resources/edge;resources/launcher-icons/36x36
+edgeexplore2.excludeAnnotations = $(Ciq400Plus);$(Touch)
+edgeexplore2.sourcePath = source;constants/edge
+
+edge540.resourcePath=resources/base;resources/edge;resources/launcher-icons/35x35
+edge540.excludeAnnotations = $(Ciq510Plus);$(Button)
+edge540.sourcePath = source;constants/edge
+
+edge840.resourcePath=resources/base;resources/edge;resources/launcher-icons/35x35
+edge840.excludeAnnotations = $(Ciq510Plus);$(Button)
+edge840.sourcePath = source;constants/edge
+
+edge1040.resourcePath=resources/base;resources/edge;resources/launcher-icons/40x40
+edge1040.excludeAnnotations = $(Ciq510Plus);$(Touch)
+edge1040.sourcePath = source;constants/edge
+
+edge1050.resourcePath=resources/base;resources/edge;resources/launcher-icons/70x70
+edge1050.excludeAnnotations = $(Ciq510Plus);$(Touch)
+edge1050.sourcePath = source;constants/edge

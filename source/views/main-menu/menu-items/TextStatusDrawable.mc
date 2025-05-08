@@ -18,7 +18,7 @@ class TextStatusDrawable extends TextArea {
         TextArea.initialize( {
             :text => _text,
             :color => Graphics.COLOR_LT_GRAY,
-            :backgroundColor => Graphics.COLOR_BLACK,
+            :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR,
             :font => Constants.UI_MENU_ITEM_FONTS,
             :justification => Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER,
             :height => HEIGHT
