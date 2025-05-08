@@ -23,6 +23,11 @@ class ErrorView extends WatchUi.View {
 
     public function onUpdate( dc as Dc ) as Void {
         Logger.debug( "ErrorView.onUpdate" );
+        
+        // Workaround for:
+        // https://github.com/TheNinth7/ohg/issues/81
+        dc.clearClip();
+        
         dc.setColor( Graphics.COLOR_RED, Graphics.COLOR_BLACK );
         dc.clear();
         var text = _exception.getErrorMessage();

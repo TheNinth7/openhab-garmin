@@ -48,11 +48,26 @@ class BaseMenu extends CustomMenu {
     public function setTitleAsString( title as String ) as Void {
         _title.setText( title );
     }
+
     public function drawTitle( dc as Dc ) as Void {
         var clipHeight = dc.getHeight() * Constants.UI_MENU_TITLE_HEIGHT_FACTOR;
-        dc.setClip( 0, 0, dc.getWidth(), clipHeight );
+
+        /*
+        dc.setColor( Constants.UI_MENU_TITLE_BACKGROUND_COLOR, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
+        dc.fillRectangle( 0, 0, dc.getWidth(), clipHeight );
         dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
+        */
+        
+        /* This code leads to the clip being applied to the 
+           full Dc of any View we are switching to.
+           However, if we switch to another CustomMenu, this
+           does not happen 
+        */
+        dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
+        dc.setClip( 0, 0, dc.getWidth(), clipHeight );
         dc.clear();
+        dc.clearClip();
+
         if( _title.locY == 0 ) {
             var locY;
             if( Constants.UI_MENU_TITLE_HEIGHT_FACTOR == 1 ) {
@@ -65,7 +80,7 @@ class BaseMenu extends CustomMenu {
         //dc.drawLine( 0, clipHeight*0.5, dc.getWidth(), clipHeight*0.5 );
         _title.draw( dc );
     }
-    
+
     private var _itemCount as Number = 0;
     public function addItem( item as CustomMenuItem ) as Void {
         _itemCount++;
