@@ -43,8 +43,12 @@ public class Logger {
         if( errorMsg != null ) {
             debug( errorMsg );
         }
-        ex.printStackTrace();
-        System.println(" ");
+        // For communication exceptions we know the source, and also
+        // there is bug in SDK that leads to an exception in printStackTrace
+        if( ! ( ex instanceof CommunicationBaseException ) ){
+            ex.printStackTrace();
+            System.println(" ");
+        }
     }
   
     // For release builds, there shall be no debug output
