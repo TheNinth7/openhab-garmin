@@ -29,12 +29,19 @@ class BaseMenu extends CustomMenu {
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } );
         }
 
+        var parentOptions = {
+            :footer => footer
+        };
+        if( Constants.UI_MENU_TITLE_HEIGHT != -1 ) {
+            parentOptions[:titleItemHeight] = Constants.UI_MENU_TITLE_HEIGHT;
+        }
+        if( Constants.UI_MENU_FOOTER_HEIGHT != -1 ) {
+            parentOptions[:footerItemHeight] = Constants.UI_MENU_FOOTER_HEIGHT;
+        }
         CustomMenu.initialize( 
             options[:itemHeight] as Number,
             Graphics.COLOR_BLACK, 
-            {
-                :footer => footer
-            } );
+            parentOptions );
     }
 
     
