@@ -2,22 +2,6 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Math;
 
-public class ToastHandler {
-    private static var _useToasts as Boolean = true;
-    public static function useToasts() as Boolean { 
-        return _useToasts; 
-    }
-    public static function setUseToasts( useToasts as Boolean ) as Void { 
-        _useToasts = useToasts; 
-    }
-
-    public static function showWarning( warning as String ) as Void {
-        WatchUi.showToast( 
-            warning.toUpper(), 
-            { :icon => Rez.Drawables.iconWarning } );
-    }
-}
-
 public class ExceptionHandler {
     private static const FATAL_SITEMAP_ERROR_TIME = 10000;
     private static const FATAL_SITEMAP_ERROR_COUNT = Math.round( FATAL_SITEMAP_ERROR_TIME / AppSettings.getPollingInterval() ).toNumber();

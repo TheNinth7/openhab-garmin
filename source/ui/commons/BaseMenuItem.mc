@@ -22,9 +22,9 @@ class BaseMenuItem extends CustomMenuItem {
 
     public function draw( dc as Dc ) as Void {
         if( ( isFocused() ) && 
-            Constants.UI_MENU_ITEM_SELECTED_BG_COLOR != Graphics.COLOR_TRANSPARENT ) {
+            Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED != Graphics.COLOR_TRANSPARENT ) {
                 System.println( "****** item in focus: " + getId() );
-                dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_ITEM_SELECTED_BG_COLOR );
+                dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED );
                 dc.clear();
         }
         drawImpl( dc );

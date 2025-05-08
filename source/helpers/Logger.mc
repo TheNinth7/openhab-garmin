@@ -5,6 +5,10 @@ import Toybox.Time;
 import Toybox.Time.Gregorian;
 import Toybox.System;
 
+/*
+    This class provides functions for printing debug
+    output to the debug console or log file
+*/
 (:glance)
 public class Logger {
 
@@ -46,6 +50,4 @@ public class Logger {
     // For release builds, there shall be no debug output
     (:release) public static function debug( text as String ) as Void {}
     (:release) public static function debugException( ex as Exception ) as Void {}
-
-
 }

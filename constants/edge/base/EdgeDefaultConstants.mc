@@ -2,27 +2,37 @@ import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.System;
 
+/*
+    Default values for all Edge devices
+    Actual Constants implementation differ for button and touch based devices
+*/
 class EdgeDefaultConstants extends DefaultConstants {
     protected function initialize() { DefaultConstants.initialize(); }
 
+    // Default height of title and footer is too high
     public static const UI_MENU_TITLE_HEIGHT as Number = 
         ( DefaultConstants.UI_SCREEN_HEIGHT * 0.25 ).toNumber();
-
     public static const UI_MENU_FOOTER_HEIGHT as Number = 
         ( DefaultConstants.UI_SCREEN_HEIGHT * 0.2 ).toNumber();
 
+    // On the Edge devices no gap between title and menu items is
+    // needed, therefore the title height is set to the full amount (defined above)
     public static const UI_MENU_TITLE_HEIGHT_FACTOR as Float = 1.0;
 
+    // Edge devices need larger fonts
     public static const UI_MENU_TITLE_FONT as FontDefinition = Graphics.FONT_LARGE;  
     public static const UI_MENU_ITEM_FONTS as Array<FontDefinition> = [Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY];
+
+    // Less padding but more spacing
     public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.01;
     public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.01;
     public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.0;
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.05;
 
+    // Also the item heights are set differently (smaller in proportion to screen height), 
+    // due to the relatively tall displays of the Edge devices
     public static const UI_MENU_ITEM_HEIGHT as Number = 
         ( DefaultConstants.UI_SCREEN_HEIGHT * 0.175 ).toNumber();
-
     public static const UI_SETTINGS_ITEM_HEIGHT as Number = 
         ( DefaultConstants.UI_SCREEN_HEIGHT * 0.25 ).toNumber();
 }

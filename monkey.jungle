@@ -1,36 +1,96 @@
 project.manifest = manifest.xml
 project.typecheck = 3
 
+# This build file controls the build for individual device types
+# It defines
+# - exclude annotiations
+# - resource path
+# - source path
+# All of which are used to define features available for a
+# device type or group of devices 
 
+# EXCLUDE ANNOTATIONS 
+# are used to include/exclude certain sections of the code 
+# for specific devices
+
+# Each device should be assigned one of the following three
+# variables, depending on their CIQ version
+# < CIQ 4.0.0
+# >= CIQ 4.0.0
+# >= CIQ 5.1.0
 annotCiqPre400=exclForCiqPre400
 annotCiq400Plus=exclForCiq400Plus
 annotCiq510Plus=exclForCiq510Plus;exclForCiq400Plus
 
+# Either one of these should be assigned, depending
+# whether the device is primarily button-controlled
+# or touch-controlled.
+# - Button-based: all devices with buttons for up/down/enter/back,
+#                 even if they also have a touch screen. Such 
+#                 devices include: Fenix, Epix, Forerunner, Edge 540/840
+# - Touch-based:  all devices without the above-mentioned buttons, such
+#                 as: Vivoactive, Venu, Edge 1040 and Edge 1050
 annotTouch=exclForTouch
 annotButton=exclForButton
 
+# RESOURCE PATH
+# resources define drawables (icons), app settings and strings
+# The variable resBase should be included in ALL resource
 resBase=resources/base
+# The launcher-icons directory includes a directory for
+# each launcher-icon size, which shall be appended
+# e.g. $(resLauncherIcon)/40x40
 resLauncherIcons=resources/launcher-icons
 
-srcBase=source;constants/defaults
+# SOURCE PATH
+# Defines which source files shall be included for the build
+
+# Device-specific properties, mainly for the UI are implemented
+# as constants. The classes DefaultConstants and GlanceDefaultConstants
+# define the default values, the derived Constants and GlanceConstants
+# are used for accessing the values. Individual devices may use different
+# implementations of Constants and GlanceConstants and override some
+# of the default values.
+# srcBase holds the default values
+# srcDefault holds the default implementation of Constants and GlanceConstants
+# The other variables define the path for individual devices
+srcBase=source;constants/base
+srcDefault=$(srcBase);constants/default
+srcFenix6Pro=$(srcBase);constants/fenix6pro
+# For all Edge devices
 srcEdgeBase=$(srcBase);constants/edge/base
+# For Edge touch devices (such as Explore 2/1040/1050)
 srcEdgeTouch=$(srcEdgeBase);constants/edge/touch
+# For Edge button devices (such as 540/840)
 srcEdgeButton=$(srcEdgeBase);constants/edge/button
 
+# DEVICES
+# The following section assembles the excludeAnnotations,
+# sourcePath and resourcePath for each device
+
+# For excludeAnnotations and sourcePath there are defaults
+# that can be overriden by devices
 base.excludeAnnotations = $(annotCiq510Plus);$(annotButton)
-base.sourcePath = $(srcBase);constants/base
+base.sourcePath = $(srcDefault)
 
-# Watches
+# resourcePath has to be defined for each device to point
+# to the correct launcher icon
 
-# annotCiqPre400/Button
+# WATCHES
+
+# Fenix 6 Pro series
 fenix6pro.resourcePath=$(resBase);$(resLauncherIcons)/40x40
 fenix6pro.excludeAnnotations = $(annotCiqPre400);$(annotButton)
+fenix6pro.sourcePath = $(srcFenix6Pro)
 fenix6spro.resourcePath=$(fenix6pro.resourcePath)
-fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
+fenix6spro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
+fenix6spro.sourcePath = $(fenix6pro.sourcePath)
 fenix6xpro.resourcePath=$(fenix6pro.resourcePath)
-fenix6pro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
+fenix6xpro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
+fenix6xpro.sourcePath = $(fenix6pro.sourcePath)
 
-# annotCiq510Plus/Button
+# Button-based devices with CIQ >= 5.1.0 are the default,
+# so only resourcePath needs to be defined.
 d2mach1.resourcePath=$(resBase);$(resLauncherIcons)/60x60
 enduro3.resourcePath=$(resBase);$(resLauncherIcons)/40x40
 epix2.resourcePath=$(resBase);$(resLauncherIcons)/60x60
@@ -63,7 +123,7 @@ fr965.resourcePath=$(resBase);$(resLauncherIcons)/65x65
 marq2.resourcePath=$(resBase);$(resLauncherIcons)/60x60
 marq2aviator.resourcePath=$(resBase);$(resLauncherIcons)/60x60
 
-# annotCiq400Plus/Touc
+# Touch devices with CIQ level between 4.0.0 and 5.0.0
 venu2.resourcePath=$(resBase);$(resLauncherIcons)/70x70
 venu2.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
 venu2s.resourcePath=$(resBase);$(resLauncherIcons)/61x61
@@ -75,7 +135,7 @@ venusq2.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
 venusq2m.resourcePath=$(resBase);$(resLauncherIcons)/40x40
 venusq2m.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
 
-# annotCiq510Plus/Touch
+# Touch devices with CIQ level >= 5.1.0
 venu3.resourcePath=$(resBase);$(resLauncherIcons)/70x70
 venu3.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
 venu3s.resourcePath=$(resBase);$(resLauncherIcons)/70x70
@@ -85,24 +145,28 @@ vivoactive5.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
 vivoactive6.resourcePath=$(resBase);$(resLauncherIcons)/54x54
 vivoactive6.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
 
-# Cycling Computers
+# CYCLING COMPUTERS
+# The resourcePath of all Edge devices contains an additional
+# directory with a drawables.xml that overrides the default
+# logo width
 
+# Touch devices with CIQ level between 4.0.0 and 5.0.0
 edgeexplore2.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/36x36
 edgeexplore2.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
 edgeexplore2.sourcePath = $(srcEdgeTouch)
 
+# Button-based, CIQ >= 5.1.0
 edge540.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/35x35
 edge540.excludeAnnotations = $(annotCiq510Plus);$(annotButton)
 edge540.sourcePath = $(srcEdgeButton)
-
 edge840.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/35x35
 edge840.excludeAnnotations = $(annotCiq510Plus);$(annotButton)
 edge840.sourcePath = $(srcEdgeButton)
 
+# Touch-based, CIQ >= 5.1.0
 edge1040.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/40x40
 edge1040.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
 edge1040.sourcePath = $(srcEdgeTouch)
-
-edge1050.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/70x70
+edge1050.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/68x68
 edge1050.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
 edge1050.sourcePath = $(srcEdgeTouch)
