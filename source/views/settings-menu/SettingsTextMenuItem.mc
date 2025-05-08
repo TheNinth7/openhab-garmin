@@ -26,7 +26,7 @@ class SettingsTextMenuItem extends CustomMenuItem {
             :text => _label,
             :font => Constants.UI_MENU_ITEM_FONTS[0],
             :locX => locX,
-            :locY => yCenter - Graphics.getFontHeight( Graphics.FONT_SMALL ),
+            :locY => yCenter - Graphics.getFontHeight( Constants.UI_MENU_ITEM_FONTS[0] ),
             :justification => Graphics.TEXT_JUSTIFY_LEFT,
             :color => Graphics.COLOR_WHITE,
             :backgroundColor => Graphics.COLOR_BLACK,

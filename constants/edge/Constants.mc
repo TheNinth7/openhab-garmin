@@ -1,5 +1,6 @@
 import Toybox.Lang;
 import Toybox.Graphics;
+import Toybox.System;
 
 class Constants extends DefaultConstants {
     protected function initialize() { DefaultConstants.initialize(); }
@@ -9,6 +10,12 @@ class Constants extends DefaultConstants {
     public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.01;
     public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.01;
     public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.0;
-    public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.03;
-    public static const UI_MENU_ITEM_LABEL_HEIGHT_FACTOR as Float = 0.9;
+    public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.05;
+
+    public static const UI_MENU_ITEM_HEIGHT as Number = 
+        ( System.getDeviceSettings().screenHeight * 0.175 ).toNumber();
+
+    public static const UI_SETTINGS_ITEM_HEIGHT as Number = 
+        ( System.getDeviceSettings().screenHeight * 0.25 ).toNumber();
+
 }

@@ -4,13 +4,10 @@ import Toybox.System;
 
 class SettingsMenu extends BaseMenu {
 
-    public static var ITEM_HEIGHT as Number = 
-        ( System.getDeviceSettings().screenHeight * 0.3 ).toNumber();
-
     public function initialize() {
         BaseMenu.initialize( {
             :title => "Settings",
-            :itemHeight => ITEM_HEIGHT
+            :itemHeight => Constants.UI_SETTINGS_ITEM_HEIGHT
         } );
 
         addItem( new SettingsTextMenuItem(

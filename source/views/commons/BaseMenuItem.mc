@@ -74,7 +74,7 @@ class BaseMenuItem extends CustomMenuItem {
             :color => _labelColor,
             :backgroundColor => Graphics.COLOR_BLACK,
             :width => titleWidth,
-            :height => ( dc.getHeight() * Constants.UI_MENU_ITEM_LABEL_HEIGHT_FACTOR ).toNumber()
+            :height => dc.getHeight()
         } );
     }
 

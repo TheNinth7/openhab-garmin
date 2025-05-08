@@ -14,10 +14,11 @@ class DefaultConstants {
     public static const UI_MENU_TITLE_FONT as FontDefinition = Graphics.FONT_SMALL;  
     public static const UI_MENU_ITEM_FONTS as Array<FontDefinition> = [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
 
-    public static const UI_MENU_ITEM_HEIGHT_FACTOR as Float = 0.2;
-
     public static const UI_MENU_ITEM_HEIGHT as Number = 
-        ( System.getDeviceSettings().screenHeight * UI_MENU_ITEM_HEIGHT_FACTOR ).toNumber();
+        ( System.getDeviceSettings().screenHeight * 0.2 ).toNumber();
+
+    public static const UI_SETTINGS_ITEM_HEIGHT as Number = 
+        ( System.getDeviceSettings().screenHeight * 0.3 ).toNumber();
 
     // These factors determine the padding to the left and right of menu items,
     // based on the total width of the menu item Dc
@@ -29,6 +30,4 @@ class DefaultConstants {
     public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.03;
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.03;
 
-    // The height the label should occupy, relative to the menu item Dc height
-    public static const UI_MENU_ITEM_LABEL_HEIGHT_FACTOR as Float = 1.0;
 }
