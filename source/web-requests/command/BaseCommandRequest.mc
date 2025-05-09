@@ -31,10 +31,10 @@ class BaseCommandRequest extends BaseRequest {
     // @param parameters - options for the web request, as per Communication.makeWebRequest
     protected function makeWebRequest( parameters as Dictionary<Object, Object>? ) as Void {
         try {
-            SitemapRequest.get().stop();
+            WidgetSitemapRequest.get().stop();
             Communications.makeWebRequest( _url, parameters, getBaseOptions(), method( :onReceive ) );
         } catch( ex ) {
-            SitemapRequest.get().start();
+            WidgetSitemapRequest.get().start();
             throw ex;
         }
     }
@@ -44,7 +44,7 @@ class BaseCommandRequest extends BaseRequest {
     // If there was an error, onException() is being called
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
-            SitemapRequest.get().start();
+            WidgetSitemapRequest.get().start();
             checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND );
             _item.onCommandComplete();
         } catch( ex ) {

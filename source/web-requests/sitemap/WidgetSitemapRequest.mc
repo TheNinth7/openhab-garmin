@@ -1,0 +1,102 @@
+import Toybox.Lang;
+import Toybox.PersistedContent;
+import Toybox.Timer;
+
+/*
+    This is the sitemap request implementation for the widget
+    
+    It is implemented as a Singleton, as there is only one sitemap
+    active at a time. This allows access from other classes,
+    without carrying a reference to the instance around.
+
+    The class instantiates the root menu (homepage menu) representing
+    the sitemap on the UI, and updates it with every new incoming response.
+*/
+class WidgetSitemapRequest extends SitemapBaseRequest {
+
+    // Singleton instance and accessor
+    private static var _instance as WidgetSitemapRequest?;
+    public static function get() as WidgetSitemapRequest {
+        if( _instance == null ) {
+            _instance = new WidgetSitemapRequest();
+        }
+        return _instance as WidgetSitemapRequest;
+    }
+
+    // Holds the root menu (homepage menu) for the sitemap
+    // This reference is needed so that the update event handler
+    // below can update the menu
+    private static var _homepageMenu as HomepageMenu?;
+
+    // This function is called on startup by OHApp, and 
+    // if available initializes the menu from sitemap data
+    // in storage
+    public static function initializeMenu() as HomepageMenu? {
+        try {
+            var sitemapHomepage = SitemapStore.getHomepage();
+            if( sitemapHomepage != null ) {
+                _homepageMenu = new HomepageMenu( sitemapHomepage );
+            }
+        } catch( ex ) {
+            Logger.debugException( ex );
+        }
+        return _homepageMenu;
+    }
+
+    // Constructor
+    private function initialize() {
+        // There is no minimum polling interval for the widget request,
+        // therefore we pass 0 into the super class constructor.
+        SitemapBaseRequest.initialize( null );
+    }
+
+    // Event handler for valid responses
+    // If there is any error coming from the request or the response was 
+    // invalid, the onException() event handler is called instead
+    public function onSitemapUpdate( sitemapHomepage as SitemapHomepage ) as Void {
+        Logger.debug( "SitemapRequest.onSitemapUpdate");
+        if( _homepageMenu == null ) {
+            // There is no menu yet, so we need to switch
+            // from the LoadingView to the menu
+            _homepageMenu = new HomepageMenu( sitemapHomepage );
+            WatchUi.switchToView( _homepageMenu, HomepageMenuDelegate.get(), WatchUi.SLIDE_BLINK );
+        } else {
+            // There is already a menu, so we update it
+
+            // To satisfy the typechecker, we get the member variable into a local variable
+            var homepage = _homepageMenu as PageMenu;
+
+            // the update function returns whether the structure of the menu
+            // remained unchanged, i.e. if containers have been added or removed
+            var structureRemainsValid = homepage.update( sitemapHomepage );
+            
+            // If we are in the settings menu, we do nothing
+            if( ! SettingsMenuHandler.isShowingSettings() ) {
+                // If the structure is not valid anymore, we reset the view
+                // to the homepage, but only if we are not in the error view
+                if( ! structureRemainsValid && ! ErrorViewHandler.isShowingErrorView() ) {
+                    Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
+                    // If update returns false, the menu structure has changed
+                    // and we therefore replace the current view stack with
+                    // the homepage
+                    ViewHandler.popToBottomAndSwitch( homepage, HomepageMenuDelegate.get() );
+                } else if( ErrorViewHandler.isShowingErrorView() ) {
+                    // If currently there is an error view, we replace it
+                    // by the homepage
+                    ErrorViewHandler.replaceErrorView( homepage, HomepageMenuDelegate.get() );
+                } else {
+                    // If the structure is still valid and no error is shown,
+                    // then we update the screen, showing the changes in the
+                    // currently displayed menu
+                    WatchUi.requestUpdate();
+                }
+            }
+        }
+    }
+
+    // Any exceptions from the request/response will be handled
+    // by this function and passed directly to the ExceptionHandler
+    public function onException( ex as Exception ) as Void {
+        ExceptionHandler.handleException( ex );            
+    }
+}

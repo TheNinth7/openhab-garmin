@@ -64,5 +64,5 @@ class DefaultConstants {
     // This is needed for example on the Edge 540 and 840, since those provide
     // no built-in indication of the focused item (see constants/edge/button)
     // If set to transparent then the coloring will not be applied
-    public static const UI_MENU_ITEM_BG_COLOR_FOCUSED = Graphics.COLOR_TRANSPARENT;
+    public static const UI_MENU_ITEM_BG_COLOR_FOCUSED as ColorType = Graphics.COLOR_TRANSPARENT;
 }
