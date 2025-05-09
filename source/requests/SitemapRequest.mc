@@ -2,11 +2,15 @@ import Toybox.Lang;
 import Toybox.PersistedContent;
 import Toybox.Timer;
 
+/*
+    This is the sitemap request implementation for the widget
+    It is implemented at a Singleton
+*/
 class SitemapRequest extends SitemapBaseRequest {
     private static var _instance as SitemapRequest?;
     private static var _homepageMenu as HomepageMenu?;
 
-    public static function getInstance() as SitemapRequest {
+    public static function get() as SitemapRequest {
         if( _instance == null ) {
             _instance = new SitemapRequest();
         }
@@ -15,7 +19,7 @@ class SitemapRequest extends SitemapBaseRequest {
 
     public static function initializeMenu() as HomepageMenu? {
         try {
-            var sitemapHomepage = getInstance().getSitemapHomepage();
+            var sitemapHomepage = SitemapStore.getHomepage();
             if( sitemapHomepage != null ) {
                 _homepageMenu = new HomepageMenu( sitemapHomepage );
             }

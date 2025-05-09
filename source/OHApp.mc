@@ -37,7 +37,7 @@ class OHApp extends Application.AppBase {
             var hasMenu = menu != null;
 
             // Then we start the sitemap request
-            SitemapRequest.getInstance().start();
+            SitemapRequest.get().start();
             
             // Starting the sitemap request may return an immediate error, which
             // SitemapRequest.onReceive reports to the ExceptionHandler via
