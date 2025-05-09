@@ -14,5 +14,5 @@ class GlanceDefaultConstants {
     protected function initialize() {}
     
     // The fonts available for the glance
-    public static const UI_GLANCE_ITEM_FONTS as Array<FontDefinition> = [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE];
+    public static const UI_GLANCE_FONTS as Array<FontDefinition> = [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE];
 }

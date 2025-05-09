@@ -150,14 +150,12 @@ class BaseMenu extends CustomMenu {
         return _itemCount;
     }
 
-    // Button devices need a function to focus the
+    // For the settings menu, we need a function to focus the
     // first or last element for switching back and forth
     // between the homepage menu and the the parallel settings menu.
-    (:exclForTouch)
     public function focusFirst() as Void {
         setFocus( 0 );
     }
-    (:exclForTouch)
     public function focusLast() as Void {
         setFocus( _itemCount - 1 );
     }

@@ -24,7 +24,7 @@ class GlanceSitemapView extends WatchUi.GlanceView {
         // Width and height can only be set once a Dc is available
         _textArea = new TextArea( { 
             :backgroundColor => Graphics.COLOR_TRANSPARENT,
-            :font => GlanceConstants.UI_GLANCE_ITEM_FONTS,
+            :font => GlanceConstants.UI_GLANCE_FONTS,
             :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => WatchUi.LAYOUT_VALIGN_CENTER
