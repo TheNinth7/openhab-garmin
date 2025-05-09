@@ -2,20 +2,23 @@ import Toybox.Graphics;
 import Toybox.WatchUi;
 
 /*
-    A simple full-screen view showing "Loading ..."
-    This is shown when the widget starts and there is no sitemap
-    in storage, so basically only when the app is started the first
-    time after installation, version update or settings change
-*/
+ * A simple full-screen view that displays "Loading ...".
+ *
+ * This view is shown when the widget starts and no sitemap is available in storage— 
+ * typically during the first launch after installation, a version update, 
+ * or a settings change.
+ */
 class LoadingView extends WatchUi.View {
 
     function initialize() {
         View.initialize();
     }
 
-    // When in the LoadingView all errors should immediately
-    // go into a full-screen error, there is no point in 
-    // showing a toast
+    /*
+    * While in the `LoadingView`, all errors should trigger a full-screen error view.
+    * Showing a toast is not useful in this context, as the loading state prevents 
+    * meaningful user interaction.
+    */
     public function onShow() as Void {
         ToastHandler.setUseToasts( false );
     }

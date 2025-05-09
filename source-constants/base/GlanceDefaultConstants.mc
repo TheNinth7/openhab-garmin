@@ -3,12 +3,12 @@ import Toybox.Graphics;
 import Toybox.System;
 
 /*
-    Defines glance constants and their default values.
-    To access the constants, the class GlanceConstants shall be used.
-    The default implementation of GlanceConstants just inherits the
-    default values, but for some devices there are implementations
-    that override some of the values.
-*/
+ * Defines glance-related constants and their default values.
+ *
+ * Access these values via the `GlanceConstants` class.
+ * The base implementation provides the defaults, while device-specific
+ * subclasses can override individual constants as needed.
+ */
 (:glance)
 class GlanceDefaultConstants {
     protected function initialize() {}

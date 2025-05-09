@@ -2,6 +2,11 @@ import Toybox.WatchUi;
 import Toybox.System;
 import Toybox.Lang;
 
+/*
+ * `PageMenuDelegate` serves as the input delegate for `PageMenu` views.
+ * Since it requires no context, it is implemented as a singleton and shared 
+ * across all `PageMenu` instances.
+ */
 class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
     
     // Needs to be public despite this being a singleton class,
@@ -11,7 +16,7 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
     public function initialize() {
         Menu2InputDelegate.initialize();
     }
-
+    // Singleton accessor
     private static var _instance as PageMenuDelegate?;
     public static function get() as PageMenuDelegate {
         if( _instance == null ) {
@@ -20,6 +25,8 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
         return _instance as PageMenuDelegate;
     }
     
+    // onSelect() will call the event handler of the menu item,
+    // and any exceptions will be passed on to the ExceptionHandler
     public function onSelect( item as WatchUi.MenuItem ) as Void {
         // Logger.debug( "PageMenuDelegate: onSelect" );
         try {
@@ -30,8 +37,8 @@ class PageMenuDelegate extends WatchUi.Menu2InputDelegate {
         }
     }
 
+    // Override onBack() to use our own popView() implementation
     public function onBack() as Void {
         ViewHandler.popView( WatchUi.SLIDE_RIGHT );
     }
-
 }

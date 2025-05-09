@@ -1,10 +1,9 @@
 import Toybox.Lang;
 
 /*
-    Base exceptions for all others, and used for
-    any exceptions that do not fit into any of the
-    more specific exceptions
-*/
+ * Base exception for all other errors.
+ * Used when an exception does not fit into any of the more specific exception classes.
+ */
 (:glance)
 class GeneralException extends Exception {
     private var _msg as String;

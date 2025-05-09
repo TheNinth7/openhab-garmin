@@ -3,16 +3,17 @@ import Toybox.Application.Storage;
 import Toybox.Application;
 
 /*
-    The SitemapErrorCountStore keeps track of communication errors
-    related to the SitemapRequest.
-    Non-fatal communication errors related to the sitemap turn fatal
-    after a certain amount of occurences, and this store keeps track
-    of such occurances across glance and widget.
-    Purpose is that if the glance already runs into the threshold, the
-    widget should display an error right away on startup.
-
-    This class is a static singleton for easy access.
-*/
+ * `SitemapErrorCountStore` tracks communication errors related to `SitemapRequest`.
+ *
+ * Non-fatal sitemap-related communication errors become fatal after a certain number 
+ * of occurrences. This store tracks those occurrences across both the glance and widget 
+ * views to ensure consistent behavior.
+ *
+ * For example, if the glance view has already reached the error threshold, the widget 
+ * should immediately show an error on startup.
+ *
+ * This class is implemented as a static singleton for convenient global access.
+ */
 (:glance)
 class SitemapErrorCountStore  {
 

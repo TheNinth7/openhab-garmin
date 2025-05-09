@@ -3,15 +3,14 @@ import Toybox.Application.Storage;
 import Toybox.Application;
 
 /*
-    The SitemapStore stores the latest JSON and persists it in storage
-    when the application is ended. This happens both in glance and widget
-    and helps the widget startup faster and display current data.
-
-    On older devices the glance may not have enough memory to read the JSON
-    from storage or receive it via web request. On those devices we still want
-    to display the sitemap label in the glance, and therefore the label is
-    stored separately.
-*/
+ * `SitemapStore` holds the latest JSON sitemap data and persists it to storage 
+ * when the application ends. This applies to both glance and widget modes, 
+ * enabling faster startup and immediate display of current data.
+ *
+ * On older devices, the glance view may lack sufficient memory to read the 
+ * full JSON from storage or handle web requests. To address this, the sitemap 
+ * label is stored separately, allowing at least the label to be shown in the glance view.
+ */
 (:glance)
 class SitemapStore  {
     // Storage field names

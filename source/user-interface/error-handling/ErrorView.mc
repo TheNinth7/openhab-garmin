@@ -5,8 +5,8 @@ import Toybox.Math;
 import Toybox.System;
 
 /*
-    View to display a full-screen error message from an exception
-*/
+ * View for displaying a full-screen error message resulting from an exception.
+ */
 class ErrorView extends WatchUi.View {
 
     // The exception to be displayed
@@ -18,15 +18,19 @@ class ErrorView extends WatchUi.View {
         _exception = exception;
     }
 
-    // While the error view is active, no toast notifications for
-    // non-fatal errors should be displayed (see ExceptionHandler
-    // and ToastHandler)
+    /*
+    * While the error view is active, toast notifications for non-fatal errors 
+    * should be suppressed. 
+    * See `ExceptionHandler` and `ToastHandler` for related logic.
+    */
     public function onShow() as Void {
         ToastHandler.setUseToasts( false );
     }
 
-    // When the error view is displayed, sitemap requests
-    // continue, and any new errors update the error view
+    /*
+    * While the error view is displayed, sitemap requests continue to run.
+    * Any new errors that occur will update the content of the error view.
+    */
     public function update( exception as Exception ) as Void {
         _exception = exception;
         WatchUi.requestUpdate();

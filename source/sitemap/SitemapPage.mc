@@ -2,9 +2,9 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
-    This class is representing elements that hold other elements,
-    i.e. the homepage and frames
-*/
+ * This class represents container elements within the sitemap,
+ * such as the homepage and frame elements, which can hold other elements.
+ */
 (:glance)
 class SitemapPage extends SitemapElement {
 
@@ -15,12 +15,14 @@ class SitemapPage extends SitemapElement {
     // The elements of this page
     public var elements as Array<SitemapElement> = new Array<SitemapElement>[0];
 
-    // The classes representing elements are not available in the glance
-    // to save memory. The constructor checks for this and only reads
-    // elements if it is not in the glance. However the typechecker/compiler 
-    // does not know that and would report an error. Therefore that particular
-    // check is disabled, i.e. the typechecker will not verify for this function
-    // if all classes are available in glance scope
+    /*
+    * Primitve element classes are not available in the glance view to conserve memory.
+    * The constructor accounts for this by only reading elements when not in glance mode.
+    *
+    * However, the typechecker/compiler is unaware of this runtime check and would 
+    * otherwise report an error due to missing classes. To prevent this, type checking 
+    * is explicitly disabled for this function in glance scope.
+    */
     (:typecheck(disableGlanceCheck))
     public function initialize( data as JsonObject ) {
         SitemapElement.initialize( data );

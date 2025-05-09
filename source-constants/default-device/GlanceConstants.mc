@@ -1,7 +1,7 @@
 import Toybox.Lang;
 
 /*
-    The default Constants implementation inherits all default values and overrides none
+* The default `Constants` implementation inherits all default values and overrides none.
 */
 (:glance)
 class GlanceConstants extends GlanceDefaultConstants {

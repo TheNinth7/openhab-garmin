@@ -3,13 +3,14 @@ import Toybox.Graphics;
 import Toybox.System;
 
 /*
-    Constants for button-based Edge devices
+* Constants specific to button-based Edge devices.
 */
 class Constants extends EdgeDefaultConstants {
     protected function initialize() { EdgeDefaultConstants.initialize(); }
 
-    // Button-based Edge devices need a colored background for the
-    // focused item, since those devices to not provide any other
-    // visual indication showing which item is focused
+    /*
+    * Button-based Edge devices require a colored background for the focused item,
+    * as they do not provide any other visual indication of focus.
+    */
     public static const UI_MENU_ITEM_BG_COLOR_FOCUSED as ColorType = 0x04395E;
 }

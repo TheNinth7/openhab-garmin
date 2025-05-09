@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.Graphics;
 
 /*
-    GlanceConstants is only implemented once for all Edge devices
+* `GlanceConstants` uses a single implementation for all Edge devices.
 */
 (:glance)
 class GlanceConstants extends GlanceDefaultConstants {

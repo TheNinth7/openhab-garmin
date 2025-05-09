@@ -3,8 +3,8 @@ import Toybox.Graphics;
 import Toybox.System;
 
 /*
-    Default values for all Edge devices
-    Actual Constants implementation differ for button and touch based devices
+* Default values for all Edge devices.
+* Constants implementations vary between button-based and touch-based devices.
 */
 class EdgeDefaultConstants extends DefaultConstants {
     protected function initialize() { DefaultConstants.initialize(); }

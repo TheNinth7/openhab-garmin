@@ -5,8 +5,8 @@ import Toybox.Timer;
 import Toybox.Application.Properties;
 
 /*
-    The glance view of the app
-*/
+ * The glance view of the app.
+ */
 (:glance) 
 class GlanceSitemapView extends WatchUi.GlanceView {
     

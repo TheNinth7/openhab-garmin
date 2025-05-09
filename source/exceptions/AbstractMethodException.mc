@@ -1,12 +1,10 @@
 import Toybox.Lang;
 
 /*
-    Monkey C does not support abstract methods. So in base
-    classes, we do an implementation of methods that shall
-    be implemented by derived classes, and have them throw an
-    AbstractMethodException, to ensure that the derived class
-    overrides it.
-*/
+ * Monkey C does not support abstract methods. To enforce overriding in subclasses,
+ * base-class implementations of “abstract” methods throw an `AbstractMethodException`,
+ * ensuring that derived classes provide their own implementation.
+ */
 (:glance)
 class AbstractMethodException extends GeneralException {
     function initialize( msg as String ) {

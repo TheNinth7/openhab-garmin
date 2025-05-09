@@ -6,15 +6,15 @@ import Toybox.Time.Gregorian;
 import Toybox.System;
 
 /*
-    This class provides functions for printing debug
-    output to the debug console or log file
-*/
+ * This class provides functions for printing debug output 
+ * to the debug console or log file.
+ */
 (:glance)
 public class Logger {
 
-    // Info should be used in places where the output shall remain
-    // permanent part of the code. As opposed to temporary debug
-    // statements that may be commented in/out as needed for debugging
+    // `Info` should be used where the output is a permanent part of the code,
+    // in contrast to temporary debug statements which are typically commented 
+    // in and out as needed for debugging purposes.
     public static function info( text as String ) as Void {
         debug( text );
     }
@@ -43,8 +43,10 @@ public class Logger {
         if( errorMsg != null ) {
             debug( errorMsg );
         }
-        // For communication exceptions we know the source, and also
-        // there is bug in SDK that leads to an exception in printStackTrace
+        // For communication exceptions, the source is known. Additionally,
+        // there is a bug in the SDK that causes an exception in `printStackTrace`, 
+        // particularly when the exception is thrown during a synchronous call 
+        // to `BaseSitemapRequest.onReceive()` during startup.
         if( ! ( ex instanceof CommunicationBaseException ) ){
             ex.printStackTrace();
             System.println(" ");

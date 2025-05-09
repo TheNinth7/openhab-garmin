@@ -1,13 +1,13 @@
 import Toybox.Lang;
 
 /*
-    Used when a web request returned response code 200 (success)
-    but the response data was not of the expected type
-    One notable thing: there seem to be some differences between
-    how certain Garmin devices (or mobile phones) deal with an unexpected
-    response. Some return response code -400, others return 200 but
-    an empty (null) response.
-*/
+ * Exception thrown when a web request returns HTTP 200 but the response data
+ * is not of the expected type.
+ *
+ * Note: behavior varies across devices—some Garmin units or paired phones
+ * report SDK error –400 for unexpected data, while others return 200 with
+ * an empty (null) response.
+ */
 (:glance)
 class UnexpectedResponseException extends CommunicationBaseException {
 

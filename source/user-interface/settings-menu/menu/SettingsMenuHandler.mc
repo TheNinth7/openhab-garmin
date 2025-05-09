@@ -2,14 +2,15 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
-    The settings menu handler is responsible for keeping track
-    off the settings menu, and provides functions for showing
-    and hiding it.
-*/
+ * The settings menu handler is responsible for managing the settings menu.
+ * It provides functions to show and hide the menu as needed.
+ */
 class SettingsMenuHandler {
-    // Both the menu itself and the delegate are kept here as
-    // Singletons. The delegate implementation depends on
-    // whether we are a button- or touch-based device.
+    /*
+    * Both the settings menu and its input delegate are maintained as singletons.
+    * The specific delegate implementation depends on whether the device uses 
+    * button-based or touch-based input.
+    */
     private static var _settingsMenu as SettingsMenu = new SettingsMenu();
     (:exclForTouch)
     private static var _settingsMenuDelegate as ButtonSettingsMenuDelegate = new ButtonSettingsMenuDelegate();
@@ -22,11 +23,15 @@ class SettingsMenuHandler {
         return _isShowingSettings;
     }
     
-    // Open the settings
-    // The slide type not only defines the actual slide animation
-    // but also which menu item shall be in focus in the settings menu
-    // SLIDE_UP and SLIDE_DOWN are used on button devices,
-    // SLIDE_RIGHT and SLIDE_LEFT for touch devices
+    /*
+    * Opens the settings menu.
+    *
+    * The `slideType` defines both the direction of the slide animation 
+    * and which menu item should be focused when the settings menu appears.
+    *
+    * - `SLIDE_UP` and `SLIDE_DOWN` are used on button-based devices.
+    * - `SLIDE_RIGHT` and `SLIDE_LEFT` are used on touch-based devices.
+    */
     public static function showSettings( slide as SlideType ) as Void {
         if( _isShowingSettings ) {
             throw new GeneralException( "Called showSettings when settings were already shown" );

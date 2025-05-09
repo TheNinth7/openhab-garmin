@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.Application.Properties;
 
 /*
-    Static Singleton class for accessing app settings
+* Singleton class providing static access to application settings.
 */
 (:glance)
 class AppSettings {
@@ -53,17 +53,17 @@ class AppSettings {
     public var webhook as String = "";
     public var pollingInterval as Number;
 
-    // Constructor
-    // Currently all settings are loaded here
-    // When support for multiple servers is added, this
-    // needs to be changed to dynamically loading new
-    // settings when a new server is selected
+    /*
+    * Constructor.
+    * Loads all application settings at initialization.
+    * To support multiple servers in the future, this should be refactored
+    * to load settings dynamically when a new server is selected.
+    */
     private function initialize() {
         // Read the server URL
         url = getString( URL_PREFIX + _index, "Configuration: URL is missing" );
-        // Other parts of the code assume that the server address is 
-        // followed by a slash (e.g. https://home.myopenhab.org/),
-        // so if there is none, it is added here
+        // Other code assumes the server URL ends with a slash (e.g., https://home.myopenhab.org/).
+        // If it’s missing, append one here.
         var lastChar = url.substring( url.length()-1, null );
         if( lastChar != null && ! lastChar.equals( "/" ) ) {
             url += "/";

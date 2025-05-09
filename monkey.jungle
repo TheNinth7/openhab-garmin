@@ -55,7 +55,7 @@ resLauncherIcons=resources/launcher-icons
 # srcDefault holds the default implementation of Constants and GlanceConstants
 # The other variables define the path for individual devices
 srcBase=source;source-constants/base
-srcDefault=$(srcBase);source-constants/default
+srcDefault=$(srcBase);source-constants/default-device
 srcFenix6Pro=$(srcBase);source-constants/fenix6pro
 # For all Edge devices
 srcEdgeBase=$(srcBase);source-constants/edge/base

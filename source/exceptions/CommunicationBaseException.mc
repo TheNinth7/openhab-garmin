@@ -1,14 +1,15 @@
 import Toybox.Lang;
 
 /*
-    Base class for all exceptions related to communications
-    (making web requests)
-*/
+ * Base class for all communication-related exceptions
+ * (e.g., errors arising from web requests).
+ */
 (:glance)
 class CommunicationBaseException extends Exception {
-    // Sources of communications exception are
-    // either polling the Sitemap or sending
-    // a command
+    /*
+    * Communication exceptions originate from either sitemap polling
+    * or command requests.
+    */
     enum Source {
         EX_SOURCE_SITEMAP,
         EX_SOURCE_COMMAND
@@ -32,12 +33,12 @@ class CommunicationBaseException extends Exception {
         return _source == source;
     }
 
-    // Relevant only for exceptions with source sitemap
-    // Fatal exceptions from sitemap polling lead to an 
-    // immediate full-screen error while for non-fatal errors 
-    // only a toast notification will be displayed. If they 
-    // persist for a certain amount of time, also a full-screen 
-    // error will be displayed.
+    /*
+    * This applies only to sitemap-related exceptions:
+    * - Fatal polling errors trigger an immediate full-screen error.
+    * - Non-fatal polling errors first show a toast notification.
+    *   If they persist past the configured threshold, a full-screen error is displayed.
+    */
     public function isFatal() as Boolean {
         return false;
     }
@@ -50,8 +51,11 @@ class CommunicationBaseException extends Exception {
         return SOURCE_SHORTCODE[_source];
     }
 
-    // Functions to be implemented by derivates of this class
-    // providing a longer error message and a short toast message
+    /*
+    * Subclasses must implement methods to provide:
+    * - A detailed full-screen error message.
+    * - A concise toast notification message.
+    */
     public function getErrorMessage() as String or Null {
         throw new AbstractMethodException( "CommunicationBaseException.getErrorMessage" );
     }

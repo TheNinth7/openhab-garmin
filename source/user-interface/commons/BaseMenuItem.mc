@@ -3,16 +3,15 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 
 /*
-    The BaseMenuItem is the super class of all menu item
-    classes. Currently its own purpose is to draw the
-    focus indicator for the few devices that need it
-    (Edge 540/840) but in future there may be more functionality
-    added here.
-*/
+ * `BaseMenuItem` is the base class for all menu item classes.
+ *
+ * Its current role is to draw the focus indicator for devices that require it 
+ * (such as the Edge 540/840). Additional shared functionality may be added 
+ * here in the future.
+ */
 
-// Defining the options accepted
-// by this BaseMenuItem class
-// Most of those options are used by the SitemapBaseMenuItem
+// Defines the options accepted by the `BaseMenuItem` class.
+// Most of these options are used by `SitemapBaseMenuItem`.
 typedef BaseMenuItemOptions as {
     :id as Object,
     :icon as ResourceId?,
@@ -25,22 +24,22 @@ typedef BaseMenuItemOptions as {
 class BaseMenuItem extends CustomMenuItem {
     
     // Constructor
-    // This super class currently only uses the id from the options,
-    // everything else is being used by derived classes
+    // This base class currently only uses the `id` from the options;
+    // all other options are used by derived classes.
     protected function initialize( options as BaseMenuItemOptions ) {
         CustomMenuItem.initialize( options[:id] as String, {} );
     }
 
     
-    // This class implements the draw function and draws the common
-    // elements. Further drawing is delegated to drawImpl(), which is
-    // to be implemented by derivates of this class.
+    // This class implements the `draw()` function and renders the common elements.
+    // Additional drawing is delegated to `drawImpl()`, which must be implemented 
+    // by subclasses.
     public function drawImpl( dc as Dc ) as Void {
         throw new AbstractMethodException( "BaseMenuItem.drawImpl" );
     }
     public function draw( dc as Dc ) as Void {
-        // If the focused bg color is set to anything than transparent,
-        // and the item is focused, we color the background
+        // If the focused background color is not transparent and the item is focused, 
+        // fill the background with the specified color.
         if( ( isFocused() ) && 
             Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED != Graphics.COLOR_TRANSPARENT ) {
                 dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED );

@@ -2,9 +2,9 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
-    Class for creating the appropriate object for
-    a given sitemap element
-*/
+ * Factory class for creating the appropriate object 
+ * based on a given sitemap element.
+ */
 class SitemapElementFactory {
 
     // Currently supported element types

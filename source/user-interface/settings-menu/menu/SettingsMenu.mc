@@ -3,10 +3,9 @@ import Toybox.WatchUi;
 import Toybox.System;
 
 /*
-    The Settings Menu currently provides access to the 
-    app version and server URL. In future more functionality
-    may be added, such as switching between servers
-*/
+ * The settings menu currently provides access to the app version and server URL.
+ * In the future, additional functionality may be added, such as switching between servers.
+ */
 class SettingsMenu extends BaseMenu {
 
     public function initialize() {

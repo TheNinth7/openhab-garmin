@@ -1,11 +1,10 @@
 import Toybox.Lang;
 
 /*
-    Exception representing any error response codes coming
-    from Communications.makeWebRequest (i.e. any response codes != 200)
-    Positive response codes are HTTP status codes (e.g. 404 for not found),
-    negative responses are Garmin SDK errors (e.g. -400 for unexpected response content type)
-*/
+ * Exception for any non-200 response codes from `Communications.makeWebRequest`.
+ * Positive codes represent HTTP status codes (e.g., 404 for Not Found).
+ * Negative codes represent Garmin SDK errors (e.g., –400 for unexpected response content type).
+ */
 (:glance)
 class CommunicationException extends CommunicationBaseException {
 

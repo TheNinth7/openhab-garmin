@@ -1,9 +1,8 @@
 import Toybox.Lang;
 
 /*
-    Exception representing any errors when reading 
-    the app settings
-*/
+ * Exception thrown for any errors encountered while reading the application settings.
+ */
 (:glance)
 class ConfigException extends GeneralException {
     function initialize( msg as String ) {

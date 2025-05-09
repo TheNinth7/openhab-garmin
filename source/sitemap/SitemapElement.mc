@@ -2,8 +2,8 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
-    Base class for all sitemap elements
-*/
+ * Base class for all sitemap elements.
+ */
 (:glance)
 class SitemapElement {
 

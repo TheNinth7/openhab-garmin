@@ -3,30 +3,33 @@ import Toybox.WatchUi;
 import Toybox.Math;
 
 /*
-    The ExceptionHandler shall be used anywhere in the widget when an unexpected
-    exception occurs.
-    It will:
-    - For non-fatal sitemap communication errors show a toast notification.
-    - If a non-fatal sitemap communication error persisted over a certain time,
-      show a full-screen error view. This applies also if there are different
-      subsequent non-fatal errors over that time 
-    - For any command communication errors show a toast notification, since those do not
-      compromise the sitemap view and may just affect a single item.
-    - For all other errors, a full screen error view will be shown immediately.
-    For full-screen errors the ErrorViewHandler is used, for toasts the ToastHandler
-*/ 
+ * The `ExceptionHandler` should be used throughout the widget to handle unexpected exceptions.
+ *
+ * Its behavior includes:
+ * - Showing a toast notification for non-fatal sitemap communication errors.
+ * - Displaying a full-screen error view if non-fatal sitemap errors persist for a certain period, 
+ *   even if they differ across attempts.
+ * - Showing a toast notification for command communication errors, as these typically affect only 
+ *   individual items and do not compromise the entire sitemap view.
+ * - Displaying a full-screen error view immediately for all other errors.
+ *
+ * Full-screen errors are managed by `ErrorViewHandler`, while toast notifications are handled by `ToastHandler`.
+ */
 public class ExceptionHandler {
-    // If a non-fatal sitemap communication error persists for longer than
-    // the specified time, a full-screen error view will be shown
+    /*
+    * If a non-fatal sitemap communication error persists longer than the specified duration, 
+    * a full-screen error view will be displayed.
+    */
     private static const SITEMAP_ERROR_FATAL_TIME = 10000;
 
     /*
-        Calculate the number of non-fatal errors that are allowed to occur,
-        before the error is treated as fatal
-        The calculation is based on:
-        - the time specified in SITEMAP_ERROR_FATAL_TIME
-        - the polling interval for errors calculated in BaseSitemapRequest
-        The time starts when the first error occurs.
+    * Calculates how many non-fatal errors are allowed before the error is considered fatal.
+    *
+    * The calculation is based on:
+    * - The duration defined by `SITEMAP_ERROR_FATAL_TIME`
+    * - The polling interval for errors, as calculated in `BaseSitemapRequest`
+    *
+    * The timer starts when the first non-fatal error occurs.
     */
     private static const SITEMAP_ERROR_FATAL_ERROR_COUNT = 
         1 + // the polling interval counts from the time the first error occured
@@ -35,27 +38,28 @@ public class ExceptionHandler {
             / BaseSitemapRequest.SITEMAP_ERROR_POLLING_INTERVAL 
         ).toNumber();
 
-    // Determines whether the error count is still under the
-    // fatal error count
+    // Determines whether the current error count is still below the fatal error threshold.
     public static function errorCountIsNotYetFatal() as Boolean {
         return SitemapErrorCountStore.get() < SITEMAP_ERROR_FATAL_ERROR_COUNT;
     }
 
     /*
-    Note on STARTUP EXCEPTIONS
-    Most exceptions during startup are handled directly in OHApp, which
-    starts into an error view. However, the startup also starts the
-    first sitemap request. If this leads to an immediate error (such as -104
-    no phone), then onReceive() may be called with this error but is not
-    able to show a view yet. Therefore these exceptions are stored here
-    by handleException() and then consumed by the two views that may 
-    be loaded initially (LoadingView and HomepageMenu)
-    The value is a tuple, made of the exception itself, and
-    whether it is already fatal.
-    NOTE: the non-fatal flag in the startup exception is not 
-    necessarily the same as the isFatal() of the exception itself
-    isFatal() may be false, but it may still be considered fatal
-    if the error occured over a certain amount of time
+    * Note on STARTUP EXCEPTIONS:
+    *
+    * Most exceptions during startup are handled directly by `OHApp`, which starts 
+    * into an error view if needed. However, startup also triggers the first sitemap request. 
+    * If this request fails immediately (e.g., with error -104: no phone), `onReceive()` 
+    * may be called before any view is ready to display the error.
+    *
+    * To handle this, such exceptions are stored by `handleException()` and later consumed 
+    * by one of the two views that may be loaded initially: `LoadingView` or `HomepageMenu`.
+    *
+    * The stored value is a tuple consisting of the exception itself and a flag indicating 
+    * whether it should already be treated as fatal.
+    *
+    * NOTE: The "non-fatal" flag in this tuple is not necessarily the same as `exception.isFatal()`.
+    * An exception might not be inherently fatal, but may still be treated as such 
+    * if it has persisted beyond a configured threshold.
     */
     private static var _startupException as [Exception, Boolean]?;
     
@@ -71,16 +75,15 @@ public class ExceptionHandler {
         
         // Logger.debug( "ExceptionHandler: exception #" + SitemapErrorCountStore.get() + "/" + SITEMAP_ERROR_FATAL_ERROR_COUNT );
         
-        // Under certain conditions, a toast will be displayed
-        // These are:
-        // For all non-sitemap (=command) communication errors
-        // For sitemap errors if they are not fatal in itself and if the
-        // fatal error count has not yet been reached
-        // And only if the current view has indicated to the ToastHandler
-        // that toasts shall be used
-
-        // Under all other conditions, a full-screen error is displayed.
-
+        /*
+        * A toast notification will be shown under the following conditions:
+        * - For all non-sitemap (i.e., command) communication errors.
+        * - For sitemap errors that are not fatal in themselves and 
+        *   the fatal error count threshold has not yet been reached.
+        * - Only if the current view has indicated to the `ToastHandler` that toasts are allowed.
+        *
+        * In all other cases, a full-screen error view is displayed instead.
+        */
         if( ex instanceof CommunicationBaseException 
             &&  ( !ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP )
                 || errorCountIsNotYetFatal() )
@@ -100,13 +103,17 @@ public class ExceptionHandler {
         } else {
             Logger.debug( "ExceptionHandler: fatal error" );
             
-            // Fatal errors clear the JSON
-            // Otherwise the app may be restarted and initially the 
-            // stale JSON would be displayed until the error occurs again.
+            /*
+            * Fatal errors clear the stored JSON.
+            * This prevents stale data from being shown if the app is restarted, 
+            * which would otherwise display outdated content until the error reoccurs.
+            */
             SitemapStore.deleteJson();
             
-            // If there is no view yet, the exception is stored
-            // as startup exception, otherwise the error view will be shown
+            /*
+            * If no view is currently active, the exception is stored as a startup exception.
+            * Otherwise, the full-screen error view is shown immediately.
+            */
             if( WatchUi.getCurrentView()[0] == null ) {
                 Logger.debug( "ExceptionHandler: storing fatal startup exception" );
                 _startupException = [ex, true];
@@ -116,20 +123,23 @@ public class ExceptionHandler {
         }
     }
 
-    // This function must be called by views that are loaded initially
-    // by OHApp, i.e. LoadingView and HomepageMenu
-    // Depending on the nature of the exception that occured during
-    // startup, either a toast or the full-screen error view
-    // is shown
+    /*
+    * This function must be called by views initially loaded by `OHApp`, 
+    * such as `LoadingView` and `HomepageMenu`.
+    *
+    * Depending on the type of exception that occurred during startup, 
+    * it will display either a toast notification or a full-screen error view.
+    */
     public static function consumeStartupException( useToast as Boolean ) as ErrorView? {
         if( _startupException != null ) {
             var startupException = _startupException;
             _startupException = null;
             var ex = startupException[0];
             
-            // A toast is whon if the startup exception is a non-fatal
-            // communication exception and toasts are enabled by the 
-            // calling view
+            /*
+            * A toast is shown if the startup exception is a non-fatal 
+            * communication error and the calling view has enabled toast notifications.
+            */
             if( useToast && !startupException[1] && ex instanceof CommunicationBaseException ) {
                 ToastHandler.showWarning( ex.getToastMessage() );
             } else {

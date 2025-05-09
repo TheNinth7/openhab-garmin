@@ -3,9 +3,9 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 
 /*
-    A custom menu item for showing a text label and
-    below that a sublabel
-*/
+ * A custom menu item that displays a primary text label 
+ * with a secondary sublabel beneath it.
+ */
 class SettingsTextMenuItem extends BaseMenuItem {
 
     // The values and Drawables
@@ -14,17 +14,20 @@ class SettingsTextMenuItem extends BaseMenuItem {
     private var _labelTextArea as Text?;
     private var _subLabelTextArea as TextArea?;
 
-    // Constructor
-    // Initializes the super class and
-    // stores the label/sublabel
+    /*
+    * Constructor.
+    * Initializes the superclass and stores the label and sublabel.
+    */
     public function initialize( label as String, subLabel as String ) {
         BaseMenuItem.initialize( { :id => label } );
         _label = label;
         _subLabel = subLabel;
     }
 
-    // This event handler is called by the super class
-    // and should draw the content
+    /*
+    * Called by the superclass to handle drawing.
+    * This event handler is responsible for rendering the content.
+    */
     public function drawImpl( dc as Dc ) as Void {
         // Drawables can only be initialized here
         // since we need the Dc dimensions for it

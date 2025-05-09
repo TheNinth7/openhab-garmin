@@ -3,12 +3,12 @@ import Toybox.Graphics;
 import Toybox.System;
 
 /*
-    Defines constants and their default values.
-    To access the constants, the class Constants shall be used.
-    The default implementation of Constants just inherits the
-    default values, but for some devices there are implementations
-    that override some of the values.
-*/
+ * Defines application constants and their default values.
+ *
+ * Access these values via the `Constants` class.
+ * The base `Constants` implementation provides the defaults,
+ * while device-specific subclasses can override particular values.
+ */
 class DefaultConstants {
     protected function initialize() {}
     
@@ -20,10 +20,12 @@ class DefaultConstants {
     public static const UI_MENU_TITLE_HEIGHT as Number = -1;
     public static const UI_MENU_FOOTER_HEIGHT as Number = -1;
 
-    // This factor is applied to the title's Dc to determine the height of the
-    // area actually painted in the background color. Default is that 80% of the
-    // total available space is used, the remaining 20% serves as spacing towards
-    // the menu items
+    /*
+    * Factor determining the height of the background-painted region 
+    * in the title's drawing context (`Dc`). By default, 80% of the 
+    * available title area is filled, leaving 20% as spacing above 
+    * the menu items.
+    */
     public static const UI_MENU_TITLE_HEIGHT_FACTOR as Float = 0.8;
 
     // Font to be used in the menu title
@@ -39,14 +41,17 @@ class DefaultConstants {
         ( UI_SCREEN_HEIGHT * 0.3 ).toNumber();
 
 
-    // List of fonts that can be used for menu item label and text-based status
-    // Depending on the available space and length of the text, a font size will be choosen
+    // List of fonts available for menu item labels and status text.
+    // An appropriate font size is chosen based on available space and text length.
     public static const UI_MENU_ITEM_FONTS as Array<FontDefinition> = [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
 
-    // These factors determine the padding to the left and right of menu items,
-    // based on the total width of the menu item Dc
-    // ATTENTION: for some devices there is a discrepancy between the
-    // menu item Dc width on simulator and on the real device, where it is wider
+    /*
+    * These factors determine the left and right padding of menu items 
+    * based on the total width of the menu item's `Dc`.
+    *
+    * Note: On some devices, the `Dc` width differs between the simulator and 
+    * the actual hardware, where it appears wider.
+    */
     public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.03;
     public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.03;
 
@@ -54,16 +59,19 @@ class DefaultConstants {
     public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.03;
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.03;
 
-    // Background color of menu items. Some newer devices such as the Fenix 8
-    // series provides a colored background for the focused item. Therefore
-    // the background color is set to transparent to allow this focus background
-    // to shine through
+    /*
+    * Background color of menu items. Some newer devices, such as the Fenix 8 series,
+    * provide a colored background for the focused item. Therefore, the menu item
+    * background color is set to transparent to allow the focus background to show through.
+    */
     public static const UI_MENU_ITEM_BG_COLOR = Graphics.COLOR_TRANSPARENT;
     
-    // A different background color can be defined for the focused menu items
-    // This is needed for example on the Edge 540 and 840, since those provide
-    // no built-in indication of the focused item (see constants/edge/button)
-    // If set to transparent then the coloring will not be applied
+    /*
+    * Allows specifying a distinct background color for focused menu items.
+    * This is useful on devices like the Edge 540 and 840, which provide no built-in
+    * focus indicator (see constants/edge/button). Setting this to transparent
+    * disables the custom focus background.
+    */
     public static const UI_MENU_ITEM_BG_COLOR_FOCUSED as ColorType = Graphics.COLOR_TRANSPARENT;
 
     // List of fonts to be used by the error view

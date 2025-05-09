@@ -2,17 +2,17 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
-    The ViewHandler must be used all across the app for switching
-    views or popping/pushing them from/to the stack.
-
-    The main purpose is that we need to keep track of how many views
-    are on the stack, in case due to an update or error we need to 
-    pop all views and switch to the homepage or error view.
-*/
+ * The `ViewHandler` must be used throughout the app for switching views 
+ * or pushing/popping them from the stack.
+ *
+ * Its main purpose is to track how many views are currently on the stack, 
+ * so that in case of an update or error, all views can be popped and 
+ * replaced with the homepage or an error view.
+ */
 class ViewHandler {
-    // Counter for views on top of the base view
-    // 0 = there is only one base view on the stack
-    // 1 = there are two views, ...
+    // Counter for views above the base view.
+    // 0 = only the base view is on the stack.
+    // 1 = two views are on the stack, and so on.
     private static var _stackSize as Number = 0;
 
     // Push/pop a view on/from the stack
@@ -27,9 +27,8 @@ class ViewHandler {
         // Logger.debug( "ViewHandler.popView: stack size=" + _stackSize );
     }
 
-    // Remove all views from the stack except the base
-    // view, and replace the base view by the view passed in
-    // as parameter.
+    // Removes all views from the stack except the base view,
+    // and replaces the base view with the provided view.
     public static function popToBottomAndSwitch( view as Views, delegate as InputDelegates or Null ) as Void {
         // Logger.debug( "ViewHandler.popToBottomAndSwitch: initial stack size=" + _stackSize );
         for( var i = 0; i < _stackSize; i++ ) {

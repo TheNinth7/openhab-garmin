@@ -2,11 +2,12 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
-    Base class for all sitemap elements that are primitive,
-    i.e. not a container for other elements
-    Examples for primitives: Switch and Text
-    Examples for containers: Homepage and Frame
-*/
+ * Base class for all primitive sitemap elements—those that do not 
+ * contain other elements.
+ *
+ * Examples of primitive elements: `Switch`, `Text`
+ * Examples of container elements: `Homepage`, `Frame`
+ */
 class SitemapPrimitiveElement extends SitemapElement {
 
     // JSON field names
