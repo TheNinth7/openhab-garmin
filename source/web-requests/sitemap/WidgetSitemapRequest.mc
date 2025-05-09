@@ -23,24 +23,20 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
         return _instance as WidgetSitemapRequest;
     }
 
-    // Holds the root menu (homepage menu) for the sitemap
-    // This reference is needed so that the update event handler
-    // below can update the menu
-    private static var _homepageMenu as HomepageMenu?;
-
     // This function is called on startup by OHApp, and 
     // if available initializes the menu from sitemap data
     // in storage
     public static function initializeMenu() as HomepageMenu? {
+        var homepageMenu = null;
         try {
             var sitemapHomepage = SitemapStore.getHomepage();
             if( sitemapHomepage != null ) {
-                _homepageMenu = new HomepageMenu( sitemapHomepage );
+                homepageMenu = HomepageMenu.create( sitemapHomepage );
             }
         } catch( ex ) {
             Logger.debugException( ex );
         }
-        return _homepageMenu;
+        return homepageMenu;
     }
 
     // Constructor
@@ -55,16 +51,17 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
     // invalid, the onException() event handler is called instead
     public function onSitemapUpdate( sitemapHomepage as SitemapHomepage ) as Void {
         Logger.debug( "SitemapRequest.onSitemapUpdate");
-        if( _homepageMenu == null ) {
+        if( ! HomepageMenu.exists() ) {
             // There is no menu yet, so we need to switch
             // from the LoadingView to the menu
-            _homepageMenu = new HomepageMenu( sitemapHomepage );
-            WatchUi.switchToView( _homepageMenu, HomepageMenuDelegate.get(), WatchUi.SLIDE_BLINK );
+            WatchUi.switchToView( 
+                HomepageMenu.create( sitemapHomepage ), 
+                HomepageMenuDelegate.get(), 
+                WatchUi.SLIDE_BLINK );
         } else {
             // There is already a menu, so we update it
 
-            // To satisfy the typechecker, we get the member variable into a local variable
-            var homepage = _homepageMenu as PageMenu;
+            var homepage = HomepageMenu.get();
 
             // the update function returns whether the structure of the menu
             // remained unchanged, i.e. if containers have been added or removed

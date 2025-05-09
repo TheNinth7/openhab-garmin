@@ -54,15 +54,15 @@ resLauncherIcons=resources/launcher-icons
 # srcBase holds the default values
 # srcDefault holds the default implementation of Constants and GlanceConstants
 # The other variables define the path for individual devices
-srcBase=source;constants/base
-srcDefault=$(srcBase);constants/default
-srcFenix6Pro=$(srcBase);constants/fenix6pro
+srcBase=source;source-constants/base
+srcDefault=$(srcBase);source-constants/default
+srcFenix6Pro=$(srcBase);source-constants/fenix6pro
 # For all Edge devices
-srcEdgeBase=$(srcBase);constants/edge/base
+srcEdgeBase=$(srcBase);source-constants/edge/base
 # For Edge touch devices (such as Explore 2/1040/1050)
-srcEdgeTouch=$(srcEdgeBase);constants/edge/touch
+srcEdgeTouch=$(srcEdgeBase);source-constants/edge/touch
 # For Edge button devices (such as 540/840)
-srcEdgeButton=$(srcEdgeBase);constants/edge/button
+srcEdgeButton=$(srcEdgeBase);source-constants/edge/button
 
 # DEVICES
 # The following section assembles the excludeAnnotations,
