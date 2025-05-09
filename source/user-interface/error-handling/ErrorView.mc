@@ -50,15 +50,23 @@ class ErrorView extends WatchUi.View {
         var text = _exception.getErrorMessage();
         text = ( text == null || text.equals( "" ) ) ? "Unknown Exception" : text; 
 
-        // The textarea 
+        // Dimensions of the text area
+        // Start with the full rectangle Dc ...
         var width = dc.getWidth();
         var height = dc.getHeight();
 
+        // ... and for round screens, adapt it to the
+        // largest square fitting into the circle
         if( System.getDeviceSettings().screenShape == System.SCREEN_SHAPE_ROUND ) {
             width = width / Math.sqrt( 2 );
             height = width;
         }
         
+        // Create the textarea and draw it.
+        // The TextArea could also be created only once and reused,
+        // but let's say for error handling performance is not critical.
+        // The first opening of the error view would need to create it anyway
+        // and for subsequent updates it does not really matter how fast they are
         new TextArea( {
             :text => text,
             :font => Constants.UI_ERROR_FONTS,

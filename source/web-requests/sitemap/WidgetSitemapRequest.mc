@@ -12,7 +12,7 @@ import Toybox.Timer;
     The class instantiates the root menu (homepage menu) representing
     the sitemap on the UI, and updates it with every new incoming response.
 */
-class WidgetSitemapRequest extends SitemapBaseRequest {
+class WidgetSitemapRequest extends BaseSitemapRequest {
 
     // Singleton instance and accessor
     private static var _instance as WidgetSitemapRequest?;
@@ -47,7 +47,7 @@ class WidgetSitemapRequest extends SitemapBaseRequest {
     private function initialize() {
         // There is no minimum polling interval for the widget request,
         // therefore we pass 0 into the super class constructor.
-        SitemapBaseRequest.initialize( null );
+        BaseSitemapRequest.initialize( null );
     }
 
     // Event handler for valid responses
@@ -97,6 +97,6 @@ class WidgetSitemapRequest extends SitemapBaseRequest {
     // Any exceptions from the request/response will be handled
     // by this function and passed directly to the ExceptionHandler
     public function onException( ex as Exception ) as Void {
-        ExceptionHandler.handleException( ex );            
+        ExceptionHandler.handleException( ex );
     }
 }
