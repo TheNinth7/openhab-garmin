@@ -39,8 +39,18 @@ class SitemapBaseRequest extends BaseRequest {
     // The assembled URL for the request
     private var _url as String;
     
-    // Members for controlling the web request loop
+    // Members for controlling the behavior when stopped.
+    // if _isStopped is true, no further requests will be allowed
     private var _isStopped as Boolean = true;
+    // _hasPendingRequest is true if we are inbetween a makeRequest()
+    // and an onReceive
+    private var _hasPendingRequest as Boolean = false;
+    // If stop() is called and there is a pending request, this
+    // is set to true to instrucht onReceive() to ignore the
+    // next incoming response.
+    private var _ignoreNextResponse as Boolean = false;
+
+    // Members for controlling the web request loop
     private var _pollingInterval as Number;
     private var _timer as Timer.Timer = new Timer.Timer();
 
@@ -68,8 +78,14 @@ class SitemapBaseRequest extends BaseRequest {
             makeRequest();
         }
     }
+    // Stops the request loop
+    // If there is a pending request, onReceive() is instructed to
+    // ignore the next response
     public function stop() as Void {
         _isStopped = true;
+        if( _hasPendingRequest ) {
+            _ignoreNextResponse = true;
+        }
     }
 
     // Makes the web request
@@ -77,16 +93,21 @@ class SitemapBaseRequest extends BaseRequest {
         Logger.debug( "BaseSitemapRequest.makeRequest");
         if( ! _isStopped ) {
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
+            _hasPendingRequest = true;
         }
     }
 
     // Processes the response
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
+        _hasPendingRequest = false;
         Logger.debug( "BaseSitemapRequest.onReceive");
-        // If the request was stopped, we ignore any responses
-        // coming in, in case stop() was called between makeRequest()
-        // and onReceive()
-        if( ! _isStopped ) {
+
+        // When stop() is called, and there is a pending request, then
+        // _ignoreNextResponse is set true. onReceive() acts on this,
+        // ignores the next response and resets the member
+        if( _ignoreNextResponse ) {
+            _ignoreNextResponse = false;
+        } else {
             try {
                 // Verify response code and response data
                 // These functions of the super class throw

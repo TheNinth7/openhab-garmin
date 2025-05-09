@@ -30,7 +30,13 @@ class BaseCommandRequest extends BaseRequest {
     // Triggers the web request
     // @param parameters - options for the web request, as per Communication.makeWebRequest
     protected function makeWebRequest( parameters as Dictionary<Object, Object>? ) as Void {
-        Communications.makeWebRequest( _url, parameters, getBaseOptions(), method( :onReceive ) );
+        try {
+            SitemapRequest.get().stop();
+            Communications.makeWebRequest( _url, parameters, getBaseOptions(), method( :onReceive ) );
+        } catch( ex ) {
+            SitemapRequest.get().start();
+            throw ex;
+        }
     }
 
     // Processes the response to the web request
@@ -38,6 +44,7 @@ class BaseCommandRequest extends BaseRequest {
     // If there was an error, onException() is being called
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
+            SitemapRequest.get().start();
             checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND );
             _item.onCommandComplete();
         } catch( ex ) {
