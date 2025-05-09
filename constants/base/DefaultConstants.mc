@@ -65,4 +65,7 @@ class DefaultConstants {
     // no built-in indication of the focused item (see constants/edge/button)
     // If set to transparent then the coloring will not be applied
     public static const UI_MENU_ITEM_BG_COLOR_FOCUSED as ColorType = Graphics.COLOR_TRANSPARENT;
+
+    // List of fonts to be used by the error view
+    public static const UI_ERROR_FONTS as Array<FontDefinition> = [Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
 }
