@@ -9,7 +9,7 @@ import Toybox.Timer;
     to have up to date data in storage when the widget starts
 */
 (:glance)
-class GlanceSitemapRequest extends SitemapBaseRequest {
+class GlanceSitemapRequest extends BaseSitemapRequest {
 
     // Although currently the glance does not display
     // communication exceptions, this class stores
@@ -23,14 +23,14 @@ class GlanceSitemapRequest extends SitemapBaseRequest {
     // Even if the polling interval in the setting is lower,
     // this is the minimum polling interval applied for the
     // glance
-    private const MINIMUM_POLLING_INTERVAL = 3000;
+    private const GLANCE_MINIMUM_POLLING_INTERVAL = 3000;
 
     // Constructor
     // For the glance, the constructor starts the sitemap request
     // immediately    
     public function initialize() {
         try {
-            SitemapBaseRequest.initialize( MINIMUM_POLLING_INTERVAL );
+            BaseSitemapRequest.initialize( GLANCE_MINIMUM_POLLING_INTERVAL );
             start();
         } catch( ex ) {
             _exception = ex;

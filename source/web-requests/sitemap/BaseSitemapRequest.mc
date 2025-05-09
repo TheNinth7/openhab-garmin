@@ -31,10 +31,22 @@ import Toybox.Timer;
         without errors. CAN be overriden by derived class
 */    
 (:glance)
-class SitemapBaseRequest extends BaseRequest {
+class BaseSitemapRequest extends BaseRequest {
     
     // Defines the source value to be used for exception handling
     private static const SOURCE as CommunicationBaseException.Source = CommunicationBaseException.EX_SOURCE_SITEMAP;
+
+    // After an error, the next request should not be sent before
+    // this amount of time
+    public static const SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL as Number = 1000;
+
+    // After an error, the next request will be sent after
+    // this amount of time, factoring in the configured interval
+    // and the minimum defined above
+    public static const SITEMAP_ERROR_POLLING_INTERVAL as Number = 
+        AppSettings.getPollingInterval() > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
+        ? AppSettings.getPollingInterval()
+        : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL;
 
     // The assembled URL for the request
     private var _url as String;
@@ -102,6 +114,11 @@ class SitemapBaseRequest extends BaseRequest {
         _hasPendingRequest = false;
         Logger.debug( "BaseSitemapRequest.onReceive");
 
+        // Taking the stored polling interval in a
+        // local variable, since it may be adjusted
+        // in case of error.
+        var pollingInterval = _pollingInterval;
+
         // When stop() is called, and there is a pending request, then
         // _ignoreNextResponse is set true. onReceive() acts on this,
         // ignores the next response and resets the member
@@ -129,13 +146,17 @@ class SitemapBaseRequest extends BaseRequest {
             } catch( ex ) {
                 // Calling the event handler for exceptions
                 onException( ex );
+                // If there is an error, the interval to the
+                // next request will be adjusted to the constant
+                // value defined at the beginning of this class
+                pollingInterval = SITEMAP_ERROR_POLLING_INTERVAL;
             }
 
             // Depending on polling interval the next request is
             // scheduled via timer or triggered immediately
-            if( _pollingInterval > 0 ) {
+            if( pollingInterval > 0 ) {
                 Logger.debug( "BaseSitemapRequest: starting timer for " + _pollingInterval + "ms" );
-                _timer.start( method( :makeRequest ), _pollingInterval, false );
+                _timer.start( method( :makeRequest ), pollingInterval, false );
             } else {
                 makeRequest();
             }
