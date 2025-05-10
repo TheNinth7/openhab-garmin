@@ -86,8 +86,7 @@ public class ExceptionHandler {
         */
         if( ex instanceof CommunicationBaseException 
             &&  ( !ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP )
-                || errorCountIsNotYetFatal() )
-            && !ex.isFatal()
+                || ( errorCountIsNotYetFatal() && !ex.isFatal() ) )
             && ToastHandler.useToasts() ) 
             {
             // Logger.debug( "ExceptionHandler: non-fatal error: " + ex.getToastMessage().toUpper() );
