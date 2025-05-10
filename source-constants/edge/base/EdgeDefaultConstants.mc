@@ -36,6 +36,11 @@ class EdgeDefaultConstants extends DefaultConstants {
     public static const UI_SETTINGS_ITEM_HEIGHT as Number = 
         ( DefaultConstants.UI_SCREEN_HEIGHT * 0.25 ).toNumber();
 
+    // If an icon is present, the amount of space defined below will be reserved,
+    // to allow alignment of labels that have icons of different widths.
+    public static const UI_MENU_ITEM_ICON_WIDTH as Number = 
+        ( DefaultConstants.UI_SCREEN_WIDTH * 0.13 ).toNumber();
+
     // Also for the error view we add FONT_LARGE
     public static const UI_ERROR_FONTS as Array<FontDefinition> = [Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
 }

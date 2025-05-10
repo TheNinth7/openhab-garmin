@@ -14,6 +14,7 @@ class DefaultConstants {
     
     // Height of the screen, used in calculation of other constants
     public static const UI_SCREEN_HEIGHT = System.getDeviceSettings().screenHeight;
+    public static const UI_SCREEN_WIDTH = System.getDeviceSettings().screenWidth;
 
     // Height of menu title and footer
     // If set to -1, the default height will be applied
@@ -58,6 +59,11 @@ class DefaultConstants {
     // Spacing between the menu item elements (icon, label, status)
     public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.03;
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.03;
+
+    // If an icon is present, the amount of space defined below will be reserved,
+    // to allow alignment of labels that have icons of different widths.
+    public static const UI_MENU_ITEM_ICON_WIDTH as Number = 
+        ( UI_SCREEN_WIDTH * 0.09 ).toNumber();
 
     /*
     * Background color of menu items. Some newer devices, such as the Fenix 8 series,

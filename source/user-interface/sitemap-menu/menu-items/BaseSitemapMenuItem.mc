@@ -18,10 +18,6 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     private var _labelTextArea as TextArea?; // label Drawable, optional because instantiated only when drawn
     private var _status as Drawable?; // status is optional
 
-    // The icon field will be fixed to this factor of the
-    // menu item width
-    private const ICON_WIDTH_FACTOR = 0.1;
-
     // Function for updating the label
     // The base class CustomItem already has a setLabel function,
     // so we need to use a different name here
@@ -107,7 +103,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         if( _icon != null ) {
             var icon = _icon;
             icon.setLocation( locX, ( ( (dc.getHeight()/2) - icon.height/2 ) * 1.1 ).toNumber() );
-            locX += ( dcWidth * ICON_WIDTH_FACTOR ).toNumber() + spacing;
+            locX += Constants.UI_MENU_ITEM_ICON_WIDTH + spacing;
             titleWidth -= locX;
         }
 
