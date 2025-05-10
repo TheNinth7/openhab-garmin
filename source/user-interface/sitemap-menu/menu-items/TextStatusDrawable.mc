@@ -26,9 +26,9 @@ class TextStatusDrawable extends TextArea {
     // Constructor  
     // Stores the label for later use in size calculation (see setAvailableWidth).  
     // Initializes the text area with all properties except size, which is set separately.
-    public function initialize( parsedLabel as [String, String] ) {
-        _label = parsedLabel[0];
-        _text = parsedLabel[1];
+    public function initialize( label as String, text as String ) {
+        _label = label;
+        _text = text;
         TextArea.initialize( {
             :text => _text,
             :color => Graphics.COLOR_LT_GRAY,
@@ -40,9 +40,9 @@ class TextStatusDrawable extends TextArea {
     }
 
     // Updates the text status
-    public function update( parsedLabel as [String, String] ) as Void {
-        _label = parsedLabel[0];
-        _text = parsedLabel[1];
+    public function update( label as String, text as String ) as Void {
+        _label = label;
+        _text = text;
         setText( _text );
     }
 }

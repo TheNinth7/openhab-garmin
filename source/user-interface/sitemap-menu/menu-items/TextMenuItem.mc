@@ -14,14 +14,20 @@ class TextMenuItem extends BaseSitemapMenuItem {
     // The text status Drawable
     private var _statusTextArea as TextStatusDrawable;
 
+    private function checkState( sitemapText as SitemapText ) as Void {
+        if( sitemapText.widgetState == null ) {
+            throw new JsonParsingException( "Text element '" + sitemapText.label + "' does not contain [state] in its label" );
+        }
+    }
+
     // Constructor
     public function initialize( sitemapText as SitemapText ) {
-        var parsedLabel = parseLabel( sitemapText.label );
-        _statusTextArea = new TextStatusDrawable( parsedLabel );
+        checkState( sitemapText );
+        _statusTextArea = new TextStatusDrawable( sitemapText.label, sitemapText.widgetState as String );
         BaseSitemapMenuItem.initialize(
             {
                 :id => sitemapText.id,
-                :label => parsedLabel[0],
+                :label => sitemapText.label,
                 :status => _statusTextArea
             }
         );
@@ -29,30 +35,14 @@ class TextMenuItem extends BaseSitemapMenuItem {
 
     // Updates the menu item
     public function update( sitemapElement as SitemapElement ) as Boolean {
-        var parsedLabel = parseLabel( sitemapElement.label );
-        _statusTextArea.update( parsedLabel );
-        setCustomLabel( parsedLabel[0] );
+        if( ! ( sitemapElement instanceof SitemapText ) ) {
+            throw new GeneralException( "Sitemap element '" + sitemapElement.label + "' was passed into TextMenuItem but is of a different type" );
+        }
+        var sitemapText = sitemapElement as SitemapText;
+        checkState( sitemapText );
+        _statusTextArea.update( sitemapElement.label, sitemapElement.widgetState as String  );
+        setCustomLabel( sitemapElement.label );
         return true;
-    }
-
-    // Extracts and returns the label and status from a sitemap Text element's label.
-    public function parseLabel( label as String ) as [String, String] {
-        var bracket = label.find( " [" ) as Number?;
-        if( bracket == null ) {
-            parserException( label );
-        }
-        bracket = (bracket as Number);
-        var customLabel = label.substring( null, bracket ) as String?;
-        var itemState = label.substring( bracket+2, label.length()-1 ) as String?;
-        if( customLabel == null || itemState == null ) {
-            parserException( label );
-        }
-        return [customLabel as String, itemState as String];
-    }
-
-    // Helper function throwing an error if parsing fails
-    private function parserException( label as String ) as Void {
-        throw new GeneralException( "Could not parse text element with label '" + label + "'" );
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
