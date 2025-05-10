@@ -18,8 +18,12 @@ class GlanceSitemapView extends WatchUi.GlanceView {
         GlanceView.initialize();
         
         // Initialize the sitemap request
-        new GlanceSitemapRequest();
-
+        // In the glance, any errors are ignored
+        try {
+            new GlanceSitemapRequest();
+        } catch( ex ) {
+            Logger.debugException( ex );
+        }
         // Initialize the text area
         // Width and height can only be set once a Dc is available
         _textArea = new TextArea( { 

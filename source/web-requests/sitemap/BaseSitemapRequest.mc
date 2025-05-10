@@ -43,10 +43,23 @@ class BaseSitemapRequest extends BaseRequest {
     // After an error, the next request will be sent after
     // this amount of time, factoring in the configured interval
     // and the minimum defined above
-    public static const SITEMAP_ERROR_POLLING_INTERVAL as Number = 
+    public static function getSitemapErrorPollingInterval() as Number {
+        return         
+            AppSettings.getPollingInterval() > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
+            ? AppSettings.getPollingInterval()
+            : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL;
+    }
+    /* Initially attempted to implement this as a constant. Although it works in 
+    *  principle, exceptions arising from it (e.g., due to improperly configured 
+    *  app settings) cannot be caught. This appears to be a compiler issue. 
+    *  As a safer alternative, it is now implemented as a function. 
+    */
+    /*
+    public static var SITEMAP_ERROR_POLLING_INTERVAL as Number = 
         AppSettings.getPollingInterval() > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
         ? AppSettings.getPollingInterval()
         : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL;
+    */
 
     // The assembled URL for the request
     private var _url as String;
@@ -149,7 +162,7 @@ class BaseSitemapRequest extends BaseRequest {
                 // If there is an error, the interval to the
                 // next request will be adjusted to the constant
                 // value defined at the beginning of this class
-                pollingInterval = SITEMAP_ERROR_POLLING_INTERVAL;
+                pollingInterval = getSitemapErrorPollingInterval();
             }
 
             // Depending on polling interval the next request is

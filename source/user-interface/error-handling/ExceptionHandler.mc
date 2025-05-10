@@ -31,16 +31,35 @@ public class ExceptionHandler {
     *
     * The timer starts when the first non-fatal error occurs.
     */
-    private static const SITEMAP_ERROR_FATAL_ERROR_COUNT = 
+    private static var _fatalErrorCount as Number? = null;
+    private static function getFatalErrorCount() as Number {
+        if( _fatalErrorCount == null ) {
+            _fatalErrorCount =             
+                1 + // the polling interval counts from the time the first error occured
+                Math.round( 
+                    SITEMAP_ERROR_FATAL_TIME 
+                    / BaseSitemapRequest.getSitemapErrorPollingInterval() 
+                ).toNumber();
+        }
+        return _fatalErrorCount as Number;
+    }
+    /* Initially attempted to implement this as a constant. Although it works in 
+    *  principle, exceptions arising from it (e.g., due to improperly configured 
+    *  app settings) cannot be caught. This appears to be a compiler issue. 
+    *  As a safer alternative, it is now implemented as a function. 
+    */
+    /*
+    private static var SITEMAP_ERROR_FATAL_ERROR_COUNT as Number = 
         1 + // the polling interval counts from the time the first error occured
         Math.round( 
             SITEMAP_ERROR_FATAL_TIME 
-            / BaseSitemapRequest.SITEMAP_ERROR_POLLING_INTERVAL 
+            / BaseSitemapRequest.getSitemapErrorPollingInterval() 
         ).toNumber();
+    */
 
     // Determines whether the current error count is still below the fatal error threshold.
     public static function errorCountIsNotYetFatal() as Boolean {
-        return SitemapErrorCountStore.get() < SITEMAP_ERROR_FATAL_ERROR_COUNT;
+        return SitemapErrorCountStore.get() < getFatalErrorCount();
     }
 
     /*
