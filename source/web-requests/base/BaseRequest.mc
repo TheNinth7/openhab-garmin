@@ -9,6 +9,16 @@ import Toybox.Communications;
     - applies basic authentication if set in the settings
     - provides functions for processing response code and response data
 */
+
+// Options for the BaseRequest, mirroring (most) options of `Communications.makeWebRequest`
+typedef WebRequestOptions as { 
+    :method as Communications.HttpRequestMethod, 
+    :headers as Lang.Dictionary, 
+    :responseType as Communications.HttpResponseContentType, 
+    :context as Lang.Object or Null, 
+    :maxBandwidth as Lang.Number 
+};
+
 (:glance)
 class BaseRequest {
     

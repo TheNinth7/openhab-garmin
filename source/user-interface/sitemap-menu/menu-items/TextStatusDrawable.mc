@@ -2,16 +2,30 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
 
+/*
+ * Drawable for displaying the status text.
+ * The status is printed in light grey to visually offset it from the label,
+ * matching the style of an "off" state in on/off switches.
+ * Currently used only for Text elements, but may be reused for other item types in the future.
+ */
 class TextStatusDrawable extends TextArea {
+    // Analogue to the switch, we use 80% of the available height
     private const HEIGHT = ( Constants.UI_MENU_ITEM_HEIGHT * 0.8 ).toNumber();
+
     private var _text as String;
     private var _label as String;
 
+    // Called by BaseSitemapMenuItem to provide the total available width for the menu item.
+    // Sets the size of the status drawable proportionally based on the relative lengths 
+    // of the status text and the label.
     public function setAvailableWidth( availableWidth as Number ) as Void {
         var textLength = _text.length();
         setSize( availableWidth * textLength/(textLength+_label.length()), height );
     }
 
+    // Constructor  
+    // Stores the label for later use in size calculation (see setAvailableWidth).  
+    // Initializes the text area with all properties except size, which is set separately.
     public function initialize( parsedLabel as [String, String] ) {
         _label = parsedLabel[0];
         _text = parsedLabel[1];
@@ -25,6 +39,7 @@ class TextStatusDrawable extends TextArea {
         } );
     }
 
+    // Updates the text status
     public function update( parsedLabel as [String, String] ) as Void {
         _label = parsedLabel[0];
         _text = parsedLabel[1];

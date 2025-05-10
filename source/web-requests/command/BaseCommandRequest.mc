@@ -16,6 +16,23 @@ import Toybox.WatchUi;
     - provides a function for making the request, to be used by derivates
     - processes the response and calls the event handler of the item
 */
+
+// Interface to be implemented by menu items that issue commands.
+// Defines the functions and callbacks required for interaction 
+// of the command request with the menu item.
+typedef CommandMenuItemInterface as interface {
+    function getItemName() as String;
+    function onCommandComplete() as Void;
+    function onException( ex as Exception ) as Void;
+};
+
+// Interface to be implemented by subclasses representing concrete 
+// command request implementations. Defines the methods required for 
+// interaction of the menu item with the command request.
+typedef CommandRequestInterface as interface {
+    function sendCommand( cmd as String ) as Void;
+};
+
 class BaseCommandRequest extends BaseRequest {
     private var _url as String;
     private var _item as CommandMenuItemInterface;
