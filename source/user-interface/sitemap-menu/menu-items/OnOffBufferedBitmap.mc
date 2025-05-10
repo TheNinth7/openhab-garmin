@@ -1,6 +1,10 @@
+import Toybox.Lang;
+import Toybox.Graphics;
+import Toybox.WatchUi;
+
 /*
  * Before CIQ 4.0, `BufferedBitmap` lacked `getHeight()` and `getWidth()` methods,
- * preventing it from being used in a `BitmapDrawable`.
+ * preventing it from being used in a `Bitmap` Drawable.
  *
  * This wrapper class adds those methods to enable compatibility with older devices,
  * allowing `OnOffStatusDrawable` to function correctly.

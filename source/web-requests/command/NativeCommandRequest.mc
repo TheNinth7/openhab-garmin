@@ -21,9 +21,11 @@ class NativeCommandRequest extends BaseCommandRequest {
         BaseCommandRequest.initialize( 
             item, 
             AppSettings.getUrl() + "rest/items/" + item.getItemName(),
+            // for hard-coding a different test endpoint: 
+            // "http://net-nas-1:8080/rest/items/" + item.getItemName(),
             Communications.HTTP_REQUEST_METHOD_POST 
         );
-        setOption( :responseType, Communications.HTTP_RESPONSE_CONTENT_TYPE_TEXT_PLAIN );
+        //setOption( :responseType, Communications.HTTP_RESPONSE_CONTENT_TYPE_TEXT_PLAIN );
         setHeader( "Content-Type", Communications.REQUEST_CONTENT_TYPE_JSON );
     }
 

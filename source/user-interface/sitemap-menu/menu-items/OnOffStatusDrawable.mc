@@ -39,6 +39,7 @@ class OnOffStatusDrawable extends Bitmap {
         
         Bitmap.initialize( {
             :bitmap => _bufferedBitmap
+            //:bitmap => "Hello, Hello" as BufferedBitmap // _bufferedBitmap
         } );
 
         // Draws the switch
@@ -49,11 +50,11 @@ class OnOffStatusDrawable extends Bitmap {
     // that adds the necessary functions to use it with a `BitmapDrawable`.
     // On newer devices, this function should not be used and will throw an exception.
     (:exclForCiq400Plus)
-    private function createOnOffBufferedBitmap(  options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
+    private function createOnOffBufferedBitmap( options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
         return new OnOffBufferedBitmap( options );
     }
     (:exclForCiqPre400)
-    private function createOnOffBufferedBitmap(  options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
+    private function createOnOffBufferedBitmap( options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
         throw new GeneralException( "Device is CiqPre400, but has no Graphics.createBufferedBitmap" );
     }
 

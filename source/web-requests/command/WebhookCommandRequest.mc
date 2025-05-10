@@ -20,6 +20,8 @@ class WebhookCommandRequest extends BaseCommandRequest {
         BaseCommandRequest.initialize( 
             item, 
             AppSettings.getUrl() + "webhook/" + AppSettings.getWebhook(),
+            // for hard-coding a different test endpoint: 
+            // "http://net-nas-1:8080/webhook/" + AppSettings.getWebhook(),
             Communications.HTTP_REQUEST_METHOD_GET 
         );
         // action and itemName parameters are fixed
