@@ -64,7 +64,7 @@ class DefaultConstants {
     * provide a colored background for the focused item. Therefore, the menu item
     * background color is set to transparent to allow the focus background to show through.
     */
-    public static const UI_MENU_ITEM_BG_COLOR = Graphics.COLOR_TRANSPARENT;
+    public static const UI_MENU_ITEM_BG_COLOR as ColorType = Graphics.COLOR_TRANSPARENT;
     
     /*
     * Allows specifying a distinct background color for focused menu items.
