@@ -5,12 +5,13 @@ import Toybox.Graphics;
 /*
  * Drawable for rendering an on/off switch.
  *
- * This class creates a `BufferedBitmap` to obtain a `Dc` for drawing the switch 
- * using primitive shapes (circles and rectangles). The resulting `BufferedBitmap` 
- * is then wrapped in a `Bitmap` to produce a `Drawable` that can be used as 
- * the status icon in `BaseMenuItem`.
+ * This class uses a `BufferedBitmap` to obtain a `Dc` for drawing the switch
+ * with primitive shapes (circles and rectangles). 
+ * On CIQ versions prior to 4.0.0, it uses our custom `LegacyBufferedBitmap`; 
+ * on 4.0.0 and above, it uses the standard `BufferedBitmap`.
  */
-class OnOffStatusDrawable extends Bitmap {
+
+class OnOffStatusDrawable extends BufferedBitmapDrawable {
     
     private var _bufferedBitmap as BufferedBitmap;
 
@@ -23,23 +24,13 @@ class OnOffStatusDrawable extends Bitmap {
 
     // Constructor
     public function initialize( isEnabled as Boolean ) {
-        // Initialize the options for the BufferedBitmap
-        var options = {
+        _bufferedBitmap = createBufferedBitmap( {
             :width => WIDTH,
             :height => HEIGHT,
-        };
-
-        // Instantiate the `BufferedBitmap`. Devices with CIQ 4.0.0+ use `Graphics.createBufferedBitmap()`.
-        // Older devices use `createOnOffBufferedBitmap()` to create a legacy-compatible wrapper.
-        if( Graphics has :createBufferedBitmap ) {
-            _bufferedBitmap = Graphics.createBufferedBitmap( options ).get() as BufferedBitmap;
-        } else {
-            _bufferedBitmap = createOnOffBufferedBitmap( options );
-        }
+        } );
         
-        Bitmap.initialize( {
-            :bitmap => _bufferedBitmap
-            //:bitmap => "Hello, Hello" as BufferedBitmap // _bufferedBitmap
+        BufferedBitmapDrawable.initialize( {
+            :bufferedBitmap => _bufferedBitmap
         } );
 
         // Draws the switch
@@ -47,15 +38,16 @@ class OnOffStatusDrawable extends Bitmap {
     }
 
     // For CIQ < 4.0.0, this function creates a wrapper around `BufferedBitmap`
-    // that adds the necessary functions to use it with a `BitmapDrawable`.
-    // On newer devices, this function should not be used and will throw an exception.
+    // that adds the necessary functions to use it with a `BufferedBitmapDrawable`.
     (:exclForCiq400Plus)
-    private function createOnOffBufferedBitmap( options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
-        return new OnOffBufferedBitmap( options );
+    private function createBufferedBitmap( options as BufferedBitmapOptions ) as BufferedBitmapType {
+        return new LegacyBufferedBitmap( options );
     }
+    // For CIQ 4.0.0+, the BufferedBitmap provided by the SDK can be used
+    // directly with the `BufferedBitmapDrawable`
     (:exclForCiqPre400)
-    private function createOnOffBufferedBitmap( options as { :width as Lang.Number, :height as Lang.Number, :palette as Lang.Array<Graphics.ColorType>, :colorDepth as Lang.Number, :bitmapResource as WatchUi.BitmapResource, :alphaBlending as Graphics.AlphaBlending } ) as OnOffBufferedBitmap {
-        throw new GeneralException( "Device is CiqPre400, but has no Graphics.createBufferedBitmap" );
+    private function createBufferedBitmap( options as BufferedBitmapOptions ) as BufferedBitmapType {
+        return Graphics.createBufferedBitmap( options ).get() as BufferedBitmap;
     }
 
     // Draws the switch UI element.
@@ -98,20 +90,25 @@ class OnOffStatusDrawable extends Bitmap {
     }
 }
 
-/* Simpler version showing ON and OFF as text
+/* Simple implementation for rendering the state as text
 class OnOffStatusDrawable extends Text {
     public function initialize( isEnabled as Boolean ) {
         Text.initialize( {
             :text => getStatusText( isEnabled ),
             :font => Graphics.FONT_SMALL,
-            :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER
+            :color => getColor( isEnabled ),
+            :justification => Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER
         } );
     }
     public function setEnabled( isEnabled as Boolean ) as Void {
+        setColor( getColor( isEnabled ) );
         setText( getStatusText( isEnabled ) );
     }
     private function getStatusText( isEnabled as Boolean ) as String {
         return isEnabled ? "ON" : "OFF";
+    }
+    private function getColor( isEnabled as Boolean ) as ColorType {
+        return isEnabled ? 0xe64a19 : Graphics.COLOR_DK_GRAY;
     }
 }
 */
