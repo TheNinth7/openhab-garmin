@@ -21,6 +21,7 @@ class AppSettings {
     public static function getUrl() as String { return get().url; }
     public static function getSitemap() as String { return get().sitemap; }
     public static function supportsRestApi() as Boolean { return get().vSupportsRESTAPI; }
+    public static function suppressEmptyResponseExceptions() as Boolean { return get().vSuppressEmtpyResponses; }
     public static function supportsWebhook() as Boolean { return get().vSupportsWebHook; }
     public static function getWebhook() as String { return get().webhook; }
     public static function needsBasicAuth() as Boolean { return get().vNeedsBasicAuth; }
@@ -37,6 +38,7 @@ class AppSettings {
     private const USER_PREFIX = "user_";
     private const PASSWORD_PREFIX = "password_";
     private const RESTAPI_PREFIX = "restapi_";
+    private const SUPPRESS_EMRES_PREFIX = "suppressEmptyResponseExceptions_";
     private const WEBHOOK_PREFIX = "webhook_";
     private const INTERVAL_PREFIX = "pollingInterval_";
 
@@ -45,12 +47,13 @@ class AppSettings {
     // the static accessors cannot access them
     public var url as String;
     public var sitemap as String;
+    public var vSupportsRESTAPI as Boolean = false;
+    public var vSuppressEmtpyResponses as Boolean = false;
+    public var vSupportsWebHook as Boolean = false;
+    public var webhook as String = "";
     public var vNeedsBasicAuth as Boolean = false;
     public var user as String;
     public var password as String?;
-    public var vSupportsRESTAPI as Boolean = false;
-    public var vSupportsWebHook as Boolean = false;
-    public var webhook as String = "";
     public var pollingInterval as Number;
 
     /*
@@ -79,7 +82,10 @@ class AppSettings {
             webhook = Properties.getValue( WEBHOOK_PREFIX + _index ) as String;
             vSupportsWebHook = ! webhook.equals( "" );
         }
-        
+
+        // Should we suppress empty responses?
+        vSuppressEmtpyResponses = Properties.getValue( SUPPRESS_EMRES_PREFIX + _index ) as Boolean;
+
         // User and password for basic authentication
         user = Properties.getValue( USER_PREFIX + _index ) as String;
         if( ! user.equals( "" ) ) {

@@ -29,4 +29,11 @@ class UnexpectedResponseException extends CommunicationBaseException {
     public function getToastMessage() as String {
         return getSourceShortCode() + ":" + ( _data == null ? "EMRES" : "UNRES" );
     }
+
+    // A null result is one way an empty response from myopenhab.org may 
+    // present itself. So if data is null, this function returns true, allowing 
+    // the error to be suppressed if the corresponding settings option is enabled.
+    public function suppressAsEmptyResponse() as Boolean {
+        return _data == null;
+    }
 }

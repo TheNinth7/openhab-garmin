@@ -58,4 +58,11 @@ class CommunicationException extends CommunicationBaseException {
             ( _responseCode == -1001 ) 
             || ( _responseCode == 404 ); 
     }
+
+    // A -400 response code is one way an empty response from myopenhab.org 
+    // may present itself. So in this case, this function returns true, allowing 
+    // the error to be suppressed if the corresponding settings option is enabled.
+    public function suppressAsEmptyResponse() as Boolean {
+        return _responseCode == -400;
+    }
 }

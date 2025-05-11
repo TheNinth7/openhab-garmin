@@ -3,6 +3,7 @@
         <property id="url_0" type="string"></property>
         <property id="sitemap_0" type="string"></property>
         <property id="restapi_0" type="boolean">false</property>
+        <property id="suppressEmptyResponseExceptions_0" type="boolean">false</property>
         <property id="webhook_0" type="string"></property>
         <property id="user_0" type="string"></property>
         <property id="password_0" type="string"></property>
@@ -10,13 +11,16 @@
     </properties>
 
     <settings>
-        <setting propertyKey="@Properties.url_0" title="URL (e.g. https://yourhost:yourport) - Note: http works only with iOS, Android requires https with valid certificate!">
+        <setting propertyKey="@Properties.url_0" title="URL (e.g. https://yourhost:yourport). Note: HTTP works only on iOS; Android requires HTTPS with a valid certificate. For myopenhab.org, use https://home.myopenhab.org.">
             <settingConfig type="url" required="true"/>
         </setting>
         <setting propertyKey="@Properties.sitemap_0" title="Sitemap Name">
             <settingConfig type="alphaNumeric" required="true"/>
         </setting>
         <setting propertyKey="@Properties.restapi_0" title="Enable if your openHAB supports the new JSON REST API. Currently for developer use only.">
+            <settingConfig type="boolean" required="false"/>
+        </setting>
+        <setting propertyKey="@Properties.suppressEmptyResponseExceptions_0" title="Suppress errors for empty sitemap responses. Recommended when using myopenhab.org, which occasionally returns empty results.">
             <settingConfig type="boolean" required="false"/>
         </setting>
         <setting propertyKey="@Properties.webhook_0" title="Identifier of the Webhook for sending commands. See the documentation for setup details.">

@@ -63,4 +63,13 @@ class CommunicationBaseException extends Exception {
         throw new AbstractMethodException( "CommunicationBaseException.getToastMessage" );
     }
 
+    // Subclasses should override this to decide if the exception they represent should
+    // be suppressed if the "suppress empty responses" option is enabled in settings.
+    // This is primarily for myopenhab.org, which occasionally returns empty responses.
+    // Depending on the SDK and phone OS, this may result in a -400 CommunicationException
+    // or an UnexpectedResponseException for a null result. This method allows handling 
+    // both cases consistently.
+    public function suppressAsEmptyResponse() as Boolean {
+        return false;
+    }
 }

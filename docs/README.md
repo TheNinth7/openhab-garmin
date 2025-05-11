@@ -74,11 +74,13 @@ After installing the app, the following settings are available:
 
 | Setting             | Description |
 |---------------------|-------------|
-| **URL**             | Your openHAB URL in the format `https://host:port` or `http://host:port`. Note: HTTP only works with iOS. See [Connectivity](#connectivity) for details. |
+| **URL** | Your openHAB URL in the format `https://host:port` or `http://host:port`. Note: HTTP only works with iOS. See [Connectivity](#connectivity) and [Using myopenHAB](#-using-myopenhab) for details. |
 | **Sitemap Name** | Name of the sitemap to display. See [Sitemap Setup](#-sitemap-setup) for details. | 
-| **Webhook Identifier** | Required to send commands. Without it, the app can only display item states. See [Custom Webhook](#custom-webhook). |
-| **Username**        | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
-| **Password**        | Password for basic authentication |
+| **Native REST API Support** | Enable if your openHAB supports the new JSON-based REST API for sending commands. Currently intended for developer use only. |
+| **Supress empty response errors** | Suppress errors for empty sitemap responses. Recommended when using myopenhab.org, which occasionally returns empty results. See the related [openhab-cloud issue #496](https://github.com/openhab/openhab-cloud/issues/496) for details. |
+| **Webhook Identifier** | If your openHAB version doesn't support the JSON-based REST API (see above), you can configure a custom webhook to send commands. See [Custom Webhook](#custom-webhook) for details. |
+| **Username** | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
+| **Password** | Password for basic authentication |
 | **Polling Interval (ms)** | Interval between data requests to your openHAB instance. Set to 0 to fetch new data immediately after the previous response is processed. **Note:** When using **myopenhab.org**, it’s recommended to use the default (3000 ms) or a higher value. Lower intervals may trigger errors due to rate limiting by myopenhab.org. |
 
 ![App Settings](screenshots/app-settings/app-settings.png)
@@ -167,11 +169,14 @@ This configuration produces the following display in the UI:
 
 ---
 
-## ⚙️ Settings View
+## ⚙️ Settings Menu
 
-To access the settings menu, scroll down on the home screen and continue past the ⚙️ icon.
+To access the settings menu:
 
-It currently displays the app version and server URL. Additional features may be added in the future when the app evolves.
+* On button-based devices, scroll down on the home screen and continue past the ⚙️ icon.
+* On touch-based devices, tap the ⚙️ **Settings** entry in the home screen menu.
+
+The settings menu currently displays the app version and server URL. Additional features may be added in the future when the app evolves.
 
 <table>
   <tr>
@@ -315,6 +320,15 @@ The app distinguishes between **temporary (non-fatal)** and **critical (fatal)**
 * Any other unexpected errors or exceptions.
 
 > Note: Even after a fatal error, the app continues querying the sitemap. If a response is successfully processed, it returns to displaying the sitemap.
+
+**If "Suppress Empty Response Errors" is enabled:**
+
+When this option is enabled in the [Settings](#-configuration), toast notifications for the following errors will be suppressed:
+
+* `INVRES` – Invalid response (error code `-400`)
+* `EMRES` – Empty response
+
+However, if these errors persist for more than 10 seconds, they will be treated as fatal, and a full-screen error view will be shown.
 
 ---
 

@@ -94,6 +94,15 @@ public class ExceptionHandler {
         
         // Logger.debug( "ExceptionHandler: exception #" + SitemapErrorCountStore.get() + "/" + SITEMAP_ERROR_FATAL_ERROR_COUNT );
         
+        // If the setting to suppress empty response errors is enabled
+        // and this exception is classified as such, we do nothing further
+        if( AppSettings.suppressEmptyResponseExceptions()
+            && ex instanceof CommunicationBaseException
+            && ex.suppressAsEmptyResponse() ) {
+                Logger.debug( "ExceptionHandler: Suppressing empty response" );
+                return;
+        }
+
         /*
         * A toast notification will be shown under the following conditions:
         * - For all non-sitemap (i.e., command) communication errors.
@@ -103,6 +112,7 @@ public class ExceptionHandler {
         *
         * In all other cases, a full-screen error view is displayed instead.
         */
+
         if( ex instanceof CommunicationBaseException 
             &&  ( !ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP )
                 || ( errorCountIsNotYetFatal() && !ex.isFatal() ) )
