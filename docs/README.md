@@ -15,7 +15,7 @@
 
 🌐 [Connectivity](#-connectivity)
 
-📋 [Configuration](#️-configuration)
+📋 [Configuration](#-configuration)
 
 🔐 [Using myopenHAB](#-using-myopenhab)
 
@@ -23,7 +23,7 @@
 
 ⚙️ [Settings View](#settings-view)
 
-🛠️ [Custom Webhook](#️-custom-webhook)
+📤 [Custom Webhook](#️-custom-webhook)
 
 🚨 [Troubleshooting](#-troubleshooting)
 
@@ -46,12 +46,11 @@
 
 ### ✅ Current Features
 - Display a single openHAB sitemap
-- Support for frames, switch and text elements
-- Send commands via custom Webhook
+- Support for frames, on/off switches and text elements
+- [Send commands](#-sending-commands) via the JSON-based REST API or a custom Webhook
 
 ### 📋 Planned Features
 - Support for additional sitemap element types
-- Send commands via the openHAB REST API once available ([details](https://github.com/openhab/openhab-core/pull/4760))
 - Multi-sitemap and multi-server support
 
 ---
@@ -76,11 +75,11 @@ After installing the app, the following settings are available:
 |---------------------|-------------|
 | **URL** | Your openHAB URL in the format `https://host:port` or `http://host:port`. Note: HTTP only works with iOS. See [Connectivity](#connectivity) and [Using myopenHAB](#-using-myopenhab) for details. |
 | **Sitemap Name** | Name of the sitemap to display. See [Sitemap Setup](#-sitemap-setup) for details. | 
-| **Native REST API Support** | Enable if your openHAB supports the new JSON-based REST API for sending commands. Currently intended for developer use only. |
-| **Supress empty response errors** | Suppress errors for empty sitemap responses. Recommended when using myopenhab.org, which occasionally returns empty results. See the related [openhab-cloud issue #496](https://github.com/openhab/openhab-cloud/issues/496) for details. |
+| **Native REST API Support** | Enable if your openHAB supports the new JSON-based REST API for sending commands. See [Sending Commands](#-sending-commands) for details. |
 | **Webhook Identifier** | If your openHAB version doesn't support the JSON-based REST API (see above), you can configure a custom webhook to send commands. See [Custom Webhook](#custom-webhook) for details. |
 | **Username** | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
 | **Password** | Password for basic authentication |
+| **Supress empty response errors** | Suppress errors for empty sitemap responses. Recommended when using myopenhab.org, which occasionally returns empty results. See the related [openhab-cloud issue #496](https://github.com/openhab/openhab-cloud/issues/496) for details. |
 | **Polling Interval (ms)** | Interval between data requests to your openHAB instance. Set to 0 to fetch new data immediately after the previous response is processed. **Note:** When using **myopenhab.org**, it’s recommended to use the default (3000 ms) or a higher value. Lower intervals may trigger errors due to rate limiting by myopenhab.org. |
 
 ![App Settings](screenshots/app-settings/app-settings.png)
@@ -187,11 +186,20 @@ The settings menu currently displays the app version and server URL. Additional 
 
 ---
 
-## 🛠️ Custom Webhook
+## 📤 Sending Commands
 
-The current openHAB REST API does not work with Garmin SDK. This will change in a future openHAB release ([details](https://github.com/openhab/openhab-core/pull/4760)).
+Starting with openHAB 5, a built-in JSON-based REST API enables this app to send commands directly—no additional setup required.
 
-Until then, you can set up a custom Webhook:
+For earlier versions (openHAB 4.x), you can either install a backported version of the API or configure a custom webhook.
+
+### Option 1: Install the Backport
+
+To enable JSON-based command support on openHAB 4.x, install the backported API bundle. Follow the instructions here:
+➡️ [Backport Installation Guide](https://github.com/florian-h05/openhab-core/releases/tag/4.3.x-command-json)
+
+### Option 2: Custom Webhook
+
+The app also supports a custom Webhook:
 
 ### 1. Install the Webhook Binding
 

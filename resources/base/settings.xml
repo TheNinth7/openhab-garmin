@@ -3,10 +3,10 @@
         <property id="url_0" type="string"></property>
         <property id="sitemap_0" type="string"></property>
         <property id="restapi_0" type="boolean">false</property>
-        <property id="suppressEmptyResponseExceptions_0" type="boolean">false</property>
         <property id="webhook_0" type="string"></property>
         <property id="user_0" type="string"></property>
         <property id="password_0" type="string"></property>
+        <property id="suppressEmptyResponseExceptions_0" type="boolean">false</property>
         <property id="pollingInterval_0" type="number">3000</property>
     </properties>
 
@@ -17,13 +17,10 @@
         <setting propertyKey="@Properties.sitemap_0" title="Sitemap Name">
             <settingConfig type="alphaNumeric" required="true"/>
         </setting>
-        <setting propertyKey="@Properties.restapi_0" title="Enable if your openHAB supports the new JSON REST API. Currently for developer use only.">
+        <setting propertyKey="@Properties.restapi_0" title="Enable this option if your openHAB installation supports the JSON-based REST API for sending commands.">
             <settingConfig type="boolean" required="false"/>
         </setting>
-        <setting propertyKey="@Properties.suppressEmptyResponseExceptions_0" title="Suppress errors for empty sitemap responses. Recommended when using myopenhab.org, which occasionally returns empty results.">
-            <settingConfig type="boolean" required="false"/>
-        </setting>
-        <setting propertyKey="@Properties.webhook_0" title="Identifier of the Webhook for sending commands. See the documentation for setup details.">
+        <setting propertyKey="@Properties.webhook_0" title="Webhook Identifier – A way to send commands if the JSON-based REST API is not available. See the documentation for setup instructions.">
             <settingConfig type="alphaNumeric" required="false"/>
         </setting>
         <setting propertyKey="@Properties.user_0" title="User Name (Basic Authentication)">
@@ -31,6 +28,9 @@
         </setting>
         <setting propertyKey="@Properties.password_0" title="Password">
             <settingConfig type="password" required="false"/>
+        </setting>
+        <setting propertyKey="@Properties.suppressEmptyResponseExceptions_0" title="Suppress errors for empty sitemap responses. Recommended when using myopenhab.org, which occasionally returns empty results.">
+            <settingConfig type="boolean" required="false"/>
         </setting>
         <setting propertyKey="@Properties.pollingInterval_0" title="Polling interval (ms): Time between data requests to your openHAB instance. Set to 0 to request new data immediately after the previous response is processed.">
             <settingConfig type="numeric" required="false" min="0" max="10000"/>
