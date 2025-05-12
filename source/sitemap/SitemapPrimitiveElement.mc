@@ -54,6 +54,19 @@ class SitemapPrimitiveElement extends SitemapElement {
         return [widgetLabel, widgetState];
     }
 
+    // Takes a state value from the JSON and returns it
+    // set to NO_STATE if it is empty, NULL or UNDEF
+    protected function parseState( value as String? ) as String {
+        if( value == null 
+            || value.equals( "" )
+            || value.equals( "NULL" ) 
+            || value.equals( "UNDEF" ) ) 
+            {
+            return NO_STATE;
+        }
+        return value;
+    }
+
     // Constructor
     protected function initialize( data as JsonObject ) {
         // First initialize the super class
@@ -66,14 +79,12 @@ class SitemapPrimitiveElement extends SitemapElement {
         // and the state in `widgetState`.
         var parsedLabel = parseLabel( label );
         label = parsedLabel[0];
-        widgetState = ( parsedLabel[1] == null ? NO_STATE : parsedLabel[1] as String );
+        widgetState = parseState( parsedLabel[1] );
 
         // ... and then read all the elements
         var item =  getObject( data, ITEM, "Element '" + label + "': no item found" );
         itemName =  getString( item, ITEM_NAME, "Element '" + label + "': item has no name" );
         itemType =  getString( item, ITEM_TYPE, "Element '" + label + "': item has no type" );
-        var nullableItemState = item[ITEM_STATE];
-        itemState = ( nullableItemState == null ? NO_STATE : nullableItemState as String );
-        // itemState = getString( item, ITEM_STATE, "Element '" + label + "': item has no state" );
+        itemState = parseState( item[ITEM_STATE] as String? );
     }
 }
