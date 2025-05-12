@@ -7,14 +7,14 @@ import Toybox.WatchUi;
  * The item's label displays the Frame's label, and in onSelectImpl(), 
  * it opens a PageMenu representing the Frame's content.
  */
-class PageMenuItem extends BaseViewMenuItem {
+class PageMenuItem extends BaseSitemapMenuItem {
 
     private var _menu as PageMenu;
 
     // Constructor  
     // Initializes the base class and sets the menu view to open when this item is selected.
     public function initialize( sitemapPage as SitemapPage, parentMenu as CustomMenu ) {
-        BaseViewMenuItem.initialize( { 
+        BaseSitemapMenuItem.initialize( { 
             :id => sitemapPage.id,
             :parentMenu => parentMenu,
             :label => sitemapPage.label 
@@ -37,7 +37,7 @@ class PageMenuItem extends BaseViewMenuItem {
     }
 
     // If selected, the associated menu will be pushed on the stack
-    public function onSelectImpl() as Void {
+    public function onSelect() as Void {
         ViewHandler.pushView( _menu, PageMenuDelegate.get(), WatchUi.SLIDE_LEFT );
     }
 }
