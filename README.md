@@ -135,55 +135,17 @@ In the Connect IQ SDK, resources define:
 
 ## Folder `/source`
 
-The app is written in **Monkey C**, Garmin's programming language, using the Connect IQ SDK API for UI, settings, persistent storage, and HTTP requests to evcc.
+The app is written in **Monkey C**, Garmin's programming language, using the Connect IQ SDK API for UI, settings, persistent storage, and HTTP requests to openHAB.
 
-**Annotations:**
-
-- `(:glance)` is used to identify code that needs to be available in the *Glance*.
-- Use of exclude annotations helps the build system tailor the code to each device (see the `monkey.jungle` file in the [root folder](#root-folder-) for details).
-
-**Key files and directories:**
-
-TODO: describe source code, link to subdirectories
-
-**Further reading:**
-
-- [Connect IQ Core Topics](https://developer.garmin.com/connect-iq/core-topics/)  
-- [Connect IQ API Reference](https://developer.garmin.com/connect-iq/api-docs/)
+For more details, continue reading the folder’s [README](#source/README.md).
 
 <br>
 
 ## Folder `/source-constants`
 
-This folder defines device-specific configuration via code-based constants, replacing Garmin SDK *Properties*, which have significant limitations.
+This folder defines device-specific configuration using code-based *Constants*, which replace Garmin SDK *Properties* due to their limitations. Unlike *Properties*, *Constants* are embedded in the code, update automatically with new app versions, and benefit from compiler validation.
 
-### Why Constants?
-
-The Garmin SDK’s *Properties* are stored externally from the app and persist across installations. This means that when a new version of the app is installed, any existing properties from the previous version remain, unless the user performs a full uninstall and reinstall. To avoid this issue and allow reliable updates, the app uses *Constants* instead:
-
-* Constants are part of the code base and automatically update with new app versions.
-* The compiler validates constant usage, reducing runtime errors.
-* Constants can be cleanly overridden for specific devices.
-
-### Structure and Usage
-
-All devices inherit default values from `DefaultConstants` and `GlanceDefaultConstants`, which define all configuration values used in the *Widget* and *Glance*, respectively.
-
-In the source code, these are accessed via the `Constants` and `GlanceConstants` classes. Each supported device may override the defaults by providing its own implementation of these classes.
-
-### Key Files and Directories
-
-* `/source/base`:
-  Contains `DefaultConstants` and `GlanceDefaultConstants`, which define the baseline values for all devices.
-
-* `/source/default-device`:
-  Contains default `Constants` and `GlanceConstants` implementations. These inherit all values from the base without overrides.
-
-* `/source/edge`:
-  Contains Edge-specific implementations of `Constants` and `GlanceConstants`, overriding select values to adapt the UI for Garmin Edge devices.
-
-* `/source/fenix6pro`:
-  Contains Fenix 6 Pro-specific implementations of `Constants` and `GlanceConstants`, adjusting select values to better fit the device's display.
+For more details, continue reading the folder’s [README](#source-constants/README.md).
 
 <br>
 
