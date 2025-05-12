@@ -4,11 +4,13 @@ import Toybox.WatchUi;
 import Toybox.Timer;
 
 /*
-    The base class for the App, responsible for 
-    initializing the initial view of glance and widget,
-    and for any other logic that shall be executed during
-    startup and shutdown of the application.
-*/
+ * Base class for the app. Responsible for initializing
+ * the initial view for both glance and widget modes, as well
+ * as handling logic that runs during app startup and shutdown.
+ *
+ * This class also includes logic executed when the app is updated
+ * or when settings are changed.
+ */
 (:glance)
 class OHApp extends Application.AppBase {
 
