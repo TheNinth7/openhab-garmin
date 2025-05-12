@@ -180,7 +180,7 @@ The settings menu currently displays the app version and server URL. Additional 
 <table>
   <tr>
     <td width="50%"><img src="screenshots/app/5-settings-1.png"></td>
-    <td><img src="screenshots/app/5-settings-1.png"></td>
+    <td><img src="screenshots/app/5-settings-2.png"></td>
   </tr>
 </table>
 
