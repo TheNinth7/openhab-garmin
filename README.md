@@ -137,7 +137,7 @@ In the Connect IQ SDK, resources define:
 
 The app is written in **Monkey C**, Garmin's programming language, using the Connect IQ SDK API for UI, settings, persistent storage, and HTTP requests to openHAB.
 
-For more details, continue reading the folder’s [README](tree/main/source).
+For more details, continue reading the folder’s [README](https://github.com/TheNinth7/ohg/tree/main/source#folder-source).
 
 <br>
 
@@ -145,7 +145,7 @@ For more details, continue reading the folder’s [README](tree/main/source).
 
 This folder defines device-specific configuration using code-based *Constants*, which replace Garmin SDK *Properties* due to their limitations. Unlike *Properties*, *Constants* are embedded in the code, update automatically with new app versions, and benefit from compiler validation.
 
-For more details, continue reading the folder’s [README](tree/main/source-constants).
+For more details, continue reading the folder’s [README](https://github.com/TheNinth7/ohg/tree/main/source-constants#folder-source-constants).
 
 <br>
 
