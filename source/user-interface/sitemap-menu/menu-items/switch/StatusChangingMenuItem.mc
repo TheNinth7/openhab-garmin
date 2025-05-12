@@ -1,10 +1,14 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-/*
- * Base class for all menu items that represent `Switch` sitemap elements.
+/**
+ * Base class for all menu items representing `Switch` sitemap elements
+ * that immediately update the associated openHAB item's state upon selection.
+ *
+ * This class is intended for switches where user interaction should directly
+ * trigger a state change (e.g., ON/OFF).
  */
-class SwitchMenuItem extends BaseSitemapMenuItem {
+class StatusChangingMenuItem extends BaseSitemapMenuItem {
     // The openHAB item linked to the sitemap element
     private var _itemName as String;
     public function getItemName() as String {
@@ -19,11 +23,11 @@ class SwitchMenuItem extends BaseSitemapMenuItem {
     // getNextCommand() shall return the command to be triggered
     // when the menu item is selected
     public function getNextCommand() as String {
-        throw new AbstractMethodException( "SwitchMenuItem.getNextCommand" );
+        throw new AbstractMethodException( "StatusChangingMenuItem.getNextCommand" );
     }
     // updateItemState() shall update the state Drawable with a new state
     public function updateItemState( state as String ) as Void {
-        throw new AbstractMethodException( "SwitchMenuItem.updateItemState" );
+        throw new AbstractMethodException( "StatusChangingMenuItem.updateItemState" );
     }
     
     // Constructor
