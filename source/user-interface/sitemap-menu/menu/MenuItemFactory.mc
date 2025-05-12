@@ -18,7 +18,7 @@ class MenuItemFactory {
         } else if( NoStateMenuItem.isMyType( sitemapElement ) ) {
             return new NoStateMenuItem( sitemapElement as SitemapPrimitiveElement );
         } else {
-            throw new JsonParsingException( "Element '" + sitemapElement.label + " is not supported" );
+            throw new JsonParsingException( "Element '" + sitemapElement.label + "' is not supported" );
         }
     }
 }

@@ -82,9 +82,14 @@ class SitemapPrimitiveElement extends SitemapElement {
         widgetState = parseState( parsedLabel[1] );
 
         // ... and then read all the elements
-        var item =  getObject( data, ITEM, "Element '" + label + "': no item found" );
+        var item =  getItem( data );
         itemName =  getString( item, ITEM_NAME, "Element '" + label + "': item has no name" );
         itemType =  getString( item, ITEM_TYPE, "Element '" + label + "': item has no type" );
         itemState = parseState( item[ITEM_STATE] as String? );
+    }
+
+    // Access the item, can also be used by subclasses
+    protected function getItem( data as JsonObject ) as JsonObject {
+        return getObject( data, ITEM, "Element '" + label + "': no item found" );
     }
 }
