@@ -49,7 +49,7 @@ class HomepageMenu extends BasePageMenu {
     // For touch-based devices there is a dedicated menu item for
     // showing the settings menu
     (:exclForButton)
-    private var _settingsMenuItem as SettingsMenuItem = new SettingsMenuItem( self );    
+    private var _settingsMenuItem as SettingsMenuItem = new SettingsMenuItem();    
     (:exclForButton)
     private function initialize( sitemapHomepage as SitemapHomepage ) {
         BasePageMenu.initialize( sitemapHomepage, null );
