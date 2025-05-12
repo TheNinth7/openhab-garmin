@@ -15,6 +15,8 @@ class MenuItemFactory {
             return new TextMenuItem( sitemapElement as SitemapText );
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
+        } else if( NoStateMenuItem.isMyType( sitemapElement ) ) {
+            return new NoStateMenuItem( sitemapElement as SitemapPrimitiveElement );
         } else {
             throw new JsonParsingException( "Element '" + sitemapElement.label + " is not supported" );
         }

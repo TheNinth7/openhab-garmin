@@ -58,6 +58,7 @@ class OnOffMenuItem extends StatusChangingMenuItem {
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
                sitemapElement instanceof SitemapSwitch 
-            && sitemapElement.itemType.equals( ITEM_TYPE );
+            && sitemapElement.itemType.equals( ITEM_TYPE )
+            && sitemapElement.hasItemState();
     }
 }
