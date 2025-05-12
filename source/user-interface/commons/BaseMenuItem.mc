@@ -18,7 +18,6 @@ typedef BaseMenuItemOptions as {
     :label as String,
     :labelColor as ColorType?,
     :status as Drawable?,
-    :parentMenu as CustomMenu?
 };
 
 class BaseMenuItem extends CustomMenuItem {

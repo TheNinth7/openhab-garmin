@@ -13,10 +13,9 @@ class PageMenuItem extends BaseSitemapMenuItem {
 
     // Constructor  
     // Initializes the base class and sets the menu view to open when this item is selected.
-    public function initialize( sitemapPage as SitemapPage, parentMenu as CustomMenu ) {
+    public function initialize( sitemapPage as SitemapPage ) {
         BaseSitemapMenuItem.initialize( { 
             :id => sitemapPage.id,
-            :parentMenu => parentMenu,
             :label => sitemapPage.label 
         } );
 

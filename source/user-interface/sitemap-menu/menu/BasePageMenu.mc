@@ -32,7 +32,7 @@ class BasePageMenu extends BaseMenu {
         // For each element in the page, create a menu item
         var elements = sitemapPage.elements;
         for( var i = 0; i < elements.size(); i++ ) {
-            addItem( createMenuItem( elements[i] ) );
+            addItem( MenuItemFactory.createMenuItem( elements[i] ) );
         }
     }
 
@@ -75,7 +75,7 @@ class BasePageMenu extends BaseMenu {
             var itemIndex = findItemById( element.id );
             if( itemIndex == -1 ) {
                 // If the item does not exist yet, we create it
-                addItem( createMenuItem( element ) );
+                addItem( MenuItemFactory.createMenuItem( element ) );
                 Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
             } else {
                 // If the item is found, we check if the type of the menu
@@ -90,7 +90,7 @@ class BasePageMenu extends BaseMenu {
                 } else {
                     // If the type is not the same, we create a new item
                     // and replace the existing menu item with it
-                    var newItem = createMenuItem( element );
+                    var newItem = MenuItemFactory.createMenuItem( element );
                     if( item instanceof PageMenuItem || newItem instanceof PageMenuItem ) {
                         structureRemainsValid = false;
                         Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
@@ -110,18 +110,5 @@ class BasePageMenu extends BaseMenu {
             Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item was removed" );
         }
         return structureRemainsValid;
-    }
-
-    // Creates a menu item based on the sitemap element type
-    private function createMenuItem( sitemapElement as SitemapElement ) as CustomMenuItem {
-        if( OnOffMenuItem.isMyType( sitemapElement ) ) {
-            return new OnOffMenuItem( sitemapElement as SitemapSwitch );
-        } else if( TextMenuItem.isMyType( sitemapElement ) ) {
-            return new TextMenuItem( sitemapElement as SitemapText );
-        } else if( sitemapElement instanceof SitemapPage ) {
-            return new PageMenuItem( sitemapElement, self );
-        } else {
-            throw new JsonParsingException( "Element '" + sitemapElement.label + "' on page '" + _label + "' is not supported" );
-        }
     }
 }

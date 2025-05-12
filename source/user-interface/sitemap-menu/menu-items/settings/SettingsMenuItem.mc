@@ -13,11 +13,10 @@ import Toybox.WatchUi;
 class SettingsMenuItem extends BaseSitemapMenuItem {
 
     // Constructor
-    public function initialize( parentMenu as CustomMenu ) {
+    public function initialize() {
         // To offset this menu item from the sitemap menu items
         // the font is colored in light grey
         BaseSitemapMenuItem.initialize( { 
-            :parentMenu => parentMenu,
             :id => "__settings__",
             :icon => Rez.Drawables.menuSettings,
             :label => "Settings",
