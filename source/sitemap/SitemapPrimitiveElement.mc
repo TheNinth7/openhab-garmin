@@ -16,6 +16,8 @@ class SitemapPrimitiveElement extends SitemapElement {
     private const ITEM_TYPE = "type";
     private const ITEM_STATE = "state";
 
+    private const NO_STATE = "NULL";
+
     // Fields read from the JSON
     public var itemName as String;
     public var itemState as String;
@@ -24,8 +26,16 @@ class SitemapPrimitiveElement extends SitemapElement {
     // For some elements, the widget label also contains state information,
     // which may include mappings and formatting. This state is extracted
     // into this member and removed from the label.
-    public var widgetState as String?;
+    public var widgetState as String;
 
+    // Functions to tell whether the widget and the item have a state
+    public function hasItemState() as Boolean {
+        return !itemState.equals( NO_STATE );
+    }
+    public function hasWidgetState() as Boolean {
+        return !itemState.equals( NO_STATE );
+    }
+    
     // The label may include a state in the format:
     //   label [state]
     // This function parses the input into the actual label and the state,
@@ -56,12 +66,14 @@ class SitemapPrimitiveElement extends SitemapElement {
         // and the state in `widgetState`.
         var parsedLabel = parseLabel( label );
         label = parsedLabel[0];
-        widgetState = parsedLabel[1];
+        widgetState = ( parsedLabel[1] == null ? NO_STATE : parsedLabel[1] as String );
 
         // ... and then read all the elements
         var item =  getObject( data, ITEM, "Element '" + label + "': no item found" );
         itemName =  getString( item, ITEM_NAME, "Element '" + label + "': item has no name" );
         itemType =  getString( item, ITEM_TYPE, "Element '" + label + "': item has no type" );
-        itemState = getString( item, ITEM_STATE, "Element '" + label + "': item has no state" );
+        var nullableItemState = item[ITEM_STATE];
+        itemState = ( nullableItemState == null ? NO_STATE : nullableItemState as String );
+        // itemState = getString( item, ITEM_STATE, "Element '" + label + "': item has no state" );
     }
 }

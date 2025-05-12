@@ -14,16 +14,9 @@ class TextMenuItem extends BaseSitemapMenuItem {
     // The text status Drawable
     private var _statusTextArea as TextStatusDrawable;
 
-    private function checkState( sitemapText as SitemapText ) as Void {
-        if( sitemapText.widgetState == null ) {
-            throw new JsonParsingException( "Text element '" + sitemapText.label + "' does not contain [state] in its label" );
-        }
-    }
-
     // Constructor
     public function initialize( sitemapText as SitemapText ) {
-        checkState( sitemapText );
-        _statusTextArea = new TextStatusDrawable( sitemapText.label, sitemapText.widgetState as String );
+        _statusTextArea = new TextStatusDrawable( sitemapText.label, sitemapText.widgetState );
         BaseSitemapMenuItem.initialize(
             {
                 :id => sitemapText.id,
@@ -38,15 +31,15 @@ class TextMenuItem extends BaseSitemapMenuItem {
         if( ! ( sitemapElement instanceof SitemapText ) ) {
             throw new GeneralException( "Sitemap element '" + sitemapElement.label + "' was passed into TextMenuItem but is of a different type" );
         }
-        var sitemapText = sitemapElement as SitemapText;
-        checkState( sitemapText );
-        _statusTextArea.update( sitemapElement.label, sitemapElement.widgetState as String  );
+        _statusTextArea.update( sitemapElement.label, sitemapElement.widgetState );
         setCustomLabel( sitemapElement.label );
         return true;
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
-        return sitemapElement instanceof SitemapText; 
+        return 
+            sitemapElement instanceof SitemapText
+            && sitemapElement.hasWidgetState(); 
     }
 }
