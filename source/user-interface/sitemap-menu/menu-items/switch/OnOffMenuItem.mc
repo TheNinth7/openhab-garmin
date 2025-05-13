@@ -16,10 +16,6 @@ class OnOffMenuItem extends StatusChangingMenuItem {
     private static const ITEM_STATE_ON = "ON";
     private static const ITEM_STATE_OFF = "OFF";
 
-    // This menu item applies to all sitemap elements of type Switch
-    // that are associated with an openHAB item of type Switch
-    public static const ITEM_TYPE = "Switch";
-
     // Toggle the state
     public function getNextCommand() as String {
         return _isEnabled ? ITEM_STATE_OFF : ITEM_STATE_ON;
@@ -58,7 +54,7 @@ class OnOffMenuItem extends StatusChangingMenuItem {
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
                sitemapElement instanceof SitemapSwitch 
-            && sitemapElement.normalizedItemType.equals( ITEM_TYPE )
+            && ! sitemapElement.hasMappings()
             && sitemapElement.hasItemState();
     }
 }
