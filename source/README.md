@@ -18,7 +18,7 @@ All `.mc` files include inline comments and documentation describing the purpose
 ### **Further Reading**
 
 * [Connect IQ Core Topics](https://developer.garmin.com/connect-iq/core-topics/)
-* [Connect IQ API Reference](https://developer.garmin.com/connect-iq/api-docs/)
+* [Connect IQ API Docs](https://developer.garmin.com/connect-iq/api-docs/)
 
 ---
 
@@ -52,8 +52,8 @@ Includes the `AppSettings` class, which reads, validates, and exposes applicatio
 
 **Related Resources:**
 
-* [Toybox.Application.Properties](https://developer.garmin.com/connect-iq/api-docs/Toybox/Application/Properties.html)
 * [Connect IQ SDK Core Topics – Resources](https://developer.garmin.com/connect-iq/core-topics/resources/)
+* [Connect IQ API Docs – `Toybox.Application.Properties`](https://developer.garmin.com/connect-iq/api-docs/Toybox/Application/Properties.html)
 * See also: [Folder `resources`](https://github.com/TheNinth7/ohg#folder-resources)
 
 ---
@@ -81,7 +81,7 @@ Handles reading from and writing to persistent storage. As of now, the following
 **Related Resources:**
 
 * [Connect IQ Core Topics – Persisting Data](https://developer.garmin.com/connect-iq/core-topics/persisting-data/)
-* [Toybox.Application.Storage](https://developer.garmin.com/connect-iq/api-docs/Toybox/Application/Storage.html)
+* [Connect IQ API Docs – `Toybox.Application.Storage`](https://developer.garmin.com/connect-iq/api-docs/Toybox/Application/Storage.html)
 
 ---
 
@@ -116,4 +116,4 @@ Implements communication with the openHAB server using the Connect IQ SDK's `Com
 **Further reading:**
 
 - [Connect IQ Core Topics - JSON REST Requests](https://developer.garmin.com/connect-iq/core-topics/https/)  
-- [Connect IQ API Docs - Module: Toybox.Communications](https://developer.garmin.com/connect-iq/api-docs/Toybox/Communications.html)
+- [Connect IQ API Docs - `Toybox.Communications`](https://developer.garmin.com/connect-iq/api-docs/Toybox/Communications.html)
