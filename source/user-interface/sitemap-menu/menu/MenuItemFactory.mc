@@ -9,12 +9,14 @@ class MenuItemFactory {
 
     // Creates a menu item based on the sitemap element type
     public static function createMenuItem( sitemapElement as SitemapElement ) as CustomMenuItem {
-        if( OnOffMenuItem.isMyType( sitemapElement ) ) {
-            return new OnOffMenuItem( sitemapElement as SitemapSwitch );
+        if( OnOffSwitchMenuItem.isMyType( sitemapElement ) ) {
+            return new OnOffSwitchMenuItem( sitemapElement as SitemapSwitch );
         } else if( TextMenuItem.isMyType( sitemapElement ) ) {
             return new TextMenuItem( sitemapElement as SitemapText );
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
+        } else if( BinarySwitchMenuItem.isMyType( sitemapElement ) ) {
+            return new BinarySwitchMenuItem( sitemapElement as SitemapSwitch );
         } else if( NoStateMenuItem.isMyType( sitemapElement ) ) {
             return new NoStateMenuItem( sitemapElement as SitemapPrimitiveElement );
         } else {

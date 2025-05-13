@@ -7,7 +7,7 @@ import Toybox.Graphics;
  *
  * Each menu item comprises:
  * - A left-side icon (`ResourceId`), currently not updatable
- * - A center label, passed in as `String` and updatable via `setCustomLabel()`
+ * - A center label, passed in as `String` and updatable via `setLabel()`
  * - A right-side status indicator (`Drawable`), updatable by updating the Drawable itself
  */
 class BaseSitemapMenuItem extends BaseMenuItem {
@@ -20,8 +20,12 @@ class BaseSitemapMenuItem extends BaseMenuItem {
 
     // Function for updating the label
     // The base class CustomItem already has a setLabel function,
-    // so we need to use a different name here
-    public function setCustomLabel( label as String ) as Void {
+    // so we need to use the same signature, but will throw an
+    // exception for ResourceId
+    public function setLabel( label as String or ResourceId ) as Void {
+        if( ! ( label instanceof String ) ) {
+            throw new GeneralException( "BaseSitemapMenuItem supports only String labels" );
+        }
         _label = label;
         if( _labelTextArea != null ) {
             _labelTextArea.setText( label );
@@ -61,16 +65,13 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         
         // Label color will default to white
         var labelColor = options[:labelColor] as ColorType?;
-        _labelColor = labelColor != null ? labelColor : Graphics.COLOR_WHITE;
+        _labelColor = labelColor != null ? labelColor : Constants.UI_COLOR_TEXT;
     }
 
     // Called by the base class to render the menu item.
     public function drawImpl( dc as Dc ) as Void {
-        // In the first call, the drawables are initialized
-        if( _labelTextArea == null ) {
-            initializeDrawables( dc );
-        }
-        
+        initializeDrawables( dc );
+    
         if( _icon != null ) {
             _icon.draw( dc );
         }

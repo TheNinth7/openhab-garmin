@@ -25,7 +25,7 @@ class LoadingView extends WatchUi.View {
 
     // Display the loading message 
     function onUpdate( dc as Dc ) as Void {
-        dc.setColor( Graphics.COLOR_WHITE, Graphics.COLOR_BLACK );
+        dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_COLOR_BACKGROUND );
         dc.clear();
         new Text( {
             :text => "Loading ...",

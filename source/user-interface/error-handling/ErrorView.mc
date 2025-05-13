@@ -105,7 +105,7 @@ import Toybox.System;
         dc.clearClip();
         
         // Set the colors
-        dc.setColor( Graphics.COLOR_RED, Graphics.COLOR_BLACK );
+        dc.setColor( Graphics.COLOR_RED, Constants.UI_COLOR_BACKGROUND );
         dc.clear();
 
         // Define the error message
@@ -136,7 +136,7 @@ import Toybox.System;
             :locY => WatchUi.LAYOUT_VALIGN_CENTER,
             :justification => Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
             :color => Graphics.COLOR_RED,
-            :backgroundColor => Graphics.COLOR_BLACK,
+            :backgroundColor => Constants.UI_COLOR_BACKGROUND,
             :width => width,
             :height => height
         } ).draw( dc );

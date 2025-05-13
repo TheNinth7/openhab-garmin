@@ -32,7 +32,7 @@ class TextMenuItem extends BaseSitemapMenuItem {
             throw new GeneralException( "Sitemap element '" + sitemapElement.label + "' was passed into TextMenuItem but is of a different type" );
         }
         _statusTextArea.update( sitemapElement.label, sitemapElement.widgetState );
-        setCustomLabel( sitemapElement.label );
+        setLabel( sitemapElement.label );
         return true;
     }
 

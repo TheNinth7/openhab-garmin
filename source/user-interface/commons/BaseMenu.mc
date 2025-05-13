@@ -30,7 +30,7 @@ class BaseMenu extends CustomMenu {
         // the corresponding `Drawable` required by the `CustomMenu` superclass.
         _title = new Text( {
             :text => options[:title] as String,
-            :color => Graphics.COLOR_WHITE,
+            :color => Constants.UI_COLOR_TEXT,
             :font => Constants.UI_MENU_TITLE_FONT
         } );
         
@@ -71,7 +71,7 @@ class BaseMenu extends CustomMenu {
         // Initialize the super class
         CustomMenu.initialize( 
             options[:itemHeight] as Number,
-            Graphics.COLOR_BLACK, 
+            Constants.UI_COLOR_BACKGROUND, 
             parentOptions );
     }
 
@@ -106,7 +106,7 @@ class BaseMenu extends CustomMenu {
         * As a workaround, affected views must explicitly call `Dc.clearClip()` 
         * to reset the clipping region.
         */
-        dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
+        dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
         dc.setClip( 0, 0, dc.getWidth(), clipHeight );
         dc.clear();
         dc.clearClip();
@@ -117,7 +117,7 @@ class BaseMenu extends CustomMenu {
         /*
         dc.setColor( Constants.UI_MENU_TITLE_BACKGROUND_COLOR, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
         dc.fillRectangle( 0, 0, dc.getWidth(), clipHeight );
-        dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
+        dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
         */
 
         /*

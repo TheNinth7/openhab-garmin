@@ -98,7 +98,7 @@ Contains the actual implementations of sitemap menu items (analogous to openHAB 
 
 #### Structure
 
-* `MenuItem` classes (e.g., `OnOffMenuItem`) implement the interactive list entries.
+* `MenuItem` classes (e.g., `OnOffSwitchMenuItem`) implement the interactive list entries.
 * `Drawable` classes render visual components (e.g., `OnOffStatusDrawable` for toggle switches).
 * `View` classes define full-screen views opened when selecting a menu item.
 

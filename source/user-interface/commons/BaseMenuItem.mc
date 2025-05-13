@@ -41,7 +41,7 @@ class BaseMenuItem extends CustomMenuItem {
         // fill the background with the specified color.
         if( ( isFocused() ) && 
             Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED != Graphics.COLOR_TRANSPARENT ) {
-                dc.setColor( Graphics.COLOR_WHITE, Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED );
+                dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED );
                 dc.clear();
         }
         drawImpl( dc );

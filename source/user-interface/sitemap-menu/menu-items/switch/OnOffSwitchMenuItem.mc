@@ -6,7 +6,7 @@ import Toybox.Graphics;
  * A menu item that displays an on/off switch as its status.
  * Selecting the item toggles the switch state.
  */
-class OnOffMenuItem extends StatusChangingMenuItem {
+class OnOffSwitchMenuItem extends StatusChangingMenuItem {
     // True if the switch is on
     private var _isEnabled as Boolean;
     // The actual Drawable for drawing the switch
@@ -34,7 +34,7 @@ class OnOffMenuItem extends StatusChangingMenuItem {
         } else if( itemState.equals( ITEM_STATE_OFF ) ) {
             return false;
         } else {
-            throw new GeneralException( "OnOffMenuItem: state '" + itemState + "' is not supported" );
+            throw new GeneralException( "OnOffSwitchMenuItem: state '" + itemState + "' is not supported" );
         }
     }
 

@@ -84,7 +84,10 @@ class StatusChangingMenuItem extends BaseSitemapMenuItem {
     // Updates the label and delegates status `Drawable` updates to the subclass.
     public function update( sitemapElement as SitemapElement ) as Boolean {
         var sitemapSwitch = sitemapElement as SitemapSwitch;
-        setCustomLabel( sitemapSwitch.label );
+        // setLabel needs to come before updateItemState,
+        // so that updateItemState can already access the
+        // updated label
+        setLabel( sitemapSwitch.label );
         updateItemState( sitemapSwitch.normalizedItemState );
         return true;
     }

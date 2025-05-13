@@ -19,8 +19,9 @@ class TextStatusDrawable extends TextArea {
     // Sets the size of the status drawable proportionally based on the relative lengths 
     // of the status text and the label.
     public function setAvailableWidth( availableWidth as Number ) as Void {
-        var textLength = _text.length();
-        setSize( availableWidth * textLength/(textLength+_label.length()), height );
+        //var textLength = _text.length();
+        //setSize( availableWidth * textLength/(textLength+_label.length()), height );
+        setSize( ( availableWidth * TextDimensions.getWidthRatio( _text, _label ) ).toNumber(), height );
     }
 
     // Constructor  
@@ -31,7 +32,7 @@ class TextStatusDrawable extends TextArea {
         _text = text;
         TextArea.initialize( {
             :text => _text,
-            :color => Graphics.COLOR_LT_GRAY,
+            :color => Constants.UI_COLOR_INACTIVE,
             :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR,
             :font => Constants.UI_MENU_ITEM_FONTS,
             :justification => Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER,

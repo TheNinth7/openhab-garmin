@@ -12,6 +12,22 @@ import Toybox.System;
 class DefaultConstants {
     protected function initialize() {}
     
+    // MAIN COLOR DEFINITIONS
+    
+    // Active represents devices that are on/active
+    public static const UI_COLOR_ACTIVE as ColorType = 0xe64a19; // openHAB orange
+    
+    // Inactive represents devices that are off/inactive,
+    // as well as non-actionable states
+    public static const UI_COLOR_INACTIVE as ColorType = Graphics.COLOR_LT_GRAY;
+    
+    // Actionable represents states that can be changed in the app
+    public static const UI_COLOR_ACTIONABLE as ColorType = 0x1976d2; // blue; alternative green: 0x388E3C
+
+    // Foreground and background colors
+    public static const UI_COLOR_TEXT as ColorType = Graphics.COLOR_WHITE;
+    public static const UI_COLOR_BACKGROUND as ColorType = Graphics.COLOR_BLACK;
+
     // Height of the screen, used in calculation of other constants
     public static const UI_SCREEN_HEIGHT = System.getDeviceSettings().screenHeight;
     public static const UI_SCREEN_WIDTH = System.getDeviceSettings().screenWidth;

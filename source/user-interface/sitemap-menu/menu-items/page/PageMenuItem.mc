@@ -31,7 +31,7 @@ class PageMenuItem extends BaseSitemapMenuItem {
     // and invoking the update() method on its submenu.
     public function update( sitemapElement as SitemapElement ) as Boolean {
         var sitemapPage = sitemapElement as SitemapPage;
-        setCustomLabel( sitemapPage.label );
+        setLabel( sitemapPage.label );
         return _menu.update( sitemapPage );
     }
 

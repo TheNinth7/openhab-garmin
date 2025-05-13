@@ -61,7 +61,7 @@ class OnOffStatusDrawable extends BufferedBitmapDrawable {
 
         // Define the color of the switch
         if( isEnabled ) {
-            dc.setColor( 0xe64a19, Constants.UI_MENU_ITEM_BG_COLOR );
+            dc.setColor( Constants.UI_COLOR_ACTIVE, Constants.UI_MENU_ITEM_BG_COLOR );
         } else {
             dc.setColor( Graphics.COLOR_LT_GRAY, Constants.UI_MENU_ITEM_BG_COLOR );
         }
@@ -84,7 +84,7 @@ class OnOffStatusDrawable extends BufferedBitmapDrawable {
         dc.fillRectangle( xCenter-radius-1, upperYCenter, radius*2 + 3, lowerYCenter - upperYCenter );
 
         // draw the inner circle showing the switch state
-        dc.setColor( Graphics.COLOR_BLACK, Constants.UI_MENU_ITEM_BG_COLOR );
+        dc.setColor( Constants.UI_COLOR_BACKGROUND, Constants.UI_MENU_ITEM_BG_COLOR );
         var toggleCenter = isEnabled ? upperYCenter : lowerYCenter;
         dc.fillCircle( xCenter, toggleCenter, radius * INNER_CIRCLE_FACTOR );
     }
@@ -108,7 +108,7 @@ class OnOffStatusDrawable extends Text {
         return isEnabled ? "ON" : "OFF";
     }
     private function getColor( isEnabled as Boolean ) as ColorType {
-        return isEnabled ? 0xe64a19 : Graphics.COLOR_DK_GRAY;
+        return isEnabled ? 0xe64a19 : Constants.UI_COLOR_INACTIVE;
     }
 }
 */
