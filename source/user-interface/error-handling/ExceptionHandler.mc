@@ -13,7 +13,7 @@ import Toybox.Math;
  *   individual items and do not compromise the entire sitemap view.
  * - Displaying a full-screen error view immediately for all other errors.
  *
- * Full-screen errors are managed by `ErrorViewHandler`, while toast notifications are handled by `ToastHandler`.
+ * Full-screen errors are managed by `ErrorView`, while toast notifications are handled by `ToastHandler`.
  */
 public class ExceptionHandler {
     /*
@@ -146,7 +146,7 @@ public class ExceptionHandler {
                 Logger.debug( "ExceptionHandler: storing fatal startup exception" );
                 _startupException = [ex, true];
             } else {
-                ErrorViewHandler.showOrUpdateErrorView( ex );
+                ErrorView.showOrUpdate( ex );
             }
         }
     }
@@ -171,7 +171,7 @@ public class ExceptionHandler {
             if( useToast && !startupException[1] && ex instanceof CommunicationBaseException ) {
                 ToastHandler.showWarning( ex.getToastMessage() );
             } else {
-                return ErrorViewHandler.createOrUpdateErrorView( ex );
+                return ErrorView.createOrUpdate( ex );
             }
         }
         return null;

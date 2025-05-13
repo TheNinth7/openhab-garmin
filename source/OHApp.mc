@@ -73,7 +73,7 @@ class OHApp extends Application.AppBase {
         } catch( ex ) {
             // Any exceptions occuring in this function are 
             // also displayed as error view
-            return [ ErrorViewHandler.createOrUpdateErrorView( ex ) ];
+            return [ ErrorView.createOrUpdate( ex ) ];
         }
     }
 

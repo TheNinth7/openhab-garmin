@@ -71,16 +71,16 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
             if( ! SettingsMenuHandler.isShowingSettings() ) {
                 // If the structure is not valid anymore, we reset the view
                 // to the homepage, but only if we are not in the error view
-                if( ! structureRemainsValid && ! ErrorViewHandler.isShowingErrorView() ) {
+                if( ! structureRemainsValid && ! ErrorView.isShowingErrorView() ) {
                     Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
                     // If update returns false, the menu structure has changed
                     // and we therefore replace the current view stack with
                     // the homepage
                     ViewHandler.popToBottomAndSwitch( homepage, HomepageMenuDelegate.get() );
-                } else if( ErrorViewHandler.isShowingErrorView() ) {
+                } else if( ErrorView.isShowingErrorView() ) {
                     // If currently there is an error view, we replace it
                     // by the homepage
-                    ErrorViewHandler.replaceErrorView( homepage, HomepageMenuDelegate.get() );
+                    ErrorView.replace( homepage, HomepageMenuDelegate.get() );
                 } else {
                     // If the structure is still valid and no error is shown,
                     // then we update the screen, showing the changes in the
