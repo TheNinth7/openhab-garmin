@@ -44,11 +44,11 @@ class OnOffMenuItem extends StatusChangingMenuItem {
 
     // Constructor
     public function initialize( sitemapSwitch as SitemapSwitch ) {
-        var itemState = sitemapSwitch.itemState;
+        var itemState = sitemapSwitch.normalizedItemState;
         if( ! ( itemState.equals( ITEM_STATE_ON ) || itemState.equals( ITEM_STATE_OFF ) ) ) {      
             throw new JsonParsingException( "Switch '" + sitemapSwitch.label + "': invalid state '" + itemState + "'" );
         }
-        _isEnabled = parseItemState( sitemapSwitch.itemState );
+        _isEnabled = parseItemState( sitemapSwitch.normalizedItemState );
         _statusDrawable = new OnOffStatusDrawable( _isEnabled );
         StatusChangingMenuItem.initialize( sitemapSwitch, _statusDrawable );
     }
@@ -58,7 +58,7 @@ class OnOffMenuItem extends StatusChangingMenuItem {
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
                sitemapElement instanceof SitemapSwitch 
-            && sitemapElement.itemType.equals( ITEM_TYPE )
+            && sitemapElement.normalizedItemType.equals( ITEM_TYPE )
             && sitemapElement.hasItemState();
     }
 }

@@ -85,7 +85,7 @@ class StatusChangingMenuItem extends BaseSitemapMenuItem {
     public function update( sitemapElement as SitemapElement ) as Boolean {
         var sitemapSwitch = sitemapElement as SitemapSwitch;
         setCustomLabel( sitemapSwitch.label );
-        updateItemState( sitemapSwitch.itemState );
+        updateItemState( sitemapSwitch.normalizedItemState );
         return true;
     }
 }
