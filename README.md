@@ -181,13 +181,16 @@ Follow the steps below to build, run, and test the app using the Connect IQ SDK 
 Follow these steps to prepare and export your app for upload to the Garmin Connect IQ Store:
 
 1. **Remove Debug Statements**
+
    Ensure all debug logging or print statements are commented out or removed.
    See [Removing Debug Statements](#removing-debug-statements) for guidance.
 
-2. **Update the Version Number**
+3. **Update the Version Number**
+
    Edit the file `resources/base/strings.xml` and set the correct version number for this release.
 
-3. **Set the Correct App ID**
+5. **Set the Correct App ID**
+
    Open `manifest.xml` and set the appropriate app ID:
 
    * Use the *stable* app ID for production releases.
@@ -195,7 +198,8 @@ Follow these steps to prepare and export your app for upload to the Garmin Conne
 
    > 🛠 You’ll need to switch to XML mode in your editor to change this value manually.
 
-4. **Export the Project**
+7. **Export the Project**
+
    Use the command palette:
    `CTRL + SHIFT + P` → `Monkey C: Export Project`
    This will generate the `.iq` file used for uploading.
