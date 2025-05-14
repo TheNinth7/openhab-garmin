@@ -181,6 +181,7 @@ Follow the steps below to build, run, and test the app using the Connect IQ SDK 
 Follow these steps to prepare and export your app for upload to the Garmin Connect IQ Store:
 
 1. **Remove Debug Statements**
+   
    Ensure all debug logging or print statements are commented out or removed.
    See [Removing Debug Statements](#removing-debug-statements) for guidance.
 
