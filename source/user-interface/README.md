@@ -37,7 +37,7 @@ Handles and displays exceptions within the app.
 
 ---
 
-## Folder `user-interface/glance-view`
+## Folder `glance-view`
 
 Implements the *Glance* view.
 
@@ -96,6 +96,8 @@ Each of these has an associated input delegate. Exclusion annotations in `Homepa
 
 Contains the actual implementations of sitemap menu items (analogous to openHAB widgets).
 
+The `factory/MenuItemFactory` class determines which menu item to instantiate based on the given `SitemapElement`.
+
 #### Structure
 
 * `MenuItem` classes (e.g., `OnOffSwitchMenuItem`) implement the interactive list entries.
@@ -110,6 +112,7 @@ The base class `base/BaseSitemapMenuItem` provides a standard structure for all 
 
 #### Widget Subfolders
 
+* `nostate`: Shown if a sitemap element has no valid state.
 * `page`: Menu items representing sitemap `Frame` elements.
 * `settings`: The *Settings* entry shown on touch-based devices.
 * `switch`: Items representing `Switch` sitemap elements.

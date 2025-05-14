@@ -50,7 +50,7 @@ class SitemapErrorCountStore  {
     // the application is stopped    
     public static function persist() as Void {
         if( _errorCount != null ) {
-            Logger.debug( "SitemapErrorCountStore.persist: errorCount=" + _errorCount );
+            // Logger.debug( "SitemapErrorCountStore.persist: errorCount=" + _errorCount );
             Storage.setValue( STORAGE_ERROR_COUNT, _errorCount );
         }
     }

@@ -30,11 +30,11 @@ import Toybox.System;
     */
     public static function createOrUpdate( ex as Exception ) as ErrorView {
         if( _errorView == null ) {
-            Logger.debug( "ErrorView.createOrUpdate: creating error view" );
+            // Logger.debug( "ErrorView.createOrUpdate: creating error view" );
             _errorView = new ErrorView( ex );
         } else {
             _errorView.update( ex );
-            Logger.debug( "ErrorView.createOrUpdate: updating error view" );
+            // Logger.debug( "ErrorView.createOrUpdate: updating error view" );
         }
         return _errorView as ErrorView;
     }
@@ -50,7 +50,7 @@ import Toybox.System;
         var alreadyShowsErrorView = _errorView != null;
         createOrUpdate( ex );
         if( ! alreadyShowsErrorView ) {
-            Logger.debug( "ErrorView.showOrUpdate: switching to error view" );
+            // Logger.debug( "ErrorView.showOrUpdate: switching to error view" );
             ViewHandler.popToBottomAndSwitch( _errorView as ErrorView, null );
         }
     }
@@ -96,7 +96,7 @@ import Toybox.System;
 
     // Draw the error
     public function onUpdate( dc as Dc ) as Void {
-        Logger.debug( "ErrorView.onUpdate" );
+        // Logger.debug( "ErrorView.onUpdate" );
         
         // We need to clear the clip, because there is bug in Garmin SDK,
         // with a clip in the menu title setting a clip in subsequent views

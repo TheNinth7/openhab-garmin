@@ -19,10 +19,13 @@ class StatusChangingMenuItem extends BaseSitemapMenuItem {
     // Defined as interface, since two types of command requests are supported
     private var _commandRequest as CommandRequestInterface?;
 
-    // Abstract functions to be implemented by subclasses
-    // getNextCommand() shall return the command to be triggered
-    // when the menu item is selected
-    public function getNextCommand() as String {
+    // Abstract function to be implemented by subclasses.
+    // getNextCommand() should return the command to be triggered
+    // when the menu item is selected.
+    // If it returns null, the menu item delegates command selection
+    // to an asynchronous process, which is responsible for calling
+    // sendCommand() directly.
+    public function getNextCommand() as String? {
         throw new AbstractMethodException( "StatusChangingMenuItem.getNextCommand" );
     }
     // updateItemState() shall update the state Drawable with a new state
@@ -54,15 +57,28 @@ class StatusChangingMenuItem extends BaseSitemapMenuItem {
 
 
     // `onSelect()` retrieves the command from the subclass and sends it.
-    // The new state is stored in `_newState` and only applied after the request succeeds.
-    private var _newState as String?;
+    // If getNextCommand() returns null, the menu item delegates command selection
+    // to an asynchronous process, which is responsible for calling
+    // sendCommand() directly.
     public function onSelect() as Void {
         if( _newState == null && _commandRequest != null ) {
-            _newState = getNextCommand();
-            ( _commandRequest as WebhookCommandRequest ).sendCommand( _newState );
+            var command = getNextCommand();
+            if( command != null ) {
+                sendCommand( command );
+            }
         }
     }
     
+    // The new state is stored in `_newState` and only applied after the request succeeds.
+    private var _newState as String?;
+    // Send the command via the command request
+    public function sendCommand( command as String ) as Void {
+        _newState = command;
+        if( _commandRequest != null ) {
+            _commandRequest.sendCommand( command );
+        }
+    }
+
     // Called by the command request after the command is successfully sent.
     // Triggers `updateItemState()` for the subclass to update the state `Drawable`,
     // and then requests a UI redraw.

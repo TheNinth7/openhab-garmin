@@ -99,7 +99,7 @@ public class ExceptionHandler {
         if( AppSettings.suppressEmptyResponseExceptions()
             && ex instanceof CommunicationBaseException
             && ex.suppressAsEmptyResponse() ) {
-                Logger.debug( "ExceptionHandler: Suppressing empty response" );
+                // Logger.debug( "ExceptionHandler: Suppressing empty response" );
                 return;
         }
 
@@ -129,7 +129,7 @@ public class ExceptionHandler {
                 ToastHandler.showWarning( ex.getToastMessage() );
             }
         } else {
-            Logger.debug( "ExceptionHandler: fatal error" );
+            // Logger.debug( "ExceptionHandler: fatal error" );
             
             /*
             * Fatal errors clear the stored JSON.
@@ -143,7 +143,7 @@ public class ExceptionHandler {
             * Otherwise, the full-screen error view is shown immediately.
             */
             if( WatchUi.getCurrentView()[0] == null ) {
-                Logger.debug( "ExceptionHandler: storing fatal startup exception" );
+                // Logger.debug( "ExceptionHandler: storing fatal startup exception" );
                 _startupException = [ex, true];
             } else {
                 ErrorView.showOrUpdate( ex );

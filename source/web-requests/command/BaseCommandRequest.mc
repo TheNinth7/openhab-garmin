@@ -47,7 +47,7 @@ class BaseCommandRequest extends BaseRequest {
     // Triggers the web request
     // @param parameters - options for the web request, as per Communication.makeWebRequest
     protected function makeWebRequest( parameters as Dictionary<Object, Object>? ) as Void {
-        Logger.debug( "BaseCommandRequest: makeWebRequest to " + _url );
+        // Logger.debug( "BaseCommandRequest: makeWebRequest to " + _url );
         try {
             WidgetSitemapRequest.get().stop();
             Communications.makeWebRequest( _url, parameters, getBaseOptions(), method( :onReceive ) );

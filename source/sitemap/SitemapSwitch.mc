@@ -4,6 +4,19 @@ import Toybox.WatchUi;
 /*
  * Class representing `Switch` elements.
  */
+
+// Class representing the command mappings of a Switch
+class CommandMapping {
+    public var command as String;
+    public var label as String;
+    public function initialize( c as String, l as String ) {
+        command = c;
+        label = l;
+    }
+}
+// An array of command mappings
+typedef CommandMappingArray as Array<CommandMapping>;
+
 class SitemapSwitch extends SitemapPrimitiveElement {
     // JSON field names
     private const MAPPINGS = "mappings";
@@ -11,7 +24,7 @@ class SitemapSwitch extends SitemapPrimitiveElement {
     private const MAPPINGS_LABEL = "label";
 
     // Fields read from the JSON
-    public var mappings as Array<CommandMapping> = [];
+    public var mappings as CommandMappingArray = [];
 
     // Accessor
     public function hasMappings() as Boolean {
@@ -31,14 +44,5 @@ class SitemapSwitch extends SitemapPrimitiveElement {
                 ) );
             }
         }
-    }
-}
-
-class CommandMapping {
-    public var command as String;
-    public var label as String;
-    public function initialize( c as String, l as String ) {
-        command = c;
-        label = l;
     }
 }

@@ -17,7 +17,7 @@ class OnOffSwitchMenuItem extends StatusChangingMenuItem {
     private static const ITEM_STATE_OFF = "OFF";
 
     // Toggle the state
-    public function getNextCommand() as String {
+    public function getNextCommand() as String? {
         return _isEnabled ? ITEM_STATE_OFF : ITEM_STATE_ON;
     }
     // Update the member and Drawable

@@ -15,8 +15,12 @@ class MenuItemFactory {
             return new TextMenuItem( sitemapElement as SitemapText );
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
-        } else if( BinarySwitchMenuItem.isMyType( sitemapElement ) ) {
-            return new BinarySwitchMenuItem( sitemapElement as SitemapSwitch );
+        } else if( GenericSwitchMenuItem.isMyType( sitemapElement ) ) {
+            return new GenericSwitchMenuItem( sitemapElement as SitemapSwitch );
+        /*
+        } else if( MultiSwitchMenuItem.isMyType( sitemapElement ) ) {
+            return new MultiSwitchMenuItem( sitemapElement as SitemapSwitch );
+        */
         } else if( NoStateMenuItem.isMyType( sitemapElement ) ) {
             return new NoStateMenuItem( sitemapElement as SitemapPrimitiveElement );
         } else {

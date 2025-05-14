@@ -76,7 +76,7 @@ class BasePageMenu extends BaseMenu {
             if( itemIndex == -1 ) {
                 // If the item does not exist yet, we create it
                 addItem( MenuItemFactory.createMenuItem( element ) );
-                Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
+                // Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
             } else {
                 // If the item is found, we check if the type of the menu
                 // item is the same or has changed
@@ -85,7 +85,7 @@ class BasePageMenu extends BaseMenu {
                     // If the type is the same, we update the menu item
                     if( item.update( element ) == false ) {
                         structureRemainsValid = false;
-                        Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' invalid" );
+                        // Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' invalid" );
                     }
                 } else {
                     // If the type is not the same, we create a new item
@@ -93,7 +93,7 @@ class BasePageMenu extends BaseMenu {
                     var newItem = MenuItemFactory.createMenuItem( element );
                     if( item instanceof PageMenuItem || newItem instanceof PageMenuItem ) {
                         structureRemainsValid = false;
-                        Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
+                        // Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
 
                     }
                     updateItem( newItem, itemIndex );
@@ -107,7 +107,7 @@ class BasePageMenu extends BaseMenu {
                 structureRemainsValid = false;
             }
             deleteItem( i );
-            Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item was removed" );
+            // Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item was removed" );
         }
         return structureRemainsValid;
     }

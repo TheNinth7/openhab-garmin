@@ -50,7 +50,7 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
     // If there is any error coming from the request or the response was 
     // invalid, the onException() event handler is called instead
     public function onSitemapUpdate( sitemapHomepage as SitemapHomepage ) as Void {
-        Logger.debug( "SitemapRequest.onSitemapUpdate");
+        // Logger.debug( "SitemapRequest.onSitemapUpdate");
         if( ! HomepageMenu.exists() ) {
             // There is no menu yet, so we need to switch
             // from the LoadingView to the menu
@@ -72,7 +72,7 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
                 // If the structure is not valid anymore, we reset the view
                 // to the homepage, but only if we are not in the error view
                 if( ! structureRemainsValid && ! ErrorView.isShowingErrorView() ) {
-                    Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
+                    // Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
                     // If update returns false, the menu structure has changed
                     // and we therefore replace the current view stack with
                     // the homepage

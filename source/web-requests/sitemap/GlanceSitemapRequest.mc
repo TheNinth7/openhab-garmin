@@ -39,7 +39,7 @@ class GlanceSitemapRequest extends BaseSitemapRequest {
 
     // Update the screen whenever an update to the sitemap has been received
     public function onSitemapUpdate( sitemapHomepage as SitemapHomepage ) as Void {
-        Logger.debug( "GlanceSitemapRequest.onSitemapUpdate");
+        // Logger.debug( "GlanceSitemapRequest.onSitemapUpdate");
         _exception = null;
         WatchUi.requestUpdate();
     }
@@ -48,7 +48,7 @@ class GlanceSitemapRequest extends BaseSitemapRequest {
     // count is incremented, so that if there is a persisting
     // error, the widget starts right away with an error view
     public function onException( ex as Exception ) {
-        Logger.debug( "GlanceSitemapRequest.onException");
+        // Logger.debug( "GlanceSitemapRequest.onException");
         Logger.debugException( ex );
         // Out of memory is ignored in the glance. If the glance does not have enough memory,
         // the response is simply not processed - basically the widget has to deal with 

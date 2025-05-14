@@ -115,7 +115,7 @@ class BaseSitemapRequest extends BaseRequest {
 
     // Makes the web request
     public function makeRequest() as Void {
-        Logger.debug( "BaseSitemapRequest.makeRequest");
+        // Logger.debug( "BaseSitemapRequest.makeRequest");
         if( ! _isStopped ) {
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _hasPendingRequest = true;
@@ -125,7 +125,7 @@ class BaseSitemapRequest extends BaseRequest {
     // Processes the response
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         _hasPendingRequest = false;
-        Logger.debug( "BaseSitemapRequest.onReceive");
+        // Logger.debug( "BaseSitemapRequest.onReceive");
 
         // Taking the stored polling interval in a
         // local variable, since it may be adjusted
@@ -168,7 +168,7 @@ class BaseSitemapRequest extends BaseRequest {
             // Depending on polling interval the next request is
             // scheduled via timer or triggered immediately
             if( pollingInterval > 0 ) {
-                Logger.debug( "BaseSitemapRequest: starting timer for " + _pollingInterval + "ms" );
+                // Logger.debug( "BaseSitemapRequest: starting timer for " + _pollingInterval + "ms" );
                 _timer.start( method( :makeRequest ), pollingInterval, false );
             } else {
                 makeRequest();
@@ -187,7 +187,7 @@ class BaseSitemapRequest extends BaseRequest {
     // onSuccess() by default resets the error count and
     // can be overriden for additional functionality
     public function onSuccess() as Void {
-        Logger.debug( "BaseSitemapRequest.onSuccess");
+        // Logger.debug( "BaseSitemapRequest.onSuccess");
         SitemapErrorCountStore.reset();
     }
 
