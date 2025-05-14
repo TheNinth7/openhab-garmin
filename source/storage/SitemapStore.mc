@@ -42,6 +42,7 @@ class SitemapStore  {
 
     // Other accessors
     public static function updateJson( json as JsonObject ) as Void {
+        Logger.debug( "SitemapStore: updating JSON" );
         _json = json;
     }
     public static function updateLabel( label as String ) as Void {
@@ -55,7 +56,7 @@ class SitemapStore  {
     // This function is called by OHApp wenn the application is stopped
     public static function persist() as Void {
         if( _json != null ) {
-            //Storage.setValue( STORAGE_JSON, _json as Dictionary<Application.PropertyKeyType, Application.PropertyValueType> );
+            Storage.setValue( STORAGE_JSON, _json as Dictionary<Application.PropertyKeyType, Application.PropertyValueType> );
         }
         if( _label != null ) {
             Storage.setValue( STORAGE_LABEL, _label );

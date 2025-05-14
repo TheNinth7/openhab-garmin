@@ -20,7 +20,14 @@ class GlanceSitemapView extends WatchUi.GlanceView {
         // Initialize the sitemap request
         // In the glance, any errors are ignored
         try {
-            new GlanceSitemapRequest();
+            // Unfortunately there are situations where
+            // the request can be processed but then there
+            // is an out of memory exception when writing
+            // into storage. This one we cannot catch,
+            // so right now the only thing we can do is stop
+            // polling the sitemap.
+            // https://github.com/TheNinth7/ohg/issues/105
+            // new GlanceSitemapRequest();
         } catch( ex ) {
             Logger.debugException( ex );
         }
