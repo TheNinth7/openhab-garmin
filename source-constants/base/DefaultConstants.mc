@@ -15,14 +15,17 @@ class DefaultConstants {
     // MAIN COLOR DEFINITIONS
     
     // Active represents devices that are on/active
-    public static const UI_COLOR_ACTIVE as ColorType = 0xe64a19; // openHAB orange
+    public static const UI_COLOR_ACTIVE as ColorType = 0xE64E19; // openHAB orange
     
     // Inactive represents devices that are off/inactive,
     // as well as non-actionable states
     public static const UI_COLOR_INACTIVE as ColorType = Graphics.COLOR_LT_GRAY;
     
     // Actionable represents states that can be changed in the app
-    public static const UI_COLOR_ACTIONABLE as ColorType = 0x1976d2; // blue; alternative green: 0x388E3C
+    public static const UI_COLOR_ACTIONABLE as ColorType = 0x6F88FF; 
+    // 0x8FA0F0 less saturated blue
+    // 0x1976d2 more saturated blue 
+    // 0x388E3C green
 
     // Foreground and background colors
     public static const UI_COLOR_TEXT as ColorType = Graphics.COLOR_WHITE;

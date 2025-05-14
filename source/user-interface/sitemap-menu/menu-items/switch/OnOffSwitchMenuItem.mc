@@ -49,8 +49,7 @@ class OnOffSwitchMenuItem extends StatusChangingMenuItem {
         StatusChangingMenuItem.initialize( sitemapSwitch, _statusDrawable );
     }
 
-    // Used during updates to check if a sitemap element matches this menu item type.
-    // If so, the item is updated; otherwise, it is replaced.
+    // Returns true if the given sitemap element matches the type handled by this menu item.
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
                sitemapElement instanceof SitemapSwitch 

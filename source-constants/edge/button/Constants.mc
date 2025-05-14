@@ -12,5 +12,5 @@ class Constants extends EdgeDefaultConstants {
     * Button-based Edge devices require a colored background for the focused item,
     * as they do not provide any other visual indication of focus.
     */
-    public static const UI_MENU_ITEM_BG_COLOR_FOCUSED as ColorType = 0x04395E;
+    public static const UI_MENU_ITEM_BG_COLOR_FOCUSED as ColorType = 0x04395E; // greyish dark blue
 }
