@@ -1,18 +1,13 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-/*
- * Delegate that handles only confirm and cancel actions from the Picker.
- * Scrolling within the Picker list is handled in the getDrawable() function
- * of the SliderPickerFactory.
- */
-class SliderPickerDelegate extends PickerDelegate {
+class SliderPickerDelegate extends CustomPickerDelegate {
     private var _menuItem as SliderMenuItem;
     private var _previousState as Number;
 
     // Constructor
     public function initialize( menuItem as SliderMenuItem ) {
-        PickerDelegate.initialize();
+        CustomPickerDelegate.initialize();
         _menuItem = menuItem;
         _previousState = menuItem.getSitemapSlider().sliderState;
     }
@@ -20,35 +15,53 @@ class SliderPickerDelegate extends PickerDelegate {
     // If the user confirms and we ARE in releaseOnly mode,
     // then we change the state here. Otherwise we just
     // pop the Picker from the view stack.
-    public function onAccept( values as Array ) as Boolean {
-        var newState = values[0];
-
-        Logger.debug( "SliderPickerDelegate.onAccept" );
+    public function onAccept( newState as Object ) as Boolean {
+        Logger.debug( "SliderDelegate.onAccept" );
         if( _menuItem.getSitemapSlider().releaseOnly ) {
             if( ! ( newState instanceof Number ) ) {
-                throw new GeneralException( "SliderPickerDelegate: invalid value selected" );    
+                throw new GeneralException( "SliderDelegate: invalid value selected" );    
             }
-            Logger.debug( "SliderPickerDelegate.onAccept: new state=" + newState.toString() );
+            Logger.debug( "SliderDelegate.onAccept: new state=" + newState.toString() );
             _menuItem.updateState( newState );
         }
         ViewHandler.popView( WatchUi.SLIDE_RIGHT );
         return true;
     }    
 
-    // If the user confirms and we ARE NOT in releaseOnly mode,
+    // If the user cancels and we ARE NOT in releaseOnly mode,
     // then we revert the state here. Otherwise we just
     // pop the Picker from the view stack.
     public function onCancel() as Boolean {
-        Logger.debug( "SliderPickerDelegate.onCancel" );
+        Logger.debug( "SliderDelegate.onCancel" );
         if( ! _menuItem.getSitemapSlider().releaseOnly ) {
             if( _menuItem.getSitemapSlider().sliderState != _previousState ) {
-                Logger.debug( "SliderPickerDelegate.onCancel: reverting to state=" + _previousState.toString() );
+                Logger.debug( "SliderDelegate.onCancel: reverting to state=" + _previousState.toString() );
                 _menuItem.updateState( _previousState );
             } else {
-                Logger.debug( "SliderPickerDelegate.onCancel: state did not change" );
+                Logger.debug( "SliderDelegate.onCancel: state did not change" );
             }
         }
         ViewHandler.popView( WatchUi.SLIDE_RIGHT );
         return true;
-    }    
+    }
+
+    public function onUp( value as Object ) as Boolean {
+        updateState( value );
+        return true;
+    }
+
+    public function onDown( value as Object ) as Boolean {
+        updateState( value );
+        return true;
+    }
+
+    public function updateState( state as Object ) as Void {
+        Logger.debug( "SliderDelegate.updateState=" + state );
+        if( ! ( state instanceof Number ) ) {
+            throw new GeneralException( "SliderDelegate: invalid state type" );
+        }
+        if( ! _menuItem.getSitemapSlider().releaseOnly ) {
+            _menuItem.updateState( state );
+        }
+    }     
 }

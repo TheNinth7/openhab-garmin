@@ -73,8 +73,11 @@ class SliderMenuItem extends BaseSitemapMenuItem {
     public function onSelect() as Void {
         if( _commandRequest != null ) {
             ViewHandler.pushView(
-                new CustomPicker(),
-                new CustomPickerDelegate(),
+                new CustomPicker( 
+                    getLabel(),
+                    new SliderPickerFactory( self )
+                ),
+                new SliderPickerDelegate( self ),
                 WatchUi.SLIDE_LEFT
             );
 

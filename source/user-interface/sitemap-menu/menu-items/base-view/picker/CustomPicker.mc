@@ -15,6 +15,10 @@ class CustomPicker extends CustomView {
         _factory = factory;
     }
 
+    public function getFactory() as CustomPickerFactory {
+        return _factory;
+    }
+
     
     public function onLayout( dc as Dc ) as Void {
         Logger.debug(( "CustomPicker.onLayout" ) );
@@ -89,9 +93,8 @@ class CustomPicker extends CustomView {
 
     public function onUpdate( dc as Dc ) as Void {
         if( _pickable != null ) {
-            _pickable.setText( "JIJI" );
-            _factory.getCurrent();
-            
+            _pickable.setText( _factory.getCurrent().getLabel() );
         }
+        CustomView.onUpdate( dc );
     }
 }
