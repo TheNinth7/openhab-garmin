@@ -17,7 +17,7 @@ class StatusChangingMenuItem extends BaseSitemapMenuItem {
 
     // The command request for sending commands
     // Defined as interface, since two types of command requests are supported
-    private var _commandRequest as CommandRequestInterface?;
+    private var _commandRequest as BaseCommandRequest?;
 
     // Abstract function to be implemented by subclasses.
     // getNextCommand() should return the command to be triggered
@@ -44,15 +44,7 @@ class StatusChangingMenuItem extends BaseSitemapMenuItem {
             }
         );
         
-        // Depending on the settings, either a native REST API command request 
-        // or a custom Webhook command request is instantiated.
-        // If neither is configured, no command request is created, and items 
-        // will only display their current state.
-        if( AppSettings.supportsRestApi() ) {
-            _commandRequest = new NativeCommandRequest( self );
-        } else if( AppSettings.supportsWebhook() ) {
-            _commandRequest = new WebhookCommandRequest( self );
-        }
+        _commandRequest = BaseCommandRequest.get( self );
     }
 
 

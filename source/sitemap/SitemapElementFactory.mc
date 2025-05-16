@@ -7,18 +7,15 @@ import Toybox.WatchUi;
  */
 class SitemapElementFactory {
 
-    // Currently supported element types
-    private static const TYPE_FRAME = "Frame";
-    private static const TYPE_SWITCH = "Switch";
-    private static const TYPE_TEXT = "Text";
-
     // Create an element for a given type
     public static function createByType( type as String, widget as JsonObject ) as SitemapElement {
-        if( type.equals( TYPE_SWITCH ) ) {
+        if( type.equals( "Switch" ) ) {
             return new SitemapSwitch( widget );
-        } else if( type.equals( TYPE_TEXT ) ) {
+        } else if( type.equals( "Slider" ) ) {
+            return new SitemapSlider( widget );
+        } else if( type.equals( "Text" ) ) {
             return new SitemapText( widget );
-        } else if( type.equals( TYPE_FRAME ) ) {
+        } else if( type.equals( "Frame" ) ) {
             return new SitemapPage( widget );
         } else {
             throw new JsonParsingException( "Unsupported element type '" + type + "'." );

@@ -17,7 +17,7 @@ class NativeCommandRequest extends BaseCommandRequest {
 
      // Constructor
      // @param item - the menu item to be associated with this command
-    public function initialize( item as CommandMenuItemInterface ) {
+    public function initialize( item as CommandRequestDelegate ) {
         BaseCommandRequest.initialize( 
             item, 
             AppSettings.getUrl() + "rest/items/" + item.getItemName(),

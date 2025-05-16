@@ -13,14 +13,12 @@ class MenuItemFactory {
             return new OnOffSwitchMenuItem( sitemapElement as SitemapSwitch );
         } else if( TextMenuItem.isMyType( sitemapElement ) ) {
             return new TextMenuItem( sitemapElement as SitemapText );
+        } else if( SliderMenuItem.isMyType( sitemapElement ) ) {
+            return new SliderMenuItem( sitemapElement as SitemapSlider );
         } else if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
         } else if( GenericSwitchMenuItem.isMyType( sitemapElement ) ) {
             return new GenericSwitchMenuItem( sitemapElement as SitemapSwitch );
-        /*
-        } else if( MultiSwitchMenuItem.isMyType( sitemapElement ) ) {
-            return new MultiSwitchMenuItem( sitemapElement as SitemapSwitch );
-        */
         } else if( NoStateMenuItem.isMyType( sitemapElement ) ) {
             return new NoStateMenuItem( sitemapElement as SitemapPrimitiveElement );
         } else {

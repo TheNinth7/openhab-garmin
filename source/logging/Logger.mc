@@ -47,7 +47,16 @@ public class Logger {
         // there is a bug in the SDK that causes an exception in `printStackTrace`, 
         // particularly when the exception is thrown during a synchronous call 
         // to `BaseSitemapRequest.onReceive()` during startup.
-        if( ! ( ex instanceof CommunicationBaseException ) ){
+        if( ! ( 
+                ex instanceof CommunicationBaseException 
+                ||
+                ex instanceof UnexpectedResponseException
+                ||
+                ex instanceof ConfigException
+                ||
+                ex instanceof JsonParsingException
+            ) )
+            {
             ex.printStackTrace();
             System.println(" ");
         }

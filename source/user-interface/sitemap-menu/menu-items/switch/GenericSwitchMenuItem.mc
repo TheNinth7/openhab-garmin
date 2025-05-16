@@ -35,7 +35,7 @@ class GenericSwitchMenuItem extends StatusChangingMenuItem {
         return 
             sitemapElement instanceof SitemapSwitch 
             && 
-            sitemapElement.mappings.size() > 0;
+            sitemapElement.hasMappings();
     }
 
     // Constructor

@@ -426,4 +426,16 @@ The in-app iconography is attributed to the following sources:
 
 ![Down](iconography/down.svg)
 
-[Down](https://thenounproject.com/icon/down-1896670/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/settings/) (CC BY 3.0)
+[Down](https://thenounproject.com/icon/down-1896670/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/down/) (CC BY 3.0)
+
+---
+
+![Down](iconography/down.svg)
+
+[Check](https://thenounproject.com/icon/check-mark-1043029/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/check/) (CC BY 3.0)
+
+---
+
+![Down](iconography/down.svg)
+
+[Cancel](https://thenounproject.com/icon/cancel-4374459/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/cancel/) (CC BY 3.0)

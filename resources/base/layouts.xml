@@ -1,0 +1,12 @@
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://developer.garmin.com/downloads/connect-iq/resources.xsd">
+    <layout id="MainLayout">
+        <label text="TEST" x="50%" y="50%" font="Gfx.FONT_LARGE" color="Gfx.COLOR_WHITE" />
+        <bitmap id="rightTop" personality="
+            system_icon_light__hint_button_right_top
+            system_loc__hint_button_right_top" />
+        <bitmap id="rightTopIcon" personality="
+            system_icon_positive__check
+            system_loc__hint_button_right_top" />
+    </layout>
+</resources>

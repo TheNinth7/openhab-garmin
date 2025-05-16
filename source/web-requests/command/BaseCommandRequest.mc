@@ -10,7 +10,7 @@ import Toybox.WatchUi;
     and one for the native REST APIs
     This class 
     - holds the menu item that this request is associated with
-      - the menu item has to implement the CommandMenuItemInterface,
+      - the menu item has to implement the CommandRequestDelegate,
         which prescribes event handlers for processing the result of the command
     - holds the URL for the request
     - provides a function for making the request, to be used by derivates
@@ -20,28 +20,41 @@ import Toybox.WatchUi;
 // Interface to be implemented by menu items that issue commands.
 // Defines the functions and callbacks required for interaction 
 // of the command request with the menu item.
-typedef CommandMenuItemInterface as interface {
+typedef CommandRequestDelegate as interface {
     function getItemName() as String;
     function onCommandComplete() as Void;
     function onException( ex as Exception ) as Void;
 };
 
-// Interface to be implemented by subclasses representing concrete 
-// command request implementations. Defines the methods required for 
-// interaction of the menu item with the command request.
-typedef CommandRequestInterface as interface {
-    function sendCommand( cmd as String ) as Void;
-};
-
 class BaseCommandRequest extends BaseRequest {
     private var _url as String;
-    private var _item as CommandMenuItemInterface;
+    private var _item as CommandRequestDelegate;
+
+    // Depending on the settings, either a native REST API command request 
+    // or a custom Webhook command request is instantiated.
+    // If neither is configured, no command request is created, and items 
+    // will only display their current state.
+    public static function get( delegate as CommandRequestDelegate ) as BaseCommandRequest? {
+        if( AppSettings.supportsRestApi() ) {
+            return new NativeCommandRequest( delegate );
+        } else if( AppSettings.supportsWebhook() ) {
+            return new WebhookCommandRequest( delegate );
+        }
+        return null;
+    }
 
     // Constructor
-    protected function initialize( item as CommandMenuItemInterface, url as String, method as Communications.HttpRequestMethod ) {
+    protected function initialize( item as CommandRequestDelegate, url as String, method as Communications.HttpRequestMethod ) {
         BaseRequest.initialize( method );
         _item = item;
         _url = url;
+    }
+
+    // The actual function for sending commands needs to be implemented
+    // by the subclasses, and calls makeWebRequest with the options
+    // required by the subclass
+    function sendCommand( cmd as String ) as Void {
+        throw new AbstractMethodException( "BaseCommandRequest.sendCommand" );
     }
 
     // Triggers the web request

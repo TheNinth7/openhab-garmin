@@ -98,7 +98,7 @@ class SitemapPrimitiveElement extends SitemapElement {
         widgetState = normalizeState( normalizedLabel[1] );
 
         // ... and then read all the elements
-        var item = getObject( data, ITEM, "Element '" + label + "': no item found" );
+        var item = getItem( data );
         itemName =  getString( item, ITEM_NAME, "Element '" + label + "': item has no name" );
 
         itemType =  getString( item, ITEM_TYPE, "Element '" + label + "': item has no type" );
@@ -110,5 +110,9 @@ class SitemapPrimitiveElement extends SitemapElement {
 
         itemState = item[ITEM_STATE] as String?;
         normalizedItemState = normalizeState( itemState );
+    }
+
+    protected function getItem( data as JsonObject ) as JsonObject {
+        return getObject( data, ITEM, "Element '" + label + "': no item found" );
     }
 }

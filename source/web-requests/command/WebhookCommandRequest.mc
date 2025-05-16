@@ -13,7 +13,7 @@ class WebhookCommandRequest extends BaseCommandRequest {
     // The parameters for the web request
     private var _parameters as Dictionary = {};
 
-    public function initialize( item as CommandMenuItemInterface ) {
+    public function initialize( item as CommandRequestDelegate ) {
         // The custom Webhook uses GET as HTTP method,
         // and needs an ID provided in the configuration (refering to the Thing),
         // which is part of the URL

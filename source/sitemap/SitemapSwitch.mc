@@ -18,12 +18,7 @@ class CommandMapping {
 typedef CommandMappingArray as Array<CommandMapping>;
 
 class SitemapSwitch extends SitemapPrimitiveElement {
-    // JSON field names
-    private const MAPPINGS = "mappings";
-    private const MAPPINGS_COMMAND = "command";
-    private const MAPPINGS_LABEL = "label";
-
-    // Fields read from the JSON
+    // Command mappings from the JSON
     public var mappings as CommandMappingArray = [];
 
     // Accessor
@@ -33,14 +28,14 @@ class SitemapSwitch extends SitemapPrimitiveElement {
 
     public function initialize( data as JsonObject ) {
         SitemapPrimitiveElement.initialize( data );
-        var jsonMappings = data[MAPPINGS] as JsonArray?;
+        var jsonMappings = data["mappings"] as JsonArray?;
         if( jsonMappings != null ) {
             for( var i = 0; i < jsonMappings.size(); i++ ) {
                 var jsonMapping = jsonMappings[i];
                 mappings.add(
                     new CommandMapping( 
-                        getString( jsonMapping, MAPPINGS_COMMAND, "Element '" + label + "': command is missing from mapping" ),
-                        getString( jsonMapping, MAPPINGS_LABEL, "Element '" + label + "': label is missing from mapping" )
+                        getString( jsonMapping, "command", "Element '" + label + "': command is missing from mapping" ),
+                        getString( jsonMapping, "label", "Element '" + label + "': label is missing from mapping" )
                 ) );
             }
         }

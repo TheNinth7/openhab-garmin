@@ -20,7 +20,7 @@ class GenericSwitchActionMenuDelegate extends ActionMenuDelegate {
 
     // on select, send the command
     public function onSelect( item as ActionMenuItem ) as Void {
-        Logger.debug( "GenericSwitchActionMenuDelegate.onSelect" );
+        // Logger.debu "GenericSwitchActionMenuDelegate.onSelect" );
         // The action menu items have the command as Id
         var command = item.getId();
         if( command instanceof String ) {

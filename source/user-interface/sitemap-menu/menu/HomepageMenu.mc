@@ -41,7 +41,7 @@ class HomepageMenu extends BasePageMenu {
         BasePageMenu.initialize( 
             sitemapHomepage, 
             new Bitmap( {
-                    :rezId => Rez.Drawables.menuDownToSettings,
+                    :rezId => Rez.Drawables.iconDownToSettings,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } ) );
     }

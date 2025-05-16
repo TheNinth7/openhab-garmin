@@ -39,6 +39,18 @@ class SitemapElement {
         }
         return value;
     }
+    //! Returns a number from a JsonObject, or its passed in default value
+    //! @param data - the JsonObject
+    //! @param id - the name of the number in the JsonObject
+    //! @param def - the default value that will be returned if the number is not present in the JsonObject
+    protected function getNumber( data as JsonObject, id as String, def as Number ) as Number {
+        var value = data[id] as Number?;
+        return value == null ? def : value;
+    }
+    protected function getBoolean( data as JsonObject, id as String ) as Boolean {
+        var value = data[id] as Boolean?;
+        return value == null ? false : value;
+    }
     protected function getObject( data as JsonObject, id as String, errorMessage as String ) as JsonObject {
         var value = data[id] as JsonObject?;
         if( value == null ) {

@@ -42,7 +42,7 @@ class SitemapStore  {
 
     // Other accessors
     public static function updateJson( json as JsonObject ) as Void {
-        Logger.debug( "SitemapStore: updating JSON" );
+        // Logger.debu "SitemapStore: updating JSON" );
         _json = json;
     }
     public static function updateLabel( label as String ) as Void {
