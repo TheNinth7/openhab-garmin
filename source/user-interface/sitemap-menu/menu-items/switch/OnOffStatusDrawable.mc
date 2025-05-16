@@ -13,8 +13,6 @@ import Toybox.Graphics;
 
 class OnOffStatusDrawable extends BufferedBitmapDrawable {
     
-    private var _bufferedBitmap as BufferedBitmap;
-
     // Height and width of the switch is defined relative to the menu item height
     private const HEIGHT = ( Constants.UI_MENU_ITEM_HEIGHT * 0.8 ).toNumber();
     private const WIDTH = ( Constants.UI_MENU_ITEM_HEIGHT * 0.45 ).toNumber();
@@ -24,30 +22,13 @@ class OnOffStatusDrawable extends BufferedBitmapDrawable {
 
     // Constructor
     public function initialize( isEnabled as Boolean ) {
-        _bufferedBitmap = createBufferedBitmap( {
+        BufferedBitmapDrawable.initialize( {
             :width => WIDTH,
             :height => HEIGHT,
         } );
         
-        BufferedBitmapDrawable.initialize( {
-            :bufferedBitmap => _bufferedBitmap
-        } );
-
         // Draws the switch
         setEnabled( isEnabled );
-    }
-
-    // For CIQ < 4.0.0, this function creates a wrapper around `BufferedBitmap`
-    // that adds the necessary functions to use it with a `BufferedBitmapDrawable`.
-    (:exclForCiq400Plus)
-    private function createBufferedBitmap( options as BufferedBitmapOptions ) as BufferedBitmapType {
-        return new LegacyBufferedBitmap( options );
-    }
-    // For CIQ 4.0.0+, the BufferedBitmap provided by the SDK can be used
-    // directly with the `BufferedBitmapDrawable`
-    (:exclForCiqPre400)
-    private function createBufferedBitmap( options as BufferedBitmapOptions ) as BufferedBitmapType {
-        return Graphics.createBufferedBitmap( options ).get() as BufferedBitmap;
     }
 
     // Draws the switch UI element.
@@ -56,7 +37,7 @@ class OnOffStatusDrawable extends BufferedBitmapDrawable {
     // - Colored in light grey when "off"
     // A smaller black circle indicates the current on/off position.
     public function setEnabled( isEnabled as Boolean ) as Void {
-        var dc = _bufferedBitmap.getDc();
+        var dc = getBufferedBitmap().getDc();
         dc.clear();
 
         // Define the color of the switch

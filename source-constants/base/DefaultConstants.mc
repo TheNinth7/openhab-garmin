@@ -25,11 +25,22 @@ class DefaultConstants {
     public static const UI_COLOR_ACTIONABLE as ColorType = 0x6F88FF; 
     // 0x8FA0F0 less saturated blue
     // 0x1976d2 more saturated blue 
-    // 0x388E3C green
+
+    // For confirming an action
+    public static const UI_COLOR_POSITIVE as ColorType = 0x388E3C;
+
+    // For cancelling an action
+    public static const UI_COLOR_DESTRUCTIVE as ColorType = 0xD32F2F;
 
     // Foreground and background colors
     public static const UI_COLOR_TEXT as ColorType = Graphics.COLOR_WHITE;
     public static const UI_COLOR_BACKGROUND as ColorType = Graphics.COLOR_BLACK;
+
+    // Positions of the keys, for drawing input hints
+    // Corresponds to CustomView.InputHints enumeration
+    // 0=ENTER
+    // 1=BACK
+    public static const UI_INPUT_HINT_ANGLES as Array<Number> = [30, 330];
 
     // Height of the screen, used in calculation of other constants
     public static const UI_SCREEN_HEIGHT = System.getDeviceSettings().screenHeight;

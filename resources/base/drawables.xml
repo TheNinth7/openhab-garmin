@@ -8,6 +8,8 @@
     <bitmap id="iconDown" scaleX="10%" filename="../svg/down.svg" dithering="none" />
     <bitmap id="iconCheck" scaleX="15%" filename="../svg/check.svg" dithering="none" />
     <bitmap id="iconCancel" scaleX="15%" filename="../svg/cancel.svg" dithering="none" />
+    <bitmap id="iconCheckHint" scaleX="10%" filename="../svg/check_hint.svg" dithering="none" />
+    <bitmap id="iconCancelHint" scaleX="10%" filename="../svg/cancel_hint.svg" dithering="none" />
 
     <bitmap id="menuSettings" scaleX="10%" filename="../svg/settings.svg" dithering="none" />
     <bitmap id="menuFolder" scaleY="20%" filename="../svg/folder.svg" dithering="none" />

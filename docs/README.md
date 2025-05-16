@@ -430,12 +430,20 @@ The in-app iconography is attributed to the following sources:
 
 ---
 
-![Down](iconography/down.svg)
+![Slider Up/Down](iconography/down.svg)
 
-[Check](https://thenounproject.com/icon/check-mark-1043029/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/check/) (CC BY 3.0)
+Derived from:
+
+[Up](https://thenounproject.com/icon/up-2587304/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/chevron/) (CC BY 3.0)
 
 ---
 
-![Down](iconography/down.svg)
+![Check](iconography/down.svg)
 
-[Cancel](https://thenounproject.com/icon/cancel-4374459/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/cancel/) (CC BY 3.0)
+[Check](https://thenounproject.com/icon/check-1896702/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/check/) (CC BY 3.0)
+
+---
+
+![Cancel](iconography/down.svg)
+
+[Cancel](https://thenounproject.com/icon/clear-2801731/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/cancel/) (CC BY 3.0)
