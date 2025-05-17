@@ -41,6 +41,5 @@ class CustomText extends Text {
             locY = dc.getHeight()*locY;
         }
         Text.draw( dc );
-        dc.drawLine( 0, locY, dc.getWidth(), locY );
     }
 }

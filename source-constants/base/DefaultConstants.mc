@@ -26,7 +26,8 @@ class DefaultConstants {
     public static const UI_COLOR_INACTIVE as ColorType = Graphics.COLOR_LT_GRAY;
     
     // Actionable represents states that can be changed in the app
-    public static const UI_COLOR_ACTIONABLE as ColorType = 0x6F88FF; 
+    public static const UI_COLOR_ACTIONABLE as ColorType = Graphics.COLOR_LT_GRAY; 
+    // 0x6F88FF mid-level blue, our choice
     // 0x8FA0F0 less saturated blue
     // 0x1976d2 more saturated blue 
 
