@@ -40,10 +40,9 @@ class CustomPicker extends CustomView {
 
         var yStart = 0.375;
         _pickable = new CustomText( {
-            :text => "100%",
             :font => Graphics.FONT_LARGE,
             :justification => Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
-            :locX => WatchUi.LAYOUT_HALIGN_CENTER,
+            :locX => 0.5, // We do not use WatchUi.LAYOUT_HALIGN_CENTER because that would override :justification
             :locY => yStart + 0.25
         } );
         addDrawable( _pickable );

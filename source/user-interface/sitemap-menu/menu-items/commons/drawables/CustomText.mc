@@ -2,6 +2,13 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
 
+/*
+ * Custom Text Drawable, extending the standard Text.
+ *
+ * This extension allows locX and locY to be specified as a
+ * percentage of the view's width and height. Any float value ≤ 1.0
+ * is interpreted as a percentage, and locX/locY will be adjusted accordingly.
+ */
 class CustomText extends Text {
     typedef Options as { 
         :text as Lang.String or Lang.ResourceId, 
@@ -17,22 +24,23 @@ class CustomText extends Text {
         :visible as Lang.Boolean 
     };
 
-    private var _text as String;
-    private var _font as FontType;
-
     public function initialize( options as Options ) {
-        _text = options[:text] as String;
-        _font = options[:font] as FontType;
         Text.initialize( options );
     }
+
+    // locX and locY are adjusted only when
+    // drawing, since they may be changed
+    // anytime. Also they are public, so intercepting
+    // setLocation is not sufficient to catch any
+    // changes
     public function draw( dc as Dc ) as Void {
-        var dim = dc.getTextDimensions( _text, _font );
         if( locX instanceof Float && locX <= 1.0 ) {
-            locX = dc.getWidth()*locX - dim[0]/2;
+            locX = dc.getWidth()*locX;
         }
         if( locY instanceof Float && locY <= 1.0 ) {
-            locY = dc.getHeight()*locY - dim[1]/2;
+            locY = dc.getHeight()*locY;
         }
         Text.draw( dc );
+        dc.drawLine( 0, locY, dc.getWidth(), locY );
     }
 }
