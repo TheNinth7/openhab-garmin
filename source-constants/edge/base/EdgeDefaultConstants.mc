@@ -43,4 +43,5 @@ class EdgeDefaultConstants extends DefaultConstants {
 
     // Also for the error view we add FONT_LARGE
     public static const UI_ERROR_FONTS as Array<FontDefinition> = [Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
+    public static const UI_PICKER_TITLE_FONTS as Array<FontDefinition> = [Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
 }

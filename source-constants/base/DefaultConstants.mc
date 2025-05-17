@@ -11,7 +11,11 @@ import Toybox.System;
  */
 class DefaultConstants {
     protected function initialize() {}
-    
+
+    // Height of the screen, used in calculation of other constants
+    public static const UI_SCREEN_HEIGHT as Number = System.getDeviceSettings().screenHeight;
+    public static const UI_SCREEN_WIDTH as Number = System.getDeviceSettings().screenWidth;
+
     // MAIN COLOR DEFINITIONS
     
     // Active represents devices that are on/active
@@ -41,11 +45,13 @@ class DefaultConstants {
     // Corresponds to CustomView.InputHints enumeration
     // 0=ENTER
     // 1=BACK
-    public static const UI_INPUT_HINT_ANGLES as Array<Number> = [30, 330];
-
-    // Height of the screen, used in calculation of other constants
-    public static const UI_SCREEN_HEIGHT as Number = System.getDeviceSettings().screenHeight;
-    public static const UI_SCREEN_WIDTH as Number = System.getDeviceSettings().screenWidth;
+    (:exclForScreenRectangular)
+    public static const UI_INPUT_HINT_POSITIONS as Array<Number> = [30, 330];
+    (:exclForScreenRound)
+    public static const UI_INPUT_HINT_POSITIONS as Array<Number> = [
+        ( UI_SCREEN_HEIGHT * 0.125 ).toNumber(), 
+        ( UI_SCREEN_HEIGHT * 0.675 ).toNumber(), 
+    ];
 
     // Height of menu title and footer
     // If set to -1, the default height will be applied
@@ -113,4 +119,7 @@ class DefaultConstants {
 
     // List of fonts to be used by the error view
     public static const UI_ERROR_FONTS as Array<FontDefinition> = [Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
+
+    // List of fonts to be used by the picker for the title
+    public static const UI_PICKER_TITLE_FONTS as Array<FontDefinition> = [Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
 }

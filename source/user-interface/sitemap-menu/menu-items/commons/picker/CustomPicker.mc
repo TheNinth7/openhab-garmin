@@ -29,7 +29,7 @@ class CustomPicker extends CustomView {
 
         _titleDrawable = new TextArea( {
             :text => _title,
-            :font => [Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY],
+            :font => Constants.UI_PICKER_TITLE_FONTS,
             :justification => Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => dcHeight * 0.075,

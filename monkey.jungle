@@ -33,6 +33,11 @@ annotCiq510Plus=exclForCiq510Plus;exclForCiq400Plus
 annotTouch=exclForTouch
 annotButton=exclForButton
 
+# Either on of these should be assigned, depending
+# whether the device has a round or rectangular screen
+annotScreenRound=exclForScreenRound
+annotScreenRectangular=exclForScreenRectangular
+
 # RESOURCE PATH
 # resources define drawables (icons), app settings and strings
 # The variable resBase should be included in ALL resource
@@ -57,6 +62,7 @@ resLauncherIcons=resources/launcher-icons
 srcBase=source;source-constants/base
 srcDefault=$(srcBase);source-constants/default-device
 srcFenix6Pro=$(srcBase);source-constants/fenix6pro
+srcForerunner=$(srcBase);source-constants/forerunner
 # For all Edge devices
 srcEdgeBase=$(srcBase);source-constants/edge/base
 # For Edge touch devices (such as Explore 2/1040/1050)
@@ -70,7 +76,7 @@ srcEdgeButton=$(srcEdgeBase);source-constants/edge/button
 
 # For excludeAnnotations and sourcePath there are defaults
 # that can be overriden by devices
-base.excludeAnnotations = $(annotCiq510Plus);$(annotButton)
+base.excludeAnnotations = $(annotCiq510Plus);$(annotButton);$(annotScreenRound)
 base.sourcePath = $(srcDefault)
 
 # resourcePath has to be defined for each device to point
@@ -80,7 +86,7 @@ base.sourcePath = $(srcDefault)
 
 # Fenix 6 Pro series
 fenix6pro.resourcePath=$(resBase);$(resLauncherIcons)/40x40
-fenix6pro.excludeAnnotations = $(annotCiqPre400);$(annotButton)
+fenix6pro.excludeAnnotations = $(annotCiqPre400);$(annotButton);$(annotScreenRound)
 fenix6pro.sourcePath = $(srcFenix6Pro)
 fenix6spro.resourcePath=$(fenix6pro.resourcePath)
 fenix6spro.excludeAnnotations = $(fenix6pro.excludeAnnotations)
@@ -110,40 +116,53 @@ fenix847mm.resourcePath=$(resBase);$(resLauncherIcons)/65x65
 fenix8solar47mm.resourcePath=$(resBase);$(resLauncherIcons)/40x40
 fenix8solar51mm.resourcePath=$(resBase);$(resLauncherIcons)/40x40
 fenixe.resourcePath=$(resBase);$(resLauncherIcons)/60x60
-fr165.resourcePath=$(resBase);$(resLauncherIcons)/54x54
-fr165m.resourcePath=$(resBase);$(resLauncherIcons)/54x54
-fr255.resourcePath=$(resBase);$(resLauncherIcons)/40x40
-fr255m.resourcePath=$(resBase);$(resLauncherIcons)/40x40
-fr255s.resourcePath=$(resBase);$(resLauncherIcons)/40x40
-fr255sm.resourcePath=$(resBase);$(resLauncherIcons)/40x40
-fr265.resourcePath=$(resBase);$(resLauncherIcons)/60x60
-fr265s.resourcePath=$(resBase);$(resLauncherIcons)/60x60
-fr955.resourcePath=$(resBase);$(resLauncherIcons)/40x40
-fr965.resourcePath=$(resBase);$(resLauncherIcons)/65x65
 marq2.resourcePath=$(resBase);$(resLauncherIcons)/60x60
 marq2aviator.resourcePath=$(resBase);$(resLauncherIcons)/60x60
 
+# For Forerunner devices, the sourcePath must also be set,
+# as they have different button positions defined in Constants.
+fr165.resourcePath=$(resBase);$(resLauncherIcons)/54x54
+fr165.sourcePath=$(srcForerunner)
+fr165m.resourcePath=$(resBase);$(resLauncherIcons)/54x54
+fr165m.sourcePath=$(srcForerunner)
+fr255.resourcePath=$(resBase);$(resLauncherIcons)/40x40
+fr255.sourcePath=$(srcForerunner)
+fr255m.resourcePath=$(resBase);$(resLauncherIcons)/40x40
+fr255m.sourcePath=$(srcForerunner)
+fr255s.resourcePath=$(resBase);$(resLauncherIcons)/40x40
+fr255s.sourcePath=$(srcForerunner)
+fr255sm.resourcePath=$(resBase);$(resLauncherIcons)/40x40
+fr255sm.sourcePath=$(srcForerunner)
+fr265.resourcePath=$(resBase);$(resLauncherIcons)/60x60
+fr265.sourcePath=$(srcForerunner)
+fr265s.resourcePath=$(resBase);$(resLauncherIcons)/60x60
+fr265s.sourcePath=$(srcForerunner)
+fr955.resourcePath=$(resBase);$(resLauncherIcons)/40x40
+fr955.sourcePath=$(srcForerunner)
+fr965.resourcePath=$(resBase);$(resLauncherIcons)/65x65
+fr965.sourcePath=$(srcForerunner)
+
 # Touch devices with CIQ level between 4.0.0 and 5.0.0
 venu2.resourcePath=$(resBase);$(resLauncherIcons)/70x70
-venu2.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
+venu2.excludeAnnotations = $(annotCiq400Plus);$(annotTouch);$(annotScreenRound)
 venu2s.resourcePath=$(resBase);$(resLauncherIcons)/61x61
-venu2s.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
+venu2s.excludeAnnotations = $(venu2.excludeAnnotations)
 venu2plus.resourcePath=$(resBase);$(resLauncherIcons)/70x70
-venu2plus.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
+venu2plus.excludeAnnotations = $(venu2.excludeAnnotations)
 venusq2.resourcePath=$(resBase);$(resLauncherIcons)/40x40
-venusq2.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
+venusq2.excludeAnnotations = $(venu2.excludeAnnotations)
 venusq2m.resourcePath=$(resBase);$(resLauncherIcons)/40x40
-venusq2m.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
+venusq2m.excludeAnnotations = $(venu2.excludeAnnotations)
 
 # Touch devices with CIQ level >= 5.1.0
 venu3.resourcePath=$(resBase);$(resLauncherIcons)/70x70
-venu3.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
+venu3.excludeAnnotations = $(annotCiq510Plus);$(annotTouch);$(annotScreenRound)
 venu3s.resourcePath=$(resBase);$(resLauncherIcons)/70x70
-venu3s.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
+venu3s.excludeAnnotations = $(ven3.excludeAnnotations)
 vivoactive5.resourcePath=$(resBase);$(resLauncherIcons)/56x56
-vivoactive5.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
+vivoactive5.excludeAnnotations = $(ven3.excludeAnnotations)
 vivoactive6.resourcePath=$(resBase);$(resLauncherIcons)/54x54
-vivoactive6.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
+vivoactive6.excludeAnnotations = $(ven3.excludeAnnotations)
 
 # CYCLING COMPUTERS
 # The resourcePath of all Edge devices contains an additional
@@ -152,21 +171,21 @@ vivoactive6.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
 
 # Touch devices with CIQ level between 4.0.0 and 5.0.0
 edgeexplore2.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/36x36
-edgeexplore2.excludeAnnotations = $(annotCiq400Plus);$(annotTouch)
+edgeexplore2.excludeAnnotations = $(annotCiq400Plus);$(annotTouch);$(annotScreenRectangular)
 edgeexplore2.sourcePath = $(srcEdgeTouch)
 
 # Button-based, CIQ >= 5.1.0
 edge540.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/35x35
-edge540.excludeAnnotations = $(annotCiq510Plus);$(annotButton)
+edge540.excludeAnnotations = $(annotCiq510Plus);$(annotButton);$(annotScreenRectangular)
 edge540.sourcePath = $(srcEdgeButton)
 edge840.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/35x35
-edge840.excludeAnnotations = $(annotCiq510Plus);$(annotButton)
+edge840.excludeAnnotations = $(edge540.excludeAnnotations)
 edge840.sourcePath = $(srcEdgeButton)
 
 # Touch-based, CIQ >= 5.1.0
 edge1040.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/40x40
-edge1040.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
+edge1040.excludeAnnotations = $(annotCiq510Plus);$(annotTouch);$(annotScreenRectangular)
 edge1040.sourcePath = $(srcEdgeTouch)
 edge1050.resourcePath=$(resBase);resources/edge;$(resLauncherIcons)/68x68
-edge1050.excludeAnnotations = $(annotCiq510Plus);$(annotTouch)
+edge1050.excludeAnnotations = $(edge1040.excludeAnnotations)
 edge1050.sourcePath = $(srcEdgeTouch)

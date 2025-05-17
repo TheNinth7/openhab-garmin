@@ -2,7 +2,7 @@ import Toybox.Lang;
 import Toybox.Graphics;
 import Toybox.WatchUi;
 
-(:exclForTouch)
+(:exclForTouch :exclForScreenRectangular)
 class InputHintIcon extends Bitmap {
 
     private var _touchArea as CircularTouchArea?;
