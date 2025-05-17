@@ -1,8 +1,28 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
+/*
+ * Delegate for the Slider widget that handles user input within the associated CustomPicker.
+ *
+ * Behavior depends on the releaseOnly flag:
+ *
+ * - If releaseOnly is **false**:
+ *   - Every up/down movement immediately sends a command to update the value.
+ *   - Confirm leaves the last set value in place.
+ *   - Cancel reverts to the value that was active before the CustomPicker was opened.
+ *
+ * - If releaseOnly is **true**:
+ *   - The value is only updated when the user confirms (via accept).
+ *   - Cancel leaves the value unchanged from when the CustomPicker was opened.
+ */
 class SliderPickerDelegate extends CustomPickerDelegate {
+
+    // Reference to the menu item is needed for sending
+    // commands
     private var _menuItem as SliderMenuItem;
+
+    // The state with which the CustomPicker was entered,
+    // in case we need to reset on cancellation
     private var _previousState as Number;
 
     // Constructor
@@ -45,21 +65,23 @@ class SliderPickerDelegate extends CustomPickerDelegate {
         return true;
     }
 
+    // up/down both use the same internal function
+    // to update the state, which will do so only
+    // if releaseOnly is false
     public function onUp( value as Object ) as Boolean {
         updateState( value );
         return true;
     }
-
     public function onDown( value as Object ) as Boolean {
         updateState( value );
         return true;
     }
-
-    public function updateState( state as Object ) as Void {
+    private function updateState( state as Object ) as Void {
         Logger.debug( "SliderDelegate.updateState=" + state );
         if( ! ( state instanceof Number ) ) {
             throw new GeneralException( "SliderDelegate: invalid state type" );
         }
+        // Update only if releaseOnly is false
         if( ! _menuItem.getSitemapSlider().releaseOnly ) {
             _menuItem.updateState( state );
         }

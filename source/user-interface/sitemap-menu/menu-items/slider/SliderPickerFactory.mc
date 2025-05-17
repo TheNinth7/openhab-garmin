@@ -2,13 +2,14 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
- * Factory class that provides the elements displayed by the Picker.
+ * Factory class that provides the elements displayed by the CustomPicker.
  * It uses the slider configuration from SitemapSlider to generate
  * a list of Drawables based on minValue, maxValue, and step.
  *
  * If the current state does not match any of the defined steps,
  * an additional Drawable is inserted at the correct position
- * between the two nearest steps to represent the current value.
+ * between the two nearest steps to represent the current value. 
+ * Once the user scrolls away from the additional Drawable, it will be removed.
  */
 class SliderPickerFactory extends CustomPickerFactory {
     // The list of Drawables that are shown by the Picker
@@ -16,6 +17,8 @@ class SliderPickerFactory extends CustomPickerFactory {
     
     // The currently selected index
     private var _currentIndex as Number = -1;
+    // Stores an additional Drawable if needed to represent
+    // a current state that doesn't conform to the slider's parameters.
     private var _nonConforming as SliderPickable?;
 
     // Constructor
@@ -56,20 +59,15 @@ class SliderPickerFactory extends CustomPickerFactory {
         */
     }
 
+    // Implementation of the functions used by CustomPicker
     public function getCurrent() as CustomPickable {
         return _pickables[_currentIndex];
     }
 
-    private function consumeNonconforming() as Boolean {
-        if( _nonConforming != null ) {
-            _pickables.remove( _nonConforming );
-            _nonConforming = null;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    // If up() was selected and we were on the non-conforming
+    // Pickable, we do not need to increase the index
+    // because removing the non-conforming Pickable will
+    // automatically move the higher value to the current position.
     public function up() as Void {
         if( ! consumeNonconforming() ) {
             _currentIndex++;            
@@ -79,6 +77,8 @@ class SliderPickerFactory extends CustomPickerFactory {
         }
     }
 
+    // When moving down, we decrease even if we were on the
+    // non-conforming value
     public function down() as Void {
         consumeNonconforming();
         _currentIndex--;
@@ -87,4 +87,16 @@ class SliderPickerFactory extends CustomPickerFactory {
         }
     }
 
+    // Checks if we are still on the non-conforming
+    // Pickable, and if yes removes it and return true,
+    // otherwise false
+    private function consumeNonconforming() as Boolean {
+        if( _nonConforming != null ) {
+            _pickables.remove( _nonConforming );
+            _nonConforming = null;
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

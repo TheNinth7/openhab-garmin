@@ -1,5 +1,13 @@
 import Toybox.Lang;
 
+/*
+ * Represents a single selectable option in the CustomPicker.
+ *
+ * Each CustomPickable stores:
+ * - A label (String) for display in the picker UI.
+ * - A value object that is passed to the CustomPickerDelegate's
+ *   onUp(), onDown(), and onAccept() callbacks.
+ */
 class CustomPickable {
     private var _value as Object;
     private var _label as String;

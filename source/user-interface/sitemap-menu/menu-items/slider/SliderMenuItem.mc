@@ -4,10 +4,10 @@ import Toybox.WatchUi;
 /*
  * This menu item represents the Slider widget in the app.
  * It displays the current slider value and, when selected,
- * opens a separate view (a Picker implementation) that allows
+ * opens a separate view (a CustomPicker implementation) that allows
  * the user to adjust the value.
  *
- * The Picker respects sitemap settings for minValue, maxValue, and step.
+ * The widgets respects sitemap settings for minValue, maxValue, and step.
  * It also supports 'releaseOnly' mode: if enabled, the item state is updated
  * only after the user confirms their selection. If disabled, the state updates
  * continuously as the user scrolls through values.
@@ -68,7 +68,7 @@ class SliderMenuItem extends BaseSitemapMenuItem {
         return true;
     }
 
-    // When the menu item is selected, the Picker is initialized
+    // When the menu item is selected, the CustomPicker is initialized
     // and pushed to the view stack
     public function onSelect() as Void {
         if( _commandRequest != null ) {
@@ -80,17 +80,6 @@ class SliderMenuItem extends BaseSitemapMenuItem {
                 new SliderPickerDelegate( self ),
                 WatchUi.SLIDE_LEFT
             );
-
-/*
-            ViewHandler.pushView(
-                new SliderPicker( 
-                    getLabel(),
-                    new SliderPickerFactory( self ) 
-                ),
-                new SliderPickerDelegate( self ),
-                WatchUi.SLIDE_LEFT
-            );
-*/
         }
     }
 

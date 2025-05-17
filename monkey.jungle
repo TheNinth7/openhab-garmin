@@ -158,11 +158,11 @@ venusq2m.excludeAnnotations = $(venu2.excludeAnnotations)
 venu3.resourcePath=$(resBase);$(resLauncherIcons)/70x70
 venu3.excludeAnnotations = $(annotCiq510Plus);$(annotTouch);$(annotScreenRound)
 venu3s.resourcePath=$(resBase);$(resLauncherIcons)/70x70
-venu3s.excludeAnnotations = $(ven3.excludeAnnotations)
+venu3s.excludeAnnotations = $(venu3.excludeAnnotations)
 vivoactive5.resourcePath=$(resBase);$(resLauncherIcons)/56x56
-vivoactive5.excludeAnnotations = $(ven3.excludeAnnotations)
+vivoactive5.excludeAnnotations = $(venu3.excludeAnnotations)
 vivoactive6.resourcePath=$(resBase);$(resLauncherIcons)/54x54
-vivoactive6.excludeAnnotations = $(ven3.excludeAnnotations)
+vivoactive6.excludeAnnotations = $(venu3.excludeAnnotations)
 
 # CYCLING COMPUTERS
 # The resourcePath of all Edge devices contains an additional
