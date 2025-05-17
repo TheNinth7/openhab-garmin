@@ -31,51 +31,37 @@ class InputHint extends Drawable {
         Rez.Drawables.iconCancelHint
     ];
 
-    private var _angle as Number;
     private var _color as ColorType;
-    private var _icon as ResourceId?;
+    private var _icon as InputHintIcon?;
 
-    public function initialize( key as Key, type as Type ) {
+    private var _xCenter as Number;
+    private var _yCenter as Number;
+    private var _arcRadius as Number;
+    private var _arcFromAngle as Number;
+    private var _arcToAngle as Number;
+
+    public function initialize( key as Key, type as Type, touchId as Symbol? ) {
         Drawable.initialize( {} );
-        _angle = Constants.UI_INPUT_HINT_ANGLES[key];
+        var angle = Constants.UI_INPUT_HINT_ANGLES[key];
         _color = UI_INPUT_HINT_COLORS[type];
-        _icon = UI_INPUT_HINT_ICONS[type];
+        var iconRez = UI_INPUT_HINT_ICONS[type];
+
+        // Calculate all parameters for the arc
+        _xCenter = ( Constants.UI_SCREEN_WIDTH / 2 ).toNumber();
+        _yCenter = ( Constants.UI_SCREEN_HEIGHT / 2 ).toNumber();
+        _arcRadius = RADIUS;
+        _arcFromAngle = angle - LENGTH / 2;
+        _arcToAngle = angle + LENGTH / 2;
+
+        if( iconRez != null ) {
+            _icon = new InputHintIcon( iconRez, touchId, angle, LINE_WIDTH );
+        }
     }
 
     public function draw( dc as Dc ) as Void {
         drawArc( dc );
-        drawIcon( dc );
-    }
-
-    private function drawIcon( dc as Dc ) as Void {
-        var icon = _icon;
-        if( icon != null ) {
-            var bitmap = WatchUi.loadResource( icon ) as BitmapReference;
-            var bmWidth = bitmap.getWidth();
-            var bmHeight = bitmap.getHeight();
-            var diagonal = Math.sqrt(
-                CustomMath.square( bmWidth )
-                + CustomMath.square( bmHeight )
-            ).toNumber();
-
-            // Initialize coordinates
-            var x = dc.getHeight() / 2;
-            var y = dc.getWidth() / 2;
-            // The distance from the screen center to the center of the hint
-            var centerToCenter = x - LINE_WIDTH - ( diagonal / 2 * 1.1 ).toNumber();
-
-            // Use trigonometry to calculate center position of the hint
-            // Source for formulas: http://elsenaju.info/Rechnen/Trigonometrie.htm
-            
-            // For the Math functions, degrees need to be converted to radians
-            var radian = Math.toRadians( _angle );
-            y = y - centerToCenter * Math.sin( radian );
-            x = x + centerToCenter * Math.cos( radian );
-
-            x -= bmWidth/2;
-            y -= bmHeight/2;
-
-            dc.drawBitmap( x, y, bitmap );
+        if( _icon != null ) {
+            _icon.draw( dc );
         }
     }
 
@@ -85,15 +71,16 @@ class InputHint extends Drawable {
             dc.setAntiAlias( true );
         }
         
-        // Calculate all parameters for the arc
-        var x = dc.getWidth() / 2;
-        var y = dc.getHeight() / 2;
-        var r = RADIUS;
-        var from = _angle - LENGTH / 2;
-        var to = _angle + LENGTH / 2;
-
         dc.setColor( _color, Constants.UI_COLOR_BACKGROUND );
         dc.setPenWidth( LINE_WIDTH );
-        dc.drawArc( x, y, r, Graphics.ARC_COUNTER_CLOCKWISE, from, to );
+        dc.drawArc( _xCenter, _yCenter, _arcRadius, Graphics.ARC_COUNTER_CLOCKWISE, _arcFromAngle, _arcToAngle );
+    }
+
+    public function getTouchArea() as CircularTouchArea? {
+        if( _icon != null ) {
+            return _icon.getTouchArea();
+        } else {
+            return null;
+        }
     }
 } 

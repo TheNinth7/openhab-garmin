@@ -48,12 +48,16 @@ class CustomView extends View {
     }
 
     (:exclForTouch)
-    public function addInputHint( key as InputHint.Key, type as InputHint.Type ) as Void {
-        addDrawable( 
-            new InputHint( 
-                key,
-                type 
-            )
+    public function addInputHint( key as InputHint.Key, type as InputHint.Type, touchId as Symbol ) as Void {
+        var inputHint = new InputHint( 
+            key,
+            type,
+            touchId 
         );
+        addDrawable( inputHint );
+        var touchArea = inputHint.getTouchArea();
+        if( touchArea != null ) {
+            addTouchArea( touchArea );
+        }
     }
 }

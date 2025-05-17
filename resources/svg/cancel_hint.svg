@@ -6,7 +6,7 @@
    viewBox="0 0 95 95"
    xml:space="preserve"
    id="svg4"
-   sodipodi:docname="cancel.svg"
+   sodipodi:docname="cancel_hint.svg"
    width="95"
    height="95"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
@@ -35,7 +35,7 @@
      inkscape:current-layer="svg4" /><switch
      id="switch3"
      transform="translate(-2.5,-2.5)"
-     style="fill:#d32f2f;fill-opacity:1"><foreignObject
+     style="fill:#b71c1c;fill-opacity:1"><foreignObject
        requiredExtensions="http://ns.adobe.com/AdobeIllustrator/10.0/"
        x="0"
        y="0"
@@ -43,12 +43,12 @@
        height="1" /><g
        i:extraneous="self"
        id="g3"
-       style="fill:#d32f2f;fill-opacity:1"><g
+       style="fill:#b71c1c;fill-opacity:1"><g
          id="g2"
-         style="fill:#d32f2f;fill-opacity:1"><path
+         style="fill:#b71c1c;fill-opacity:1"><path
            d="M 50,2.5 C 23.8,2.5 2.5,23.8 2.5,50 2.5,76.2 23.8,97.5 50,97.5 76.2,97.5 97.5,76.2 97.5,50 97.5,23.8 76.2,2.5 50,2.5 Z m 0,84.3 C 29.7,86.8 13.2,70.3 13.2,50 13.2,29.7 29.7,13.2 50,13.2 70.3,13.2 86.8,29.7 86.8,50 86.8,70.3 70.3,86.8 50,86.8 Z"
            id="path1"
-           style="fill:#d32f2f;fill-opacity:1" /><path
+           style="fill:#b71c1c;fill-opacity:1" /><path
            d="m 67.4,32.6 c -2.1,-2.1 -5.5,-2.1 -7.6,0 L 50,42.4 40.2,32.6 c -2.1,-2.1 -5.5,-2.1 -7.6,0 -2.1,2.1 -2.1,5.5 0,7.6 l 9.8,9.8 -9.8,9.8 c -2.1,2.1 -2.1,5.5 0,7.6 1,1 2.4,1.6 3.8,1.6 1.4,0 2.7,-0.5 3.8,-1.6 l 9.8,-9.8 9.8,9.8 c 1,1 2.4,1.6 3.8,1.6 1.4,0 2.7,-0.5 3.8,-1.6 2.1,-2.1 2.1,-5.5 0,-7.6 L 57.6,50 67.4,40.2 c 2.1,-2.1 2.1,-5.5 0,-7.6 z"
            id="path2"
-           style="fill:#d32f2f;fill-opacity:1" /></g></g></switch></svg>
+           style="fill:#b71c1c;fill-opacity:1" /></g></g></switch></svg>

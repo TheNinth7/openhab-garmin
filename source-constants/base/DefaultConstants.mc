@@ -28,9 +28,10 @@ class DefaultConstants {
 
     // For confirming an action
     public static const UI_COLOR_POSITIVE as ColorType = 0x388E3C;
-
+    
     // For cancelling an action
-    public static const UI_COLOR_DESTRUCTIVE as ColorType = 0xD32F2F;
+    public static const UI_COLOR_DESTRUCTIVE as ColorType = 0xB71C1C;
+    // 0xD32F2F brighter red;
 
     // Foreground and background colors
     public static const UI_COLOR_TEXT as ColorType = Graphics.COLOR_WHITE;
@@ -43,8 +44,8 @@ class DefaultConstants {
     public static const UI_INPUT_HINT_ANGLES as Array<Number> = [30, 330];
 
     // Height of the screen, used in calculation of other constants
-    public static const UI_SCREEN_HEIGHT = System.getDeviceSettings().screenHeight;
-    public static const UI_SCREEN_WIDTH = System.getDeviceSettings().screenWidth;
+    public static const UI_SCREEN_HEIGHT as Number = System.getDeviceSettings().screenHeight;
+    public static const UI_SCREEN_WIDTH as Number = System.getDeviceSettings().screenWidth;
 
     // Height of menu title and footer
     // If set to -1, the default height will be applied

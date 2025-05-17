@@ -81,8 +81,8 @@ class CustomPicker extends CustomView {
 
     (:exclForTouch)
     private function addInputHints( y as Float ) as Void {
-        addInputHint( InputHint.HINT_KEY_ENTER, InputHint.HINT_TYPE_POSITIVE );
-        addInputHint( InputHint.HINT_KEY_BACK, InputHint.HINT_TYPE_DESTRUCTIVE );
+        addInputHint( InputHint.HINT_KEY_ENTER, InputHint.HINT_TYPE_POSITIVE, :touchCheck );
+        addInputHint( InputHint.HINT_KEY_BACK, InputHint.HINT_TYPE_DESTRUCTIVE, :touchCancel );
     }
 
     (:exclForButton)
