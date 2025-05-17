@@ -32,7 +32,7 @@ class CustomBehaviorDelegate extends BehaviorDelegate {
     // The onTap() implementation checks which touch area has
     // been tapped and then calls onTapArea() with its identifier
     public function onTap( clickEvent as ClickEvent ) as Boolean {
-        Logger.debug( "CustomBehaviorDelegate.onTap" );
+        // Logger.debug "CustomBehaviorDelegate.onTap" );
 
         // Only do this if the view is a CustomView
         var currentView = WatchUi.getCurrentView()[0];
@@ -52,7 +52,7 @@ class CustomBehaviorDelegate extends BehaviorDelegate {
     // Subclasses should override this and implement
     // behaviors for the individual tap areas
     public function onAreaTap( area as Symbol, clickEvent as ClickEvent ) as Boolean {
-        Logger.debug( "CustomBehaviorDelegate.onAreaTap" );
+        // Logger.debug "CustomBehaviorDelegate.onAreaTap" );
         return false;
     }
 }

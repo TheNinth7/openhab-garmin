@@ -27,8 +27,16 @@ typedef CommandRequestDelegate as interface {
 };
 
 class BaseCommandRequest extends BaseRequest {
+    
     private var _url as String;
+    
     private var _item as CommandRequestDelegate;
+
+    // We count the currently open requests for this item
+    // If there is more than one, we cancel all requests in the
+    // queue, to avoid BLE_QUEUE_FULL errors.
+    // See makeWebRequest() for details.    
+    private var _requestCounter as Number = 0;
 
     // Depending on the settings, either a native REST API command request 
     // or a custom Webhook command request is instantiated.
@@ -60,9 +68,26 @@ class BaseCommandRequest extends BaseRequest {
     // Triggers the web request
     // @param parameters - options for the web request, as per Communication.makeWebRequest
     protected function makeWebRequest( parameters as Dictionary<Object, Object>? ) as Void {
-        // Logger.debug( "BaseCommandRequest: makeWebRequest to " + _url );
+        Logger.debug( "BaseCommandRequest: makeWebRequest to " + _url );
         try {
             WidgetSitemapRequest.get().stop();
+            // If there is more than one open request for this item,
+            // we cancel all requests to avoid -101/BLE_QUEUE_FULL errors.
+            // This will also cancel any ongoing sitemap requests, which is acceptable.
+            //
+            // It may cancel commands for other items as well, but this is
+            // highly unlikely—users typically can’t move between items
+            // and trigger multiple commands quickly enough for this to be an issue.
+            //
+            // This situation mainly affects custom views. When commands are sent
+            // from a menu item, the menu system blocks new commands until the
+            // previous one has completed.
+            if( _requestCounter > 0 ) {
+                Logger.debug( "BaseCommandRequest: cancelling previous requests!" );
+                cancelAllRequests();
+                _requestCounter = 0;
+            }
+            _requestCounter++;
             Communications.makeWebRequest( _url, parameters, getBaseOptions(), method( :onReceive ) );
         } catch( ex ) {
             WidgetSitemapRequest.get().start();
@@ -75,6 +100,7 @@ class BaseCommandRequest extends BaseRequest {
     // If there was an error, onException() is being called
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
+            _requestCounter--;
             WidgetSitemapRequest.get().start();
             checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND );
             _item.onCommandComplete();

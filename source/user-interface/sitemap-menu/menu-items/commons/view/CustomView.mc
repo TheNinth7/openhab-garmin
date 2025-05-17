@@ -51,7 +51,7 @@ class CustomView extends View {
     
     // Clear the Dc and draw all Drawables    
     public function onUpdate( dc as Dc ) as Void {
-        Logger.debug(( "CustomView.onUpdate" ) );
+        // Logger.debug( "CustomView.onUpdate" ) );
 
         // We need to clear the clip, because there is bug in Garmin SDK,
         // with a clip in the menu title setting a clip in subsequent views

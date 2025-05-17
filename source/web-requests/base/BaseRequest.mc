@@ -59,14 +59,32 @@ class BaseRequest {
     // of the derived classes. They can make use of the following
     // two functions for checking response code and response data
     protected function checkResponseCode( responseCode as Number, source as CommunicationBaseException.Source ) as Void {
-        if( responseCode != 200 ) {
-            throw new CommunicationException( responseCode, source );
-        }
+        // Any response code other than 200 results in an error.
+        // Exception: if _cancelMode is active, REQUEST_CANCELLED
+        // responses are ignored.
+        if( responseCode != 200 &&
+            !( _cancelMode && responseCode == Communications.REQUEST_CANCELLED ) ) {
+            throw new CommunicationException(responseCode, source);
+        }    
     }
-   protected function checkResponse( data as Object?, source as CommunicationBaseException.Source ) as JsonObject {
+    protected function checkResponse( data as Object?, source as CommunicationBaseException.Source ) as JsonObject {
         if( ! ( data instanceof Dictionary ) ) {
             throw new UnexpectedResponseException( data, source );
         }
         return data as JsonObject;
+    }
+
+    // This function cancels all open requests. When 
+    // Communications.cancelAllRequests() is called, the 
+    // onReceive() callbacks of all active requests will be 
+    // invoked synchronously with a REQUEST_CANCELLED response 
+    // code. We use the _cancelMode flag to signal that the 
+    // cancellations were intentional, so no error should be 
+    // reported (see checkResponseCode()).
+    private static var _cancelMode as Boolean = false;
+    protected function cancelAllRequests() as Void {
+        _cancelMode = true;
+        Communications.cancelAllRequests();
+        _cancelMode = false;
     }
 }

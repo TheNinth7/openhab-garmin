@@ -36,12 +36,12 @@ class SliderPickerDelegate extends CustomPickerDelegate {
     // then we change the state here. Otherwise we just
     // pop the Picker from the view stack.
     public function onAccept( newState as Object ) as Boolean {
-        Logger.debug( "SliderDelegate.onAccept" );
+        // Logger.debug "SliderDelegate.onAccept" );
         if( _menuItem.getSitemapSlider().releaseOnly ) {
             if( ! ( newState instanceof Number ) ) {
                 throw new GeneralException( "SliderDelegate: invalid value selected" );    
             }
-            Logger.debug( "SliderDelegate.onAccept: new state=" + newState.toString() );
+            // Logger.debug "SliderDelegate.onAccept: new state=" + newState.toString() );
             _menuItem.updateState( newState );
         }
         ViewHandler.popView( WatchUi.SLIDE_RIGHT );
@@ -52,13 +52,13 @@ class SliderPickerDelegate extends CustomPickerDelegate {
     // then we revert the state here. Otherwise we just
     // pop the Picker from the view stack.
     public function onCancel() as Boolean {
-        Logger.debug( "SliderDelegate.onCancel" );
+        // Logger.debug "SliderDelegate.onCancel" );
         if( ! _menuItem.getSitemapSlider().releaseOnly ) {
             if( _menuItem.getSitemapSlider().sliderState != _previousState ) {
-                Logger.debug( "SliderDelegate.onCancel: reverting to state=" + _previousState.toString() );
+                // Logger.debug "SliderDelegate.onCancel: reverting to state=" + _previousState.toString() );
                 _menuItem.updateState( _previousState );
             } else {
-                Logger.debug( "SliderDelegate.onCancel: state did not change" );
+                // Logger.debug "SliderDelegate.onCancel: state did not change" );
             }
         }
         ViewHandler.popView( WatchUi.SLIDE_RIGHT );
@@ -77,7 +77,7 @@ class SliderPickerDelegate extends CustomPickerDelegate {
         return true;
     }
     private function updateState( state as Object ) as Void {
-        Logger.debug( "SliderDelegate.updateState=" + state );
+        // Logger.debug "SliderDelegate.updateState=" + state );
         if( ! ( state instanceof Number ) ) {
             throw new GeneralException( "SliderDelegate: invalid state type" );
         }

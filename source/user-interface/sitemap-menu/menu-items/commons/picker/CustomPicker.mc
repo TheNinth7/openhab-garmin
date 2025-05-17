@@ -61,7 +61,7 @@ class CustomPicker extends CustomView {
     // onLayout is called once when the view is opened,
     // and initiates all the Drawables   
     public function onLayout( dc as Dc ) as Void {
-        Logger.debug(( "CustomPicker.onLayout" ) );
+        // Logger.debug( "CustomPicker.onLayout" ) );
 
         var dcHeight = dc.getHeight();
         var dcWidth = dc.getWidth();

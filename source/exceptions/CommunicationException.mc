@@ -1,4 +1,5 @@
 import Toybox.Lang;
+import Toybox.Communications;
 
 /*
  * Exception for any non-200 response codes from `Communications.makeWebRequest`.
@@ -25,9 +26,14 @@ class CommunicationException extends CommunicationBaseException {
         var errorMsg;
         // For some errors we return specific messages,
         // for all others a generic one
-        if ( _responseCode == -104 || _responseCode == -2 ) {
+        if( 
+            _responseCode == Communications.BLE_CONNECTION_UNAVAILABLE 
+            || _responseCode == Communications.BLE_HOST_TIMEOUT ) 
+        {
             return "No phone";
-        } else if ( _responseCode == -400 ) {
+        } else if ( 
+            _responseCode == Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE ) 
+        {
             errorMsg = "Invalid response, check your app settings.";
         } else {
             errorMsg = "Request failed with code " + _responseCode;
@@ -40,9 +46,14 @@ class CommunicationException extends CommunicationBaseException {
         var errorMsg;
         // For some errors we return specific toast messages,
         // for all others a generic one
-        if ( _responseCode == -104 || _responseCode == -2 ) {
+        if( 
+            _responseCode == Communications.BLE_CONNECTION_UNAVAILABLE 
+            || _responseCode == Communications.BLE_HOST_TIMEOUT ) 
+        {
             return "No phone";
-        } else if ( _responseCode == -400 ) {
+        } else if ( 
+            _responseCode == Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE ) 
+        {
             errorMsg = "INVRES";
         } else {
             errorMsg = _responseCode.toString();
@@ -55,7 +66,7 @@ class CommunicationException extends CommunicationBaseException {
     public function isFatal() as Boolean {
         // return false; // activate this to use -1001 in simulator to test non-fatal errors
         return 
-            ( _responseCode == -1001 ) 
+            ( _responseCode == Communications.SECURE_CONNECTION_REQUIRED ) 
             || ( _responseCode == 404 ); 
     }
 
@@ -63,6 +74,7 @@ class CommunicationException extends CommunicationBaseException {
     // may present itself. So in this case, this function returns true, allowing 
     // the error to be suppressed if the corresponding settings option is enabled.
     public function suppressAsEmptyResponse() as Boolean {
-        return _responseCode == -400;
+        return 
+            _responseCode == Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE;
     }
 }

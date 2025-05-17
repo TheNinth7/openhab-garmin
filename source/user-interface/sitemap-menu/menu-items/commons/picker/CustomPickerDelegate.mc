@@ -65,7 +65,7 @@ class CustomPickerDelegate extends CustomBehaviorDelegate {
     // Here we react to the touch areas defined
     // in CustomPicker
     public function onAreaTap( area as Symbol, clickEvent as ClickEvent ) as Boolean {
-        Logger.debug( "CustomPickerDelegate.onAreaTap" );
+        // Logger.debug "CustomPickerDelegate.onAreaTap" );
         if( area == :touchUp ) {
             return onUpInternal();
         } else if( area == :touchDown ) {
