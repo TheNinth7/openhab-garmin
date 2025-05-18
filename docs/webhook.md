@@ -101,6 +101,6 @@ https://yourserver:yourport/webhook/d1097152a4?action=toggle&itemName=LightBedro
 
 Then enter the Webhook ID (`d1097152a4`) in the app settings:
 
-![App Settings](screenshots/app-settings/app-settings.png)
+![App Settings](screenshots/app-settings/app-settings-webhook.png)
 
 ---
