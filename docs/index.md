@@ -227,7 +227,7 @@ If `mappings` are provided, the widget displays the current state as text:
 Frame label="Switches" {
     Switch item=Light_Switch label="Light"
     Switch item=Heating_Switch label="Heating" mappings=[OFF="ACTIVE", ON="INACTIVE"]
-    Switch item=Rollershutter label="Shutters" mappings=[UP="Up", STOP="Stop", DOWN="Down"]
+    Switch item=Rollershutter label="Shutters" mappings=[0="UP", STOP="STOP", 100="DOWN"]
 }
 ```
 
@@ -235,7 +235,7 @@ In this example:
 
 * **"Light"** will render as a toggle switch.
 * **"Heating"** will display either `ACTIVE` or `INACTIVE`, depending on the current state.
-* **"Shutters"** will show the current state and allow selection from the three commands (`Up`, `Stop`, `Down`).
+* **"Shutters"** will show the current state and allow selection from the three commands (`UP`, `STOP`, `DOWN`).
 
 **Resulting UI:**
 
@@ -254,10 +254,6 @@ In this example:
 
 1. The orange arrow to the right of the state indicates that selecting the item will trigger a command.
 2. The action menu shown in the lower-left screenshot is a **mockup**. The actual appearance may vary depending on the device, as it uses a native UI component.
-
----
-
-Here's a polished and clearer version of your `Slider` documentation section, with improved grammar, formatting consistency, and readability:
 
 ---
 
