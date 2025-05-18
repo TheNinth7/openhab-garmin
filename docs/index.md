@@ -226,7 +226,7 @@ If `mappings` are provided, the widget displays the current state as text:
 ```openhab
 Frame label="Switches" {
     Switch item=Light_Switch label="Light"
-    Switch item=Heating_Switch label="Heating" mappings=[OFF="ACTIVE", ON="INACTIVE"]
+    Switch item=Heating_Switch label="Heating" mappings=[ON="ACTIVE", OFF="INACTIVE"]
     Switch item=Rollershutter label="Shutters" mappings=[0="UP", STOP="STOP", 100="DOWN"]
 }
 ```
