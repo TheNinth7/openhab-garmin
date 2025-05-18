@@ -5,7 +5,9 @@
 **Resources**
 
 ➡️ [Install on Garmin Connect IQ Store](https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a)
+
 ➡️ [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891)  
+
 ➡️ [Report Issues on GitHub](https://github.com/TheNinth7/ohg/issues)
 
 **Development Status**
