@@ -250,7 +250,7 @@ In this example:
     <td width="50%"><img src="screenshots/app/6-switches-1.png"></td>
     <td><img src="screenshots/app/6-switches-2.png"></td>
   </tr>
-  <tr>
+  <tr style="background-color: white;">
     <td width="50%"><img src="screenshots/app/6-switches-3.png"></td>
     <td><img src="screenshots/app/6-switches-4.png"></td>
   </tr>
@@ -295,7 +295,7 @@ Frame label="First Floor" {
     <td width="50%"><img src="screenshots/app/7-slider-1.png"></td>
     <td></td>
   </tr>
-  <tr>
+  <tr style="background-color: white;">
     <td width="50%"><img src="screenshots/app/7-slider-2.png"></td>
     <td><img src="screenshots/app/7-slider-3.png"></td>
   </tr>
