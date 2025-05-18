@@ -199,14 +199,41 @@ This configuration produces the following display in the UI:
 
 ### `Switch`
 
-The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) **Sitemap Widget** shows the state of an item and allows the user to change that state.
+The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) Sitemap Widget shows the state of an item and allows the user to change that state.
 
 The supported parameters are:
 - `label`: shown on the UI
 - `item`: the name of the associated openHAB item
 - `mappings`: optional, to be used if different commands than `ON`/`OFF` shall be used to control the item.
 
-If no mappings are provided, the UI renders a toggle Switch and will send the 
+If no mappings are provided, a toggle Switch is rendered and on selection ON/OFF commands will be sent.
+
+If mappings are provided, the UI renders the current status as text. If the status equals one of the commands from the mappings, then the label defined there will be shown, otherwise the raw state. On selection, the behavior will differ depending on the number of commands and the current state.
+
+- If one command is defined, it will be send immediately.
+- If two commands are defined and one of them equals to the item state, than the other will be send immediatly.
+- In all other cases, an action menu will be shown in the right of the screen, letting the user select from the list of available commands. If the current state equals one of the commands, that command will not be shown in the list.
+
+
+
+
+This configuration produces the following display in the UI:
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
+    <td><img src="screenshots/app/3-entrance-gates.png"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/app/4-first-floor-1.png"></td>
+    <td><img src="screenshots/app/4-first-floor-2.png"></td>
+  </tr>
+</table>
+
+
+
+
+
+
 
 - [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider)
   - `label`
@@ -402,7 +429,7 @@ Derived from:
 
 ---
 
-![Slider Up/Down](iconography/up-down.svg)
+![Arrows](iconography/arrows.svg)
 
 Derived from:
 
