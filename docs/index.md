@@ -1,75 +1,67 @@
-
 # openHAB for Garmin
 
 **openHAB for Garmin** connects your Garmin wearable to your [openHAB](https://www.openhab.org) smart home system, giving you convenient access to essential devices and real-time information.
 
+**Resources**
+
 ➡️ [Install on Garmin Connect IQ Store](https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a)
+➡️ [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891)  
+➡️ [Report Issues on GitHub](https://github.com/TheNinth7/ohg/issues)
+
+**Development Status**
+
+🚧 This app is in an **early stage of development**. Core features are available, and active development is ongoing.
 
 ---
 
-## 📖 Table of Contents
+# Table of Contents
 
-🧰 [Resources](#-resources)
+[Connectivity](#-connectivity)
 
-🚧 [Development Status](#-development-status)
+[Configuration](#-configuration)
 
-🌐 [Connectivity](#-connectivity)
+[Using myopenHAB](#-using-myopenhab)
 
-📋 [Configuration](#-configuration)
+[Sitemap Setup](#-sitemap-setup)
 
-🔐 [Using myopenHAB](#-using-myopenhab)
+[Settings View](#settings-view)
 
-🧭 [Sitemap Setup](#-sitemap-setup)
+[Custom Webhook](#️-custom-webhook)
 
-⚙️ [Settings View](#settings-view)
+[Troubleshooting](#-troubleshooting)
 
-📤 [Custom Webhook](#️-custom-webhook)
+[License](#-license)
 
-🚨 [Troubleshooting](#-troubleshooting)
-
-📄 [License](#-license)
-
-🎨 [Iconography](#-iconography)
+[Iconography](#-iconography)
 
 ---
 
-## 🧰 Resources
+## Introduction
 
-- 💬 [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891)  
-- 🐞 [Report Issues on GitHub](https://github.com/TheNinth7/ohg/issues)
+This app is built on the foundation of **openHAB sitemaps**, which define an interactive view of your openHAB model. A sitemap allows you to specify which devices are accessible through the app and how they are organized and presented.
 
----
+The app consists of two components: the **Glance** and the **Widget**.
+The **Glance** displays the name of the sitemap and acts as the entry point into the full-screen **Widget**, which shows the sitemap's content.
 
-## 🚧 Development Status
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/app/1-glance.png"></td>
+    <td><img src="screenshots/app/2-homepage.png"></td>
+  </tr>
+</table>
 
-⚠️ This app is in an **early stage of development**. Core features are available, and active development is ongoing.
+Once opened, the **Widget** polls the sitemap at a configurable interval to fetch updates. Commands are sent to openHAB via its JSON-based REST API. If your openHAB setup does not support this API, you can alternatively configure a custom Webhook.
 
-### ✅ Current Features
-- Display a single openHAB sitemap
-- Support for frames, on/off switches and text elements
-- [Send commands](#-sending-commands) via the JSON-based REST API or a custom Webhook
+Inside the **Widget**, sitemap elements are displayed as **Sitemap Widgets**.
+*Note: The term "widget" is used by both Garmin and openHAB to mean different things, which can be a source of confusion. In this manual, "Widget" refers to the Garmin app component, while "Sitemap Widget" refers to individual elements defined in the openHAB sitemap.*
 
-### 📋 Planned Features
-- Support for additional sitemap element types
-- Multi-sitemap and multi-server support
-
----
-
-## 🌐 Connectivity
-
-Garmin wearables rely on your smartphone for network access. If your phone can reach your openHAB instance (e.g. via local network or VPN like Tailscale), the watch can too.
-
-### Platform-specific Limitations
-- **iOS**: HTTP and HTTPS supported  
-- **Android**: Only HTTPS with a valid certificate is supported due to Garmin SDK limitations
-
-You can use [myopenHAB](https://www.myopenhab.org) to securely access your local openHAB instance over the Internet using HTTPS.
+The following sections provide detailed guidance on configuring the app, supported Sitemap Widgets, user interface behavior, and troubleshooting tips.
 
 ---
 
-## 📋 Configuration
+# Configuration
 
-After installing the app, the following settings are available:
+Once the app is installed, you can configure the following settings by opening it in the Garmin Connect IQ smartphone app.
 
 | Setting             | Description |
 |---------------------|-------------|
@@ -80,13 +72,25 @@ After installing the app, the following settings are available:
 | **Username** | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
 | **Password** | Password for basic authentication |
 | **Supress empty response errors** | Suppress errors for empty sitemap responses. Recommended when using myopenhab.org, which occasionally returns empty results. See the related [openhab-cloud issue #496](https://github.com/openhab/openhab-cloud/issues/496) for details. |
-| **Polling Interval (ms)** | Interval between data requests to your openHAB instance. Set to 0 to fetch new data immediately after the previous response is processed. **Note:** When using **myopenhab.org**, it’s recommended to use the default (3000 ms) or a higher value. Lower intervals may trigger errors due to rate limiting by myopenhab.org. |
+| **Polling Interval (ms)** | Interval between data requests to your openHAB instance. Set to 0 to fetch new data immediately after the previous response is processed. Polling only occurs while the app is open, not in the background. If you're using **myopenhab.org**, it's recommended to use the default (3000 ms) or a higher value to avoid overloading their servers. If you're connecting to your own openHAB server directly, you may try setting it to 0 for more responsive updates. |
 
 ![App Settings](screenshots/app-settings/app-settings.png)
 
 ---
 
-## 🔐 Using myopenHAB
+## Connectivity
+
+Garmin wearables rely on your smartphone for network access. If your phone can reach your openHAB instance (e.g. via local network or VPN like Tailscale), the watch can too.
+
+**Platform-specific Limitations**
+- **iOS**: HTTP and HTTPS supported  
+- **Android**: Only HTTPS with a valid certificate is supported due to Garmin SDK limitations
+
+You can use [myopenHAB](https://www.myopenhab.org) to securely access your local openHAB instance over the Internet using HTTPS.
+
+---
+
+## Using myopenHAB
 
 To connect using [myopenHAB](https://myopenhab.org):
 
@@ -97,12 +101,36 @@ To connect using [myopenHAB](https://myopenhab.org):
 
 ---
 
-## 🧭 Sitemap Setup
+## Sending Commands
 
-The app uses an openHAB sitemap to determine the structure of the app's interface.  
-📘 [openHAB Sitemaps Documentation](https://www.openhab.org/docs/ui/sitemaps.html)
+Starting with openHAB 5, a built-in JSON-based REST API enables this app to send commands directly—no additional setup required.
 
-### Sitemap Definition
+For earlier versions (openHAB 4.x), you can either install a backported version of the API or configure a custom webhook.
+
+### Option 1: Install the Backport
+
+To enable JSON-based command support on openHAB 4.x, install the backported API bundle. Follow the instructions here:
+➡️ [Backport Installation Guide](https://github.com/florian-h05/openhab-core/releases/tag/4.3.x-command-json)
+
+### Option 2: Custom Webhook
+
+If your openHAB setup does not support the JSON-based REST API for sending commands, you can configure a custom Webhook using the Webhook binding instead.
+
+➡️ [Continue here](webhook.md) for setup instructions.
+
+---
+
+# Using the App
+
+This section explains how to set up your openHAB sitemap for use with the app, outlines the supported Sitemap Widgets, and describes key aspects of the user interface.
+
+---
+
+## Sitemap Setup
+
+Check the openHAB Sitemaps documentation to learn more about how sitemaps work.
+
+➡️ [openHAB Sitemaps Documentation](https://www.openhab.org/docs/ui/sitemaps.html)
 
 The sitemap name configured in the app must match the filename of the sitemap, excluding the `.sitemap` extension.
 
@@ -115,22 +143,76 @@ sitemap garmin_demo label="My Home" {
 }
 ```
 
-<table>
-  <tr>
-    <td width="50%"><img src="screenshots/app/1-glance.png"></td>
-    <td></td>
-  </tr>
-</table>
+---
 
 ### Supported Elements
 
-Currently supported element types and parameters:
-- [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame)
-  - `label`
+The following element types are currently supported:
 
-- [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) linked to [Switch items](https://www.openhab.org/docs/configuration/items.html)
-- `label`
-- `item`
+- [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame)
+
+- [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch)
+
+- [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider)
+
+- [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text)
+
+The following sections describe the supported parameters and the Sitemap Widget associated with each of these elements.
+
+---
+
+### `Frame`
+
+The [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame) element is used to group other elements, helping to organize your Sitemap Widgets into a hierarchical structure.
+
+The app presents the sitemap using a menu-based structure. The root of the sitemap corresponds to the app’s **home screen**. Each `Frame` is represented as its own **menu**, and `Frame` elements can be **nested** within other `Frames` to create submenus.
+
+**Important:** The home screen and each `Frame` may contain either only `Frame` elements (i.e., submenus) or only non-`Frame` elements (`Switch`, `Slider`, `Text`, etc.). Mixing both types within the same `Frame` is not supported.
+
+Here is an example of a sitemap containing three `Frame` elements.
+
+```xtend
+sitemap garmin_demo label="My Home" {
+	Frame label="Entrance Gates" {
+		Switch item=EntranceGatesTrigger label="Open/Close"
+		Text item=EntranceGateStatus label="Status"
+	}
+	Frame label="Ground Floor" {
+    // ...
+	}
+	Frame label="First Floor" {
+    // ...
+	}
+}
+```
+
+This configuration produces the following display in the UI:
+
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
+    <td><img src="screenshots/app/3-entrance-gates.png"></td>
+  </tr>
+</table>
+
+---
+
+### `Switch`
+
+The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) **Sitemap Widget** shows the state of an item and allows the user to change that state.
+
+The supported parameters are:
+- `label`: shown on the UI
+- `item`: the name of the associated openHAB item
+- `mappings`: optional, to be used if different commands than `ON`/`OFF` shall be used to control the item.
+
+If no mappings are provided, the UI renders a toggle Switch and will send the 
+
+- [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider)
+  - `label`
+  - `item`
+  - `minValue`
+  - `maxValue`
 
 - [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text)
   - `label`
@@ -168,7 +250,7 @@ This configuration produces the following display in the UI:
 
 ---
 
-## ⚙️ Settings Menu
+## Settings Menu
 
 To access the settings menu:
 
@@ -186,121 +268,7 @@ The settings menu currently displays the app version and server URL. Additional 
 
 ---
 
-## 📤 Sending Commands
-
-Starting with openHAB 5, a built-in JSON-based REST API enables this app to send commands directly—no additional setup required.
-
-For earlier versions (openHAB 4.x), you can either install a backported version of the API or configure a custom webhook.
-
-### Option 1: Install the Backport
-
-To enable JSON-based command support on openHAB 4.x, install the backported API bundle. Follow the instructions here:
-➡️ [Backport Installation Guide](https://github.com/florian-h05/openhab-core/releases/tag/4.3.x-command-json)
-
-### Option 2: Custom Webhook
-
-The app also supports a custom Webhook:
-
-### 1. Install the Webhook Binding
-
-Install the [Webhook HTTP binding](https://community.openhab.org/t/webhook-http-binding/152184).
-
-![Webhook Installation](screenshots/custom-webhook/1_Webhook_installation.png)
-
----
-
-### 2. Create a Webhook Thing
-
-Create a new Webhook Thing.
-
-![Thing Creation](screenshots/custom-webhook/2_1_Thing_creation.png)
-
-Go to the **Code** tab and enter the following YAML (replace `UID` with your own):
-
-```yaml
-UID: webhook:Webhook:d1097152a4
-label: Webhook
-thingTypeUID: webhook:Webhook
-configuration:
-  expression: resp.status=200
-channels:
-  - id: lastCall
-    channelTypeUID: webhook:lastCall-channel
-    label: Last request
-    configuration: {}
-  - id: trigger
-    channelTypeUID: webhook:trigger-channel
-    label: Trigger
-    configuration:
-      expression: >-
-        {
-          var gson = new("com.google.gson.Gson");
-          var jsonRoot = {:}; var jsonBody = {:};
-          if (!empty(req.body.text)) jsonBody.put("text", req.body.text);
-          if (!empty(req.body.json)) jsonBody.put("json", req.body.json);
-          jsonRoot.put("parameters", req.parameters);
-          jsonRoot.put("body", jsonBody);
-          jsonRoot.put("method", req.method);
-          return gson.toJson(jsonRoot);
-        }
-```
-
-![Thing Channels](screenshots/custom-webhook/2_4_Thing_channels.png)
-
----
-
-### 3. Create a Rule with JavaScript
-
-Create a [Rule](https://www.openhab.org/docs/concepts/rules.html) that triggers on webhook and runs this JavaScript:
-
-```javascript
-var request = JSON.parse(event.event);
-
-var action = request.parameters.action?.[0] ?? null;
-var itemName = request.parameters.itemName?.[0] ?? null;
-var command = request.parameters.command?.[0] ?? null;
-
-if (action === "sendCommand") {
-  if (itemName && command) {
-    items.getItem(itemName).sendCommand(command);
-  } else {
-    console.warn(`Webhook: sendCommand missing parameters (itemName='${itemName}', command='${command}')`);
-  }
-} else if (action === "toggle") {
-  if (itemName) {
-    var item = items.getItem(itemName);
-    item.sendCommand(item.state === "ON" ? "OFF" : "ON");
-  } else {
-    console.warn(`Webhook: toggle missing itemName`);
-  }
-} else {
-  console.warn(`Webhook: invalid or missing action '${action}'`);
-}
-```
-
-| Parameter | Description |
-|-----------|-------------|
-| `action`  | `"sendCommand"` or `"toggle"` |
-| `itemName` | Name of the item to control |
-| `command`  | Command to send (for `sendCommand`) |
-
----
-
-### 4. Test & Connect
-
-You can test the webhook by visiting:
-
-```
-https://yourserver:yourport/webhook/d1097152a4?action=toggle&itemName=LightBedroom
-```
-
-Then enter the Webhook ID (`d1097152a4`) in the app settings:
-
-![App Settings](screenshots/app-settings/app-settings.png)
-
----
-
-## 🚨 Troubleshooting
+## Troubleshooting
 
 This section explains how the app handles errors and lists common issues you might encounter.
 
@@ -376,9 +344,9 @@ The following error codes are used for common communication issues and those wit
 
 ---
 
-## 📄 License
+# License
 
-MIT License
+This app is distributed under the MIT License.
 
 Copyright (c) 2025 Robert Pollai
 
@@ -402,7 +370,7 @@ SOFTWARE.
 
 ---
 
-## 🎨 Iconography
+# Icon Credits and Attributions
 
 The in-app iconography is attributed to the following sources:
 
@@ -424,26 +392,30 @@ The in-app iconography is attributed to the following sources:
 
 ---
 
-![Down](iconography/down.svg)
-
-[Down](https://thenounproject.com/icon/down-1896670/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/down/) (CC BY 3.0)
-
----
-
-![Slider Up/Down](iconography/down.svg)
+![Down to Settings](iconography/down-to-settings.svg)
 
 Derived from:
 
-[Up](https://thenounproject.com/icon/up-2587304/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/chevron/) (CC BY 3.0)
+[Down](https://thenounproject.com/icon/down-1896670/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/down/) (CC BY 3.0)
+
+[Settings](https://thenounproject.com/icon/settings-1939978/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/down/) (CC BY 3.0)
 
 ---
 
-![Check](iconography/down.svg)
+![Slider Up/Down](iconography/up-down.svg)
+
+Derived from:
+
+[Chevron](https://thenounproject.com/icon/up-2587304/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/chevron/) (CC BY 3.0)
+
+---
+
+![Check](iconography/check.svg)
 
 [Check](https://thenounproject.com/icon/check-1896702/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/check/) (CC BY 3.0)
 
 ---
 
-![Cancel](iconography/down.svg)
+![Cancel](iconography/cancel.svg)
 
 [Cancel](https://thenounproject.com/icon/clear-2801731/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/cancel/) (CC BY 3.0)
