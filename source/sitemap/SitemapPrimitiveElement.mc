@@ -27,6 +27,7 @@ class SitemapPrimitiveElement extends SitemapElement {
     public var itemName as String;
     private var itemState as String?;
     private var itemType as String;
+    public var unit as String = "";
 
     // If the state is missing, NULL or UNDEF it
     // is set to NULL, which is displayed as em dash by the widgets
@@ -110,6 +111,12 @@ class SitemapPrimitiveElement extends SitemapElement {
 
         itemState = item[ITEM_STATE] as String?;
         normalizedItemState = normalizeState( itemState );
+
+        if( normalizedItemType.equals( "Dimmer" ) ) {
+            unit = "%";
+        } else if( normalizedItemType.equals( "Rollershutter" ) ) {
+            unit = "%";
+        }
     }
 
     protected function getItem( data as JsonObject ) as JsonObject {

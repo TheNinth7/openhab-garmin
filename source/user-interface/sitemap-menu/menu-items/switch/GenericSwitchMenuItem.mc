@@ -21,6 +21,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // for it on the screen
     private var _currentState as String;
     private var _currentStateLabel as String;
+    private var _unit as String;
 
     // The available commands
     private var _commandMappings as CommandMappingArray;
@@ -41,6 +42,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // Constructor
     public function initialize( sitemapSwitch as SitemapSwitch ) {
         _currentState = sitemapSwitch.normalizedItemState;
+        _unit = sitemapSwitch.unit;
         _commandMappings = verifyCommandMappings( sitemapSwitch.mappings );
         _currentStateLabel = getStateLabel();
         
@@ -56,6 +58,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // and obtain the updated list of commmand mappings
     public function update( sitemapElement as SitemapElement ) as Boolean {
         var sitemapSwitch = sitemapElement as SitemapSwitch;
+        _unit = sitemapSwitch.unit;
         _commandMappings = verifyCommandMappings( sitemapSwitch.mappings );
         return BaseSwitchMenuItem.update( sitemapElement );
     }
@@ -117,7 +120,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
                 return commandMapping.label;
             }
         }
-        return _currentState;
+        return _currentState.toString() + _unit;
     }
 
     // Verifies that there is at least one mapping,

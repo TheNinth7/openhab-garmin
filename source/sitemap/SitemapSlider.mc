@@ -12,8 +12,7 @@ class SitemapSlider extends SitemapPrimitiveElement {
     public var step as Number;
     public var releaseOnly as Boolean;
     public var sliderState as Number;
-    public var unit as String = "";
-
+ 
     public function initialize( data as JsonObject ) {
         SitemapPrimitiveElement.initialize( data );
         minValue = getNumber( data, "minValue", 0 );
@@ -25,8 +24,5 @@ class SitemapSlider extends SitemapPrimitiveElement {
             throw new JsonParsingException( "Slider item state is not numeric" );
         }
         sliderState = cv;
-        if( normalizedItemType.equals( "Dimmer" ) ) {
-            unit = "%";
-        }
     }
 }
