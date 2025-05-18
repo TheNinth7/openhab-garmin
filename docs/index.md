@@ -18,8 +18,6 @@
 
 # Table of Contents
 
-# Table of Contents
-
 - [Introduction](#introduction)
 - [Configuration](#configuration)
   - [Connectivity](#connectivity)
