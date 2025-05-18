@@ -25,7 +25,7 @@ class SettingsTextMenuItem extends BaseMenuItem {
     }
 
     // Create the Drawables
-    private function onLayout( dc as Dc ) as Void {
+    public function onLayout( dc as Dc ) as Void {
         var dcWidth = dc.getWidth();
         var yCenter = ( dc.getHeight()/2 ).toNumber();
 
