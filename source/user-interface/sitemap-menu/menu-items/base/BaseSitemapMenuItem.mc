@@ -197,4 +197,13 @@ class BaseSitemapMenuItem extends BaseMenuItem {
             :height => dc.getHeight()
         } );
     }
+
+    // This function can be used by subclasses to apply a unit to
+    // a state, but only if the state is numeric
+    protected function renderState( state as String, unit as String ) as String {
+        return
+            state.toFloat() != null
+            ? state + unit
+            : state;
+    }
 }

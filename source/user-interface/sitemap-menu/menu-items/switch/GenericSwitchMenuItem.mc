@@ -120,7 +120,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
                 return commandMapping.label;
             }
         }
-        return _currentState.toString() + _unit;
+        return renderState( _currentState, _unit );
     }
 
     // Verifies that there is at least one mapping,
