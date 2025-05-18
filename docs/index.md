@@ -2,11 +2,11 @@
   table.screenshot-table {
     border-collapse: collapse;
     border: none;
-    border-top: none !important;
 }
 
   table.screenshot-table tr {
     background-color: white !important;
+    border-top: none !important;
   }
 
   table.screenshot-table td {
