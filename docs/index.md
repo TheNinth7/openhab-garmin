@@ -250,6 +250,7 @@ In this example:
     <td width="50%"><img src="screenshots/app/6-switches-1.png"></td>
     <td><img src="screenshots/app/6-switches-2.png"></td>
   </tr>
+<table></table>
   <tr>
     <td width="50%"><img src="screenshots/app/6-switches-3.png"></td>
     <td><img src="screenshots/app/6-switches-4.png"></td>
