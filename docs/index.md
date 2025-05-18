@@ -1,3 +1,18 @@
+<style>
+  table.screenshot-table {
+    border-collapse: collapse;
+    border: none;
+  }
+
+  table.screenshot-table tr {
+    background-color: white !important;
+  }
+
+  table.screenshot-table td {
+    border: none;
+  }
+</style>
+
 # openHAB for Garmin
 
 **openHAB for Garmin** connects your Garmin wearable to your [openHAB](https://www.openhab.org) smart home system, giving you convenient access to essential devices and real-time information.
@@ -49,7 +64,7 @@ This app is built on the foundation of **openHAB sitemaps**, which define an int
 The app consists of two components: the **Glance** and the **Widget**.
 The **Glance** displays the name of the sitemap and acts as the entry point into the full-screen **Widget**, which shows the sitemap's content.
 
-<table>
+<table class="screenshot-table">
   <tr>
     <td width="50%"><img src="screenshots/app/1-glance.png"></td>
     <td><img src="screenshots/app/2-homepage.png"></td>
@@ -194,7 +209,7 @@ sitemap garmin_demo label="My Home" {
 
 This configuration produces the following display in the UI:
 
-<table>
+<table class="screenshot-table">
   <tr>
     <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
     <td><img src="screenshots/app/8-text.png"></td>
@@ -245,12 +260,12 @@ In this example:
 
 **Resulting UI:**
 
-<table>
+<table class="screenshot-table">
   <tr>
     <td width="50%"><img src="screenshots/app/6-switches-1.png"></td>
     <td><img src="screenshots/app/6-switches-2.png"></td>
   </tr>
-  <tr style="background-color: white;">
+  <tr>
     <td width="50%"><img src="screenshots/app/6-switches-3.png"></td>
     <td><img src="screenshots/app/6-switches-4.png"></td>
   </tr>
@@ -290,12 +305,12 @@ Frame label="First Floor" {
 
 **Resulting UI:**
 
-<table>
+<table class="screenshot-table">
   <tr>
     <td width="50%"><img src="screenshots/app/7-slider-1.png"></td>
     <td></td>
   </tr>
-  <tr style="background-color: white;">
+  <tr>
     <td width="50%"><img src="screenshots/app/7-slider-2.png"></td>
     <td><img src="screenshots/app/7-slider-3.png"></td>
   </tr>
@@ -337,7 +352,7 @@ Frame label="Entrance Gates" {
 
 **Resulting UI:**
 
-<table>
+<table class="screenshot-table">
   <tr>
     <td width="50%"><img src="screenshots/app/8-text.png"></td>
     <td></td>
@@ -355,7 +370,7 @@ To access the settings menu:
 
 The settings menu currently displays the app version and server URL. Additional features may be added in the future when the app evolves.
 
-<table>
+<table class="screenshot-table">
   <tr>
     <td width="50%"><img src="screenshots/app/5-settings-1.png"></td>
     <td><img src="screenshots/app/5-settings-2.png"></td>
