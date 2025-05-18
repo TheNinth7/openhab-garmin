@@ -24,23 +24,8 @@ class SettingsTextMenuItem extends BaseMenuItem {
         _subLabel = subLabel;
     }
 
-    /*
-    * Called by the superclass to handle drawing.
-    * This event handler is responsible for rendering the content.
-    */
-    public function drawImpl( dc as Dc ) as Void {
-        // Drawables can only be initialized here
-        // since we need the Dc dimensions for it
-        if( _labelTextArea == null ) {
-            initializeDrawables( dc );
-        }
-        // Draw the Drawables        
-        ( _labelTextArea as TextArea ).draw( dc );
-        ( _subLabelTextArea as TextArea ).draw( dc );
-    }
-
     // Create the Drawables
-    private function initializeDrawables( dc as Dc ) as Void {
+    private function onLayout( dc as Dc ) as Void {
         var dcWidth = dc.getWidth();
         var yCenter = ( dc.getHeight()/2 ).toNumber();
 
@@ -74,5 +59,15 @@ class SettingsTextMenuItem extends BaseMenuItem {
             :width => width,
             :height => yCenter
         } );
+    }
+
+    /*
+    * Called by the superclass to handle drawing.
+    * This event handler is responsible for rendering the content.
+    */
+    public function onUpdate( dc as Dc ) as Void {
+        // Draw the Drawables        
+        ( _labelTextArea as TextArea ).draw( dc );
+        ( _subLabelTextArea as TextArea ).draw( dc );
     }
 }

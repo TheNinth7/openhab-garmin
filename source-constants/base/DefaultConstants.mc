@@ -86,18 +86,31 @@ class DefaultConstants {
     public static const UI_MENU_ITEM_FONTS as Array<FontDefinition> = [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
 
     /*
-    * These factors determine the left and right padding of menu items 
-    * based on the total width of the menu item's `Dc`.
+    * These factors determine the spacing of menu item components 
+    * based on the total width of the item's `Dc`.
     *
-    * Note: On some devices, the `Dc` width differs between the simulator and 
-    * the actual hardware, where it appears wider.
+    * Note: On some devices, the `Dc` width differs between the simulator 
+    * and actual hardware, where it often appears wider.
+    *
+    * Below is an example of how the spacings (represented with underscores) 
+    * are applied around the elements (in angle brackets):
+    *
+    * _PL_ [ <icon> _SP_ ] <label> [ [ _SP_ <status> ] [ _APL_ <action> ] _SPR_ ] _PR_
+    *
+    * _PL_ / Padding Left:           Space applied to the left edge of the menu item.
+    * _PR_ / Padding Right:          Space applied to the right edge of the menu item.
+    * _SP_ / Spacing:                Space between primary elements (icon, label, status).
+    * _SPR_ / Status Padding Right:  Additional right padding applied when a status or action icon 
+    *                                is present. This improves visibility on devices with constrained 
+    *                                layouts, such as round watch faces.
+    * _APL_ / Action Padding Left:   Space applied to the left of the action icon, if present.
     */
-    public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.03;
-    public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.03;
+    public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.03; // _PL_
+    public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.03; // _PR_
+    public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.06; // _SP_
+    public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.03; // _SPR_
+    public static const UI_MENU_ITEM_ACTION_PADDING_LEFT_FACTOR as Float = 0.03; // _APL_
 
-    // Spacing between the menu item elements (icon, label, status)
-    public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.03;
-    public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.03;
 
     // If an icon is present, the amount of space defined below will be reserved,
     // to allow alignment of labels that have icons of different widths.

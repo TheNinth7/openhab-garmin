@@ -6,7 +6,7 @@ import Toybox.Graphics;
  * A menu item that displays an on/off switch as its status.
  * Selecting the item toggles the switch state.
  */
-class OnOffSwitchMenuItem extends StatusChangingMenuItem {
+class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     // True if the switch is on
     private var _isEnabled as Boolean;
     // The actual Drawable for drawing the switch
@@ -46,7 +46,7 @@ class OnOffSwitchMenuItem extends StatusChangingMenuItem {
         }
         _isEnabled = parseItemState( sitemapSwitch.normalizedItemState );
         _statusDrawable = new OnOffStatusDrawable( _isEnabled );
-        StatusChangingMenuItem.initialize( sitemapSwitch, _statusDrawable );
+        BaseSwitchMenuItem.initialize( sitemapSwitch, _statusDrawable, false );
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.

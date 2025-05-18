@@ -6,10 +6,25 @@ import Toybox.Graphics;
  * Base class for menu items representing sitemap elements.
  *
  * Each menu item comprises:
- * - A left-side icon (`ResourceId`), currently not updatable
+ * - An optional left-side icon (`ResourceId`), currently not updatable
  * - A center label, passed in as `String` and updatable via `setLabel()`
- * - A right-side status indicator (`Drawable`), updatable by updating the Drawable itself
+ * - An optional right-side status indicator (`Drawable`), updatable by updating the Drawable itself
+ * - An optional action icon, used to indicate that selecting the item will trigger an action.
+ *   This icon should be shown only if the label or status does not clearly convey that an action is available.
+ *   For example, `Frame` and toggle-style `Switch` elements do not display an action icon.
+ *   In contrast, `Slider` elements and standard `Switch` elements with text-based statuses do display it.
  */
+
+// Defines the options accepted by the `BaseSitemapMenuItem` class.
+typedef BaseSitemapMenuItemOptions as {
+    :id as Object,
+    :icon as ResourceId?,
+    :label as String,
+    :labelColor as ColorType?,
+    :status as Drawable?,
+    :isActionable as Boolean? // if true, the action icon is displayed
+};
+
 class BaseSitemapMenuItem extends BaseMenuItem {
 
     private var _icon as Drawable?; // icon is optional
@@ -17,6 +32,13 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     private var _labelColor as ColorType; // color the label text shall be printed in
     private var _labelTextArea as TextArea?; // label Drawable, optional because instantiated only when drawn
     private var _status as Drawable?; // status is optional
+    private var _isActionable as Boolean; // true if the action icon shall be displayed
+
+    // The action icon is the same for all menu items, it is therefore
+    // loaded once as static member
+    private static var _isActionableIcon as Bitmap = new Bitmap( {
+        :rezId => Rez.Drawables.iconRight
+    } );
 
     // Function for updating the label
     // The base class CustomItem already has a setLabel function,
@@ -49,7 +71,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     }
 
     // Constructor
-    protected function initialize( options as BaseMenuItemOptions ) {
+    protected function initialize( options as BaseSitemapMenuItemOptions ) {
         BaseMenuItem.initialize( options );
 
         // Icon is passed in as ResourceId and we create a Bitmap Drawable from it
@@ -62,75 +84,111 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         // Save the other values passed in
         _label = options[:label] as String;
         _status = options[:status];
-        
+
+        // isActionable defaults to false
+        var isActionable = options[:isActionable] as Boolean?;
+        _isActionable = isActionable == null ? false : isActionable;
+
         // Label color will default to white
         var labelColor = options[:labelColor] as ColorType?;
         _labelColor = labelColor != null ? labelColor : Constants.UI_COLOR_TEXT;
     }
 
     // Called by the base class to render the menu item.
-    public function drawImpl( dc as Dc ) as Void {
-        initializeDrawables( dc );
+    public function onUpdate( dc as Dc ) as Void {
+        updateDrawables( dc );
     
         if( _icon != null ) {
             _icon.draw( dc );
         }
         
-        ( _labelTextArea as TextArea ).draw( dc );
-        
+        ( _labelTextArea as TextArea ).draw( dc );       
         if( _status != null ) {
             _status.draw( dc );
+            // Action item is only applied if a status is shown
+            if( _isActionable ) {
+                _isActionableIcon.draw( dc );
+            }
         }
     }
 
-
-    /*
-    * Drawables can only be initialized in `drawImpl()` because a `Dc` is required
-    * to determine their dimensions.
+   /*
+    * We intentionally do not use `onLayout()`. Instead, the layout is updated 
+    * during every `onUpdate()` call, as changes to the sitemap may affect 
+    * the layout dynamically.
+    *
+    * The layout is governed by the sizes of the individual elements and 
+    * spacing constants that define the gaps between them.
+    *
+    * For more details, refer to `DefaultConstants`, where these constants are defined 
+    * and their relationships are visually explained.
     */
-    private function initializeDrawables( dc as Dc ) as Void {
+    private function updateDrawables( dc as Dc ) as Void {
         var dcWidth = dc.getWidth();
         
         // Calculate spacing and left padding
         var spacing = ( dcWidth * Constants.UI_MENU_ITEM_SPACING_FACTOR ).toNumber();
-        // locX is initially set to the left + padding
-        var locX = ( dcWidth * Constants.UI_MENU_ITEM_PADDING_LEFT_FACTOR ).toNumber();
-        // Available width for the title is reduced by the left padding
-        var titleWidth = dcWidth - locX;
+        // Throughout this function, leftX is the current position
+        // of elements that are aligned to the left (icon and label)
+        // Initially, the left padding is applied
+        var leftX = ( dcWidth * Constants.UI_MENU_ITEM_PADDING_LEFT_FACTOR ).toNumber();
         
         // If there is an icon, we initialize it and
-        // then set locX to the position next to it
+        // then set leftX to the position next to it
         // Also the title width is adjusted
         if( _icon != null ) {
             var icon = _icon;
-            icon.setLocation( locX, ( ( (dc.getHeight()/2) - icon.height/2 ) * 1.1 ).toNumber() );
-            locX += Constants.UI_MENU_ITEM_ICON_WIDTH + spacing;
-            titleWidth -= locX;
+            icon.setLocation( leftX, ( ( (dc.getHeight()/2) - icon.height/2 ) * 1.1 ).toNumber() );
+            leftX += Constants.UI_MENU_ITEM_ICON_WIDTH + spacing;
         }
 
-        // Right padding is calculated and the title width is adjusted accordingly
+        // Available width for the title is reduced by the 
+        // space to the left (left-padding, icon, spacing)
+        var titleWidth = dcWidth - leftX;
+
+        // Right padding is calculated
         var paddingRight = ( dcWidth * Constants.UI_MENU_ITEM_PADDING_RIGHT_FACTOR ).toNumber();
-        titleWidth -= paddingRight;
+        // Throughout this function, rightX is the current position
+        // of elements that are aligned to the right (status and action icon)
+        // Initially, the right padding is applied
+        var rightX = dcWidth - paddingRight;
+
+        // The 
+        if( _status != null || _isActionable ) {
+            rightX -= ( dcWidth * Constants.UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR ).toNumber();
+        }        
+
+        if( _isActionable ) {
+            rightX -= _isActionableIcon.width;
+            if( _isActionableIcon.locX == 0 ) {
+                _isActionableIcon.setLocation( rightX, WatchUi.LAYOUT_VALIGN_CENTER );
+            }
+            rightX -= ( dcWidth * Constants.UI_MENU_ITEM_ACTION_PADDING_LEFT_FACTOR ).toNumber();
+        }
+
+        titleWidth -= dcWidth - rightX;
 
         // If status is present, its location is set,
         // and width available for the title is adjusted
         // accordingly
         if( _status != null ) {
             var status = _status;
-            var statusPaddingRight = ( dcWidth * Constants.UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR ).toNumber();
+            titleWidth -= spacing;
             if( status instanceof TextStatusDrawable ) {
-                status.setAvailableWidth( titleWidth - spacing - statusPaddingRight );
+                status.setAvailableWidth( titleWidth.toNumber() );
             }
-            status.setLocation( dcWidth - paddingRight - statusPaddingRight - status.width, WatchUi.LAYOUT_VALIGN_CENTER );
-            titleWidth -= status.width + spacing + statusPaddingRight;
+            rightX -= status.width;
+            status.setLocation( rightX, WatchUi.LAYOUT_VALIGN_CENTER );
+
+            titleWidth -= status.width;
         }
 
         // Finally the text area is initialized
-        // At the calculated locX and width
+        // At the calculated leftX and width
         _labelTextArea = new TextArea( {
             :text => _label,
             :font => Constants.UI_MENU_ITEM_FONTS,
-            :locX => locX,
+            :locX => leftX,
             :locY => WatchUi.LAYOUT_VALIGN_CENTER,
             :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER,
             :color => _labelColor,

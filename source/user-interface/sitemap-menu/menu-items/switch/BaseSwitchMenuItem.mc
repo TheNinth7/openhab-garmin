@@ -8,7 +8,7 @@ import Toybox.WatchUi;
  * This class is intended for switches where user interaction should directly
  * trigger a state change (e.g., ON/OFF).
  */
-class StatusChangingMenuItem extends BaseSitemapMenuItem {
+class BaseSwitchMenuItem extends BaseSitemapMenuItem {
     // The openHAB item linked to the sitemap element
     private var _itemName as String;
     public function getItemName() as String {
@@ -26,21 +26,22 @@ class StatusChangingMenuItem extends BaseSitemapMenuItem {
     // to an asynchronous process, which is responsible for calling
     // sendCommand() directly.
     public function getNextCommand() as String? {
-        throw new AbstractMethodException( "StatusChangingMenuItem.getNextCommand" );
+        throw new AbstractMethodException( "BaseSwitchMenuItem.getNextCommand" );
     }
     // updateItemState() shall update the state Drawable with a new state
     public function updateItemState( state as String ) as Void {
-        throw new AbstractMethodException( "StatusChangingMenuItem.updateItemState" );
+        throw new AbstractMethodException( "BaseSwitchMenuItem.updateItemState" );
     }
     
     // Constructor
-    protected function initialize( sitemapSwitch as SitemapSwitch, statusDrawable as Drawable ) {
+    protected function initialize( sitemapSwitch as SitemapSwitch, statusDrawable as Drawable, isActionable as Boolean ) {
         _itemName = sitemapSwitch.itemName;
         BaseSitemapMenuItem.initialize(
             {
                 :id => sitemapSwitch.id,
                 :label => sitemapSwitch.label,
-                :status => statusDrawable
+                :status => statusDrawable,
+                :isActionable => isActionable
             }
         );
         

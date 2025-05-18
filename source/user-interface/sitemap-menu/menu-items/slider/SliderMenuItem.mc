@@ -51,7 +51,8 @@ class SliderMenuItem extends BaseSitemapMenuItem {
         BaseSitemapMenuItem.initialize( {
             :id => sitemapSlider.id,
             :label => sitemapSlider.label,
-            :status => _statusText
+            :status => _statusText,
+            :isActionable => true
         } );
     }
 

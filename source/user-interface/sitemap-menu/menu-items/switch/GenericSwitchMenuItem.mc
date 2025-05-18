@@ -16,7 +16,7 @@ import Toybox.Graphics;
  * - In all other cases, an action menu is shown, allowing the user to
  *   manually select a command to send.
  */
-class GenericSwitchMenuItem extends StatusChangingMenuItem {
+class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // The current state and the label shown
     // for it on the screen
     private var _currentState as String;
@@ -49,7 +49,7 @@ class GenericSwitchMenuItem extends StatusChangingMenuItem {
         _statusDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
         
         // Initialize the superclass
-        StatusChangingMenuItem.initialize( sitemapSwitch, _statusDrawable );
+        BaseSwitchMenuItem.initialize( sitemapSwitch, _statusDrawable, true );
     }
 
     // Override the update method of the super class
@@ -57,7 +57,7 @@ class GenericSwitchMenuItem extends StatusChangingMenuItem {
     public function update( sitemapElement as SitemapElement ) as Boolean {
         var sitemapSwitch = sitemapElement as SitemapSwitch;
         _commandMappings = verifyCommandMappings( sitemapSwitch.mappings );
-        return StatusChangingMenuItem.update( sitemapElement );
+        return BaseSwitchMenuItem.update( sitemapElement );
     }
 
     // Called by the superclass if the state changes
@@ -113,7 +113,7 @@ class GenericSwitchMenuItem extends StatusChangingMenuItem {
     private function getStateLabel() as String {
         for( var i = 0; i < _commandMappings.size(); i++ ) {
             var commandMapping = _commandMappings[i];
-            if( commandMapping.equals( _currentState ) ) {
+            if( commandMapping.command.equals( _currentState ) ) {
                 return commandMapping.label;
             }
         }

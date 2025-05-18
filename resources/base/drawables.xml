@@ -4,8 +4,9 @@
     <bitmap id="iconWarning" personality="system_icon_light__warning" />
 
     <bitmap id="iconDownToSettings" scaleY="15%" filename="../svg/down-to-settings.svg" dithering="none" />
-    <bitmap id="iconUp" scaleX="10%" filename="../svg/up.svg" dithering="none" />
-    <bitmap id="iconDown" scaleX="10%" filename="../svg/down.svg" dithering="none" />
+    <bitmap id="iconUp" scaleX="10%" filename="../svg/arrow-up.svg" dithering="none" />
+    <bitmap id="iconDown" scaleX="10%" filename="../svg/arrow-down.svg" dithering="none" />
+    <bitmap id="iconRight" scaleY="5%" filename="../svg/arrow-right.svg" dithering="none" />
     <bitmap id="iconCheck" scaleX="15%" filename="../svg/check.svg" dithering="none" />
     <bitmap id="iconCancel" scaleX="15%" filename="../svg/cancel.svg" dithering="none" />
     <bitmap id="iconCheckHint" scaleY="10%" filename="../svg/check_hint.svg" dithering="none" />
