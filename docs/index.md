@@ -16,23 +16,29 @@
 
 # Table of Contents
 
-[Connectivity](#-connectivity)
+# Table of Contents
 
-[Configuration](#-configuration)
-
-[Using myopenHAB](#-using-myopenhab)
-
-[Sitemap Setup](#-sitemap-setup)
-
-[Settings View](#settings-view)
-
-[Custom Webhook](#️-custom-webhook)
-
-[Troubleshooting](#-troubleshooting)
-
-[License](#-license)
-
-[Iconography](#-iconography)
+- [Introduction](#introduction)
+- [Configuration](#configuration)
+  - [Connectivity](#connectivity)
+  - [Using myopenHAB](#using-myopenhab)
+  - [Sending Commands](#sending-commands)
+    - [Option 1: Install the Backport](#option-1-install-the-backport)
+    - [Option 2: Custom Webhook](#option-2-custom-webhook)
+- [Using the App](#using-the-app)
+  - [Sitemap Setup](#sitemap-setup)
+  - [Supported Elements](#supported-elements)
+    - [`Frame`](#frame)
+    - [`Switch`](#switch)
+    - [`Slider`](#slider)
+    - [`Text`](#text)
+- [Settings Menu](#settings-menu)
+- [Troubleshooting](#troubleshooting)
+  - [How the App Handles Errors](#how-the-app-handles-errors)
+  - [Communication Error Codes](#communication-error-codes)
+  - [Common Issues](#common-issues)
+- [License](#license)
+- [Icon Credits and Attributions](#icon-credits-and-attributions)
 
 ---
 
