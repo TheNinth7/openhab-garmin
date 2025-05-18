@@ -171,10 +171,10 @@ The app presents the sitemap using a menu-based structure. The root of the sitem
 
 Here is an example of a sitemap containing three `Frame` elements.
 
-```xtend
+```openhab
 sitemap garmin_demo label="My Home" {
 	Frame label="Entrance Gates" {
-		Switch item=EntranceGatesTrigger label="Open/Close"
+		Switch item=EntranceGatesTrigger label="Open/Close" mappings=[OFF="GO", ON="DONE"]
 		Text item=EntranceGateStatus label="Status"
 	}
 	Frame label="Ground Floor" {
@@ -191,7 +191,7 @@ This configuration produces the following display in the UI:
 <table>
   <tr>
     <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
-    <td><img src="screenshots/app/3-entrance-gates.png"></td>
+    <td><img src="screenshots/app/8-text.png"></td>
   </tr>
 </table>
 
@@ -199,79 +199,146 @@ This configuration produces the following display in the UI:
 
 ### `Switch`
 
-The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) Sitemap Widget shows the state of an item and allows the user to change that state.
+The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) Sitemap Widget displays the state of an item and allows the user to change it.
 
-The supported parameters are:
-- `label`: shown on the UI
-- `item`: the name of the associated openHAB item
-- `mappings`: optional, to be used if different commands than `ON`/`OFF` shall be used to control the item.
+**Supported parameters:**
 
-If no mappings are provided, a toggle Switch is rendered and on selection ON/OFF commands will be sent.
+- `label`: the label displayed in the UI.
+- `item`: the name of the associated openHAB item.
+- `mappings` (optional): used when commands other than `ON`/`OFF` should be sent.
 
-If mappings are provided, the UI renders the current status as text. If the status equals one of the commands from the mappings, then the label defined there will be shown, otherwise the raw state. On selection, the behavior will differ depending on the number of commands and the current state.
+If no `mappings` are provided, a **toggle switch** is rendered. Selecting the item sends either `ON` or `OFF` commands.
 
-- If one command is defined, it will be send immediately.
-- If two commands are defined and one of them equals to the item state, than the other will be send immediatly.
-- In all other cases, an action menu will be shown in the right of the screen, letting the user select from the list of available commands. If the current state equals one of the commands, that command will not be shown in the list.
+If `mappings` are provided, the widget displays the current state as text:
 
+- If the state matches one of the mapped commands, the corresponding label is shown.
+- Otherwise, the raw state is displayed.
 
+**Selection behavior:**
 
+* If **one** command is defined, it is sent immediately when the item is selected.
+* If **two** commands are defined and one of them matches the current state, the **other** is sent immediately.
+* In all other cases, an **action menu** appears on the right side of the screen, allowing the user to select from the list of available commands.
+  If the current state matches one of the commands, that command is **not shown** in the menu.
 
-This configuration produces the following display in the UI:
+**Example configuration:**
+
+```openhab
+Frame label="Switches" {
+    Switch item=Light_Switch label="Light"
+    Switch item=Heating_Switch label="Heating" mappings=[OFF="ACTIVE", ON="INACTIVE"]
+    Switch item=Rollershutter label="Shutters" mappings=[UP="Up", STOP="Stop", DOWN="Down"]
+}
+```
+
+In this example:
+
+* **"Light"** will render as a toggle switch.
+* **"Heating"** will display either `ACTIVE` or `INACTIVE`, depending on the current state.
+* **"Shutters"** will show the current state and allow selection from the three commands (`Up`, `Stop`, `Down`).
+
+**Resulting UI:**
+
 <table>
   <tr>
-    <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
-    <td><img src="screenshots/app/3-entrance-gates.png"></td>
+    <td width="50%"><img src="screenshots/app/6-switches-1.png"></td>
+    <td><img src="screenshots/app/6-switches-2.png"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="screenshots/app/4-first-floor-1.png"></td>
-    <td><img src="screenshots/app/4-first-floor-2.png"></td>
+    <td width="50%"><img src="screenshots/app/6-switches-3.png"></td>
+    <td><img src="screenshots/app/6-switches-4.png"></td>
   </tr>
 </table>
 
+**Notes:**
 
+1. The orange arrow to the right of the state indicates that selecting the item will trigger a command.
+2. The action menu shown in the lower-left screenshot is a **mockup**. The actual appearance may vary depending on the device, as it uses a native UI component.
 
+---
 
+Here's a polished and clearer version of your `Slider` documentation section, with improved grammar, formatting consistency, and readability:
 
+---
 
+### `Slider`
 
-- [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider)
-  - `label`
-  - `item`
-  - `minValue`
-  - `maxValue`
+The [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider) Sitemap Widget displays a numeric item state. When selected, it opens a full-screen view for picking a new value, which is then sent as a command.
 
-- [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text)
-  - `label`
-  - `item`
+**Supported parameters:**
 
-### Example Sitemap
+- `label`: the label displayed in the UI.
+- `item`: the name of the associated openHAB item.
+- `minValue`: lower bound of the selectable range (default: `0`).
+- `maxValue`: upper bound of the selectable range (default: `100`).
+- `step`: interval between selectable values (default: `1`).
+- `releaseOnly`: if set, the new value is only sent when the selection is confirmed. Otherwise, values are sent immediately while scrolling.
 
-```xtend
-sitemap garmin_demo label="My Home" {
-	Frame label="Entrance Gates" {
-		Switch item=EntranceGatesTrigger label="Open/Close"
-		Text item=EntranceGateStatus label="Status"
-	}
-	Frame label="Ground Floor" {
-		Switch item=LightCouch label="Couch Light"
-	}
-	Frame label="First Floor" icon="folder" {
-		Switch item=LightBedroom label="Bedroom Light"
-		Switch item=LightStudy label="Study Light"
-		Switch item=LightGallery label="Gallery Light"
-	}
+**Important note:**
+While `step=1` is consistent with openHAB’s default, it often results in too many steps (e.g., 100 steps for a range of 0–100), which is impractical for wearable interfaces. Increasing `step` to `10` reduces the number of steps to 10, making interaction much more manageable.
+
+**Example configuration:**
+
+```openhab
+Frame label="First Floor" {
+  Slider item=Dimmer label="Dimmer" minValue=0 maxValue=100 step=10
+  // ...
 }
 ```
-This configuration produces the following display in the UI:
+
+**Resulting UI:**
+
 <table>
   <tr>
-    <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
-    <td><img src="screenshots/app/3-entrance-gates.png"></td>
+    <td width="50%"><img src="screenshots/app/7-slider-1.png"></td>
+    <td></td>
   </tr>
   <tr>
-    <td width="50%"><img src="screenshots/app/4-first-floor-1.png"></td>
-    <td><img src="screenshots/app/4-first-floor-2.png"></td>
+    <td width="50%"><img src="screenshots/app/7-slider-2.png"></td>
+    <td><img src="screenshots/app/7-slider-3.png"></td>
+  </tr>
+</table>
+
+- The **lower-left** screenshot shows the slider on a button-based device.
+- The **lower-right** screenshot shows the slider on a touch-based device.
+
+Note: Even button-based devices may support touch input, and on those, the UI reacts to both. On **button-based devices**, use **up/down** to scroll through the values, press **enter** (upper-right button) to confirm or **back** (lower-right button) to cancel. On **touch-based devices** simply **tap the icons** corresponding to the desired action or value to make a selection.
+
+**Behavior of `releaseOnly`:**
+
+* **With `releaseOnly`:** The value is only sent when the dialog is confirmed. Cancelling leaves the value unchanged.
+* **Without `releaseOnly`:** Values are sent immediately as the slider is moved. Confirming keeps the current value; cancelling reverts to the value before the dialog was opened.
+
+---
+
+### `Text`
+
+The [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text) Sitemap Widget is used to display the current state of an item without allowing any user interaction.
+
+**Supported parameters:**
+
+* `label`: the label shown in the UI.
+* `item`: the name of the openHAB item whose state should be displayed.
+
+This widget is ideal for showing read-only information, such as temperature, system status, or sensor readings.
+
+**Example configuration:**
+
+In this example, the `Text` Sitemap Widget is used to display the status of entrance gates. Triggering the gates is handled by a separate `Switch` element.
+
+```openhab
+Frame label="Entrance Gates" {
+  Switch item=EntranceGatesTrigger label="Open/Close" mappings=[OFF="GO", ON="DONE"]
+  Text item=EntranceGateStatus label="Status"
+}
+```
+
+**Resulting UI:**
+
+<table>
+  <tr>
+    <td width="50%"><img src="screenshots/app/8-text.png"></td>
+    <td></td>
   </tr>
 </table>
 
@@ -351,7 +418,7 @@ To save space, communication errors shown in toast notifications follow this for
   * Negative values = Garmin SDK error codes
 
 For a full list of Garmin SDK error codes, see the **Constant Summary** section here:
-👉 [Garmin Communications API Docs](https://developer.garmin.com/connect-iq/api-docs/Toybox/Communications.html)
+➡️ [Garmin Communications API Docs](https://developer.garmin.com/connect-iq/api-docs/Toybox/Communications.html)
 
 **Special error codes:**
 
