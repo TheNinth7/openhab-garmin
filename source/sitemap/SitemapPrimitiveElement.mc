@@ -19,7 +19,7 @@ class SitemapPrimitiveElement extends SitemapElement {
 
     private const ITEM_TYPE_GROUP = "Group";
 
-    private const NO_STATE = "NULL";
+    protected const NO_STATE = "NULL";
 
     // Fields read from the JSON
     // For the members declared private, there are public members 

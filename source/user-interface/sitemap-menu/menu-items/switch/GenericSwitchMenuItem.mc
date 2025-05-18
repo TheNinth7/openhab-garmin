@@ -17,14 +17,9 @@ import Toybox.Graphics;
  *   manually select a command to send.
  */
 class GenericSwitchMenuItem extends BaseSwitchMenuItem {
-    // The current state and the label shown
-    // for it on the screen
-    private var _currentState as String;
-    private var _currentStateLabel as String;
-    private var _unit as String;
-
-    // The available commands
-    private var _commandMappings as CommandMappingArray;
+    // We keep the sitemap element for all the configuration
+    // but will also update the state there if it is changed by the app
+    private var _sitemapSwitch as SitemapSwitch;
 
     // The Drawable that shows the current state
     private var _statusDrawable as TextStatusDrawable;
@@ -41,13 +36,14 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
 
     // Constructor
     public function initialize( sitemapSwitch as SitemapSwitch ) {
-        _currentState = sitemapSwitch.normalizedItemState;
-        _unit = sitemapSwitch.unit;
-        _commandMappings = verifyCommandMappings( sitemapSwitch.mappings );
-        _currentStateLabel = getStateLabel();
+        _sitemapSwitch = sitemapSwitch;
         
         // Initialize the Drawable for the status text, and set the color
-        _statusDrawable = new TextStatusDrawable( sitemapSwitch.label, _currentStateLabel );
+        _statusDrawable = new TextStatusDrawable( 
+            sitemapSwitch.label, 
+            sitemapSwitch.itemStateDescription 
+        );
+
         _statusDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
         
         // Initialize the superclass
@@ -57,9 +53,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // Override the update method of the super class
     // and obtain the updated list of commmand mappings
     public function update( sitemapElement as SitemapElement ) as Boolean {
-        var sitemapSwitch = sitemapElement as SitemapSwitch;
-        _unit = sitemapSwitch.unit;
-        _commandMappings = verifyCommandMappings( sitemapSwitch.mappings );
+        _sitemapSwitch = sitemapElement as SitemapSwitch;
         return BaseSwitchMenuItem.update( sitemapElement );
     }
 
@@ -67,38 +61,51 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // Updates the member and Drawable
     // This is called by update() of the superclass, and thus
     // at the end of the update() function above
+    // It is also called after a command was sent to immediately
+    // show the new state, even before the next sitemap update
+    // arrives
     public function updateItemState( state as String ) as Void {
-        _currentState = state;
-        _currentStateLabel = getStateLabel();
-        _statusDrawable.update( getLabel(), _currentStateLabel );
+        // If the state in the sitemap is the same as we got passed
+        // in there is no need to update. updateState is relatively
+        // costly due to the lookup of the description
+        if( ! _sitemapSwitch.normalizedItemState.equals( state ) ) {
+            _sitemapSwitch.updateState( state );
+        }
+        
+        _statusDrawable.update( 
+            _sitemapSwitch.label, 
+            _sitemapSwitch.itemStateDescription 
+        );
     }
 
     // Called by the superclass to determine the command
     // that shell be sent when the menu item is selected
     public function getNextCommand() as String? {
-        if( _commandMappings.size() == 1 ) {
+        var normalizedItemState = _sitemapSwitch.normalizedItemState;
+        var commandDescriptions = _sitemapSwitch.commandDescriptions;
+        if( commandDescriptions.size() == 1 ) {
             // For one mapping, we just send that command
-            return _commandMappings[0].command;
-        } else if ( _commandMappings.size() == 2 ) {
+            return commandDescriptions[0].command;
+        } else if ( commandDescriptions.size() == 2 ) {
             // For two mappings, we check if the current state equals
             // to one of them and then send the other
-            if( _currentState.equals( _commandMappings[0].command ) ) {
-                return _commandMappings[1].command;
-            } else if( _currentState.equals( _commandMappings[1].command ) ) {
-                return _commandMappings[0].command;
+            if( normalizedItemState.equals( commandDescriptions[0].command ) ) {
+                return commandDescriptions[1].command;
+            } else if( normalizedItemState.equals( commandDescriptions[1].command ) ) {
+                return commandDescriptions[0].command;
             }
         }
         
         // For all other cases, we show the action menu
         var actionMenu = new ActionMenu( null );
         // Add items
-        for( var i = 0; i < _commandMappings.size(); i++ ) {
-            var commandMapping = _commandMappings[i];
+        for( var i = 0; i < commandDescriptions.size(); i++ ) {
+            var commandDescription = commandDescriptions[i];
             // We exclude the current state
-            if( ! commandMapping.command.equals( _currentState ) ) {
+            if( ! commandDescription.command.equals( normalizedItemState ) ) {
                 actionMenu.addItem( new ActionMenuItem(
-                    { :label => commandMapping.label },
-                    commandMapping.command
+                    { :label => commandDescription.label },
+                    commandDescription.command
                 ) );
             }
         }
@@ -109,27 +116,4 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         // of the command
         return null;
     }
-
-    // Looks up the label for the current state
-    // If the state is not found in the command mappings,
-    // then the state string itself will be used as label
-    private function getStateLabel() as String {
-        for( var i = 0; i < _commandMappings.size(); i++ ) {
-            var commandMapping = _commandMappings[i];
-            if( commandMapping.command.equals( _currentState ) ) {
-                return commandMapping.label;
-            }
-        }
-        return renderState( _currentState, _unit );
-    }
-
-    // Verifies that there is at least one mapping,
-    // otherwise throws an exception
-    private function verifyCommandMappings( mappings as CommandMappingArray )as CommandMappingArray {
-        if( mappings.size() == 0 ) {
-            throw new GeneralException( "GenericSwitchMenuItem needs at one command" );
-        }
-        return mappings;
-    }
-
 }
