@@ -74,12 +74,23 @@ class SitemapPrimitiveElement extends SitemapElement {
         if( value == null 
             || value.equals( "" )
             || value.equals( "NULL" ) 
-            || value.equals( "UNDEF" ) ) 
+            || value.equals( "UNDEF" ) 
+            || value.equals( "-" ) ) // "-" is provided for the widget state, it it is empty
             {
             return NO_STATE;
         }
         return value;
     }
+    // Apply an additional rule for the widget state
+    protected function normalizeWidgetState( value as String? ) as String {
+        value = normalizeState( value );
+        // "-" can be provided for the widget state, it it is empty
+        if( value.equals( "-" ) ) {
+            return NO_STATE;
+        }
+        return value;
+    }
+
 
     // Constructor
     protected function initialize( data as JsonObject, isStateFresh as Boolean ) {
@@ -96,7 +107,7 @@ class SitemapPrimitiveElement extends SitemapElement {
         // the base class is used. 
         var normalizedLabel = normalizeLabel( label );
         label = normalizedLabel[0];
-        widgetState = normalizeState( normalizedLabel[1] );
+        widgetState = normalizeWidgetState( normalizedLabel[1] );
 
         // ... and then read all the elements
         var item = getItem( data );
