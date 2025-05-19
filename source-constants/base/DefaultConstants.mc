@@ -105,11 +105,11 @@ class DefaultConstants {
     *                                layouts, such as round watch faces.
     * _APL_ / Action Padding Left:   Space applied to the left of the action icon, if present.
     */
-    public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.03; // _PL_
+    public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.015; // _PL_
     public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.03; // _PR_
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.06; // _SP_
     public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.03; // _SPR_
-    public static const UI_MENU_ITEM_ACTION_PADDING_LEFT_FACTOR as Float = 0.01; // _APL_
+    public static const UI_MENU_ITEM_ACTION_PADDING_LEFT_FACTOR as Float = 0.03; // _APL_
 
 
     // If an icon is present, the amount of space defined below will be reserved,
