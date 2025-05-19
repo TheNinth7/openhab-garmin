@@ -38,7 +38,6 @@ class OHApp extends Application.AppBase {
         // Logger.debug( "OHApp.onStop" );
         // Persisting the stores
         SitemapStore.persist();
-        SitemapErrorCountStore.persist();
     }
 
     // Initializes the widget view

@@ -1,33 +1,46 @@
 import Toybox.Lang;
 import Toybox.Application.Storage;
 import Toybox.Application;
+import Toybox.Time;
 
 /*
  * `SitemapStore` holds the latest JSON sitemap data and persists it to storage 
  * when the application ends. This applies to both glance and widget modes, 
  * enabling faster startup and immediate display of current data.
  *
+ * The JSON data is stored as a tuple with a timestamp indicating its age.
+ * Based on this timestamp and a configurable expiry time, a flag indicating
+ * whether the state is fresh is passed to the SitemapHomepage and propagated
+ * to all sitemap-related classes. Error handling also uses this freshness flag,
+ * determined by this class's isStateFresh() function.
+ *
  * On older devices, the glance view may lack sufficient memory to read the 
  * full JSON from storage or handle web requests. To address this, the sitemap 
  * label is stored separately, allowing at least the label to be shown in the glance view.
  */
+
 (:glance)
 class SitemapStore  {
     // Storage field names
-    private static const STORAGE_JSON as String = "json";   
-    private static const STORAGE_LABEL as String = "sitemapLabel";   
+    private static const STORAGE_JSON as String = "sitemapJson";
+    private static const STORAGE_LABEL as String = "sitemapLabel";
 
-    // Current json/label
-    private static var _json as JsonObject?;
+    // Timer after which a state is considered stale
+    private static const STATE_EXPIRATION_TIME as Number = 10;
+
+    // Current JSON/label
+    // The JSON is stored together with a numeric timestamp
+    typedef StoredJson as [JsonObject, Number];
+    private static var _json as StoredJson?;
     private static var _label as String?;
 
     // Return the SitemapHomepage instance representing the current JSON
     public static function getHomepage() as SitemapHomepage? {
         if( _json == null ) {
-            _json = Storage.getValue( STORAGE_JSON ) as JsonObject?;
+            _json = Storage.getValue( STORAGE_JSON ) as StoredJson?;
         }
         if( _json != null ) {
-            return new SitemapHomepage( _json );
+            return new SitemapHomepage( _json[0], isStateFresh() );
         }
         return null;
     }
@@ -40,23 +53,41 @@ class SitemapStore  {
         return _label;
     }
 
+    // Returns true if the currently held JSON's age is 
+    // within the expiry the expiry time, false if it is older. 
+    // Throws an exception there is no JSON
+    public static function isStateFresh() as Boolean {
+        if( _json != null ) {
+            var dataAge = 
+                Time.now().compare( 
+                    new Moment( ( _json as StoredJson )[1] ) 
+                );
+            // Logger.debug( "SitemapStore.isStateFresh=" + ( dataAge < STATE_EXPIRATION_TIME ) );
+            return dataAge < STATE_EXPIRATION_TIME;
+        } else {
+            return false;
+        }
+    }
+
     // Other accessors
     public static function updateJson( json as JsonObject ) as Void {
-        // Logger.debu "SitemapStore: updating JSON" );
-        _json = json;
+        // The current timestamp is assigned to the
+        // passed in JSON
+        _json = [json, Time.now().value()];
     }
     public static function updateLabel( label as String ) as Void {
         _label = label;
     }
     public static function deleteJson() as Void {
         Storage.deleteValue( STORAGE_JSON );
+        _json = null;
     }
 
     // Persist the current data to storage
     // This function is called by OHApp wenn the application is stopped
     public static function persist() as Void {
         if( _json != null ) {
-            Storage.setValue( STORAGE_JSON, _json as Dictionary<Application.PropertyKeyType, Application.PropertyValueType> );
+            Storage.setValue( STORAGE_JSON, _json as Array<Application.PropertyValueType> );
         }
         if( _label != null ) {
             Storage.setValue( STORAGE_LABEL, _label );

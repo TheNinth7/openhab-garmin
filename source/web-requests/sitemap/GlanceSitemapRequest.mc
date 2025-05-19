@@ -57,7 +57,6 @@ class GlanceSitemapRequest extends BaseSitemapRequest {
             stop();
         } else {
             _exception = ex;
-            SitemapErrorCountStore.increment();
         }
     }
 }

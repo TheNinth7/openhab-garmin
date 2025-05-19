@@ -147,7 +147,9 @@ class BaseSitemapRequest extends BaseRequest {
                 
                 // The JSON is stored in the SitemapStore
                 SitemapStore.updateJson( json );
-                var sitemapHomepage = new SitemapHomepage( json );
+                // For data just received via web request, 
+                // isStateFresh is automatically set to true
+                var sitemapHomepage = new SitemapHomepage( json, true );
                 // Also the label is stored (for use by glance)
                 SitemapStore.updateLabel( sitemapHomepage.label );
                 
@@ -184,11 +186,7 @@ class BaseSitemapRequest extends BaseRequest {
     protected function onException( ex as Exception ) as Void {
         throw new AbstractMethodException( "BaseSitemapRequest.onException" );
     }
-    // onSuccess() by default resets the error count and
-    // can be overriden for additional functionality
+    // onSuccess() can be overriden for additional functionality
     public function onSuccess() as Void {
-        // Logger.debug( "BaseSitemapRequest.onSuccess");
-        SitemapErrorCountStore.reset();
     }
-
 }

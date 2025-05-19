@@ -22,16 +22,22 @@ class SitemapElement {
     // The id and label of this instance
     public var id as Object;
     public var label as String;
+    
+    // Indicates whether the state is fresh
+    // If received via web request, it is always considered
+    // fresh, if read from storage it depends on the data's age
+    public var isStateFresh as Boolean;
 
     // Constructor
-    protected function initialize( data as JsonObject ) {
+    protected function initialize( data as JsonObject, initStateFresh as Boolean ) {
         // Reading the id and label from the JSON element
+        isStateFresh = initStateFresh;
         id = getString( data, ID, "Sitemap element: no " + ID + " found" );
         label = getString( data, LABEL, "Sitemap element: no " + LABEL + " found" );
     }
 
-    // Helper functions for reading an element from the JSON
-    // and throwing an error if the value is not present
+    // Returns a String from a given JsonObject, 
+    // or an error message if the value is not present
     protected function getString( data as JsonObject, id as String, errorMessage as String ) as String {
        var value = data[id] as String?;
         if( value == null || value.equals( "" ) ) {
@@ -39,18 +45,20 @@ class SitemapElement {
         }
         return value;
     }
-    //! Returns a number from a JsonObject, or its passed in default value
-    //! @param data - the JsonObject
-    //! @param id - the name of the number in the JsonObject
-    //! @param def - the default value that will be returned if the number is not present in the JsonObject
+    // Returns a Number from a given JsonObject, 
+    // or defaults to the passed in def value if the value is not present
     protected function getNumber( data as JsonObject, id as String, def as Number ) as Number {
         var value = data[id] as Number?;
         return value == null ? def : value;
     }
+    // Returns a Boolean from a given JsonObject, 
+    // defaults to false if the value is not present
     protected function getBoolean( data as JsonObject, id as String ) as Boolean {
         var value = data[id] as Boolean?;
         return value == null ? false : value;
     }
+    // Returns another JsonObject from a given JsonObject, 
+    // or an error message if the value is not present
     protected function getObject( data as JsonObject, id as String, errorMessage as String ) as JsonObject {
         var value = data[id] as JsonObject?;
         if( value == null ) {
@@ -58,6 +66,8 @@ class SitemapElement {
         }
         return value;
     }
+    // Returns a JsonArray from a given JsonObject, 
+    // or an error message if the value is not present
     protected function getArray( data as JsonObject, id as String, errorMessage as String ) as JsonArray {
         var value = data[id] as JsonArray?;
         if( value == null || value.size() == 0 ) {

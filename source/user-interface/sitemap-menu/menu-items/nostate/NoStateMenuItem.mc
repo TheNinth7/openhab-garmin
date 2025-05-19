@@ -33,7 +33,9 @@ class NoStateMenuItem extends BaseSitemapMenuItem {
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
             sitemapElement instanceof SitemapPrimitiveElement
-            && !sitemapElement.hasItemState()
-            && !sitemapElement.hasWidgetState(); 
+            && (
+                ( !sitemapElement.hasItemState() && !sitemapElement.hasWidgetState() )
+                || ! sitemapElement.isStateFresh
+            );
     }
 }

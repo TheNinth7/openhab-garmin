@@ -7,8 +7,7 @@ import Toybox.Math;
  *
  * Its behavior includes:
  * - Showing a toast notification for non-fatal sitemap communication errors.
- * - Displaying a full-screen error view if non-fatal sitemap errors persist for a certain period, 
- *   even if they differ across attempts.
+ * - Displaying a full-screen error view for non-fatal sitemap errors if the state is stale.
  * - Showing a toast notification for command communication errors, as these typically affect only 
  *   individual items and do not compromise the entire sitemap view.
  * - Displaying a full-screen error view immediately for all other errors.
@@ -16,52 +15,6 @@ import Toybox.Math;
  * Full-screen errors are managed by `ErrorView`, while toast notifications are handled by `ToastHandler`.
  */
 public class ExceptionHandler {
-    /*
-    * If a non-fatal sitemap communication error persists longer than the specified duration, 
-    * a full-screen error view will be displayed.
-    */
-    private static const SITEMAP_ERROR_FATAL_TIME = 10000;
-
-    /*
-    * Calculates how many non-fatal errors are allowed before the error is considered fatal.
-    *
-    * The calculation is based on:
-    * - The duration defined by `SITEMAP_ERROR_FATAL_TIME`
-    * - The polling interval for errors, as calculated in `BaseSitemapRequest`
-    *
-    * The timer starts when the first non-fatal error occurs.
-    */
-    private static var _fatalErrorCount as Number? = null;
-    private static function getFatalErrorCount() as Number {
-        if( _fatalErrorCount == null ) {
-            _fatalErrorCount =             
-                1 + // the polling interval counts from the time the first error occured
-                Math.round( 
-                    SITEMAP_ERROR_FATAL_TIME 
-                    / BaseSitemapRequest.getSitemapErrorPollingInterval() 
-                ).toNumber();
-        }
-        return _fatalErrorCount as Number;
-    }
-    /* Initially attempted to implement this as a constant. Although it works in 
-    *  principle, exceptions arising from it (e.g., due to improperly configured 
-    *  app settings) cannot be caught. This appears to be a compiler issue. 
-    *  As a safer alternative, it is now implemented as a function. 
-    */
-    /*
-    private static var SITEMAP_ERROR_FATAL_ERROR_COUNT as Number = 
-        1 + // the polling interval counts from the time the first error occured
-        Math.round( 
-            SITEMAP_ERROR_FATAL_TIME 
-            / BaseSitemapRequest.getSitemapErrorPollingInterval() 
-        ).toNumber();
-    */
-
-    // Determines whether the current error count is still below the fatal error threshold.
-    public static function errorCountIsNotYetFatal() as Boolean {
-        return SitemapErrorCountStore.get() < getFatalErrorCount();
-    }
-
     /*
     * Note on STARTUP EXCEPTIONS:
     *
@@ -85,13 +38,6 @@ public class ExceptionHandler {
     public static function handleException( ex as Exception ) as Void {
         Logger.debugException( ex );
 
-        // Increment the counter of sitemap-related communication errors
-        if( ex instanceof CommunicationBaseException 
-            && ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP ) )
-        {
-            SitemapErrorCountStore.increment();
-        }
-        
         // Logger.debug( "ExceptionHandler: exception #" + SitemapErrorCountStore.get() + "/" + SITEMAP_ERROR_FATAL_ERROR_COUNT );
         
         // If the setting to suppress empty response errors is enabled
@@ -107,7 +53,7 @@ public class ExceptionHandler {
         * A toast notification will be shown under the following conditions:
         * - For all non-sitemap (i.e., command) communication errors.
         * - For sitemap errors that are not fatal in themselves and 
-        *   the fatal error count threshold has not yet been reached.
+        *   the state is still fresh (within the state expiry time).
         * - Only if the current view has indicated to the `ToastHandler` that toasts are allowed.
         *
         * In all other cases, a full-screen error view is displayed instead.
@@ -115,7 +61,7 @@ public class ExceptionHandler {
 
         if( ex instanceof CommunicationBaseException 
             &&  ( !ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP )
-                || ( errorCountIsNotYetFatal() && !ex.isFatal() ) )
+                || ( SitemapStore.isStateFresh() && !ex.isFatal() ) )
             && ToastHandler.useToasts() ) 
             {
             // Logger.debug( "ExceptionHandler: non-fatal error: " + ex.getToastMessage().toUpper() );
@@ -131,11 +77,12 @@ public class ExceptionHandler {
         } else {
             // Logger.debug( "ExceptionHandler: fatal error" );
             
-            /*
-            * Fatal errors clear the stored JSON.
-            * This prevents stale data from being shown if the app is restarted, 
-            * which would otherwise display outdated content until the error reoccurs.
-            */
+            // Fatal errors clear the stored JSON to avoid showing outdated data.
+            // After a fatal error, the menu is only shown once a new successful
+            // response is received. Without clearing the cache, restarting the app
+            // would briefly show the menu before the error happens again.
+            // Clearing the cache ensures the app goes directly into a loading or
+            // error view until valid data is received.
             SitemapStore.deleteJson();
             
             /*

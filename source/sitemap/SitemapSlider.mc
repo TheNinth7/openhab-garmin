@@ -13,8 +13,8 @@ class SitemapSlider extends SitemapPrimitiveElement {
     public var releaseOnly as Boolean;
     public var sliderState as Number;
  
-    public function initialize( data as JsonObject ) {
-        SitemapPrimitiveElement.initialize( data );
+    public function initialize( data as JsonObject, isStateFresh as Boolean ) {
+        SitemapPrimitiveElement.initialize( data, isStateFresh );
         minValue = getNumber( data, "minValue", 0 );
         maxValue = getNumber( data, "maxValue", 100 );
         step = getNumber( data, "step", 1 );

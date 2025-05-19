@@ -68,7 +68,7 @@ class BaseCommandRequest extends BaseRequest {
     // Triggers the web request
     // @param parameters - options for the web request, as per Communication.makeWebRequest
     protected function makeWebRequest( parameters as Dictionary<Object, Object>? ) as Void {
-        Logger.debug( "BaseCommandRequest: makeWebRequest to " + _url );
+        // Logger.debug "BaseCommandRequest: makeWebRequest to " + _url );
         try {
             WidgetSitemapRequest.get().stop();
             // If there is more than one open request for this item,
@@ -83,7 +83,7 @@ class BaseCommandRequest extends BaseRequest {
             // from a menu item, the menu system blocks new commands until the
             // previous one has completed.
             if( _requestCounter > 0 ) {
-                Logger.debug( "BaseCommandRequest: cancelling previous requests!" );
+                // Logger.debug "BaseCommandRequest: cancelling previous requests!" );
                 cancelAllRequests();
                 _requestCounter = 0;
             }

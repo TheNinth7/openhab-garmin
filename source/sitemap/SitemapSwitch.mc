@@ -22,8 +22,8 @@ class SitemapSwitch extends SitemapPrimitiveElement {
     }
 
     // Constructor
-    public function initialize( data as JsonObject ) {
-        SitemapPrimitiveElement.initialize( data );
+    public function initialize( data as JsonObject, isStateFresh as Boolean ) {
+        SitemapPrimitiveElement.initialize( data, isStateFresh );
 
         // Obtain the item part of the element
         var item = getItem( data ) as JsonObject;
@@ -150,7 +150,7 @@ class SitemapSwitch extends SitemapPrimitiveElement {
     private function searchArray( descriptions as BaseDescriptionArray, state as String) as String? {
         for( var i = 0; i < descriptions.size(); i++ ) {
             var description = descriptions[i];
-            if( description.equals( state ) ) {
+            if( description.equalsById( state ) ) {
                 return description.label;
             }
         }

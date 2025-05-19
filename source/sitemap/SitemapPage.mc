@@ -24,8 +24,8 @@ class SitemapPage extends SitemapElement {
     * is explicitly disabled for this function in glance scope.
     */
     (:typecheck(disableGlanceCheck))
-    public function initialize( data as JsonObject ) {
-        SitemapElement.initialize( data );
+    public function initialize( data as JsonObject, isStateFresh as Boolean ) {
+        SitemapElement.initialize( data, isStateFresh );
         if( ! OHApp.isGlance() ) {
             // Loop through all JSON array elements
             var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found" );
@@ -35,7 +35,8 @@ class SitemapPage extends SitemapElement {
                 elements.add( 
                     SitemapElementFactory.createByType( 
                         getString( widget, TYPE, "Page '" + label + "': widget without type" ), 
-                        widget 
+                        widget,
+                        isStateFresh 
                     ) 
                 );
             }
