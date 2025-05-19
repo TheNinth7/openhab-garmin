@@ -229,7 +229,9 @@ The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch
 - `item`: the name of the associated openHAB item.
 - `mappings` (optional): used when commands other than `ON`/`OFF` should be sent.
 
-If no `mappings` are provided, a **toggle switch** is rendered. Selecting the item sends either `ON` or `OFF` commands.
+If no `mappings` are provided, the widget will use the item's command and state descriptions, which may come from the underlying channel or be manually defined via metadata. Command descriptions are used to label both the current state and the available command options (if multiple exist). If state descriptions are present, they take precedence for labeling the current state only—not for the list of selectable commands.
+
+If neither `mappings` nor command descriptions are available, the widget falls back to rendering a **toggle switch**, where selecting the item sends either an `ON` or `OFF` command.
 
 If `mappings` are provided, the widget displays the current state as text:
 
