@@ -88,56 +88,59 @@ class BaseMenu extends CustomMenu {
     * to draw directly on the title area using a `Dc`.
     */
     public function drawTitle( dc as Dc ) as Void {
-        
-        /*
-        * For most devices, we avoid coloring the entire title area to leave a small black bar 
-        * separating the colored section from the menu items.
-        * However, on some devices—particularly Garmin Edge models—we fill the entire area.
-        * The height of the background-colored region is defined in the device-specific 
-        * `Constants` implementation.
-        */
-        var clipHeight = dc.getHeight() * Constants.UI_MENU_TITLE_HEIGHT_FACTOR;
+        try {
+            /*
+            * For most devices, we avoid coloring the entire title area to leave a small black bar 
+            * separating the colored section from the menu items.
+            * However, on some devices—particularly Garmin Edge models—we fill the entire area.
+            * The height of the background-colored region is defined in the device-specific 
+            * `Constants` implementation.
+            */
+            var clipHeight = dc.getHeight() * Constants.UI_MENU_TITLE_HEIGHT_FACTOR;
 
-        /*
-        * This code causes an issue where the full `Dc` size of the title is incorrectly 
-        * applied as the clip area to any subsequently displayed `View` classes 
-        * (except when the next view is a `CustomMenu`, which is unaffected).
-        *
-        * As a workaround, affected views must explicitly call `Dc.clearClip()` 
-        * to reset the clipping region.
-        */
-        dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
-        dc.setClip( 0, 0, dc.getWidth(), clipHeight );
-        dc.clear();
-        dc.clearClip();
+            /*
+            * This code causes an issue where the full `Dc` size of the title is incorrectly 
+            * applied as the clip area to any subsequently displayed `View` classes 
+            * (except when the next view is a `CustomMenu`, which is unaffected).
+            *
+            * As a workaround, affected views must explicitly call `Dc.clearClip()` 
+            * to reset the clipping region.
+            */
+            dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
+            dc.setClip( 0, 0, dc.getWidth(), clipHeight );
+            dc.clear();
+            dc.clearClip();
 
-        // As an alternative workaround for the above-mentioned issue, 
-        // we could fill a rectangle with the background color 
-        // instead of clearing the `Dc`.
-        /*
-        dc.setColor( Constants.UI_MENU_TITLE_BACKGROUND_COLOR, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
-        dc.fillRectangle( 0, 0, dc.getWidth(), clipHeight );
-        dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
-        */
+            // As an alternative workaround for the above-mentioned issue, 
+            // we could fill a rectangle with the background color 
+            // instead of clearing the `Dc`.
+            /*
+            dc.setColor( Constants.UI_MENU_TITLE_BACKGROUND_COLOR, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
+            dc.fillRectangle( 0, 0, dc.getWidth(), clipHeight );
+            dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_TITLE_BACKGROUND_COLOR );
+            */
 
-        /*
-        * The first time this function is called, we set the Y-position of the title `Drawable`.
-        * On Edge devices (with full-height titles), centering the element looks best.
-        * On round watch faces (with reduced title height), positioning the title slightly 
-        * below center provides more horizontal space and a better visual balance.
-        */
-        if( _title.locY == 0 ) {
-            var locY;
-            if( Constants.UI_MENU_TITLE_HEIGHT_FACTOR == 1 ) {
-                locY = WatchUi.LAYOUT_VALIGN_CENTER;
-            } else {
-                locY = clipHeight * 0.5 - Graphics.getFontHeight( Constants.UI_MENU_TITLE_FONT ) / 2 + Graphics.getFontDescent( Constants.UI_MENU_TITLE_FONT );
+            /*
+            * The first time this function is called, we set the Y-position of the title `Drawable`.
+            * On Edge devices (with full-height titles), centering the element looks best.
+            * On round watch faces (with reduced title height), positioning the title slightly 
+            * below center provides more horizontal space and a better visual balance.
+            */
+            if( _title.locY == 0 ) {
+                var locY;
+                if( Constants.UI_MENU_TITLE_HEIGHT_FACTOR == 1 ) {
+                    locY = WatchUi.LAYOUT_VALIGN_CENTER;
+                } else {
+                    locY = clipHeight * 0.5 - Graphics.getFontHeight( Constants.UI_MENU_TITLE_FONT ) / 2 + Graphics.getFontDescent( Constants.UI_MENU_TITLE_FONT );
+                }
+                _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, locY );
             }
-            _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, locY );
-        }
 
-        // Draw the title
-        _title.draw( dc );
+            // Draw the title
+            _title.draw( dc );
+        } catch( ex ) {
+            ExceptionHandler.handleException( ex );
+        }
     }
 
     // The `CustomMenu` superclass does not expose the number of menu items.

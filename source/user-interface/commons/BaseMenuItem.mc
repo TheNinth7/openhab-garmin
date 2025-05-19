@@ -32,20 +32,24 @@ class BaseMenuItem extends CustomMenuItem {
     }
 
     public function draw( dc as Dc ) as Void {
-        if( ! _hasLayout ) {
-            _hasLayout = true;
-            onLayout( dc );
-        }
+        try {
+            if( ! _hasLayout ) {
+                _hasLayout = true;
+                onLayout( dc );
+            }
 
-        // If the focused background color is not transparent and the item is focused, 
-        // fill the background with the specified color.
-        if( ( isFocused() ) && 
-            Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED != Graphics.COLOR_TRANSPARENT ) {
-                dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED );
-                dc.clear();
-        }
+            // If the focused background color is not transparent and the item is focused, 
+            // fill the background with the specified color.
+            if( ( isFocused() ) && 
+                Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED != Graphics.COLOR_TRANSPARENT ) {
+                    dc.setColor( Constants.UI_COLOR_TEXT, Constants.UI_MENU_ITEM_BG_COLOR_FOCUSED );
+                    dc.clear();
+            }
 
-        onUpdate( dc );
+            onUpdate( dc );
+        } catch( ex ) {
+            ExceptionHandler.handleException( ex );
+        }
     }
 
     // May be implemented by subclasses to perform layout calculations
