@@ -8,13 +8,7 @@ class NoStateMenuItem extends BaseSitemapMenuItem {
 
     // Constructor
     public function initialize( sitemapPrimitiveElement as SitemapPrimitiveElement ) {
-        _text = new Text( { 
-            :text => "—", 
-            :color => Graphics.COLOR_LT_GRAY,
-            :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR,
-            :font => Constants.UI_MENU_ITEM_FONTS[0],
-            :justification => Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER
-        } );
+        _text = new StatusText( "—" );
         BaseSitemapMenuItem.initialize(
             {
                 :id => sitemapPrimitiveElement.id,
@@ -33,9 +27,7 @@ class NoStateMenuItem extends BaseSitemapMenuItem {
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
             sitemapElement instanceof SitemapPrimitiveElement
-            && (
-                ( !sitemapElement.hasItemState() && !sitemapElement.hasWidgetState() )
-                || ! sitemapElement.isStateFresh
-            );
+            && ! sitemapElement.hasItemState() 
+            && ! sitemapElement.hasWidgetState();
     }
 }

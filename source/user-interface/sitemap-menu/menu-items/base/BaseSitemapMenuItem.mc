@@ -174,13 +174,23 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         if( _status != null ) {
             var status = _status;
             titleWidth -= spacing;
-            if( status instanceof TextStatusDrawable ) {
+            
+            if( status instanceof StatusTextArea ) {
                 status.setAvailableWidth( titleWidth.toNumber() );
+            } else if( status instanceof Text && ! ( status instanceof StatusText ) ) {
+                throw new GeneralException( "BaseSitemapMenuItem does not support Text, use StatusText instead" );
             }
-            rightX -= status.width;
+
+            var statusWidth = 
+                status instanceof StatusText
+                ? status.precomputedWidth
+                : status.width;
+            
+            rightX -= statusWidth;
+
             status.setLocation( rightX, WatchUi.LAYOUT_VALIGN_CENTER );
 
-            titleWidth -= status.width;
+            titleWidth -= statusWidth;
         }
 
         // Finally the text area is initialized

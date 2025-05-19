@@ -17,7 +17,8 @@ class SliderMenuItem extends BaseSitemapMenuItem {
     // Returns true if the given sitemap element matches the type handled by this menu item.
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
         return 
-            sitemapElement instanceof SitemapSlider;
+            sitemapElement instanceof SitemapSlider
+            && sitemapElement.hasItemState();
     }
 
     // The text status Drawable
@@ -41,12 +42,9 @@ class SliderMenuItem extends BaseSitemapMenuItem {
         _commandRequest = BaseCommandRequest.get( self );
 
         // The status shown in the menu item
-        _statusText = new Text( {
-            :text => sitemapSlider.sliderState.toString() + sitemapSlider.unit,
-            :font => Constants.UI_MENU_ITEM_FONTS[0],
-            :color => Constants.UI_COLOR_ACTIONABLE,
-            :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR
-        } );
+        _statusText = new StatusText( 
+            sitemapSlider.sliderState.toString() + sitemapSlider.unit
+        );
         
         BaseSitemapMenuItem.initialize( {
             :id => sitemapSlider.id,

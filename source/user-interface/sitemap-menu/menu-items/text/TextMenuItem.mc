@@ -12,11 +12,11 @@ import Toybox.WatchUi;
 class TextMenuItem extends BaseSitemapMenuItem {
     
     // The text status Drawable
-    private var _statusTextArea as TextStatusDrawable;
+    private var _statusTextArea as StatusTextArea;
 
     // Constructor
     public function initialize( sitemapText as SitemapText ) {
-        _statusTextArea = new TextStatusDrawable( sitemapText.label, sitemapText.widgetState );
+        _statusTextArea = new StatusTextArea( sitemapText.label, sitemapText.widgetState );
         BaseSitemapMenuItem.initialize(
             {
                 :id => sitemapText.id,

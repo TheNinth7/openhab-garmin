@@ -36,15 +36,19 @@ public class ExceptionHandler {
     private static var _startupException as [Exception, Boolean]?;
     
     public static function handleException( ex as Exception ) as Void {
+        // Logger.debug( "ExceptionHandler: exception #" + SitemapErrorCountStore.get() + "/" + SITEMAP_ERROR_FATAL_ERROR_COUNT );
         Logger.debugException( ex );
 
-        // Logger.debug( "ExceptionHandler: exception #" + SitemapErrorCountStore.get() + "/" + SITEMAP_ERROR_FATAL_ERROR_COUNT );
-        
-        // If the setting to suppress empty response errors is enabled
-        // and this exception is classified as such, we do nothing further
+        var isStateFresh = SitemapStore.isStateFresh();
+        // If 
+        // - the setting to suppress empty response errors is enabled
+        // - and this exception is classified as such
+        // - and the state is still within the expiry time, 
+        // we do nothing further
         if( AppSettings.suppressEmptyResponseExceptions()
             && ex instanceof CommunicationBaseException
-            && ex.suppressAsEmptyResponse() ) {
+            && ex.suppressAsEmptyResponse()
+            && isStateFresh ) {
                 // Logger.debug( "ExceptionHandler: Suppressing empty response" );
                 return;
         }
@@ -61,7 +65,7 @@ public class ExceptionHandler {
 
         if( ex instanceof CommunicationBaseException 
             &&  ( !ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP )
-                || ( SitemapStore.isStateFresh() && !ex.isFatal() ) )
+                || ( isStateFresh && !ex.isFatal() ) )
             && ToastHandler.useToasts() ) 
             {
             // Logger.debug( "ExceptionHandler: non-fatal error: " + ex.getToastMessage().toUpper() );

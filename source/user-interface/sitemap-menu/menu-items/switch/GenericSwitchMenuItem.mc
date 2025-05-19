@@ -22,7 +22,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     private var _sitemapSwitch as SitemapSwitch;
 
     // The Drawable that shows the current state
-    private var _statusDrawable as TextStatusDrawable;
+    private var _statusDrawable as StatusTextArea;
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
@@ -30,8 +30,8 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         // have a mapping defined
         return 
             sitemapElement instanceof SitemapSwitch 
-            && 
-            sitemapElement.hasMappings();
+            && sitemapElement.hasMappings()
+            && sitemapElement.hasItemState();
     }
 
     // Constructor
@@ -39,7 +39,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         _sitemapSwitch = sitemapSwitch;
         
         // Initialize the Drawable for the status text, and set the color
-        _statusDrawable = new TextStatusDrawable( 
+        _statusDrawable = new StatusTextArea( 
             sitemapSwitch.label, 
             sitemapSwitch.itemStateDescription 
         );

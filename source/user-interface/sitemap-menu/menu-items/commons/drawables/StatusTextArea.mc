@@ -3,12 +3,12 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 
 /*
- * Drawable for displaying the status text.
+ * Drawable for displaying the status text in a flexible text area,
+ * that chooses the font size depending on the size of the content.
  * The status is printed in light grey to visually offset it from the label,
  * matching the style of an "off" state in on/off switches.
- * Currently used only for Text elements, but may be reused for other item types in the future.
  */
-class TextStatusDrawable extends TextArea {
+class StatusTextArea extends TextArea {
     // Analogue to the switch, we use 80% of the available height
     private const HEIGHT = ( Constants.UI_MENU_ITEM_HEIGHT * 0.8 ).toNumber();
 
@@ -19,8 +19,6 @@ class TextStatusDrawable extends TextArea {
     // Sets the size of the status drawable proportionally based on the relative lengths 
     // of the status text and the label.
     public function setAvailableWidth( availableWidth as Number ) as Void {
-        //var textLength = _text.length();
-        //setSize( availableWidth * textLength/(textLength+_label.length()), height );
         setSize( ( availableWidth * TextDimensions.getWidthRatio( _text, _label ) ).toNumber(), height );
     }
 
