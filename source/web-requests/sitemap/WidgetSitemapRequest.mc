@@ -71,11 +71,15 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
             if( ! SettingsMenuHandler.isShowingSettings() ) {
                 // If the structure is not valid anymore, we reset the view
                 // to the homepage, but only if we are not in the error view
-                if( ! structureRemainsValid && ! ErrorView.isShowingErrorView() ) {
-                    // Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
+                if(    ! structureRemainsValid 
+                    && ! ErrorView.isShowingErrorView() 
+                    && ! ( WatchUi.getCurrentView()[0] instanceof HomepageMenu ) ) {
                     // If update returns false, the menu structure has changed
                     // and we therefore replace the current view stack with
-                    // the homepage
+                    // the homepage. If the current view already is the homepage,
+                    // then of course this is not necessary and we skip to the
+                    // WatchUi.requestUpdate() further below.
+                    Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
                     ViewHandler.popToBottomAndSwitch( homepage, HomepageMenuDelegate.get() );
                 } else if( ErrorView.isShowingErrorView() ) {
                     // If currently there is an error view, we replace it
@@ -85,6 +89,7 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
                     // If the structure is still valid and no error is shown,
                     // then we update the screen, showing the changes in the
                     // currently displayed menu
+                    Logger.debug( "SitemapRequest.onReceive: requesting UI update" );
                     WatchUi.requestUpdate();
                 }
             }

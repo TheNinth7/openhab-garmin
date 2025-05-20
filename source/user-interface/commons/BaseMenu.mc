@@ -26,6 +26,10 @@ class BaseMenu extends CustomMenu {
 
     // Constructor
     protected function initialize( options as BaseMenuOptions ) {
+        // Logger.debug( "BaseMenu.initialize" );
+        // Logger.debug( "BaseMenu.initialize: Homepage=" + ( self instanceof HomepageMenu ) );
+        // Logger.debug( "BaseMenu.initialize: Page=" + ( self instanceof PageMenu ) );
+        // Logger.debug( "BaseMenu.initialize: Settings=" + ( self instanceof SettingsMenu ) );
         // A title string is provided as input, and this section creates 
         // the corresponding `Drawable` required by the `CustomMenu` superclass.
         _title = new Text( {
@@ -88,6 +92,7 @@ class BaseMenu extends CustomMenu {
     * to draw directly on the title area using a `Dc`.
     */
     public function drawTitle( dc as Dc ) as Void {
+        // Logger.debug( "BaseMenu.drawTitle" );
         try {
             /*
             * For most devices, we avoid coloring the entire title area to leave a small black bar 
@@ -154,9 +159,6 @@ class BaseMenu extends CustomMenu {
         _itemCount--;
         return CustomMenu.deleteItem( index );
     }
-    // Touch devices need access to the number of items.
-    // See `HomepageMenu` for details.
-    (:exclForButton)
     public function getItemCount() as Number {
         return _itemCount;
     }

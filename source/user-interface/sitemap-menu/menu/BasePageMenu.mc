@@ -60,6 +60,10 @@ class BasePageMenu extends BaseMenu {
     * items will be repurposed or extended as needed.
     */
     public function update( sitemapPage as SitemapPage ) as Boolean {
+        // Logger.debug( "PageMenu.update: updating page '" + _label + "'" );
+
+        var itemCount = getItemCount();
+
         _label = sitemapPage.label;
         
         // Update the title of the menu
@@ -102,13 +106,41 @@ class BasePageMenu extends BaseMenu {
         }
         // Remove all menu items that do not have a corresponding
         // sitemap element anymore
+    
+        // Logger.debug( "PageMenu.update: moving to item deletion, i=" + i );
         while( getItem( i ) != null ) {
             if( getItem( i ) instanceof PageMenuItem ) {
                 structureRemainsValid = false;
+                // Logger.debug( "PageMenu.update: page '" + _label + "' invalid because subpage was removed" );
             }
+            // Logger.debug( "PageMenu.update: deleting item , i=" + i );
             deleteItem( i );
-            // Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item was removed" );
         }
+
+        // A bug in Garmin's native device implementation of the CustomMenu/Menu2
+        // affects updates to the currently displayed menu:
+        // - added menu items are not displayed,
+        // - and even worse, deleting menu items leads to an app crash
+        // This can be avoided by replacing the current view with itself,
+        // using switchToView. This seems to trigger the necessary refresh
+        // inside the CustomMenu to properly handle the changed number of items.
+        // Replacing items works as expected, so only when ...
+        // ... the item count has changed ...
+        if( itemCount != getItemCount() ) {
+            // ... and this menu is the current view ...
+            if( self.equals( WatchUi.getCurrentView()[0] ) ) {
+                // Logger.debug( "PageMenu.update: switching the view!" );
+                
+                // We do the switch to itself
+                WatchUi.switchToView(
+                    WatchUi.getCurrentView()[0] as View,
+                    WatchUi.getCurrentView()[1] as InputDelegate,
+                    WatchUi.SLIDE_IMMEDIATE
+                );
+            }            
+        }
+
+        // Logger.debug( "PageMenu.update: update done for page '" + _label + "'" );
         return structureRemainsValid;
     }
 }

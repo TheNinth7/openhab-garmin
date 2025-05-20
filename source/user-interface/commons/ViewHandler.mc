@@ -31,7 +31,7 @@ class ViewHandler {
     // and replaces the base view with the provided view.
     public static function popToBottomAndSwitch( view as Views, delegate as InputDelegates or Null ) as Void {
         // Logger.debug( "ViewHandler.popToBottomAndSwitch: initial stack size=" + _stackSize );
-        for( var i = 0; i < _stackSize; i++ ) {
+        while( _stackSize > 0 ) {
             WatchUi.popView( WatchUi.SLIDE_IMMEDIATE );
             _stackSize--;
         }

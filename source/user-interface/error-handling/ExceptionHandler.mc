@@ -36,7 +36,7 @@ public class ExceptionHandler {
     private static var _startupException as [Exception, Boolean]?;
     
     public static function handleException( ex as Exception ) as Void {
-        // Logger.debug( "ExceptionHandler: exception #" + SitemapErrorCountStore.get() + "/" + SITEMAP_ERROR_FATAL_ERROR_COUNT );
+        // Logger.debug( "ExceptionHandler: exception" );
         Logger.debugException( ex );
 
         var isStateFresh = SitemapStore.isStateFresh();
