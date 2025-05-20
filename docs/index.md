@@ -132,6 +132,7 @@ For earlier versions (openHAB 4.x), you can either install a backported version 
 ### Option 1: Install the Backport
 
 To enable JSON-based command support on openHAB 4.x, install the backported API bundle. Follow the instructions here:
+
 ➡️ [Backport Installation Guide](https://github.com/florian-h05/openhab-core/releases/tag/4.3.x-command-json)
 
 ### Option 2: Custom Webhook
