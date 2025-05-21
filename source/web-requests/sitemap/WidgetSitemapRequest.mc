@@ -23,22 +23,6 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
         return _instance as WidgetSitemapRequest;
     }
 
-    // This function is called on startup by OHApp, and 
-    // if available initializes the menu from sitemap data
-    // in storage
-    public static function initializeMenu() as HomepageMenu? {
-        var homepageMenu = null;
-        try {
-            var sitemapHomepage = SitemapStore.getHomepage();
-            if( sitemapHomepage != null ) {
-                homepageMenu = HomepageMenu.create( sitemapHomepage );
-            }
-        } catch( ex ) {
-            Logger.debugException( ex );
-        }
-        return homepageMenu;
-    }
-
     // Constructor
     private function initialize() {
         // There is no minimum polling interval for the widget request,

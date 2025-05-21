@@ -35,7 +35,7 @@ class SitemapStore  {
     private static var _label as String?;
 
     // Return the SitemapHomepage instance representing the current JSON
-    public static function getHomepage() as SitemapHomepage? {
+    public static function getHomepageFromStorage() as SitemapHomepage? {
         if( _json == null ) {
             _json = Storage.getValue( STORAGE_JSON ) as StoredJson?;
         }

@@ -28,6 +28,24 @@ class HomepageMenu extends BasePageMenu {
         return _instance as HomepageMenu;
     }
 
+    // This function is called on startup by OHApp, and 
+    // if available initializes the menu from sitemap data
+    // in storage
+    public static function createFromStorage() as HomepageMenu? {
+        var homepageMenu = null;
+        // Reading the JSON from storage is not critical,
+        // if it fails, we just move ahead and request it from the server
+        try {
+            var sitemapHomepage = SitemapStore.getHomepageFromStorage();
+            if( sitemapHomepage != null ) {
+                homepageMenu = HomepageMenu.create( sitemapHomepage );
+            }
+        } catch( ex ) {
+            Logger.debugException( ex );
+        }
+        return homepageMenu;
+    }
+
     // The HomepageMenu is the entry point into the
     // menu structure, where we want to display toast notifications for
     // non-fatal errors

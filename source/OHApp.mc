@@ -45,7 +45,7 @@ class OHApp extends Application.AppBase {
     public function getInitialView() as [Views] or [Views, InputDelegates] {
         try {
             // First we initialize the menu from storage
-            var menu = WidgetSitemapRequest.initializeMenu();
+            var menu = HomepageMenu.createFromStorage();
             var hasMenu = menu != null;
 
             // Then we start the sitemap request
