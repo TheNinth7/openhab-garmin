@@ -27,7 +27,7 @@ class GlanceSitemapView extends WatchUi.GlanceView {
             // so right now the only thing we can do is stop
             // polling the sitemap.
             // https://github.com/TheNinth7/ohg/issues/105
-            // new GlanceSitemapRequest();
+            new GlanceSitemapRequest();
         } catch( ex ) {
             Logger.debugException( ex );
         }

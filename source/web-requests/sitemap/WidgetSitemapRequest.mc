@@ -79,7 +79,7 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
                     // the homepage. If the current view already is the homepage,
                     // then of course this is not necessary and we skip to the
                     // WatchUi.requestUpdate() further below.
-                    Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
+                    // Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
                     ViewHandler.popToBottomAndSwitch( homepage, HomepageMenuDelegate.get() );
                 } else if( ErrorView.isShowingErrorView() ) {
                     // If currently there is an error view, we replace it
@@ -89,7 +89,7 @@ class WidgetSitemapRequest extends BaseSitemapRequest {
                     // If the structure is still valid and no error is shown,
                     // then we update the screen, showing the changes in the
                     // currently displayed menu
-                    Logger.debug( "SitemapRequest.onReceive: requesting UI update" );
+                    // Logger.debug( "SitemapRequest.onReceive: requesting UI update" );
                     WatchUi.requestUpdate();
                 }
             }

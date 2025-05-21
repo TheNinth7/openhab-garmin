@@ -49,17 +49,6 @@ class BaseSitemapRequest extends BaseRequest {
             ? AppSettings.getPollingInterval()
             : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL;
     }
-    /* Initially attempted to implement this as a constant. Although it works in 
-    *  principle, exceptions arising from it (e.g., due to improperly configured 
-    *  app settings) cannot be caught. This appears to be a compiler issue. 
-    *  As a safer alternative, it is now implemented as a function. 
-    */
-    /*
-    public static var SITEMAP_ERROR_POLLING_INTERVAL as Number = 
-        AppSettings.getPollingInterval() > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
-        ? AppSettings.getPollingInterval()
-        : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL;
-    */
 
     // The assembled URL for the request
     private var _url as String;
@@ -115,7 +104,7 @@ class BaseSitemapRequest extends BaseRequest {
 
     // Makes the web request
     public function makeRequest() as Void {
-        // Logger.debug( "BaseSitemapRequest.makeRequest");
+        Logger.debug( "BaseSitemapRequest: making request" );
         if( ! _isStopped ) {
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _hasPendingRequest = true;
@@ -125,7 +114,7 @@ class BaseSitemapRequest extends BaseRequest {
     // Processes the response
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         _hasPendingRequest = false;
-        // Logger.debug( "BaseSitemapRequest.onReceive");
+        Logger.debug( "BaseSitemapRequest.onReceive");
 
         // Taking the stored polling interval in a
         // local variable, since it may be adjusted

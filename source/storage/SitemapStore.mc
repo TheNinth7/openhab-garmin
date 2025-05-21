@@ -86,11 +86,13 @@ class SitemapStore  {
     // Persist the current data to storage
     // This function is called by OHApp wenn the application is stopped
     public static function persist() as Void {
-        if( _json != null ) {
-            Storage.setValue( STORAGE_JSON, _json as Array<Application.PropertyValueType> );
-        }
         if( _label != null ) {
             Storage.setValue( STORAGE_LABEL, _label );
+            _label = null;
+        }
+        if( _json != null ) {
+            Storage.setValue( STORAGE_JSON, _json as Array<Application.PropertyValueType> );
+            _json = null;
         }
     }
 }

@@ -37,6 +37,25 @@ class GlanceSitemapRequest extends BaseSitemapRequest {
         }
     }
 
+    public function makeRequest() as Void {
+        Logger.debug( 
+            "BaseSitemapRequest: memory " 
+            + System.getSystemStats().usedMemory + "/"
+            + System.getSystemStats().totalMemory + "kB"
+        );
+
+        if( System.getSystemStats().totalMemory
+            - System.getSystemStats().usedMemory
+            > 25600 ) {
+                Logger.debug( "BaseSitemapRequest: clearing cache" );
+                SitemapStore.persist();
+                BaseSitemapRequest.makeRequest();
+            } else {
+                Logger.debug( "BaseSitemapRequest: not enough memory, stopping requests" );
+                stop();
+            }
+    }
+    
     // Update the screen whenever an update to the sitemap has been received
     public function onSitemapUpdate( sitemapHomepage as SitemapHomepage ) as Void {
         // Logger.debug( "GlanceSitemapRequest.onSitemapUpdate");
