@@ -74,8 +74,7 @@ class SitemapPrimitiveElement extends SitemapElement {
         if( value == null 
             || value.equals( "" )
             || value.equals( "NULL" ) 
-            || value.equals( "UNDEF" ) 
-            || value.equals( "-" ) ) // "-" is provided for the widget state, it it is empty
+            || value.equals( "UNDEF" ) ) 
             {
             return NO_STATE;
         }
