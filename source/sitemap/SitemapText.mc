@@ -7,7 +7,7 @@ import Toybox.WatchUi;
  * by its base class and does not add any additional behavior.
  */
 class SitemapText extends SitemapPrimitiveElement {
-    public function initialize( data as JsonObject, isStateFresh as Boolean ) {
-        SitemapPrimitiveElement.initialize( data, isStateFresh );
+    public function initialize( data as JsonObject, isSitemapFresh as Boolean ) {
+        SitemapPrimitiveElement.initialize( data, isSitemapFresh );
     }
 }

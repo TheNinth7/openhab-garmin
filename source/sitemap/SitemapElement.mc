@@ -26,12 +26,12 @@ class SitemapElement {
     // Indicates whether the state is fresh
     // If received via web request, it is always considered
     // fresh, if read from storage it depends on the data's age
-    public var isStateFresh as Boolean;
+    public var isSitemapFresh as Boolean;
 
     // Constructor
     protected function initialize( data as JsonObject, initStateFresh as Boolean ) {
         // Reading the id and label from the JSON element
-        isStateFresh = initStateFresh;
+        isSitemapFresh = initStateFresh;
         id = getString( data, ID, "Sitemap element: no " + ID + " found" );
         label = getString( data, LABEL, "Sitemap element: no " + LABEL + " found" );
     }

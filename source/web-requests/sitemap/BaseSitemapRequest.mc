@@ -68,6 +68,11 @@ class BaseSitemapRequest extends BaseRequest {
     private var _pollingInterval as Number;
     private var _timer as Timer.Timer = new Timer.Timer();
 
+    // Store the memory usage before making the request, to
+    // estimate the memory used by the received JSON
+    // See `SitemapStore` for details.
+    private var _memoryUsedBeforeRequest as Number = 0;
+
     // Constructor
     protected function initialize( minimumPollingInterval as Number? ) {
         // Initialize super class
@@ -104,9 +109,10 @@ class BaseSitemapRequest extends BaseRequest {
 
     // Makes the web request
     public function makeRequest() as Void {
-        Logger.debug( "BaseSitemapRequest: making request" );
         if( ! _isStopped ) {
+            Logger.debug( "BaseSitemapRequest: making request" );
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
+            _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
             _hasPendingRequest = true;
         }
     }
@@ -132,15 +138,16 @@ class BaseSitemapRequest extends BaseRequest {
                 // These functions of the super class throw
                 // an exception if the code/data is not OK
                 checkResponseCode( responseCode, SOURCE );
-                var json = checkResponse( data, SOURCE );
                 
-                // The JSON is stored in the SitemapStore
-                SitemapStore.updateJson( json );
-                // For data just received via web request, 
-                // isStateFresh is automatically set to true
-                var sitemapHomepage = new SitemapHomepage( json, true );
-                // Also the label is stored (for use by glance)
-                SitemapStore.updateLabel( sitemapHomepage.label );
+                // We hand over the JSON to the `SitemapStore`, for storage
+                // and for creating the `SitemapHomepage`. data handed over
+                // is checked via checkResponse, and we also approximate the
+                // memory used (see `SitemapStore` for details)
+                var sitemapHomepage = 
+                    SitemapStore.createAndStoreSitemapFromJson( 
+                        checkResponse( data, SOURCE ),
+                        System.getSystemStats().usedMemory
+                        - _memoryUsedBeforeRequest );
                 
                 // Calling the event handlers for updated
                 // sitemap and successful completion of

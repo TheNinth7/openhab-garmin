@@ -22,8 +22,8 @@ class SitemapSwitch extends SitemapPrimitiveElement {
     }
 
     // Constructor
-    public function initialize( data as JsonObject, isStateFresh as Boolean ) {
-        SitemapPrimitiveElement.initialize( data, isStateFresh );
+    public function initialize( data as JsonObject, isSitemapFresh as Boolean ) {
+        SitemapPrimitiveElement.initialize( data, isSitemapFresh );
 
         // Obtain the item part of the element
         var item = getItem( data ) as JsonObject;

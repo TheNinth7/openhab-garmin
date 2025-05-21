@@ -39,7 +39,7 @@ public class ExceptionHandler {
         // Logger.debug( "ExceptionHandler: exception" );
         Logger.debugException( ex );
 
-        var isStateFresh = SitemapStore.isStateFresh();
+        var isSitemapFresh = SitemapStore.isSitemapFresh();
         // If 
         // - the setting to suppress empty response errors is enabled
         // - and this exception is classified as such
@@ -48,7 +48,7 @@ public class ExceptionHandler {
         if( AppSettings.suppressEmptyResponseExceptions()
             && ex instanceof CommunicationBaseException
             && ex.suppressAsEmptyResponse()
-            && isStateFresh ) {
+            && isSitemapFresh ) {
                 // Logger.debug( "ExceptionHandler: Suppressing empty response" );
                 return;
         }
@@ -65,7 +65,7 @@ public class ExceptionHandler {
 
         if( ex instanceof CommunicationBaseException 
             &&  ( !ex.isFrom( CommunicationBaseException.EX_SOURCE_SITEMAP )
-                || ( isStateFresh && !ex.isFatal() ) )
+                || ( isSitemapFresh && !ex.isFatal() ) )
             && ToastHandler.useToasts() ) 
             {
             // Logger.debug( "ExceptionHandler: non-fatal error: " + ex.getToastMessage().toUpper() );
@@ -87,7 +87,7 @@ public class ExceptionHandler {
             // would briefly show the menu before the error happens again.
             // Clearing the cache ensures the app goes directly into a loading or
             // error view until valid data is received.
-            SitemapStore.deleteJson();
+            SitemapStore.deleteSitemapFromStorage();
             
             /*
             * If no view is currently active, the exception is stored as a startup exception.

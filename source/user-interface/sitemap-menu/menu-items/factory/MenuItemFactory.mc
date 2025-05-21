@@ -11,7 +11,7 @@ class MenuItemFactory {
     public static function createMenuItem( sitemapElement as SitemapElement ) as CustomMenuItem {
         if( sitemapElement instanceof SitemapPage ) {
             return new PageMenuItem( sitemapElement );
-        } else if( ! sitemapElement.isStateFresh ) {
+        } else if( ! sitemapElement.isSitemapFresh ) {
             return new NoStateMenuItem( sitemapElement as SitemapPrimitiveElement );
         } else if( OnOffSwitchMenuItem.isMyType( sitemapElement ) ) {
             return new OnOffSwitchMenuItem( sitemapElement as SitemapSwitch );

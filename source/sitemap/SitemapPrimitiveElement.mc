@@ -92,10 +92,10 @@ class SitemapPrimitiveElement extends SitemapElement {
 
 
     // Constructor
-    protected function initialize( data as JsonObject, isStateFresh as Boolean ) {
+    protected function initialize( data as JsonObject, isSitemapFresh as Boolean ) {
         // First initialize the super class
         // We need the label from the super class before continuing
-        SitemapElement.initialize( data, isStateFresh );
+        SitemapElement.initialize( data, isSitemapFresh );
 
         // For some elements, the label includes a state in the format:
         //   label [state]
