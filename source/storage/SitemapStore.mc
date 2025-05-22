@@ -93,7 +93,7 @@ class SitemapStore  {
         _sitemapTimestamp = Time.now().value();
         _sitemapLabel = homepage.label;
 
-        if( _alreadyHasFreshSitemap ) {
+        if( _alreadyHasFreshSitemap || OHApp.isGlance() ) {
             Logger.debug( "SitemapStore: already had fresh sitemap, writing to storage" );
             Storage.setValue( STORAGE_LABEL, _sitemapLabel );
 
