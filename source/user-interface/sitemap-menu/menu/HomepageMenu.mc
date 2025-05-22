@@ -36,7 +36,7 @@ class HomepageMenu extends BasePageMenu {
         // Reading the JSON from storage is not critical,
         // if it fails, we just move ahead and request it from the server
         try {
-            var sitemapHomepage = SitemapStore.createSitemapFromStorage();
+            var sitemapHomepage = SitemapStore.getSitemapFromStorage();
             if( sitemapHomepage != null ) {
                 homepageMenu = HomepageMenu.create( sitemapHomepage );
             }

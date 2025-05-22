@@ -144,7 +144,7 @@ class BaseSitemapRequest extends BaseRequest {
                 // is checked via checkResponse, and we also approximate the
                 // memory used (see `SitemapStore` for details)
                 var sitemapHomepage = 
-                    SitemapStore.createAndStoreSitemapFromJson( 
+                    SitemapStore.updateSitemapFromJson( 
                         checkResponse( data, SOURCE ),
                         System.getSystemStats().usedMemory
                         - _memoryUsedBeforeRequest );

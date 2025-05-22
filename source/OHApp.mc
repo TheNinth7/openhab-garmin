@@ -36,6 +36,9 @@ class OHApp extends Application.AppBase {
     (:typecheck(disableGlanceCheck))
     public function onStop(state as Dictionary?) as Void {
         Logger.debug( "OHApp.onStop" );
+        if( ! isGlance() ) {
+            SitemapStore.persist();
+        }
     }
 
     // Initializes the widget view
