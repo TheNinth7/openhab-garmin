@@ -42,11 +42,8 @@ class SitemapStore  {
     
     // Names of the sitemap JSON and label in storage
     private static const STORAGE_JSON as String = "sitemapJson";
+    private static const STORAGE_TIMESTAMP as String = "sitemapTimestamp";
     private static const STORAGE_LABEL as String = "sitemapLabel";
-
-    // The JSON is stored with this type, to keep it together
-    // with the timestamp of when it was otbained
-    typedef StoredJson as [JsonObject, Number];
 
     // Timer after which a sitemap is considered stale, in seconds
     private static const STATE_EXPIRATION_TIME as Number = 10;
@@ -65,11 +62,13 @@ class SitemapStore  {
     // The JSON is used to construct the SitemapHomepage and then immediately discarded
     // to minimize memory usage.
     public static function createSitemapFromStorage() as SitemapHomepage? {
-        var storedJson = Storage.getValue( STORAGE_JSON ) as StoredJson?;
+        var storedJson = 
+            DictionaryStorage.reconstructDictFromStorage( STORAGE_JSON ) as JsonObject?;
+        
         if( storedJson != null ) {
-            _sitemapTimestamp = storedJson[1];
+            _sitemapTimestamp = Storage.getValue( STORAGE_TIMESTAMP ) as Number;
             Logger.debug( "SitemapStore.createSitemapFromStorage: stored JSON found, fresh=" + isSitemapFresh() );
-            return new SitemapHomepage( storedJson[0], isSitemapFresh() );
+            return new SitemapHomepage( storedJson, isSitemapFresh() );
         }
         Logger.debug( "SitemapStore.createSitemapFromStorage: no stored JSON was found" );
         return null;
@@ -104,13 +103,13 @@ class SitemapStore  {
 
             if( estimatedSitemapSize * 1.2 < System.getSystemStats().freeMemory ) {
                 Logger.debug( "SitemapStore: sufficient free memory, writing to storage" );
-                Storage.setValue( 
-                    STORAGE_JSON, 
-                    [json, _sitemapTimestamp] as Array<PropertyValueType>
-                );
+                DictionaryStorage.deleteDictFromStorage( STORAGE_JSON );
+                DictionaryStorage.decomposeDictToStorage( STORAGE_JSON, json as StorableDictionary );
+                Storage.setValue( STORAGE_TIMESTAMP, _sitemapTimestamp );
             } else {
                 Logger.debug( "SitemapStore: insufficient free memory, skipping storage" );
             }
+
         } else {
             Logger.debug( "SitemapStore: first fresh sitemap, skipping storage" );
             _alreadyHasFreshSitemap = true;
@@ -124,7 +123,8 @@ class SitemapStore  {
     // only be shown again once fresh data has been successfully retrieved.
     public static function deleteSitemapFromStorage() as Void {
         Logger.debug( "SitemapStore.deleteSitemapFromStorage" );
-        Storage.deleteValue( STORAGE_JSON );
+        DictionaryStorage.deleteDictFromStorage( STORAGE_JSON );
+        Storage.deleteValue( STORAGE_TIMESTAMP );
         _sitemapTimestamp = null;
     }
 

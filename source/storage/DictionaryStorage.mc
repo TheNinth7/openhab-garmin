@@ -5,13 +5,22 @@ import Toybox.Application;
 typedef StorableDictionary as 
     Dictionary<Application.PropertyKeyType, Application.PropertyValueType>;
 
+(:glance)
 class DictionaryStorage {
     
     private static const KEY_SEPARATOR = "*";
     private static const SUB_DICTIONARIES = "**subs**";
 
     public static function decomposeDictToStorage( 
-        key as Application.PropertyKeyType, 
+        key as Application.PropertyKeyType,
+        dictionary as StorableDictionary ) as Void {
+
+        decomposeDict( key, dictionary );
+        Storage.setValue( key, dictionary );
+    }
+
+    public static function decomposeDict( 
+        key as Application.PropertyKeyType,
         dictionary as StorableDictionary ) as Void {
 
         var dictionaryKeys = dictionary.keys();
@@ -32,7 +41,7 @@ class DictionaryStorage {
                 for( var j = 0; j < dvalue.size(); j++ ) {
                     var subArrayElement = dvalue[j];
                     if( subArrayElement instanceof Dictionary ) {
-                        decomposeDictToStorage( 
+                        decomposeDict( 
                             key.toString() + KEY_SEPARATOR + dictionaryKey.toString() + KEY_SEPARATOR + j,
                             subArrayElement
                         );
@@ -40,12 +49,13 @@ class DictionaryStorage {
                 }
             }
         }
-        dictionary[SUB_DICTIONARIES] = subDictionaries;
-        Storage.setValue( key, dictionary );
+        if( subDictionaries.size() > 0 ) {
+            dictionary[SUB_DICTIONARIES] = subDictionaries;
+        }
     }
 
     public static function reconstructDictFromStorage( 
-        key as Application.PropertyKeyType ) as StorableDictionary {
+        key as Application.PropertyKeyType ) as StorableDictionary? {
             return reconstructOrDeleteDictFromStorage(
                 key,
                 false
@@ -59,15 +69,15 @@ class DictionaryStorage {
 
     private static function reconstructOrDeleteDictFromStorage( 
         key as Application.PropertyKeyType,
-        delete as Boolean ) as StorableDictionary {
+        delete as Boolean ) as StorableDictionary? {
 
             var dictionary = Storage.getValue( key );
 
-            if( ! ( dictionary instanceof Dictionary ) ) {
-                throw new UnexpectedTypeException( "'" + key.toString() + "' is not a Dictionary", null, null );
+            if( dictionary instanceof Dictionary ) {
+                reconstructOrDeleteDict( key, dictionary, delete );
+            } else if( dictionary != null ) {
+                dictionary = null;
             }
-
-            reconstructOrDeleteDict( key, dictionary, delete );
 
             // To avoid orphans in case of errors, we delete
             // only if the whole structure nested under this
@@ -76,13 +86,13 @@ class DictionaryStorage {
                 Storage.deleteValue( key );
             }
 
-            return dictionary;
+            return dictionary as StorableDictionary?;
     }
 
     private static function reconstructOrDeleteDict( 
         key as Application.PropertyKeyType, 
         dictionary as StorableDictionary,
-        delete as Boolean ) as StorableDictionary {
+        delete as Boolean ) as Void {
 
             var subDictionaries = dictionary[SUB_DICTIONARIES];
 
@@ -91,7 +101,10 @@ class DictionaryStorage {
                 for( var i = 0; i < subDictionaryKeys.size(); i++ ) {
                     var subDictionaryKey = subDictionaryKeys[i];
                     dictionary[subDictionaryKey] =
-                        reconstructOrDeleteDictFromStorage( subDictionaryKey, delete );
+                        reconstructOrDeleteDictFromStorage( 
+                            key.toString() + KEY_SEPARATOR + subDictionaryKey, 
+                            delete 
+                        );
                 }             
             }
 
@@ -115,7 +128,5 @@ class DictionaryStorage {
             }
 
             dictionary.remove( SUB_DICTIONARIES );
-            
-            return dictionary;
     }
 }
