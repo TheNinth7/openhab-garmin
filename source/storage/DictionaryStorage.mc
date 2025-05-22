@@ -14,12 +14,24 @@ class DictionaryStorage {
     public static function decomposeDictToStorage( 
         key as Application.PropertyKeyType,
         dictionary as StorableDictionary ) as Void {
-
         decomposeDict( key, dictionary );
         Storage.setValue( key, dictionary );
     }
 
-    public static function decomposeDict( 
+    public static function reconstructDictFromStorage( 
+        key as Application.PropertyKeyType ) as StorableDictionary? {
+            return reconstructOrDeleteDictFromStorage(
+                key,
+                false
+            );
+    }
+
+    public static function deleteDictFromStorage( 
+        key as Application.PropertyKeyType ) as Void {
+            reconstructOrDeleteDictFromStorage( key, true );
+    }
+
+    private static function decomposeDict( 
         key as Application.PropertyKeyType,
         dictionary as StorableDictionary ) as Void {
 
@@ -52,19 +64,6 @@ class DictionaryStorage {
         if( subDictionaries.size() > 0 ) {
             dictionary[SUB_DICTIONARIES] = subDictionaries;
         }
-    }
-
-    public static function reconstructDictFromStorage( 
-        key as Application.PropertyKeyType ) as StorableDictionary? {
-            return reconstructOrDeleteDictFromStorage(
-                key,
-                false
-            );
-    }
-
-    public static function deleteDictFromStorage( 
-        key as Application.PropertyKeyType ) as Void {
-            reconstructOrDeleteDictFromStorage( key, true );
     }
 
     private static function reconstructOrDeleteDictFromStorage( 
