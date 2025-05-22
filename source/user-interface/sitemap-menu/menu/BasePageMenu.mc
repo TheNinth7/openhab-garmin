@@ -141,6 +141,6 @@ class BasePageMenu extends BaseMenu {
         }
 
         // Logger.debug( "PageMenu.update: update done for page '" + _label + "'" );
-        return structureRemainsValid;
+        return self instanceof HomepageMenu || structureRemainsValid;
     }
 }
