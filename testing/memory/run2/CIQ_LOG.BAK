@@ -1,0 +1,29 @@
+
+---
+Error: Out Of Memory Error
+Details: 'Failed invoking <symbol>'
+Time: 2025-05-22T04:40:47Z
+Part-Number: 006-B4313-00
+Firmware-Version: '20.22'
+Language-Code: eng
+ConnectIQ-Version: 5.1.1
+Store-Id: 8a6b62f1-5450-4912-8799-2eeaf9779d97
+Store-Version: 60
+Filename: F56A2548
+Appname: openHAB
+Stack: 
+  - pc: 0x10001161
+  - pc: 0x100008e6
+---
+Error: Out Of Memory Error
+Details: failed inside handle_json_callback
+Time: 2025-05-22T04:40:47Z
+Part-Number: 006-B4313-00
+Firmware-Version: '20.22'
+Language-Code: eng
+ConnectIQ-Version: 5.1.1
+Store-Id: 261ec5d2-bcbe-4b8b-b770-5f92f2c19ba4
+Store-Version: 74
+Filename: F3ED5327
+Appname: 'evcc-beta'
+Stack: 

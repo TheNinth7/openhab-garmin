@@ -1,0 +1,6 @@
+22.5.2025 6:40:47: SitemapStore: already had fresh sitemap, writing to storage
+22.5.2025 6:40:47: SitemapStore: used memory = 36064 B
+22.5.2025 6:40:47: SitemapStore: total memory = 61384 B
+22.5.2025 6:40:47: SitemapStore: free memory = 25320 B
+22.5.2025 6:40:47: SitemapStore: est. sitemap size = 17592 B
+22.5.2025 6:40:47: SitemapStore: sufficient free memory, writing to storage
