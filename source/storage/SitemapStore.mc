@@ -102,14 +102,18 @@ class SitemapStore  {
             Logger.debug( "SitemapStore: free memory = " + System.getSystemStats().freeMemory + " B" );
             Logger.debug( "SitemapStore: est. sitemap size = " + estimatedSitemapSize + " B" );
 
-            if( estimatedSitemapSize * 1.2 < System.getSystemStats().freeMemory ) {
+            // Only write to memory if the JSON takes less than 80kB in memory
+            // Testing has shown that somewher around 90kB, Storage.setValue
+            // will crash, independent of free memory
+            if( estimatedSitemapSize <= 81920 ) {
                 Logger.debug( "SitemapStore: sufficient free memory, writing to storage" );
                 Storage.setValue( 
                     STORAGE_JSON, 
                     [json, _sitemapTimestamp] as Array<PropertyValueType>
                 );
             } else {
-                Logger.debug( "SitemapStore: insufficient free memory, skipping storage" );
+                Logger.debug( "SitemapStore: insufficient free memory, skipping and clearing storage" );
+                deleteSitemapFromStorage();
             }
         } else {
             Logger.debug( "SitemapStore: first fresh sitemap, skipping storage" );
