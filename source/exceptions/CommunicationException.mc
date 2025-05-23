@@ -26,18 +26,24 @@ class CommunicationException extends CommunicationBaseException {
         var errorMsg;
         // For some errors we return specific messages,
         // for all others a generic one
-        if( 
-            _responseCode == Communications.BLE_CONNECTION_UNAVAILABLE 
-            || _responseCode == Communications.BLE_HOST_TIMEOUT ) 
-        {
-            return "No phone";
+        if( _responseCode == Communications.BLE_CONNECTION_UNAVAILABLE 
+            || _responseCode == Communications.BLE_HOST_TIMEOUT 
+        ) {
+            return "No phone (" + _responseCode + ")";
+        
+        } else if ( _responseCode == Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE ) {
+            errorMsg = "Invalid response (" + _responseCode + ")";
+        
         } else if ( 
-            _responseCode == Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE ) 
-        {
-            errorMsg = "Invalid response, check your app settings.";
+            _responseCode == Communications.NETWORK_RESPONSE_TOO_LARGE
+            || _responseCode == Communications.NETWORK_RESPONSE_OUT_OF_MEMORY
+        ) {
+            return "Sitemap too large (" + _responseCode + ")";
+        
         } else {
             errorMsg = "Request failed with code " + _responseCode;
         }
+        
         return getSourceName() + ": " + errorMsg;
     }
 
@@ -46,18 +52,18 @@ class CommunicationException extends CommunicationBaseException {
         var errorMsg;
         // For some errors we return specific toast messages,
         // for all others a generic one
-        if( 
-            _responseCode == Communications.BLE_CONNECTION_UNAVAILABLE 
-            || _responseCode == Communications.BLE_HOST_TIMEOUT ) 
-        {
+        if( _responseCode == Communications.BLE_CONNECTION_UNAVAILABLE 
+            || _responseCode == Communications.BLE_HOST_TIMEOUT 
+        ) {
             return "No phone";
-        } else if ( 
-            _responseCode == Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE ) 
-        {
+        
+        } else if ( _responseCode == Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE ) {
             errorMsg = "INVRES";
+        
         } else {
             errorMsg = _responseCode.toString();
         }
+        
         return getSourceShortCode() + ":" + errorMsg;
     }
 
@@ -66,8 +72,10 @@ class CommunicationException extends CommunicationBaseException {
     public function isFatal() as Boolean {
         // return false; // activate this to use -1001 in simulator to test non-fatal errors
         return 
-            ( _responseCode == Communications.SECURE_CONNECTION_REQUIRED ) 
-            || ( _responseCode == 404 ); 
+            _responseCode == Communications.SECURE_CONNECTION_REQUIRED
+            || _responseCode == Communications.NETWORK_RESPONSE_TOO_LARGE
+            || _responseCode == Communications.NETWORK_RESPONSE_OUT_OF_MEMORY
+            || _responseCode == 404; 
     }
 
     // A -400 response code is one way an empty response from myopenhab.org 
