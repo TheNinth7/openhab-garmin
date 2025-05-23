@@ -102,17 +102,17 @@ class SitemapStore  {
             _label = null;
         }
         
-        Logger.debugMemory( _estimatedSitemapSize );
+        // Logger.debugMemory( _estimatedSitemapSize );
 
         // Only write to memory if the JSON takes less than 80kB in memory
         // Testing has shown that somewher around 90kB, Storage.setValue
         // will crash, independent of free memory
         if( _json != null && _estimatedSitemapSize <= 81920 ) {
-            Logger.debug( "SitemapStore: persisting JSON" );
+            // Logger.debug( "SitemapStore: persisting JSON" );
             Storage.setValue( STORAGE_JSON, _json as Array<Application.PropertyValueType> );
             _json = null;
         } else {
-            Logger.debug( "SitemapStore: not persisting, no JSON or JSON too large" );
+            // Logger.debug( "SitemapStore: not persisting, no JSON or JSON too large" );
         }
     }
 }

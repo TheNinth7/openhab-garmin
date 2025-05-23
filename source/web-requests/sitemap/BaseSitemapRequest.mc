@@ -110,7 +110,7 @@ class BaseSitemapRequest extends BaseRequest {
     // Makes the web request
     public function makeRequest() as Void {
         if( ! _isStopped ) {
-            Logger.debug( "BaseSitemapRequest: making request" );
+            // Logger.debug( "BaseSitemapRequest: making request" );
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
             _hasPendingRequest = true;
@@ -120,7 +120,7 @@ class BaseSitemapRequest extends BaseRequest {
     // Processes the response
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         _hasPendingRequest = false;
-        Logger.debug( "BaseSitemapRequest.onReceive");
+        // Logger.debug( "BaseSitemapRequest.onReceive");
 
         // Taking the stored polling interval in a
         // local variable, since it may be adjusted
@@ -139,11 +139,13 @@ class BaseSitemapRequest extends BaseRequest {
                 // an exception if the code/data is not OK
                 checkResponseCode( responseCode, SOURCE );
                 
-                Logger.debugMemory( 
+                /*
+                Logger.debugMemory(
                     System.getSystemStats().usedMemory
                     - _memoryUsedBeforeRequest 
                 );
-
+                */
+                
                 // We hand over the JSON to the `SitemapStore`, for storage
                 // and for creating the `SitemapHomepage`. data handed over
                 // is checked via checkResponse, and we also approximate the

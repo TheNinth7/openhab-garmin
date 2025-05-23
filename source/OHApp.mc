@@ -35,7 +35,7 @@ class OHApp extends Application.AppBase {
     // onStop() is called when the application is exiting
     (:typecheck(disableGlanceCheck))
     public function onStop(state as Dictionary?) as Void {
-        Logger.debug( "OHApp.onStop" );
+        // Logger.debug( "OHApp.onStop" );
         if( ! isGlance() ) {
             SitemapStore.persist();
         }
