@@ -20,6 +20,7 @@ public class Logger {
     }
 
     // Output a debug statement
+    (:debug)
     public static function debug( text as String ) as Void {
         var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var dateString = Lang.format(
@@ -36,6 +37,7 @@ public class Logger {
     }
 
     // Output the content of an exception
+    (:debug)
     public static function debugException( ex as Exception ) as Void {
         var errorMsg = ex.getErrorMessage();
         if( errorMsg != null ) {
@@ -60,7 +62,18 @@ public class Logger {
         }
     }
   
+    (:debug)
+    public static function debugMemory( estimatedSitemapSize as Number? ) as Void {
+        debug( "      Used memory = " + System.getSystemStats().usedMemory + " B" );
+        debug( "     Total memory = " + System.getSystemStats().totalMemory + " B" );
+        debug( "      Free memory = " + System.getSystemStats().freeMemory + " B" );
+        if( estimatedSitemapSize != null ) {
+            debug( "Est. sitemap size = " + estimatedSitemapSize + " B" );
+        }
+    }
+
     // For release builds, there shall be no debug output
-    // (:release) public static function debug( text as String ) as Void {}
-    // (:release) public static function debugException( ex as Exception ) as Void {}
+    (:release) public static function debug( text as String ) as Void {}
+    (:release) public static function debugException( ex as Exception ) as Void {}
+    (:release) public static function debugMemory( estimatedSitemapSize as Number? ) as Void {}
 }

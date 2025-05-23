@@ -139,6 +139,11 @@ class BaseSitemapRequest extends BaseRequest {
                 // an exception if the code/data is not OK
                 checkResponseCode( responseCode, SOURCE );
                 
+                Logger.debugMemory( 
+                    System.getSystemStats().usedMemory
+                    - _memoryUsedBeforeRequest 
+                );
+
                 // We hand over the JSON to the `SitemapStore`, for storage
                 // and for creating the `SitemapHomepage`. data handed over
                 // is checked via checkResponse, and we also approximate the

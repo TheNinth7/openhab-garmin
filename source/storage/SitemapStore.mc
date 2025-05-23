@@ -101,10 +101,8 @@ class SitemapStore  {
             Storage.setValue( STORAGE_LABEL, _label );
             _label = null;
         }
-        Logger.debug( "SitemapStore: used memory = " + System.getSystemStats().usedMemory + " B" );
-        Logger.debug( "SitemapStore: total memory = " + System.getSystemStats().totalMemory + " B" );
-        Logger.debug( "SitemapStore: free memory = " + System.getSystemStats().freeMemory + " B" );
-        Logger.debug( "SitemapStore: est. sitemap size = " + _estimatedSitemapSize + " B" );
+        
+        Logger.debugMemory( _estimatedSitemapSize );
 
         // Only write to memory if the JSON takes less than 80kB in memory
         // Testing has shown that somewher around 90kB, Storage.setValue
