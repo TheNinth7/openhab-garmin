@@ -9,8 +9,17 @@ import Toybox.Graphics;
  */
 class StatusText extends Text {
 
-    public var precomputedWidth as Number;
     private const FONT as FontDefinition = Constants.UI_MENU_ITEM_FONTS[0];
+
+    // The super class Text fills the width member
+    // only after Drawing. However we need the width
+    // for layout calculations, so we calculate it and store
+    // it here
+    public var precomputedWidth as Number;
+
+    // Keep the text do be able to detect if value passed
+    // into setText is an actual change
+    private var _text as String;
 
     // Constructor  
     public function initialize( text as String ) {
@@ -20,16 +29,20 @@ class StatusText extends Text {
             :color => Constants.UI_COLOR_ACTIONABLE,
             :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR            
         } );
+        _text = text;
         precomputedWidth = TextDimensions.getTextWidthInPixels( text, FONT );
     }
 
     // Updates the text status
     public function setText( text as Lang.String or Lang.ResourceId ) as Void {
-        if( text instanceof String ) {
-            Text.setText( text );
-            precomputedWidth = TextDimensions.getTextWidthInPixels( text, FONT );
-        } else {
-            throw new GeneralException( "StatusText does not support ResourceIds" );
+        if( ! text.equals( _text ) ) {
+            if( text instanceof String ) {
+                _text = text;
+                precomputedWidth = TextDimensions.getTextWidthInPixels( text, FONT );
+                Text.setText( text );
+            } else {
+                throw new GeneralException( "StatusText does not support ResourceIds" );
+            }
         }
     }
 }
