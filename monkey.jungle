@@ -137,10 +137,16 @@ fr265.resourcePath=$(resBase);$(resLauncherIcons)/60x60
 fr265.sourcePath=$(srcForerunner)
 fr265s.resourcePath=$(resBase);$(resLauncherIcons)/60x60
 fr265s.sourcePath=$(srcForerunner)
+fr57042mm.resourcePath=$(resBase);$(resLauncherIcons)/54x54
+fr57042mm.sourcePath=$(srcForerunner)
+fr57047mm.resourcePath=$(resBase);$(resLauncherIcons)/65x65
+fr57047mm.sourcePath=$(srcForerunner)
 fr955.resourcePath=$(resBase);$(resLauncherIcons)/40x40
 fr955.sourcePath=$(srcForerunner)
 fr965.resourcePath=$(resBase);$(resLauncherIcons)/65x65
 fr965.sourcePath=$(srcForerunner)
+fr970.resourcePath=$(resBase);$(resLauncherIcons)/65x65
+fr970.sourcePath=$(srcForerunner)
 
 # Touch devices with CIQ level between 4.0.0 and 5.0.0
 venu2.resourcePath=$(resBase);$(resLauncherIcons)/70x70
