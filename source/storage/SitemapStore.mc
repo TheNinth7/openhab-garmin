@@ -43,10 +43,6 @@ class SitemapStore  {
         }
         return _label;
     }
-    public static function updateLabel( label as String ) as Void {
-        _label = label;
-    }
-
 
     // Return the sitemap currently stored in Storage
     public static function getSitemapFromStorage() as SitemapHomepage? {
@@ -74,6 +70,7 @@ class SitemapStore  {
     }
 
     // Creates a new sitemap and updates the JSON
+    // as well as the label
     public static function updateSitemapFromJson( 
         json as JsonObject, 
         estimatedSitemapSize as Number ) 
@@ -82,7 +79,9 @@ class SitemapStore  {
         // passed in JSON
         _json = [json, Time.now().value()];
         _estimatedSitemapSize = estimatedSitemapSize;
-        return new SitemapHomepage( json, true );
+        var homepage = new SitemapHomepage( json, true );
+        _label = homepage.label;
+        return homepage;
     }
 
 
