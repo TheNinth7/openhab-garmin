@@ -110,8 +110,9 @@ class SitemapStore  {
             // Logger.debug( "SitemapStore: persisting JSON" );
             Storage.setValue( STORAGE_JSON, _json as Array<Application.PropertyValueType> );
             _json = null;
-        } else {
-            // Logger.debug( "SitemapStore: not persisting, no JSON or JSON too large" );
+        } else if ( _estimatedSitemapSize > 81920 ) {
+            // Logger.debug( "SitemapStore: not persisting, JSON too large" );
+            deleteSitemapFromStorage();
         }
     }
 }
