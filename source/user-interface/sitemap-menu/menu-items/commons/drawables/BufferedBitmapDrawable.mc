@@ -15,39 +15,39 @@ import Toybox.WatchUi;
  * https://github.com/TheNinth7/ohg/issues/89
  */
 
-// On older devices we use our own LegacyBufferedBitmap ...
-(:exclForCiq400Plus)
-typedef BufferedBitmapType as LegacyBufferedBitmap;
-// ... and on newer ones the standard BufferedBitmap
-(:exclForCiqPre400)
-typedef BufferedBitmapType as BufferedBitmap;
+// The options for this Drawable
+typedef BufferedBitmapDrawableOptions as { 
+    :bufferedBitmap as BufferedBitmapType,
+    :identifier as Lang.Object, 
+    :locX as Lang.Numeric, 
+    :locY as Lang.Numeric, 
+    :visible as Lang.Boolean 
+};
 
 class BufferedBitmapDrawable extends Drawable {
 
     private var _bufferedBitmap as BufferedBitmapType;
-    public function getBufferedBitmap() as BufferedBitmapType {
-        return _bufferedBitmap;
-    }
 
     // Constructor
-    // We use width and height from the buffered bitmap,
-    // and pass everything else to the Drawable super class.
-    public function initialize( options as BufferedBitmapOptions ) {
-        _bufferedBitmap = createBufferedBitmap( options );
+    // We fill width and height from the buffered bitmap,
+    // and pass it with the other options to the Drawable super class.
+    public function initialize( options as BufferedBitmapDrawableOptions ) {
+        _bufferedBitmap = options[:bufferedBitmap] as BufferedBitmapType;
+        options[:width] = _bufferedBitmap.getWidth();
+        options[:height] = _bufferedBitmap.getHeight();
         Drawable.initialize( options );
     }
 
-    // For CIQ < 4.0.0, this function creates a wrapper around `BufferedBitmap`
-    // that adds the necessary functions to use it with a `BufferedBitmapDrawable`.
-    (:exclForCiq400Plus)
-    private function createBufferedBitmap( options as BufferedBitmapOptions ) as BufferedBitmapType {
-        return new LegacyBufferedBitmap( options );
-    }
-    // For CIQ 4.0.0+, the BufferedBitmap provided by the SDK can be used
-    // directly with the `BufferedBitmapDrawable`
-    (:exclForCiqPre400)
-    private function createBufferedBitmap( options as BufferedBitmapOptions ) as BufferedBitmapType {
-        return Graphics.createBufferedBitmap( options ).get() as BufferedBitmap;
+    // When the bitmap is updated, we update the size
+    // in the Drawable super class
+    public function setBufferedBitmap( 
+        bufferedBitmap as BufferedBitmapType 
+    ) as Void {
+        _bufferedBitmap = bufferedBitmap;
+        setSize( 
+            bufferedBitmap.getWidth(), 
+            bufferedBitmap.getHeight()
+        );
     }
 
     // Draws the buffered bitmap on a Dc.
