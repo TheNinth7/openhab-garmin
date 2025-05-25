@@ -28,22 +28,22 @@ class CommunicationException extends CommunicationBaseException {
         if( _responseCode == Communications.BLE_CONNECTION_UNAVAILABLE 
             || _responseCode == Communications.BLE_HOST_TIMEOUT 
         ) {
-            return "No phone (" + _responseCode + ")";
+            return "No phone\n(" + _responseCode + ")";
         
         } else if ( _responseCode == Communications.INVALID_HTTP_BODY_IN_NETWORK_RESPONSE ) {
-            errorMsg = "Invalid response (" + _responseCode + ")";
+            errorMsg = "Invalid response\n(" + _responseCode + ")";
         
         } else if ( 
             _responseCode == Communications.NETWORK_RESPONSE_TOO_LARGE
             || _responseCode == Communications.NETWORK_RESPONSE_OUT_OF_MEMORY
         ) {
-            return "Sitemap too large (" + _responseCode + ")";
+            return "Sitemap too large\n(" + _responseCode + ")";
         
         } else {
-            errorMsg = "Request failed with code " + _responseCode;
+            errorMsg = "Request failed\n(" + _responseCode + ")";
         }
         
-        return getSourceName() + ": " + errorMsg;
+        return getSourceName() + ":\n" + errorMsg;
     }
 
     // Toast message
