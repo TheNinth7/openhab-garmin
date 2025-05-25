@@ -131,7 +131,7 @@ class SitemapRequest extends BaseRequest {
                 // - Pass any exceptions to the handleException() function below
                 // - Trigger the next request
                 SitemapProcessor.process( 
-                    new IncomingJson( 
+                    new SitemapJsonIncoming( 
                         checkResponse( data, SOURCE ), 
                         System.getSystemStats().usedMemory
                             - _memoryUsedBeforeRequest 
@@ -164,7 +164,7 @@ class SitemapRequest extends BaseRequest {
     // to trigger the next request after the current response has been
     // successfully processed.
     public function triggerNextRequest() as Void {
-        Logger.debug( "SitemapRequest: make next request" );
+        Logger.debug( "SitemapRequest: trigger next request" );
         triggerNextRequestInternal( _pollingInterval );
     }
 

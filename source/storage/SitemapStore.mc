@@ -49,7 +49,7 @@ class SitemapStore  {
     public static function getSitemapFromStorage() as SitemapHomepage? {
         _json = Storage.getValue( STORAGE_JSON ) as StoredJson?;
         if( _json != null ) {
-            return new SitemapHomepage( _json[0], isSitemapFresh() );
+            return new SitemapHomepage( _json[0], isSitemapFresh(), false );
         }
         return null;
     }
@@ -74,11 +74,12 @@ class SitemapStore  {
     // as well as the label
     (:typecheck(disableGlanceCheck))
     public static function updateSitemapFromJson( 
-        incomingJson as IncomingJson 
+        incomingJson as SitemapJsonIncoming,
+        asyncProcessing as Boolean
     ) as SitemapHomepage {
         _json = incomingJson.getForStorage();
         _estimatedSitemapSize = incomingJson.estimatedSize;
-        var homepage = new SitemapHomepage( incomingJson.json, true );
+        var homepage = new SitemapHomepage( incomingJson.json, true, asyncProcessing );
         _label = homepage.label;
         return homepage;
     }

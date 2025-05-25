@@ -37,7 +37,7 @@ class SitemapElement {
 
     // Returns a String from a given JsonObject, 
     // or an error message if the value is not present
-    protected function getString( data as JsonObject, id as String, errorMessage as String ) as String {
+    public function getString( data as JsonObject, id as String, errorMessage as String ) as String {
        var value = data[id] as String?;
         if( value == null || value.equals( "" ) ) {
             throw new JsonParsingException( errorMessage );

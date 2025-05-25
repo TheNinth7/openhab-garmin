@@ -4,6 +4,15 @@ import Toybox.WatchUi;
 /*
  * This class represents container elements within the sitemap,
  * such as the homepage and frame elements, which can hold other elements.
+ *
+ * It supports two modes for creating child elements:
+ * - Synchronous: used when no menu is currently displayed and speed is important
+ * - Asynchronous: used when a menu is already displayed and UI responsiveness is a priority
+ *
+ * These two modes are necessary because accessing the dictionaries
+ * in which the Garmin SDK packs the JSON data is relatively slow.
+ * Processing large structures synchronously can block the UI and
+ * lead to noticeable delays in user interaction.
  */
 class SitemapPage extends SitemapElement {
 
@@ -14,28 +23,42 @@ class SitemapPage extends SitemapElement {
     // The elements of this page
     public var elements as Array<SitemapElement> = new Array<SitemapElement>[0];
 
-    /*
-    * Primitve element classes are not available in the glance view to conserve memory.
-    * The constructor accounts for this by only reading elements when not in glance mode.
-    *
-    * However, the typechecker/compiler is unaware of this runtime check and would 
-    * otherwise report an error due to missing classes. To prevent this, type checking 
-    * is explicitly disabled for this function in glance scope.
-    */
-    public function initialize( data as JsonObject, isSitemapFresh as Boolean ) {
+    // Constructor
+    public function initialize( 
+        data as JsonObject, 
+        isSitemapFresh as Boolean,
+        asyncProcessing as Boolean
+    ) {
         SitemapElement.initialize( data, isSitemapFresh );
         // Loop through all JSON array elements
         var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found" );
         for( var i = 0; i < widgets.size(); i++ ) {
             var widget = widgets[i];
-            // Get the factory to create the appropriate element
-            elements.add( 
-                SitemapElementFactory.createByType( 
-                    getString( widget, TYPE, "Page '" + label + "': widget without type" ), 
-                    widget,
-                    isSitemapFresh 
-                ) 
-            );
+            var type = getString( widget, TYPE, "Page '" + label + "': widget without type" );
+
+            if( asyncProcessing ) {
+                // For async processing we queue a task
+                // TO THE FRONT of the queue (it needs to be 
+                // processed before the UI update task that has
+                // already been scheduled by `SitemapProcessor`)
+                TaskQueue.get().addToFront( 
+                    new SitemapPageBuildTask(
+                        self,
+                        widget,
+                        type
+                    )
+                );
+            } else {
+                // For synchronous processing we create the element right away
+                elements.add( 
+                    SitemapElementFactory.createByType( 
+                        type, 
+                        widget,
+                        isSitemapFresh,
+                        asyncProcessing
+                    ) 
+                );
+            }
         }
     }
 }

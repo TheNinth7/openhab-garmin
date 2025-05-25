@@ -19,15 +19,15 @@ import Toybox.WatchUi;
  *
  * For this, an instance of SitemapProcessor is created, and the instance
  * functions createSitemap() and updateUi() are executed via tasks defined in
- * AsyncSitemapTasks.mc, along with SitemapRequest.triggerNextRequest().
+ * SitemapProcessorTasks.mc, along with SitemapRequest.triggerNextRequest().
  */
 class SitemapProcessor {
 
     // STATIC MEMBERS
 
     // Main entry point for all JSONs incoming via web requests
-    public static function process( incomingJson as IncomingJson ) as Void {
-        Logger.debug( "SitemapProcessor: start" );
+    public static function process( incomingJson as SitemapJsonIncoming ) as Void {
+        Logger.debug( "SitemapProcessor: start processing incoming JSON" );
         if( ! HomepageMenu.exists() ) {
             // There is no menu yet, so we process the JSON
             // synchronously and switch from the LoadingView 
@@ -41,11 +41,14 @@ class SitemapProcessor {
     }
 
     // Synchronously create the HomepageMenu and switch to it
-    private static function switchToHomepage( incomingJson as IncomingJson ) as Void {
+    private static function switchToHomepage( incomingJson as SitemapJsonIncoming ) as Void {
         Logger.debug( "SitemapProcessor.switchToHomepage" );
         WatchUi.switchToView( 
             HomepageMenu.create( 
-                SitemapStore.updateSitemapFromJson( incomingJson )
+                SitemapStore.updateSitemapFromJson( 
+                    incomingJson,
+                    false
+                )
             ), 
             HomepageMenuDelegate.get(), 
             WatchUi.SLIDE_BLINK 
@@ -54,7 +57,7 @@ class SitemapProcessor {
     }
 
     // Update an existing HomepageMenu
-    private static function updateHomepageAsync( incomingJson as IncomingJson ) as Void {
+    private static function updateHomepageAsync( incomingJson as SitemapJsonIncoming ) as Void {
         Logger.debug( "SitemapProcessor.updateHomepageAsync" );
 
         // Create a processor instance
@@ -78,11 +81,11 @@ class SitemapProcessor {
 
     // The private instance retains the data that needs
     // to be passed on from on task to the next
-    private var _json as IncomingJson?;
+    private var _json as SitemapJsonIncoming?;
     private var _sitemapHomepage as SitemapHomepage?;
 
     // We initialize with the incoming JSON ...
-    private function initialize( incomingJson as IncomingJson ) {
+    private function initialize( incomingJson as SitemapJsonIncoming ) {
         _json = incomingJson;
     }
 
@@ -95,7 +98,10 @@ class SitemapProcessor {
             throw new GeneralException( "JSON does not exist" );
         }
         _sitemapHomepage = 
-            SitemapStore.updateSitemapFromJson( _json as IncomingJson );
+            SitemapStore.updateSitemapFromJson( 
+                _json as SitemapJsonIncoming,
+                true
+            );
         _json = null;
     }
 

@@ -7,7 +7,7 @@ import Toybox.Lang;
  * - The estimated size, as calculated by SitemapRequest
  * - The timestamp when the instance was created
  */
-class IncomingJson {
+class SitemapJsonIncoming {
     public var json as JsonObject;
     public var estimatedSize as Number;
     public var timestamp as Number;
