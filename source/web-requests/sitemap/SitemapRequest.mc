@@ -6,30 +6,23 @@ import Toybox.Application;
 import Toybox.Timer;
 
 /*
-    The base class of all sitemap web requests.
-    There are two derived classes, one each for doing the
-    sitemap request in the glance and in the widget.
-    This class:
-    - assembles the URL for the request
-    - implements the Communication.makeWebRequest
-      - start() starts the first web request
-      - after every response received, the next web request is scheduled
-        based on polling interval or executed immediately if polling 
-        interval is 0.
-      - stop() stops any further web requests from being executed.
-        if there is web request already underway, its response will NOT
-        be processed after stop() has been called.
-    - implements the onReceive() for processing the response. If successful,
-      onReceive() stores the result as SitemapHomepage in the SitemapStore
-    - provides three event handler functions that are called when a response 
-      is received
-      - onSitemapUpdate() for processing the response
-        HAS to be implemented by derived class
-      - onException() for processing any errors
-        HAS to be implemented by derived class
-      - onSuccess() final function called if response has been processed
-        without errors. CAN be overriden by derived class
-*/    
+ * This class handles web requests for sitemap data and follows the Singleton pattern.
+ *
+ * Responsibilities:
+ * - Constructs the URL for the sitemap request.
+ * - Implements Communication.makeWebRequest:
+ *     - start(): initiates the first web request.
+ *     - After each response, the next request is scheduled based on the polling interval.
+ *       If the polling interval is 0, the next request is triggered immediately.
+ *     - stop(): halts all further web requests.
+ *       If a request is already in progress, its response will be ignored after stop() is called.
+ * - Implements onReceive() to process responses:
+ *     - On success, stores the result as a SitemapHomepage in SitemapStore.
+ *     - Depending on the current UI state:
+ *         - If the menu structure doesn't exist (e.g., from LoadingView), it is created.
+ *         - If the menu already exists, it is updated.
+ *         - If currently in an error view and the response is valid, the error view is replaced with the menu structure.
+ */
 class SitemapRequest extends BaseRequest {
     
     // Defines the source value to be used for exception handling
