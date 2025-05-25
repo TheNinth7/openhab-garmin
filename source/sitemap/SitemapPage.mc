@@ -32,27 +32,34 @@ class SitemapPage extends SitemapElement {
         SitemapElement.initialize( data, isSitemapFresh );
         // Loop through all JSON array elements
         var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found" );
-        for( var i = 0; i < widgets.size(); i++ ) {
-            var widget = widgets[i];
-            var type = getString( widget, TYPE, "Page '" + label + "': widget without type" );
 
-            if( asyncProcessing ) {
-                // For async processing we queue a task
-                // TO THE FRONT of the queue (it needs to be 
-                // processed before the UI update task that has
-                // already been scheduled by `SitemapProcessor`)
+        if( asyncProcessing ) {
+            // For async processing we queue a task
+            // TO THE FRONT of the queue (it needs to be 
+            // processed before the UI update task that has
+            // already been scheduled by `SitemapProcessor`)
+            // Because each element is added to the front of
+            // the queue, they will be processed in reverse
+            // order. Therefore we add the last widget first
+            // and then continue down to the first from there
+            for( var i = widgets.size() - 1; i >= 0; i-- ) {
+                var widget = widgets[i];
                 TaskQueue.get().addToFront( 
                     new SitemapPageBuildTask(
                         self,
                         widget,
-                        type
+                        getString( widget, TYPE, "Page '" + label + "': widget without type" )
                     )
                 );
-            } else {
-                // For synchronous processing we create the element right away
+            }
+        } else {
+            // For synchronous processing we create and add the elements 
+            // right away, in same the order as in the JSON
+            for( var i = 0; i < widgets.size(); i++ ) {
+                var widget = widgets[i];
                 elements.add( 
                     SitemapElementFactory.createByType( 
-                        type, 
+                        getString( widget, TYPE, "Page '" + label + "': widget without type" ), 
                         widget,
                         isSitemapFresh,
                         asyncProcessing

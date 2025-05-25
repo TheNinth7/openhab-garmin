@@ -93,6 +93,11 @@ class SitemapRequest extends BaseRequest {
     // ignore the next response
     public function stop() as Void {
         _isStopped = true;
+        // When the SitemapRequest is stopped, all ongoing asynchronous
+        // processing is also halted. Tasks in the task queue are atomic
+        // in the sense that stopping between tasks will not cause any
+        // data inconsistencies.
+        TaskQueue.get().removeAll();
         if( _hasPendingRequest ) {
             _ignoreNextResponse = true;
         }
