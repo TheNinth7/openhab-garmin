@@ -3,7 +3,6 @@ import Toybox.Lang;
 /*
  * This class represents the root element of the sitemap (Homepage).
  */
-(:glance)
 class SitemapHomepage extends SitemapPage {
     // The homepage uses different field names for label and id
     public var LABEL as String = "title";

@@ -45,6 +45,7 @@ class SitemapStore  {
     }
 
     // Return the sitemap currently stored in Storage
+    (:typecheck(disableGlanceCheck))
     public static function getSitemapFromStorage() as SitemapHomepage? {
         _json = Storage.getValue( STORAGE_JSON ) as StoredJson?;
         if( _json != null ) {
@@ -71,6 +72,7 @@ class SitemapStore  {
 
     // Creates a new sitemap and updates the JSON
     // as well as the label
+    (:typecheck(disableGlanceCheck))
     public static function updateSitemapFromJson( 
         json as JsonObject, 
         estimatedSitemapSize as Number ) 

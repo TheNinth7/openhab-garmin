@@ -5,7 +5,6 @@ import Toybox.WatchUi;
  * This class represents container elements within the sitemap,
  * such as the homepage and frame elements, which can hold other elements.
  */
-(:glance)
 class SitemapPage extends SitemapElement {
 
     // JSON field names used
@@ -23,23 +22,20 @@ class SitemapPage extends SitemapElement {
     * otherwise report an error due to missing classes. To prevent this, type checking 
     * is explicitly disabled for this function in glance scope.
     */
-    (:typecheck(disableGlanceCheck))
     public function initialize( data as JsonObject, isSitemapFresh as Boolean ) {
         SitemapElement.initialize( data, isSitemapFresh );
-        if( ! OHApp.isGlance() ) {
-            // Loop through all JSON array elements
-            var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found" );
-            for( var i = 0; i < widgets.size(); i++ ) {
-                var widget = widgets[i];
-                // Get the factory to create the appropriate element
-                elements.add( 
-                    SitemapElementFactory.createByType( 
-                        getString( widget, TYPE, "Page '" + label + "': widget without type" ), 
-                        widget,
-                        isSitemapFresh 
-                    ) 
-                );
-            }
+        // Loop through all JSON array elements
+        var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found" );
+        for( var i = 0; i < widgets.size(); i++ ) {
+            var widget = widgets[i];
+            // Get the factory to create the appropriate element
+            elements.add( 
+                SitemapElementFactory.createByType( 
+                    getString( widget, TYPE, "Page '" + label + "': widget without type" ), 
+                    widget,
+                    isSitemapFresh 
+                ) 
+            );
         }
     }
 }

@@ -57,7 +57,7 @@ import Toybox.System;
 
     /*
     * Call this function to replace the currently displayed error view with another view.
-    * This is used, for example, by `WidgetSitemapRequest` when a subsequent request 
+    * This is used, for example, by `SitemapRequest` when a subsequent request 
     * succeeds after a fatal error.
     */
     public static function replace( view as Views, delegate as InputDelegates or Null ) as Void {

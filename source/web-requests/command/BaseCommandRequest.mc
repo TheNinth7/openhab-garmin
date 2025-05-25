@@ -70,7 +70,7 @@ class BaseCommandRequest extends BaseRequest {
     protected function makeWebRequest( parameters as Dictionary<Object, Object>? ) as Void {
         // Logger.debug "BaseCommandRequest: makeWebRequest to " + _url );
         try {
-            WidgetSitemapRequest.get().stop();
+            SitemapRequest.get().stop();
             // If there is more than one open request for this item,
             // we cancel all requests to avoid -101/BLE_QUEUE_FULL errors.
             // This will also cancel any ongoing sitemap requests, which is acceptable.
@@ -90,7 +90,7 @@ class BaseCommandRequest extends BaseRequest {
             _requestCounter++;
             Communications.makeWebRequest( _url, parameters, getBaseOptions(), method( :onReceive ) );
         } catch( ex ) {
-            WidgetSitemapRequest.get().start();
+            SitemapRequest.get().start();
             throw ex;
         }
     }
@@ -101,7 +101,7 @@ class BaseCommandRequest extends BaseRequest {
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
             _requestCounter--;
-            WidgetSitemapRequest.get().start();
+            SitemapRequest.get().start();
             checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND );
             _item.onCommandComplete();
         } catch( ex ) {

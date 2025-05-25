@@ -19,7 +19,6 @@ typedef WebRequestOptions as {
     :maxBandwidth as Lang.Number 
 };
 
-(:glance)
 class BaseRequest {
     
     // The options to be passed in Communications.makeWebRequest

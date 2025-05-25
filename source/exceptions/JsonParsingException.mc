@@ -2,9 +2,9 @@ import Toybox.Lang;
 
 /*
  * Exception thrown for errors encountered when parsing the JSON dictionary
- * from a web response or from storage into the data structures defined in `source/json`.
+ * from a web response or from storage into the data structures defined in `source/sitemap`.
  */
-(:glance)
+ (:glance)
 class JsonParsingException extends GeneralException {
     function initialize( msg as String ) {
         GeneralException.initialize( msg );

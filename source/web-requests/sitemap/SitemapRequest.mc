@@ -30,8 +30,7 @@ import Toybox.Timer;
       - onSuccess() final function called if response has been processed
         without errors. CAN be overriden by derived class
 */    
-(:glance)
-class BaseSitemapRequest extends BaseRequest {
+class SitemapRequest extends BaseRequest {
     
     // Defines the source value to be used for exception handling
     private static const SOURCE as CommunicationBaseException.Source = CommunicationBaseException.EX_SOURCE_SITEMAP;
@@ -43,11 +42,20 @@ class BaseSitemapRequest extends BaseRequest {
     // After an error, the next request will be sent after
     // this amount of time, factoring in the configured interval
     // and the minimum defined above
-    public static function getSitemapErrorPollingInterval() as Number {
+    private static function getSitemapErrorPollingInterval() as Number {
         return         
             AppSettings.getPollingInterval() > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
             ? AppSettings.getPollingInterval()
             : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL;
+    }
+
+    // Singleton instance and accessor
+    private static var _instance as SitemapRequest?;
+    public static function get() as SitemapRequest {
+        if( _instance == null ) {
+            _instance = new SitemapRequest();
+        }
+        return _instance as SitemapRequest;
     }
 
     // The assembled URL for the request
@@ -74,7 +82,7 @@ class BaseSitemapRequest extends BaseRequest {
     private var _memoryUsedBeforeRequest as Number = 0;
 
     // Constructor
-    protected function initialize( minimumPollingInterval as Number? ) {
+    private function initialize() {
         // Initialize super class
         BaseRequest.initialize( Communications.HTTP_REQUEST_METHOD_GET );
         // Set response content type
@@ -82,9 +90,6 @@ class BaseSitemapRequest extends BaseRequest {
 
         // Set the polling interval
         _pollingInterval = AppSettings.getPollingInterval();
-        if( minimumPollingInterval != null && _pollingInterval < minimumPollingInterval ) {
-            _pollingInterval = minimumPollingInterval;
-        }
         
         // Assemble the URL
         _url = AppSettings.getUrl() + "rest/sitemaps/" + AppSettings.getSitemap();
@@ -156,14 +161,52 @@ class BaseSitemapRequest extends BaseRequest {
                         System.getSystemStats().usedMemory
                         - _memoryUsedBeforeRequest );
                 
-                // Calling the event handlers for updated
-                // sitemap and successful completion of
-                // processing
-                onSitemapUpdate( sitemapHomepage );
-                onSuccess();
+                if( ! HomepageMenu.exists() ) {
+                    // There is no menu yet, so we need to switch
+                    // from the LoadingView to the menu
+                    WatchUi.switchToView( 
+                        HomepageMenu.create( sitemapHomepage ), 
+                        HomepageMenuDelegate.get(), 
+                        WatchUi.SLIDE_BLINK );
+                } else {
+                    // There is already a menu, so we update it
+
+                    var homepage = HomepageMenu.get();
+
+                    // the update function returns whether the structure of the menu
+                    // remained unchanged, i.e. if containers have been added or removed
+                    var structureRemainsValid = homepage.update( sitemapHomepage );
+                    
+                    // If we are in the settings menu, we do nothing
+                    if( ! SettingsMenuHandler.isShowingSettings() ) {
+                        // If the structure is not valid anymore, we reset the view
+                        // to the homepage, but only if we are not in the error view
+                        if(    ! structureRemainsValid 
+                            && ! ErrorView.isShowingErrorView() 
+                            && ! ( WatchUi.getCurrentView()[0] instanceof HomepageMenu ) ) {
+                            // If update returns false, the menu structure has changed
+                            // and we therefore replace the current view stack with
+                            // the homepage. If the current view already is the homepage,
+                            // then of course this is not necessary and we skip to the
+                            // WatchUi.requestUpdate() further below.
+                            // Logger.debug( "SitemapRequest.onReceive: resetting to homepage" );
+                            ViewHandler.popToBottomAndSwitch( homepage, HomepageMenuDelegate.get() );
+                        } else if( ErrorView.isShowingErrorView() ) {
+                            // If currently there is an error view, we replace it
+                            // by the homepage
+                            ErrorView.replace( homepage, HomepageMenuDelegate.get() );
+                        } else {
+                            // If the structure is still valid and no error is shown,
+                            // then we update the screen, showing the changes in the
+                            // currently displayed menu
+                            // Logger.debug( "SitemapRequest.onReceive: requesting UI update" );
+                            WatchUi.requestUpdate();
+                        }
+                    }
+                }
             } catch( ex ) {
-                // Calling the event handler for exceptions
-                onException( ex );
+                // Calling the handler for exceptions
+                ExceptionHandler.handleException( ex );
                 // If there is an error, the interval to the
                 // next request will be adjusted to the constant
                 // value defined at the beginning of this class
@@ -179,17 +222,5 @@ class BaseSitemapRequest extends BaseRequest {
                 makeRequest();
             }
         }
-    }
-
-    // Event handlers
-    // onSitemapUpdate() and onException() HAVE to be implemented by derived classes
-    protected function onSitemapUpdate( sitemapHomepage as SitemapHomepage ) as Void {
-        throw new AbstractMethodException( "BaseSitemapRequest.onSitemapUpdate" );
-    }
-    protected function onException( ex as Exception ) as Void {
-        throw new AbstractMethodException( "BaseSitemapRequest.onException" );
-    }
-    // onSuccess() can be overriden for additional functionality
-    public function onSuccess() as Void {
     }
 }

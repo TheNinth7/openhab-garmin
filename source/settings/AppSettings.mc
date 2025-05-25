@@ -4,7 +4,6 @@ import Toybox.Application.Properties;
 /*
 * Singleton class providing static access to application settings.
 */
-(:glance)
 class AppSettings {
 
     // Singleton accessor

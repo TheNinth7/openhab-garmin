@@ -10,7 +10,6 @@ import Toybox.WatchUi;
 typedef JsonObject as Dictionary<String,Object?>;
 typedef JsonArray as Array<JsonObject>;
 
-(:glance)
 class SitemapElement {
 
     // Default field names for id and label
