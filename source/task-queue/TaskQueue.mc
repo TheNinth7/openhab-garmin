@@ -1,22 +1,36 @@
 import Toybox.Lang;
 import Toybox.Timer;
 
-// CIQ apps are single-threaded and implement a kind of event queue,
-// in which events such as user input, timers or web responses are processed.
-// During the processing of an event others are blocked, which is especially
-// noticable with processing of user input being delayed.
-// Larger tasks should therefore be split into smaller ones and be processed
-// separately, with room inbetween to execute user inputs.
-// This task queue supports that. Tasks can be added to the queue and between 
-// each task and the next, there will be a timer, which basically ends
-// the current event processing and allows other events in the CIQ queue to
-// be processed
+/*
+ * CIQ apps are single-threaded and operate on an event queue.
+ * Events—such as user input, timers, or web responses—are processed
+ * one at a time. While one event is being processed, all others are blocked.
+ * This can lead to noticeable delays, particularly in user input responsiveness.
+ *
+ * To prevent such delays, larger tasks should be broken into smaller units,
+ * allowing time between them for other events (like user input) to be handled.
+ *
+ * This task queue supports that pattern. Tasks can be added to the queue, and
+ * a short timer is scheduled between each task. This timer ends the current
+ * event handling cycle and gives the CIQ runtime a chance to process other
+ * pending events before the next task begins.
+ *
+ * NOTE: Currently, this task queue is designed specifically for the asynchronous
+ * processing of incoming JSON data. It assumes that if any task in the sequence
+ * fails with an error, all subsequent tasks will be canceled.
+ */
+
+// Interface that has to be fullfiled by tasks
+typedef Task as interface {
+    function invoke() as Void;
+    function handleException( ex as Exception ) as Void;
+};
 
 class TaskQueue {
 
     // The task queue is a Singleton
     private static var _instance as TaskQueue?;
-    public static function getInstance() as TaskQueue {
+    public static function get() as TaskQueue {
         if( _instance == null ) { _instance = new TaskQueue(); }
         return _instance as TaskQueue;
     }
@@ -24,7 +38,7 @@ class TaskQueue {
     // it can not be instantiated from the outside
     private function initialize() {}
 
-    // Tasks are added as EvccTask objects
+    // Tasks need to fullfil the Task interface
     private var _tasks as Array<Task> = [];
     
     // The timer that controls the task execution
@@ -32,7 +46,7 @@ class TaskQueue {
     
     // Starts the timer for executing tasks
     private function startTimer() as Void {
-        Logger.debug( "TaskQueue: Starting timer" );
+        Logger.debug( "TaskQueue: starting timer" );
         _timer.start( method( :executeTasks ), 50, false );
     }
 
@@ -73,11 +87,18 @@ class TaskQueue {
 
             do {
                 var task = _tasks[0];
-                task.invoke();
+                try {
+                    task.invoke();
+                } catch( ex ) {
+                    task.handleException( ex );
+                }
                 _tasks.remove( task );
-            } while ( System.getTimer() < startTime + 200 );
+            } while ( 
+                System.getTimer() < startTime + 200 
+                && _tasks.size() > 0
+            );
 
-            Logger.debug( "TaskQueue: stop executing tasks after " + ( System.getTimer() - startTime ) + "ms (" + _tasks.size() + "remaining)" );
+            Logger.debug( "TaskQueue: stop executing tasks after " + ( System.getTimer() - startTime ) + "ms (" + _tasks.size() + " remaining)" );
 
             if( _tasks.size() > 0 ) {
                 startTimer();

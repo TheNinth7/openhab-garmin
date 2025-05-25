@@ -74,14 +74,11 @@ class SitemapStore  {
     // as well as the label
     (:typecheck(disableGlanceCheck))
     public static function updateSitemapFromJson( 
-        json as JsonObject, 
-        estimatedSitemapSize as Number ) 
-    as SitemapHomepage {
-        // The current timestamp is assigned to the
-        // passed in JSON
-        _json = [json, Time.now().value()];
-        _estimatedSitemapSize = estimatedSitemapSize;
-        var homepage = new SitemapHomepage( json, true );
+        incomingJson as IncomingJson 
+    ) as SitemapHomepage {
+        _json = incomingJson.getForStorage();
+        _estimatedSitemapSize = incomingJson.estimatedSize;
+        var homepage = new SitemapHomepage( incomingJson.json, true );
         _label = homepage.label;
         return homepage;
     }
