@@ -16,6 +16,7 @@ class SitemapHomepage extends SitemapPage {
         isSitemapFresh as Boolean,
         asyncProcessing as Boolean 
     ) {
+        //var start = System.getTimer();
         // We extract the homepage element and pass 
         // it on to the super class
         SitemapPage.initialize( 
@@ -23,5 +24,7 @@ class SitemapHomepage extends SitemapPage {
             isSitemapFresh,
             asyncProcessing
         );
+        //var end = System.getTimer();
+        //Logger.debug( "SitemapHomepage.initialize: " + ( end - start ) + "ms" );
     }
 }

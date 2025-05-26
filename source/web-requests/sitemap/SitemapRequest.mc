@@ -181,12 +181,12 @@ class SitemapRequest extends BaseRequest {
         if( delay > 0 ) {
             // Logger.debug( "BaseSitemapRequest: starting timer for " + _pollingInterval + "ms" );
             _timer.start( 
-                SitemapRequest.get().method( :makeRequest ), 
+                method( :makeRequest ), 
                 delay, 
                 false 
             );
         } else {
-            SitemapRequest.get().makeRequest();
+            makeRequest();
         }
     }
 }

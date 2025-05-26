@@ -9,7 +9,7 @@ import Toybox.System;
  * This class provides functions for printing debug output 
  * to the debug console or log file.
  */
-(:glance)
+//(:glance)
 public class Logger {
 
     // `Info` should be used where the output is a permanent part of the code,
@@ -20,7 +20,7 @@ public class Logger {
     }
 
     // Output a debug statement
-    (:debug)
+    //(:debug)
     public static function debug( text as String ) as Void {
         var now = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var dateString = Lang.format(
@@ -37,7 +37,7 @@ public class Logger {
     }
 
     // Output the content of an exception
-    (:debug)
+    //(:debug)
     public static function debugException( ex as Exception ) as Void {
         var errorMsg = ex.getErrorMessage();
         if( errorMsg != null ) {
@@ -62,7 +62,7 @@ public class Logger {
         }
     }
   
-    (:debug)
+    //(:debug)
     public static function debugMemory( estimatedSitemapSize as Number? ) as Void {
         debug( "      Used memory = " + System.getSystemStats().usedMemory + " B" );
         debug( "     Total memory = " + System.getSystemStats().totalMemory + " B" );
@@ -73,7 +73,7 @@ public class Logger {
     }
 
     // For release builds, there shall be no debug output
-    (:release) public static function debug( text as String ) as Void {}
-    (:release) public static function debugException( ex as Exception ) as Void {}
-    (:release) public static function debugMemory( estimatedSitemapSize as Number? ) as Void {}
+    //(:release) public static function debug( text as String ) as Void {}
+    //(:release) public static function debugException( ex as Exception ) as Void {}
+    //(:release) public static function debugMemory( estimatedSitemapSize as Number? ) as Void {}
 }

@@ -46,7 +46,7 @@ class TaskQueue {
     
     // Starts the timer for executing tasks
     private function startTimer() as Void {
-        Logger.debug( "TaskQueue: starting timer" );
+        // Logger.debug( "TaskQueue: starting timer" );
         _timer.start( method( :executeTasks ), 50, false );
     }
 
@@ -55,7 +55,7 @@ class TaskQueue {
 
     // Add a task
     public function add( task as Task ) as Void {
-        Logger.debug( "TaskQueue: add " + _tasks.size() );
+        // Logger.debug( "TaskQueue: add " + _tasks.size() );
         _tasks.add( task );
         // If there were no tasks in the queue, start the timer
         if( _tasks.size() == 1 ) {
@@ -66,7 +66,7 @@ class TaskQueue {
     // Add a task to the front of the queue, for cases where a task
     // should skip the line and be executed at the next opportunity
     public function addToFront( task as Task ) as Void {
-        Logger.debug( "TaskQueue: addToFront 1/" + _tasks.size() );
+        // Logger.debug( "TaskQueue: addToFront 1/" + _tasks.size() );
         var tasks = new Array<Task>[0];
         tasks.add( task );
         if( _tasks.size() > 0 ) {
@@ -80,7 +80,7 @@ class TaskQueue {
     // Executes the task next in the queue and then
     // if there are remaining tasks, start the timer again
     public function executeTasks() as Void {
-        Logger.debug( "TaskQueue: start executing tasks (" + _tasks.size() + " queued)" );
+        // Logger.debug( "TaskQueue: start executing tasks (" + _tasks.size() + " queued)" );
 
         try {
             var startTime = System.getTimer();
@@ -112,7 +112,7 @@ class TaskQueue {
     
     // Function to remove all tasks
     public function removeAll() as Void {
-        Logger.debug( "TaskQueue: removing all tasks" );
+        // Logger.debug( "TaskQueue: removing all tasks" );
         _tasks = new Array<Task>[0];
         _timer.stop();
     }
