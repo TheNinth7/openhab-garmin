@@ -111,6 +111,7 @@ class SitemapRequest extends BaseRequest {
         // data inconsistencies.
         TaskQueue.get().removeAll();
         if( _hasPendingRequest ) {
+            Logger.debug( "SitemapRequest.stop: pending request, will ignore the next response" );
             _ignoreNextResponse = true;
         }
     }

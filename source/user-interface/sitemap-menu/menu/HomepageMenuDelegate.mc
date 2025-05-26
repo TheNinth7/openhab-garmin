@@ -67,4 +67,12 @@ class HomepageMenuDelegate extends PageMenuDelegate {
         }
         return false;
     }
+
+    // The base class uses ViewHandler.popView, which is
+    // protected against leaving the homepage (=root) menu
+    // Therefore here we override onBack and use the
+    // standard popView()
+    public function onBack() as Void {
+        WatchUi.popView( WatchUi.SLIDE_RIGHT );
+    }
 }
