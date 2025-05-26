@@ -31,8 +31,8 @@ class BaseInputHint extends Drawable {
     // Association of Type with colors
     private const UI_INPUT_HINT_COLORS as Array<ColorType> = [
         Constants.UI_COLOR_TEXT,
-        Constants.UI_COLOR_POSITIVE,
-        Constants.UI_COLOR_DESTRUCTIVE
+        Constants.UI_COLOR_TEXT,  // Constants.UI_COLOR_POSITIVE,
+        Constants.UI_COLOR_TEXT   //Constants.UI_COLOR_DESTRUCTIVE
     ];
     // Association of Type with icons
     private const UI_INPUT_HINT_ICONS as Array<ResourceId?> = [
@@ -43,7 +43,7 @@ class BaseInputHint extends Drawable {
 
     // Default line width
     public const LINE_WIDTH as Number = 
-        ( 0.015 * Constants.UI_SCREEN_WIDTH ).toNumber(); // line width is calculated proportionally to the screen width
+        ( 0.01 * Constants.UI_SCREEN_WIDTH ).toNumber(); // line width is calculated proportionally to the screen width
 
     protected var _position as Number; // The position (angle for round, y coordinate for rectangular)
     protected var _color as ColorType;
