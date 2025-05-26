@@ -44,6 +44,7 @@ class TriggerNextRequestTask extends BaseAsyncSitemapTask {
         BaseAsyncSitemapTask.initialize( sitemapProcessor );
     }
     public function invoke() as Void {
+        Logger.debug( "TriggerNextRequestTask.invoke" );
         SitemapRequest.get().triggerNextRequest();
     }
 }

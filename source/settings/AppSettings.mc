@@ -44,16 +44,22 @@ class AppSettings {
     // The constructor stores all settings in the following
     // variables. They need to be public, because otherwise
     // the static accessors cannot access them
-    public var url as String;
-    public var sitemap as String;
-    public var vSupportsRESTAPI as Boolean = false;
+    public var url as String = "http://net-nas-1:8080/";
+    public var sitemap as String = "garmin_stress";
+    public var vSupportsRESTAPI as Boolean = true;
+    public var pollingInterval as Number = 0;
+    public var user as String = "";
+
+    // public var url as String;
+    // public var sitemap as String;
+    // public var vSupportsRESTAPI as Boolean = false;
     public var vSuppressEmtpyResponses as Boolean = false;
     public var vSupportsWebHook as Boolean = false;
     public var webhook as String = "";
     public var vNeedsBasicAuth as Boolean = false;
-    public var user as String;
+    // public var user as String;
     public var password as String?;
-    public var pollingInterval as Number;
+    // public var pollingInterval as Number;
 
     /*
     * Constructor.
@@ -61,6 +67,7 @@ class AppSettings {
     * To support multiple servers in the future, this should be refactored
     * to load settings dynamically when a new server is selected.
     */
+/*
     private function initialize() {
         // Read the server URL
         url = getString( URL_PREFIX + _index, "Configuration: URL is missing" );
@@ -95,7 +102,7 @@ class AppSettings {
         // The polling interval defines how often sitemap data is polled
         pollingInterval = Properties.getValue( INTERVAL_PREFIX + _index ) as Number;
     }
-
+*/
     // Helper function that reads a string setting and throws an error if it
     // is not set
     private function getString( name as String, errorMessage as String ) as String {

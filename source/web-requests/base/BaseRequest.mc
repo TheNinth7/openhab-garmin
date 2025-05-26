@@ -57,16 +57,32 @@ class BaseRequest {
     // The response itself is processed by the onReceive functions
     // of the derived classes. They can make use of the following
     // two functions for checking response code and response data
-    protected function checkResponseCode( responseCode as Number, source as CommunicationBaseException.Source ) as Void {
+    //
+    // There may be situations (request cancelling in particular),
+    // where no error is raised but still further processing should
+    // be supressed. This is reflected in the return:
+    // true - response shall be processed
+    // false - response shall not be processed
+    protected function checkResponseCode( 
+        responseCode as Number, 
+        source as CommunicationBaseException.Source 
+    ) as Boolean {
         // Any response code other than 200 results in an error.
         // Exception: if _cancelMode is active, REQUEST_CANCELLED
         // responses are ignored.
-        if( responseCode != 200 &&
-            !( _cancelMode && responseCode == Communications.REQUEST_CANCELLED ) ) {
+        if( responseCode == 200 ) {
+            return true;
+        } else if ( _cancelMode && responseCode == Communications.REQUEST_CANCELLED ) {
+            return false;
+        } else {
             throw new CommunicationException(responseCode, source);
-        }    
+        }
     }
-    protected function checkResponse( data as Object?, source as CommunicationBaseException.Source ) as JsonObject {
+
+    protected function checkResponse( 
+        data as Object?, 
+        source as CommunicationBaseException.Source 
+    ) as JsonObject {
         if( ! ( data instanceof Dictionary ) ) {
             throw new UnexpectedResponseException( data, source );
         }
@@ -81,7 +97,7 @@ class BaseRequest {
     // cancellations were intentional, so no error should be 
     // reported (see checkResponseCode()).
     private static var _cancelMode as Boolean = false;
-    protected function cancelAllRequests() as Void {
+    protected static function cancelAllRequests() as Void {
         _cancelMode = true;
         Communications.cancelAllRequests();
         _cancelMode = false;

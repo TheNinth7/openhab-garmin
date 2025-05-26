@@ -154,3 +154,4 @@ class SitemapProcessor {
         _sitemapHomepage = null;
     }
 }
+    

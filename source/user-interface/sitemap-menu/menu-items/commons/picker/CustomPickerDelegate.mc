@@ -45,6 +45,7 @@ class CustomPickerDelegate extends CustomBehaviorDelegate {
 
     // React to key presses
     public function onKey( keyEvent as KeyEvent ) as Boolean {
+        Logger.debug( "CustomPickerDelegate.onKey: start" );
         var key = keyEvent.getKey();
         if( key == KEY_ENTER ) {
             return onAccept( getCurrentValue() );
@@ -53,6 +54,7 @@ class CustomPickerDelegate extends CustomBehaviorDelegate {
         } else if( key == KEY_DOWN ) {
             return onDownInternal();
         }
+        Logger.debug( "CustomPickerDelegate.onKey: end" );
         return false;
     }
 

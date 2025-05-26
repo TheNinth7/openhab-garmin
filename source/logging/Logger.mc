@@ -46,7 +46,7 @@ public class Logger {
         // For communication exceptions, the source is known. Additionally,
         // there is a bug in the SDK that causes an exception in `printStackTrace`, 
         // particularly when the exception is thrown during a synchronous call 
-        // to `BaseSitemapRequest.onReceive()` during startup.
+        // to `SitemapRequest.onReceive()` during startup.
         if( ! ( 
                 ex instanceof CommunicationBaseException 
                 ||

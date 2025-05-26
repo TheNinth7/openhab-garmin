@@ -48,8 +48,12 @@ class SitemapRequest extends BaseRequest {
     private var _url as String;
     
     // Members for controlling the behavior when stopped.
-    // if _isStopped is true, no further requests will be allowed
-    private var _isStopped as Boolean = true;
+    // if _stopCount is > 0, no further requests will be allowed
+    // Each stop will increase the stop count, and only after
+    // one start was called for each stop, requests are continued
+    // We start stopped, so the initial value is 1
+    private var _stopCount as Number = 1;
+
     // _hasPendingRequest is true if we are inbetween a makeRequest()
     // and an onReceive
     private var _hasPendingRequest as Boolean = false;
@@ -83,8 +87,15 @@ class SitemapRequest extends BaseRequest {
 
     // Start and stop the repeated makeRequest
     public function start() as Void {
-        if( _isStopped ) {
-            _isStopped = false;
+        Logger.debug( "SitemapRequest.start" );
+        if( _stopCount <= 0 ) {
+            throw new GeneralException( "Tried to start already running sitemap request" );
+        } else {
+            _stopCount--;
+            Logger.debug( "SitemapRequest.start: new count=" + _stopCount );
+        }
+        if( _stopCount == 0 ) {
+            Logger.debug( "SitemapRequest.start: making request" );
             makeRequest();
         }
     }
@@ -92,7 +103,8 @@ class SitemapRequest extends BaseRequest {
     // If there is a pending request, onReceive() is instructed to
     // ignore the next response
     public function stop() as Void {
-        _isStopped = true;
+        _stopCount++;
+        Logger.debug( "SitemapRequest.stop: new count=" + _stopCount );
         // When the SitemapRequest is stopped, all ongoing asynchronous
         // processing is also halted. Tasks in the task queue are atomic
         // in the sense that stopping between tasks will not cause any
@@ -105,8 +117,10 @@ class SitemapRequest extends BaseRequest {
 
     // Makes the web request
     public function makeRequest() as Void {
-        if( ! _isStopped ) {
-            // Logger.debug( "BaseSitemapRequest: making request" );
+        Logger.debug( "SitemapRequest: makeRequest" );
+        // If we are stopped we do not execute any make
+        // requests anymore
+        if( _stopCount <= 0 && ! _hasPendingRequest ) {
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
             _hasPendingRequest = true;
@@ -116,38 +130,42 @@ class SitemapRequest extends BaseRequest {
     // Processes the response
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         _hasPendingRequest = false;
-        // Logger.debug( "BaseSitemapRequest.onReceive");
+        Logger.debug( "SitemapRequest.onReceive: start" );
 
         // When stop() is called, and there is a pending request, then
         // _ignoreNextResponse is set true. onReceive() acts on this,
         // ignores the next response and resets the member
         if( _ignoreNextResponse ) {
+            Logger.debug( "SitemapRequest.onReceive: ignoring this response");
             _ignoreNextResponse = false;
         } else {
             try {
-                // Verify response code and response data
-                // These functions of the super class throw
-                // an exception if the code/data is not OK
-                checkResponseCode( responseCode, SOURCE );
-                
-                // The JSON is passed to the SitemapProcessor, which will:
-                // - Update the SitemapStore
-                // - Synchronously create or asynchronously update the menu structure
-                // - Pass any exceptions to the handleException() function below
-                // - Trigger the next request
-                SitemapProcessor.process( 
-                    new SitemapJsonIncoming( 
-                        checkResponse( data, SOURCE ), 
-                        System.getSystemStats().usedMemory
-                            - _memoryUsedBeforeRequest 
-                    )
-                );
-
+                // Verify response code and response data (in the call to process)
+                // These functions of the super class throw an exception if the 
+                // code/data is not OK. Additionally checkResponseCode may return
+                // false in conditions where no error is raised but the response
+                // shall be ignored
+                if( checkResponseCode( responseCode, SOURCE ) ) {
+                    // The JSON is passed to the SitemapProcessor, which will:
+                    // - Update the SitemapStore
+                    // - Synchronously create or asynchronously update the menu structure
+                    // - Pass any exceptions to the handleException() function below
+                    // - Trigger the next request
+                    SitemapProcessor.process( 
+                        new SitemapJsonIncoming( 
+                            checkResponse( data, SOURCE ), 
+                            System.getSystemStats().usedMemory
+                                - _memoryUsedBeforeRequest 
+                        )
+                    );
+                }
             } catch( ex ) {
                 // Calling the handler for exceptions
+                Logger.debug( "SitemapRequest.onReceive: exception");
                 handleException( ex );
             }
         }
+        Logger.debug( "SitemapRequest.onReceive: end");
     }
 
     // Handles exceptions from onReceive() and the SitemapProcessor.
@@ -156,7 +174,7 @@ class SitemapRequest extends BaseRequest {
     // - the error polling interval, or
     // - the configured regular polling interval.
     public function handleException( ex as Exception ) as Void {
-        Logger.debug( "SitemapRequest: handling exception" );
+        Logger.debug( "SitemapRequest.handleException" );
         ExceptionHandler.handleException( ex );
         triggerNextRequestInternal( 
             _pollingInterval > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
@@ -169,17 +187,18 @@ class SitemapRequest extends BaseRequest {
     // to trigger the next request after the current response has been
     // successfully processed.
     public function triggerNextRequest() as Void {
-        Logger.debug( "SitemapRequest: trigger next request" );
+        Logger.debug( "SitemapRequest.triggerNextRequest" );
         triggerNextRequestInternal( _pollingInterval );
     }
 
     // Internal function for triggering the next request,
     // used both by handleException() and triggerNextRequest()
     private function triggerNextRequestInternal( delay as Number ) as Void {
+        Logger.debug( "SitemapRequest.triggerNextRequestInternal" );
         // Depending on the delay the next request is
         // scheduled via timer or triggered immediately
         if( delay > 0 ) {
-            // Logger.debug( "BaseSitemapRequest: starting timer for " + _pollingInterval + "ms" );
+            // Logger.debug( "SitemapRequest: starting timer for " + _pollingInterval + "ms" );
             _timer.start( 
                 method( :makeRequest ), 
                 delay, 

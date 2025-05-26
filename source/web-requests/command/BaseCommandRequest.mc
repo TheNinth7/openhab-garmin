@@ -70,6 +70,7 @@ class BaseCommandRequest extends BaseRequest {
     protected function makeWebRequest( parameters as Dictionary<Object, Object>? ) as Void {
         // Logger.debug "BaseCommandRequest: makeWebRequest to " + _url );
         try {
+            Logger.debug( "BaseCommandRequest.makeWebRequest: stopping sitemap request" );
             SitemapRequest.get().stop();
             // If there is more than one open request for this item,
             // we cancel all requests to avoid -101/BLE_QUEUE_FULL errors.
@@ -83,13 +84,14 @@ class BaseCommandRequest extends BaseRequest {
             // from a menu item, the menu system blocks new commands until the
             // previous one has completed.
             if( _requestCounter > 0 ) {
-                // Logger.debug "BaseCommandRequest: cancelling previous requests!" );
+                Logger.debug( "BaseCommandRequest: cancelling previous requests!" );
                 cancelAllRequests();
                 _requestCounter = 0;
             }
             _requestCounter++;
             Communications.makeWebRequest( _url, parameters, getBaseOptions(), method( :onReceive ) );
         } catch( ex ) {
+            Logger.debug( "BaseCommandRequest.makeWebRequest: restarting sitemap request after error" );
             SitemapRequest.get().start();
             throw ex;
         }
@@ -101,9 +103,11 @@ class BaseCommandRequest extends BaseRequest {
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
         try {
             _requestCounter--;
+            Logger.debug( "BaseCommandRequest.onReceive: restarting sitemap request" );
             SitemapRequest.get().start();
-            checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND );
-            _item.onCommandComplete();
+            if( checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND ) ) {
+                _item.onCommandComplete();
+            }
         } catch( ex ) {
             _item.onException( ex );
             ExceptionHandler.handleException( ex );
