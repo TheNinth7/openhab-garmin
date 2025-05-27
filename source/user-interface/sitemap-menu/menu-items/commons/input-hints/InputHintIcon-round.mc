@@ -45,7 +45,7 @@ class InputHintIcon extends Bitmap {
         // The distance from the screen center to the center of the icon
         // Factor 1.1 is to keep a bit distance between the input hint and
         // the icon
-        var centerToCenter = xCenterIcon - lineWidth - ( diagonal / 2 * 1.3 ).toNumber();
+        var centerToCenter = xCenterIcon - lineWidth - ( diagonal / 2 * 1.4 ).toNumber();
 
         // Use trigonometry to calculate center position of the hint
         // Source for formulas: http://elsenaju.info/Rechnen/Trigonometrie.htm

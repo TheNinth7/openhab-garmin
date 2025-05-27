@@ -9,9 +9,15 @@
     <bitmap id="iconRight" scaleY="5%" filename="../svg/arrow-right.svg" dithering="none" />
     <bitmap id="iconCheck" scaleX="15%" filename="../svg/check.svg" dithering="none" />
     <bitmap id="iconCancel" scaleX="15%" filename="../svg/cancel.svg" dithering="none" />
+    <!-- 
+    Custom icons for check and cancel
+    If using those, also set the centerToCenter factor to 1.3 in InputHicon-round.mc
     <bitmap id="iconCheckHint" scaleY="10%" filename="../svg/check_hint.svg" dithering="none" />
     <bitmap id="iconCancelHint" scaleY="10%" filename="../svg/cancel_hint.svg" dithering="none" />
-
+    -->
+    <bitmap id="iconCheckHint" scaleY="9%" personality="system_icon_positive__check" />
+    <bitmap id="iconCancelHint" scaleY="9%" personality="system_icon_destructive__cancel" />
+ 
     <bitmap id="menuSettings" scaleX="10%" filename="../svg/settings.svg" dithering="none" />
     <bitmap id="menuFolder" scaleY="20%" filename="../svg/folder.svg" dithering="none" />
     <bitmap id="menuFolder" scaleY="20%" filename="../svg/folder.svg" dithering="none" />
