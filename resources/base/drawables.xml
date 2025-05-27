@@ -16,7 +16,7 @@
     <bitmap id="iconCancelHint" scaleY="10%" filename="../svg/cancel_hint.svg" dithering="none" />
     -->
     <bitmap id="iconCheckHint" scaleY="9%" personality="system_icon_positive__check" />
-    <bitmap id="iconCancelHint" scaleY="9%" personality="system_icon_destructive__cancel" />
+    <bitmap id="iconCancelHint" scaleY="8%" personality="system_icon_destructive__cancel" />
  
     <bitmap id="menuSettings" scaleX="10%" filename="../svg/settings.svg" dithering="none" />
     <bitmap id="menuFolder" scaleY="20%" filename="../svg/folder.svg" dithering="none" />
