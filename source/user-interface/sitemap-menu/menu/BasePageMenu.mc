@@ -60,7 +60,7 @@ class BasePageMenu extends BaseMenu {
     * items will be repurposed or extended as needed.
     */
     public function update( sitemapPage as SitemapPage ) as Boolean {
-        // Logger.debug( "PageMenu.update: updating page '" + _label + "'" );
+        Logger.debug( "PageMenu.update: updating page '" + _label + "'" );
 
         var itemCount = getItemCount();
 
@@ -80,7 +80,7 @@ class BasePageMenu extends BaseMenu {
             if( itemIndex == -1 ) {
                 // If the item does not exist yet, we create it
                 addItem( MenuItemFactory.createMenuItem( element ) );
-                // Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
+                Logger.debug( "PageMenu.update: adding new item to page '" + _label + "'" );
             } else {
                 // If the item is found, we check if the type of the menu
                 // item is the same or has changed
@@ -89,7 +89,7 @@ class BasePageMenu extends BaseMenu {
                     // If the type is the same, we update the menu item
                     if( item.update( element ) == false ) {
                         structureRemainsValid = false;
-                        // Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' invalid" );
+                        Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' invalid" );
                     }
                 } else {
                     // If the type is not the same, we create a new item
@@ -97,7 +97,7 @@ class BasePageMenu extends BaseMenu {
                     var newItem = MenuItemFactory.createMenuItem( element );
                     if( item instanceof PageMenuItem || newItem instanceof PageMenuItem ) {
                         structureRemainsValid = false;
-                        // Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
+                        Logger.debug( "PageMenu.update: page '" + _label + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
 
                     }
                     updateItem( newItem, itemIndex );
@@ -107,13 +107,13 @@ class BasePageMenu extends BaseMenu {
         // Remove all menu items that do not have a corresponding
         // sitemap element anymore
     
-        // Logger.debug( "PageMenu.update: moving to item deletion, i=" + i );
+        Logger.debug( "PageMenu.update: moving to item deletion, i=" + i );
         while( getItem( i ) != null ) {
             if( getItem( i ) instanceof PageMenuItem ) {
                 structureRemainsValid = false;
-                // Logger.debug( "PageMenu.update: page '" + _label + "' invalid because subpage was removed" );
+                Logger.debug( "PageMenu.update: page '" + _label + "' invalid because subpage was removed" );
             }
-            // Logger.debug( "PageMenu.update: deleting item , i=" + i );
+            Logger.debug( "PageMenu.update: deleting item , i=" + i );
             deleteItem( i );
         }
 
@@ -129,7 +129,7 @@ class BasePageMenu extends BaseMenu {
         if( itemCount != getItemCount() ) {
             // ... and this menu is the current view ...
             if( self.equals( WatchUi.getCurrentView()[0] ) ) {
-                // Logger.debug( "PageMenu.update: switching the view!" );
+                Logger.debug( "PageMenu.update: switching the view!" );
                 
                 // We do the switch to itself
                 WatchUi.switchToView(
