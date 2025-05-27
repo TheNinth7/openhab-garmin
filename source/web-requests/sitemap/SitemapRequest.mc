@@ -123,15 +123,16 @@ class SitemapRequest extends BaseRequest {
 
     // Makes the web request
     public function makeRequest() as Void {
-        Logger.debug( "SitemapRequest.makeRequest" );
         // If we are stopped we do not execute any make
         // requests anymore
         if( _stopCount <= 0 && ! _hasPendingRequest ) {
             _requestCount++;
-            Logger.debug( "SitemapRequest.makeRequest: #" + _requestCount );
+            Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
             _hasPendingRequest = true;
+        } else {
+            Logger.debug( "SitemapRequest.makeRequest: stopped or has pending request, not executed" );
         }
     }
 
