@@ -6,7 +6,7 @@ import Toybox.Lang;
  *
  * The response is handled by the following tasks:
  *
- * - CreateSitemapTask:
+ * 1) CreateSitemapTask:
  *     Triggered by `SitemapProcessor` with a JSON dictionary as input.
  *     It creates a `SitemapHomepage` and then schedules the next task.
  *     NOTE: Parsing the JSON dictionary is a time-consuming operation.
@@ -14,11 +14,19 @@ import Toybox.Lang;
  *     to the *front of the queue*, ensuring they are executed before the
  *     next task.
  *
- * - UpdateUiTask:
- *     Updates the menu structure. Depending on the current UI state, it
- *     either refreshes the existing view or switches from an error view.
+ * 2) UpdateMenuTask:
+ *     Updates the menu structure.
+ *     NOTE: This can be time-consuming, so BaseMenuPage.update() splits the
+ *     update into smaller tasks, which are added to the **front** of the task queue.
  *
- * - MakeNextRequestTask:
+ * 3) RefreshUiTask:
+ *     Refreshes the UI based on the current state:
+ *       - If in a valid menu, refreshes the current screen.
+ *       - If the menu structure is invalid or an error view is active, 
+ *         navigates to the homepage menu.
+ *       - If in the settings menu, does nothing.
+ *
+ * 4) MakeNextRequestTask:
  *     Initiates the next web request to update the sitemap.
  */
 
@@ -50,7 +58,7 @@ class CreateSitemapTask extends BaseAsyncSitemapTask {
         Logger.debug( "CreateSitemapTask.invoke" );
 
         TaskQueue.get().add( 
-            new UpdateUiTask(
+            new UpdateMenuTask(
                 SitemapStore.updateSitemapFromJson( 
                     _json,
                     true
@@ -60,10 +68,8 @@ class CreateSitemapTask extends BaseAsyncSitemapTask {
     }
 }
 
-// ... next step is to update the UI ...
-// This function updates the menu structure and if we are
-// currently in an ErrorView switch back to the menu
-class UpdateUiTask extends BaseAsyncSitemapTask {
+// ... next step is to update the menu structure ...
+class UpdateMenuTask extends BaseAsyncSitemapTask {
 
     // This tasks needs the SitemapHomepage representing the
     // newly incoming data as input
@@ -74,8 +80,40 @@ class UpdateUiTask extends BaseAsyncSitemapTask {
     }
 
     public function invoke() as Void {
+        Logger.debug( "UpdateMenuTask.invoke" );
+        if( ! HomepageMenu.exists() ) {
+            throw new GeneralException( "HomepageMenu does not exist" );
+        }
+        var homepage = HomepageMenu.get();
+        // the update function returns whether the structure of the menu
+        // remained unchanged, i.e. if containers have been added or removed
+        // This info is needed by the next task
+        TaskQueue.get().add( 
+            new RefreshUiTask(
+                homepage.update( _sitemapHomepage )
+            ) 
+        );
+    }
+}
+
+// Refresh the UI based on the current context and menu validity:
+//
+// - If currently in a menu and the menu structure remains valid (as per task input),
+//   refresh the current screen.
+// - If the menu structure is no longer valid, navigate to the root (homepage) menu.
+// - If currently in an error view, navigate to the homepage menu.
+// - If currently in the settings menu, do nothing.
+class RefreshUiTask extends BaseAsyncSitemapTask {
+
+    private var _structureRemainsValid as Boolean;
+    public function initialize( structureRemainsValid as Boolean ) {
+        BaseAsyncSitemapTask.initialize();
+        _structureRemainsValid = structureRemainsValid;
+    }
+
+    public function invoke() as Void {
         
-        Logger.debug( "UpdateUiTask.invoke" );
+        Logger.debug( "RefreshUiTask.invoke" );
 
         if( ! HomepageMenu.exists() ) {
             throw new GeneralException( "HomepageMenu does not exist" );
@@ -83,16 +121,11 @@ class UpdateUiTask extends BaseAsyncSitemapTask {
 
         var homepage = HomepageMenu.get();
 
-        // the update function returns whether the structure of the menu
-        // remained unchanged, i.e. if containers have been added or removed
-        var structureRemainsValid = 
-            homepage.update( _sitemapHomepage as SitemapHomepage );
-        
         // If we are in the settings menu, we do nothing
         if( ! SettingsMenuHandler.isShowingSettings() ) {
             // If the structure is not valid anymore, we reset the view
             // to the homepage, but only if we are not in the error view
-            if(    ! structureRemainsValid 
+            if(    ! _structureRemainsValid 
                 && ! ErrorView.isShowingErrorView() 
                 && ! ( WatchUi.getCurrentView()[0] instanceof HomepageMenu ) ) {
                 // If update returns false, the menu structure has changed
