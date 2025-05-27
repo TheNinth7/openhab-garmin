@@ -66,6 +66,11 @@ class SitemapRequest extends BaseRequest {
     private var _pollingInterval as Number;
     private var _timer as Timer.Timer = new Timer.Timer();
 
+    // Stores the number of requests sent, for debugging
+    // purposes
+    private var _requestCount as Number = 0;
+    private var _responseCount as Number = 0;
+
     // Store the memory usage before making the request, to
     // estimate the memory used by the received JSON
     // See `SitemapStore` for details.
@@ -118,10 +123,12 @@ class SitemapRequest extends BaseRequest {
 
     // Makes the web request
     public function makeRequest() as Void {
-        Logger.debug( "SitemapRequest: makeRequest" );
+        Logger.debug( "SitemapRequest.makeRequest" );
         // If we are stopped we do not execute any make
         // requests anymore
         if( _stopCount <= 0 && ! _hasPendingRequest ) {
+            _requestCount++;
+            Logger.debug( "SitemapRequest.makeRequest: #" + _requestCount );
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
             _hasPendingRequest = true;
@@ -129,9 +136,16 @@ class SitemapRequest extends BaseRequest {
     }
 
     // Processes the response
-    public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
+    public function onReceive( 
+        responseCode as Number, 
+        data as Dictionary<String,Object?> 
+            or String 
+            or PersistedContent.Iterator 
+            or Null 
+    ) as Void {
         _hasPendingRequest = false;
-        Logger.debug( "SitemapRequest.onReceive: start" );
+        _responseCount++;
+        Logger.debug( "SitemapRequest.onReceive: start (" + _responseCount + ")" );
 
         // When stop() is called, and there is a pending request, then
         // _ignoreNextResponse is set true. onReceive() acts on this,
