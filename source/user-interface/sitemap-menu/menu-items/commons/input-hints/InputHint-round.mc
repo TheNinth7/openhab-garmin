@@ -14,7 +14,7 @@ class InputHint extends BaseInputHint {
 
     private const RADIUS as Number = 
         ( 0.49 * Constants.UI_SCREEN_WIDTH ).toNumber(); // radius of the arc is calculated relative to the screen width
-    private const LENGTH as Number = 20; // total length of the arc in degree
+    private const LENGTH as Number = 18; // total length of the arc in degree
 
     // All data needed for drawing the arc
     private var _xCenter as Number;

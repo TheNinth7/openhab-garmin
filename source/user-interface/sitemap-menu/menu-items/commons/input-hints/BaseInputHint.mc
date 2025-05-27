@@ -43,7 +43,7 @@ class BaseInputHint extends Drawable {
 
     // Default line width
     public const LINE_WIDTH as Number = 
-        ( 0.01 * Constants.UI_SCREEN_WIDTH ).toNumber(); // line width is calculated proportionally to the screen width
+        ( 0.0125 * Constants.UI_SCREEN_WIDTH ).toNumber(); // line width is calculated proportionally to the screen width
 
     protected var _position as Number; // The position (angle for round, y coordinate for rectangular)
     protected var _color as ColorType;
