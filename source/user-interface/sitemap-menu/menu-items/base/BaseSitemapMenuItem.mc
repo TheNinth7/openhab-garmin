@@ -66,7 +66,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     public static function isMyType( sitemapElement as SitemapElement ) as Boolean { 
         throw new AbstractMethodException( "BaseSitemapMenuItem.getItemType" );
     }
-    public function update( sitemapElement as SitemapElement ) as Boolean { 
+    public function update( sitemapElement as SitemapElement ) as Void { 
         throw new AbstractMethodException( "BaseSitemapMenuItem.update" );
     }
 

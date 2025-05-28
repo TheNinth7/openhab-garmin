@@ -91,13 +91,12 @@ class BaseSwitchMenuItem extends BaseSitemapMenuItem {
 
     // Called by the sitemap request when updated state data is received.
     // Updates the label and delegates status `Drawable` updates to the subclass.
-    public function update( sitemapElement as SitemapElement ) as Boolean {
+    public function update( sitemapElement as SitemapElement ) as Void {
         var sitemapSwitch = sitemapElement as SitemapSwitch;
         // setLabel needs to come before updateItemState,
         // so that updateItemState can already access the
         // updated label
         setLabel( sitemapSwitch.label );
         updateItemState( sitemapSwitch.normalizedItemState );
-        return true;
     }
 }

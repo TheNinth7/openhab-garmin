@@ -57,14 +57,13 @@ class SliderMenuItem extends BaseSitemapMenuItem {
     // Updates the menu item
     // This function is called when new data comes in from the
     // sitemap polling
-    public function update( sitemapElement as SitemapElement ) as Boolean {
+    public function update( sitemapElement as SitemapElement ) as Void {
         if( ! ( sitemapElement instanceof SitemapSlider ) ) {
             throw new GeneralException( "Sitemap element '" + sitemapElement.label + "' was passed into SliderMenuItem but is of a different type" );
         }
         _sitemapSlider = sitemapElement;
         _statusText.setText( sitemapElement.sliderState.toString() + sitemapElement.unit );
         setLabel( sitemapElement.label );
-        return true;
     }
 
     // When the menu item is selected, the CustomPicker is initialized

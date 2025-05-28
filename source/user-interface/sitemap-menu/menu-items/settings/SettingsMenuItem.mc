@@ -12,8 +12,17 @@ import Toybox.WatchUi;
 (:exclForButton)
 class SettingsMenuItem extends BaseSitemapMenuItem {
 
+    // Singleton accessor
+    private static var _instance as SettingsMenuItem?;
+    public static function get() as SettingsMenuItem {
+        if( _instance == null ) {
+            _instance = new SettingsMenuItem();
+        }
+        return _instance as SettingsMenuItem;
+    }
+
     // Constructor
-    public function initialize() {
+    private function initialize() {
         // To offset this menu item from the sitemap menu items
         // the font is colored in light grey
         BaseSitemapMenuItem.initialize( { 

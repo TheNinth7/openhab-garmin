@@ -4,7 +4,7 @@ import Toybox.Lang;
  * Task for asynchronously creating a sitemap element and
  * adding it to the parent sitemap page.
  */
-class SitemapPageBuildTask {
+class SitemapPageBuildTask extends BaseSitemapProcessorTask {
     private var _sitemapPage as SitemapPage;
     private var _widget as JsonObject;
     private var _type as String;
@@ -16,6 +16,7 @@ class SitemapPageBuildTask {
         widget as JsonObject,
         type as String
     ) {
+        BaseSitemapProcessorTask.initialize();
         _sitemapPage = sitemapPage;
         _widget = widget;
         _type = type;
@@ -31,10 +32,5 @@ class SitemapPageBuildTask {
                 true
             )
         );
-    }
-
-    // Handle any exceptions 
-    public function handleException( ex as Exception ) as Void {
-        SitemapRequest.get().handleException( ex );
     }
 }

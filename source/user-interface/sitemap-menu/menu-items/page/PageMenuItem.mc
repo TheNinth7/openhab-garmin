@@ -13,13 +13,13 @@ class PageMenuItem extends BaseSitemapMenuItem {
 
     // Constructor  
     // Initializes the base class and sets the menu view to open when this item is selected.
-    public function initialize( sitemapPage as SitemapPage ) {
+    public function initialize( sitemapPage as SitemapPage, parent as BasePageMenu ) {
         BaseSitemapMenuItem.initialize( { 
             :id => sitemapPage.id,
             :label => sitemapPage.label 
         } );
 
-        _menu = new PageMenu( sitemapPage );
+        _menu = new PageMenu( sitemapPage, parent );
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
@@ -29,10 +29,10 @@ class PageMenuItem extends BaseSitemapMenuItem {
 
     // Updates the page menu item by refreshing its label 
     // and invoking the update() method on its submenu.
-    public function update( sitemapElement as SitemapElement ) as Boolean {
+    public function update( sitemapElement as SitemapElement ) as Void {
         var sitemapPage = sitemapElement as SitemapPage;
         setLabel( sitemapPage.label );
-        return _menu.update( sitemapPage );
+        _menu.update( sitemapPage );
     }
 
     // If selected, the associated menu will be pushed on the stack

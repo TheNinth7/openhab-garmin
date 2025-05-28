@@ -3,11 +3,18 @@ import Toybox.WatchUi;
 import Toybox.System;
 
 /*
- * `HomepageMenu` represents the root of the sitemap.
- * Since there is only one root, it is implemented as a singleton.
+ * `HomepageMenu` represents the root of the sitemap and is implemented as a singleton,
+ * as there can only be one root.
  *
- * It behaves similarly to a regular `PageMenu`, but includes additional 
- * functionality for accessing the settings menu.
+ * It behaves similarly to a standard `PageMenu`, but includes additional functionality
+ * for accessing the settings menu.
+ *
+ * - On button-based devices: the settings menu is accessed by scrolling past the
+ *   header or footer of the menu (i.e., it's a parallel menu).
+ * - On touch-based devices: the settings menu is accessed via a dedicated menu item.
+ *
+ * Some functions in this class are specific to either button-based or touch-based devices,
+ * and are conditionally excluded from compilation for the other device type.
  */
 class HomepageMenu extends BasePageMenu {
     // Accessor for the Singleton instance
@@ -53,6 +60,23 @@ class HomepageMenu extends BasePageMenu {
         ToastHandler.setUseToasts( true );
     }
 
+    // See BasePageMenu.invalidateStructure for details
+    private var _structureRemainsValid as Boolean = true;
+    public function invalidateStructure() as Void {
+        _structureRemainsValid = false;
+    }
+    public function structureRemainsValid() as Boolean {
+        return _structureRemainsValid;
+    }
+
+    // Before an update we reset the indicator showing whether
+    // the update left the structure intact.
+    // Then we call the update function of the base class
+    public function update( sitemapPage as SitemapPage ) as Void {
+        _structureRemainsValid = true;
+        BasePageMenu.update( sitemapPage );
+    }
+
     // On button-based devices, the settings icon is displayed in the footer
     (:exclForTouch)
     private function initialize( sitemapHomepage as SitemapHomepage ) {
@@ -61,27 +85,46 @@ class HomepageMenu extends BasePageMenu {
             new Bitmap( {
                     :rezId => Rez.Drawables.iconDownToSettings,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
-                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } ) );
+                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } )
+        );
     }
 
     // For touch-based devices there is a dedicated menu item for
     // showing the settings menu
+    // This member tracks whether the settings menu has been added
     (:exclForButton)
-    private var _settingsMenuItem as SettingsMenuItem = new SettingsMenuItem();    
+    private var _hasSettingsMenu as Boolean = false;
     (:exclForButton)
     private function initialize( sitemapHomepage as SitemapHomepage ) {
         BasePageMenu.initialize( sitemapHomepage, null );
-        // Add the item
-        addItem( _settingsMenuItem );
+        BasePageMenu.addItem( SettingsMenuItem.get() );
+        _hasSettingsMenu = true;
     }
-    // Since update() syncs the menu items with the sitemap, we need
-    // to remove the settings menu item beforehand and add it again
-    // afterwards
-    (:exclForButton)
-    public function update( sitemapPage as SitemapPage ) as Boolean {
-        deleteItem( getItemCount()-1 );
-        var result = BasePageMenu.update( sitemapPage );
-        addItem( _settingsMenuItem );
-        return result;
+    // The update function syncs the menu structure with the sitemap
+    // The following two functions are overriden to "hide" the last
+    // entry, the settings menu item, from the update procedure
+    // We pretent to have one menu item less ...
+    (:exclForButton) 
+    public function getItemCount() as Number {
+        return 
+            _hasSettingsMenu
+            ? BasePageMenu.getItemCount() - 1
+            : BasePageMenu.getItemCount();
+    }
+    // And if a menu item is added, we first remove the settings,
+    // then add the new menu item, and then add the settings again
+    // in the end
+    (:exclForButton) 
+    public function addItem( menuItem as CustomMenuItem ) as Void {
+        var accountForSettingsMenu = _hasSettingsMenu;
+        if( accountForSettingsMenu ) {
+            BasePageMenu.deleteItem( BasePageMenu.getItemCount() - 1 );
+            _hasSettingsMenu = false;
+        }
+        BasePageMenu.addItem( menuItem );
+        if( accountForSettingsMenu ) {
+            BasePageMenu.addItem( SettingsMenuItem.get() );
+            _hasSettingsMenu = true;
+        }
     }
 }

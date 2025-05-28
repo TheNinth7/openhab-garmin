@@ -19,8 +19,9 @@ class NoStateMenuItem extends BaseSitemapMenuItem {
     }
 
     // Updates the menu item
-    public function update( sitemapElement as SitemapElement ) as Boolean {
-        return true;
+    // No action needed here - once a state becomes available, this
+    // item will be replaced by the actual menu item for this element
+    public function update( sitemapElement as SitemapElement ) as Void {
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.

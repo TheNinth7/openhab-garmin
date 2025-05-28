@@ -8,7 +8,18 @@ import Toybox.System;
  * require any additional behavior.
  */
 class PageMenu extends BasePageMenu {
-    public function initialize( sitemapPage as SitemapPage ) {
+
+    // See BasePageMenu.invalidateStructure for details
+    private var _parent as BasePageMenu;
+    public function invalidateStructure() as Void {
+        _parent.invalidateStructure();
+    }
+
+    public function initialize( 
+        sitemapPage as SitemapPage,
+        parent as BasePageMenu 
+    ) {
         BasePageMenu.initialize( sitemapPage, null );
+        _parent = parent;
     }
 }

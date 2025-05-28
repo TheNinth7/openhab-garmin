@@ -92,15 +92,15 @@ class SitemapRequest extends BaseRequest {
 
     // Start and stop the repeated makeRequest
     public function start() as Void {
-        Logger.debug( "SitemapRequest.start" );
+        // Logger.debug( "SitemapRequest.start" );
         if( _stopCount <= 0 ) {
             throw new GeneralException( "Tried to start already running sitemap request" );
         } else {
             _stopCount--;
-            Logger.debug( "SitemapRequest.start: new count=" + _stopCount );
+            // Logger.debug( "SitemapRequest.start: new count=" + _stopCount );
         }
         if( _stopCount == 0 ) {
-            Logger.debug( "SitemapRequest.start: making request" );
+            // Logger.debug( "SitemapRequest.start: making request" );
             makeRequest();
         }
     }
@@ -109,14 +109,14 @@ class SitemapRequest extends BaseRequest {
     // ignore the next response
     public function stop() as Void {
         _stopCount++;
-        Logger.debug( "SitemapRequest.stop: new count=" + _stopCount );
+        // Logger.debug( "SitemapRequest.stop: new count=" + _stopCount );
         // When the SitemapRequest is stopped, all ongoing asynchronous
         // processing is also halted. Tasks in the task queue are atomic
         // in the sense that stopping between tasks will not cause any
         // data inconsistencies.
         TaskQueue.get().removeAll();
         if( _hasPendingRequest ) {
-            Logger.debug( "SitemapRequest.stop: pending request, will ignore the next response" );
+            // Logger.debug( "SitemapRequest.stop: pending request, will ignore the next response" );
             _ignoreNextResponse = true;
         }
     }
@@ -127,12 +127,12 @@ class SitemapRequest extends BaseRequest {
         // requests anymore
         if( _stopCount <= 0 && ! _hasPendingRequest ) {
             _requestCount++;
-            Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
+            // Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
             _hasPendingRequest = true;
         } else {
-            Logger.debug( "SitemapRequest.makeRequest: stopped or has pending request, not executed" );
+            // Logger.debug( "SitemapRequest.makeRequest: stopped or has pending request, not executed" );
         }
     }
 
@@ -146,13 +146,13 @@ class SitemapRequest extends BaseRequest {
     ) as Void {
         _hasPendingRequest = false;
         _responseCount++;
-        Logger.debug( "SitemapRequest.onReceive: start (" + _responseCount + ")" );
+        // Logger.debug( "SitemapRequest.onReceive: start (" + _responseCount + ")" );
 
         // When stop() is called, and there is a pending request, then
         // _ignoreNextResponse is set true. onReceive() acts on this,
         // ignores the next response and resets the member
         if( _ignoreNextResponse ) {
-            Logger.debug( "SitemapRequest.onReceive: ignoring this response");
+            // Logger.debug( "SitemapRequest.onReceive: ignoring this response");
             _ignoreNextResponse = false;
         } else {
             try {
@@ -177,11 +177,11 @@ class SitemapRequest extends BaseRequest {
                 }
             } catch( ex ) {
                 // Calling the handler for exceptions
-                Logger.debug( "SitemapRequest.onReceive: exception");
+                // Logger.debug( "SitemapRequest.onReceive: exception");
                 handleException( ex );
             }
         }
-        Logger.debug( "SitemapRequest.onReceive: end");
+        // Logger.debug( "SitemapRequest.onReceive: end");
     }
 
     // Handles exceptions from onReceive() and the SitemapProcessor.
@@ -190,7 +190,7 @@ class SitemapRequest extends BaseRequest {
     // - the error polling interval, or
     // - the configured regular polling interval.
     public function handleException( ex as Exception ) as Void {
-        Logger.debug( "SitemapRequest.handleException" );
+        // Logger.debug( "SitemapRequest.handleException" );
         ExceptionHandler.handleException( ex );
         triggerNextRequestInternal( 
             _pollingInterval > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
@@ -203,14 +203,14 @@ class SitemapRequest extends BaseRequest {
     // to trigger the next request after the current response has been
     // successfully processed.
     public function triggerNextRequest() as Void {
-        Logger.debug( "SitemapRequest.triggerNextRequest" );
+        // Logger.debug( "SitemapRequest.triggerNextRequest" );
         triggerNextRequestInternal( _pollingInterval );
     }
 
     // Internal function for triggering the next request,
     // used both by handleException() and triggerNextRequest()
     private function triggerNextRequestInternal( delay as Number ) as Void {
-        Logger.debug( "SitemapRequest.triggerNextRequestInternal" );
+        // Logger.debug( "SitemapRequest.triggerNextRequestInternal" );
         // Depending on the delay the next request is
         // scheduled via timer or triggered immediately
         if( delay > 0 ) {

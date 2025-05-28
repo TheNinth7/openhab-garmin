@@ -31,7 +31,7 @@ import Toybox.Lang;
  */
 
 // Base class that provides the exception handling
-class BaseAsyncSitemapTask {
+class BaseSitemapProcessorTask {
     protected function initialize() {
     }
     public function handleException( ex as Exception ) as Void {
@@ -46,16 +46,16 @@ class BaseAsyncSitemapTask {
 // for the processing. These tasks are added to THE FRONT
 // OF THE QUEUE, and therefore will be executed before 
 // the next step is triggered, the UpdateUiTask.
-class CreateSitemapTask extends BaseAsyncSitemapTask {
+class CreateSitemapTask extends BaseSitemapProcessorTask {
 
     private var _json as SitemapJsonIncoming;
     public function initialize( json as SitemapJsonIncoming ) {
-        BaseAsyncSitemapTask.initialize();
+        BaseSitemapProcessorTask.initialize();
         _json = json;
     }
 
     public function invoke() as Void {
-        Logger.debug( "CreateSitemapTask.invoke" );
+        // Logger.debug( "CreateSitemapTask.invoke" );
 
         TaskQueue.get().add( 
             new UpdateMenuTask(
@@ -69,30 +69,25 @@ class CreateSitemapTask extends BaseAsyncSitemapTask {
 }
 
 // ... next step is to update the menu structure ...
-class UpdateMenuTask extends BaseAsyncSitemapTask {
+class UpdateMenuTask extends BaseSitemapProcessorTask {
 
     // This tasks needs the SitemapHomepage representing the
     // newly incoming data as input
     private var _sitemapHomepage as SitemapHomepage;
     public function initialize( sitemapHomepage as SitemapHomepage ) {
-        BaseAsyncSitemapTask.initialize();
+        BaseSitemapProcessorTask.initialize();
         _sitemapHomepage = sitemapHomepage;
     }
 
     public function invoke() as Void {
-        Logger.debug( "UpdateMenuTask.invoke" );
+        // Logger.debug( "UpdateMenuTask.invoke" );
         if( ! HomepageMenu.exists() ) {
             throw new GeneralException( "HomepageMenu does not exist" );
         }
-        var homepage = HomepageMenu.get();
-        // the update function returns whether the structure of the menu
-        // remained unchanged, i.e. if containers have been added or removed
-        // This info is needed by the next task
-        TaskQueue.get().add( 
-            new RefreshUiTask(
-                homepage.update( _sitemapHomepage )
-            ) 
-        );
+        
+        HomepageMenu.get().update( _sitemapHomepage );
+
+        TaskQueue.get().add( new RefreshUiTask() );
     }
 }
 
@@ -103,17 +98,15 @@ class UpdateMenuTask extends BaseAsyncSitemapTask {
 // - If the menu structure is no longer valid, navigate to the root (homepage) menu.
 // - If currently in an error view, navigate to the homepage menu.
 // - If currently in the settings menu, do nothing.
-class RefreshUiTask extends BaseAsyncSitemapTask {
+class RefreshUiTask extends BaseSitemapProcessorTask {
 
-    private var _structureRemainsValid as Boolean;
-    public function initialize( structureRemainsValid as Boolean ) {
-        BaseAsyncSitemapTask.initialize();
-        _structureRemainsValid = structureRemainsValid;
+    public function initialize() {
+        BaseSitemapProcessorTask.initialize();
     }
 
     public function invoke() as Void {
         
-        Logger.debug( "RefreshUiTask.invoke" );
+        // Logger.debug( "RefreshUiTask.invoke" );
 
         if( ! HomepageMenu.exists() ) {
             throw new GeneralException( "HomepageMenu does not exist" );
@@ -125,7 +118,7 @@ class RefreshUiTask extends BaseAsyncSitemapTask {
         if( ! SettingsMenuHandler.isShowingSettings() ) {
             // If the structure is not valid anymore, we reset the view
             // to the homepage, but only if we are not in the error view
-            if(    ! _structureRemainsValid 
+            if(    ! homepage.structureRemainsValid() 
                 && ! ErrorView.isShowingErrorView() 
                 && ! ( WatchUi.getCurrentView()[0] instanceof HomepageMenu ) ) {
                 // If update returns false, the menu structure has changed
@@ -152,12 +145,12 @@ class RefreshUiTask extends BaseAsyncSitemapTask {
 }
 
 // ... and finally, we trigger the next request
-class TriggerNextRequestTask extends BaseAsyncSitemapTask {
+class TriggerNextRequestTask extends BaseSitemapProcessorTask {
     public function initialize() {
-        BaseAsyncSitemapTask.initialize();
+        BaseSitemapProcessorTask.initialize();
     }
     public function invoke() as Void {
-        Logger.debug( "TriggerNextRequestTask.invoke" );
+        // Logger.debug( "TriggerNextRequestTask.invoke" );
         SitemapRequest.get().triggerNextRequest();
     }
 }

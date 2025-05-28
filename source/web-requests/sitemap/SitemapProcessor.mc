@@ -24,7 +24,7 @@ class SitemapProcessor {
 
     // Main entry point for all JSONs incoming via web requests
     public static function process( incomingJson as SitemapJsonIncoming ) as Void {
-        Logger.debug( "SitemapProcessor: start processing incoming JSON" );
+        // Logger.debug( "SitemapProcessor: start processing incoming JSON" );
         if( ! HomepageMenu.exists() ) {
             // There is no menu yet, so we process the JSON
             // synchronously and switch from the LoadingView 
@@ -39,7 +39,7 @@ class SitemapProcessor {
 
     // Synchronously create the HomepageMenu and switch to it
     private static function switchToHomepage( incomingJson as SitemapJsonIncoming ) as Void {
-        Logger.debug( "SitemapProcessor.switchToHomepage" );
+        // Logger.debug( "SitemapProcessor.switchToHomepage" );
         WatchUi.switchToView( 
             HomepageMenu.create( 
                 SitemapStore.updateSitemapFromJson( 
@@ -55,7 +55,7 @@ class SitemapProcessor {
 
     // Update an existing HomepageMenu
     private static function updateHomepageAsync( incomingJson as SitemapJsonIncoming ) as Void {
-        Logger.debug( "SitemapProcessor.updateHomepageAsync" );
+        // Logger.debug( "SitemapProcessor.updateHomepageAsync" );
 
         var taskQueue = TaskQueue.get();
         // Verify that the task queue is empty

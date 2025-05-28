@@ -25,6 +25,6 @@ class SitemapHomepage extends SitemapPage {
             asyncProcessing
         );
         //var end = System.getTimer();
-        //Logger.debug( "SitemapHomepage.initialize: " + ( end - start ) + "ms" );
+        //// Logger.debug( "SitemapHomepage.initialize: " + ( end - start ) + "ms" );
     }
 }

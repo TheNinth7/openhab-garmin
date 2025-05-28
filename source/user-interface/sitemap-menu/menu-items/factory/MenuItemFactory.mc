@@ -8,9 +8,12 @@ import Toybox.WatchUi;
 class MenuItemFactory {
 
     // Creates a menu item based on the sitemap element type
-    public static function createMenuItem( sitemapElement as SitemapElement ) as CustomMenuItem {
+    public static function createMenuItem( 
+        sitemapElement as SitemapElement, 
+        parent as BasePageMenu 
+    ) as CustomMenuItem {
         if( sitemapElement instanceof SitemapPage ) {
-            return new PageMenuItem( sitemapElement );
+            return new PageMenuItem( sitemapElement, parent );
         } else if( ! sitemapElement.isSitemapFresh ) {
             return new NoStateMenuItem( sitemapElement as SitemapPrimitiveElement );
         } else if( OnOffSwitchMenuItem.isMyType( sitemapElement ) ) {

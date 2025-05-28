@@ -27,13 +27,12 @@ class TextMenuItem extends BaseSitemapMenuItem {
     }
 
     // Updates the menu item
-    public function update( sitemapElement as SitemapElement ) as Boolean {
+    public function update( sitemapElement as SitemapElement ) as Void {
         if( ! ( sitemapElement instanceof SitemapText ) ) {
             throw new GeneralException( "Sitemap element '" + sitemapElement.label + "' was passed into TextMenuItem but is of a different type" );
         }
         _statusTextArea.update( sitemapElement.label, sitemapElement.widgetState );
         setLabel( sitemapElement.label );
-        return true;
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
