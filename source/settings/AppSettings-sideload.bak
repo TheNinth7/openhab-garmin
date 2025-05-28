@@ -1,0 +1,44 @@
+import Toybox.Lang;
+import Toybox.Application.Properties;
+
+/*
+* Singleton class providing static access to application settings.
+*/
+class AppSettings {
+
+    // Singleton accessor
+    // is private and only used by the static accessors for each setting
+    private static var _instance as AppSettings?;
+    private static function get() as AppSettings {
+        if( _instance == null ) {
+            _instance = new AppSettings();
+        }
+        return _instance as AppSettings;
+    }
+
+    // Static accessors for all values
+    public static function getUrl() as String { return get().url; }
+    public static function getSitemap() as String { return get().sitemap; }
+    public static function supportsRestApi() as Boolean { return get().vSupportsRESTAPI; }
+    public static function suppressEmptyResponseExceptions() as Boolean { return get().vSuppressEmtpyResponses; }
+    public static function supportsWebhook() as Boolean { return get().vSupportsWebHook; }
+    public static function getWebhook() as String { return get().webhook; }
+    public static function needsBasicAuth() as Boolean { return get().vNeedsBasicAuth; }
+    public static function getUser() as String { return get().user; }
+    public static function getPassword() as String { return get().password as String; }
+    public static function getPollingInterval() as Number { return get().pollingInterval; }
+
+    // The constructor stores all settings in the following
+    // variables. They need to be public, because otherwise
+    // the static accessors cannot access them
+    public var url as String = "http://net-nas-1:8080/";
+    public var sitemap as String = "garmin_stress";
+    public var vSupportsRESTAPI as Boolean = true;
+    public var vSuppressEmtpyResponses as Boolean = false;
+    public var vSupportsWebHook as Boolean = false;
+    public var webhook as String = "";
+    public var vNeedsBasicAuth as Boolean = false;
+    public var user as String = "";
+    public var password as String?;
+    public var pollingInterval as Number = 0;
+}
