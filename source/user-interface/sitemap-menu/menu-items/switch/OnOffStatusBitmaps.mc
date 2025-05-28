@@ -57,9 +57,11 @@ class OnOffStatusBitmaps {
 
         // Define the color of the switch
         if( isEnabled ) {
-            dc.setColor( Constants.UI_COLOR_ACTIVE, Constants.UI_MENU_ITEM_BG_COLOR );
+            //dc.setColor( Constants.UI_COLOR_ACTIVE, Constants.UI_MENU_ITEM_BG_COLOR );
+            dc.setFill( 0xFF000000 + Constants.UI_COLOR_ACTIVE );
         } else {
-            dc.setColor( Graphics.COLOR_LT_GRAY, Constants.UI_MENU_ITEM_BG_COLOR );
+            //dc.setColor( Graphics.COLOR_LT_GRAY, Constants.UI_MENU_ITEM_BG_COLOR );
+            dc.setFill( 0xFF000000 + Graphics.COLOR_LT_GRAY );
         }
         
         // Spacing defines the gap between the outer edge of the `Drawable` and the switch.
@@ -80,7 +82,8 @@ class OnOffStatusBitmaps {
         dc.fillRectangle( xCenter-radius-1, upperYCenter, radius*2 + 3, lowerYCenter - upperYCenter );
 
         // draw the inner circle showing the switch state
-        dc.setColor( Constants.UI_COLOR_BACKGROUND, Constants.UI_MENU_ITEM_BG_COLOR );
+        //dc.setColor( Constants.UI_COLOR_BACKGROUND, Constants.UI_MENU_ITEM_BG_COLOR );
+        dc.setFill( 0xFF000000 + Graphics.COLOR_BLACK );
         var toggleCenter = isEnabled ? upperYCenter : lowerYCenter;
         dc.fillCircle( xCenter, toggleCenter, radius * INNER_CIRCLE_FACTOR );
     }
