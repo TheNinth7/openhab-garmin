@@ -109,7 +109,6 @@ class SitemapRequest extends BaseRequest {
     // ignore the next response
     public function stop() as Void {
         _stopCount++;
-        // Logger.debug( "SitemapRequest.stop: new count=" + _stopCount );
         // When the SitemapRequest is stopped, all ongoing asynchronous
         // processing is also halted. Tasks in the task queue are atomic
         // in the sense that stopping between tasks will not cause any
@@ -127,12 +126,12 @@ class SitemapRequest extends BaseRequest {
         // requests anymore
         if( _stopCount <= 0 && ! _hasPendingRequest ) {
             _requestCount++;
-            // Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
+            Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
             _hasPendingRequest = true;
         } else {
-            // Logger.debug( "SitemapRequest.makeRequest: stopped or has pending request, not executed" );
+            Logger.debug( "SitemapRequest.makeRequest: stopped or has pending request, not executed" );
         }
     }
 
@@ -146,7 +145,7 @@ class SitemapRequest extends BaseRequest {
     ) as Void {
         _hasPendingRequest = false;
         _responseCount++;
-        // Logger.debug( "SitemapRequest.onReceive: start (" + _responseCount + ")" );
+        Logger.debug( "SitemapRequest.onReceive: start (" + _responseCount + ")" );
 
         // When stop() is called, and there is a pending request, then
         // _ignoreNextResponse is set true. onReceive() acts on this,
@@ -181,7 +180,7 @@ class SitemapRequest extends BaseRequest {
                 handleException( ex );
             }
         }
-        // Logger.debug( "SitemapRequest.onReceive: end");
+        Logger.debug( "SitemapRequest.onReceive: end");
     }
 
     // Handles exceptions from onReceive() and the SitemapProcessor.
