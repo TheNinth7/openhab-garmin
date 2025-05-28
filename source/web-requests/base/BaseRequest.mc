@@ -75,7 +75,7 @@ class BaseRequest {
         } else if ( _cancelMode && responseCode == Communications.REQUEST_CANCELLED ) {
             return false;
         } else {
-            throw new CommunicationException(responseCode, source);
+            throw new CommunicationException( responseCode, source );
         }
     }
 
