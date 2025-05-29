@@ -126,7 +126,7 @@ class SitemapRequest extends BaseRequest {
         // requests anymore
         if( _stopCount <= 0 && ! _hasPendingRequest ) {
             _requestCount++;
-            Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
+            // Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
             
             // _hasPendingRequest has to be set to true BEFORE makeWebRequest
             // For some errors (like -104/no phone), on receive is called
@@ -139,7 +139,7 @@ class SitemapRequest extends BaseRequest {
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
         } else {
-            Logger.debug( "SitemapRequest.makeRequest: stopped or has pending request, not executed" );
+            // Logger.debug( "SitemapRequest.makeRequest: stopped or has pending request, not executed" );
         }
     }
 
@@ -153,7 +153,7 @@ class SitemapRequest extends BaseRequest {
     ) as Void {
         _hasPendingRequest = false;
         _responseCount++;
-        Logger.debug( "SitemapRequest.onReceive: start (#" + _responseCount + ")" );
+        // Logger.debug( "SitemapRequest.onReceive: start (#" + _responseCount + ")" );
 
         // When stop() is called, and there is a pending request, then
         // _ignoreNextResponse is set true. onReceive() acts on this,
@@ -188,7 +188,7 @@ class SitemapRequest extends BaseRequest {
                 handleException( ex );
             }
         }
-        Logger.debug( "SitemapRequest.onReceive: end");
+        // Logger.debug( "SitemapRequest.onReceive: end");
     }
 
     // Handles exceptions from onReceive() and the SitemapProcessor.

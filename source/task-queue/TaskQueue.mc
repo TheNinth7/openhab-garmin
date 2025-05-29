@@ -80,7 +80,7 @@ class TaskQueue {
     // Executes the task next in the queue and then
     // if there are remaining tasks, start the timer again
     public function executeTasks() as Void {
-        Logger.debug( "TaskQueue: start executing tasks (" + _tasks.size() + " queued)" );
+        // Logger.debug( "TaskQueue: start executing tasks (" + _tasks.size() + " queued)" );
 
         try {
             var startTime = System.getTimer();
@@ -91,7 +91,7 @@ class TaskQueue {
                     task.invoke();
                    _tasks.remove( task );
                 } catch( ex ) {
-                    Logger.debug( "TaskQueue: exception during task invocation" );
+                    // Logger.debug( "TaskQueue: exception during task invocation" );
                     task.handleException( ex );
                     removeAll();
                 }
@@ -100,13 +100,13 @@ class TaskQueue {
                 && _tasks.size() > 0
             );
 
-            Logger.debug( "TaskQueue: stop executing tasks after " + ( System.getTimer() - startTime ) + "ms (" + _tasks.size() + " remaining)" );
+            // Logger.debug( "TaskQueue: stop executing tasks after " + ( System.getTimer() - startTime ) + "ms (" + _tasks.size() + " remaining)" );
 
             if( _tasks.size() > 0 ) {
                 startTimer();
             }
         } catch ( ex ) {
-            Logger.debug( "TaskQueue: exception during task handling" );
+            // Logger.debug( "TaskQueue: exception during task handling" );
             removeAll();
             ExceptionHandler.handleException( ex );
         }
