@@ -2,8 +2,36 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
- * Task for updating a menu item with the id of a given sitemap element,
- * or adding the menu item if it is not yet present
+ * This file contains all classes representing asynchronous tasks used to
+ * update the menu structure based on a new sitemap.
+ *
+ * The update process involves the following tasks:
+ *
+ * 1) AddOrUpdateMenuItemTask
+ *    Processes a single sitemap element, updating the corresponding menu item
+ *    by ID or adding it if it does not yet exist. See BasePageMenu.update() for details.
+ *
+ * 2) DeleteUnusedMenuItemsTask
+ *    Removes any menu items that no longer have a corresponding sitemap element.
+ *
+ * 3) SwitchViewIfItemCountChangedTask
+ *    Implements a workaround for a Garmin SDK bug. See the class description for details.
+ */
+
+/*
+ * Task for updating the menu item with the ID of a given sitemap element,
+ * or adding it if it does not already exist.
+ *
+ * Sitemap-assigned identifiers are effectively positional indexes. When a new element is 
+ * inserted in the middle of a page, it receives the identifier previously assigned to the 
+ * item at that position, and subsequent items are reindexed accordingly.
+ *
+ * Therefore this task has to deal with different cases:
+ *   - If the types match, the item is updated in place.
+ *   - If the types differ, the existing item is replaced.
+ *   - If no matching menu item exists for a given index, a new one is added.
+ * 
+ * See also BasePageMenu.update() for further information on the update algorithm.
  */
 class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
     private var _sitemapElement as SitemapElement;
@@ -58,7 +86,8 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
 }
 
 /*
- * Task for deleting all menu items that are not needed anymore
+ * If any existing menu items remain after processing all sitemap elements, 
+ * they are removed.
  */
 class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
     private var _pageMenu as BasePageMenu;
@@ -82,6 +111,10 @@ class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
         var i = _sitemapPage.elements.size();
         // Logger.debug( "DeleteUnusedMenuItemsTask.invoke: deleting menu item, starting from index " + i );
 
+        // NOTE: getItemCount() receives special handling in `HomepageMenu`
+        // for touch-based devices. It effectively hides the settings menu entry
+        // by returning the item count excluding it, in order to prevent the
+        // entry from being deleted as an unused menu item.
         while( i < _pageMenu.getItemCount() ) {
             var menuItem = _pageMenu.getItem( i ) as CustomMenuItem;
             if( menuItem instanceof PageMenuItem ) {
@@ -94,13 +127,16 @@ class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
 }
 
 
-// A bug in Garmin's native device implementation of the CustomMenu/Menu2
-// affects updates to the currently displayed menu:
-// - added menu items are not displayed,
-// - and even worse, deleting menu items leads to an app crash
-// This can be avoided by replacing the current view with itself,
-// using switchToView. This seems to trigger the necessary refresh
-// inside the CustomMenu to properly handle the changed number of items.
+/*
+ * A bug in Garmin's native device implementation of CustomMenu/Menu2
+ * affects updates to the currently displayed menu:
+ * - Newly added menu items are not displayed.
+ * - Even worse, deleting menu items can cause the app to crash.
+ *
+ * This issue can be avoided by replacing the current view with itself
+ * using switchToView(). This appears to trigger the necessary refresh
+ * inside CustomMenu to properly handle the updated number of items.
+ */
 class SwitchViewIfItemCountChangedTask extends BaseSitemapProcessorTask {
     private var _pageMenu as BasePageMenu;
     private var _previousItemCount as Number;

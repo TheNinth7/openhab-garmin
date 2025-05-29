@@ -12,6 +12,11 @@ import Toybox.Graphics;
  *
  * This class handles both the creation of menu items based on the sitemap 
  * and the logic for updating the menu in response to changes in the sitemap.
+ *
+ * Since updates can take time and CIQ apps are single-threaded, the update 
+ * is broken into multiple tasks. These tasks are managed by the TaskQueue, 
+ * allowing gaps between them for user input to be processed. This avoids 
+ * noticeable lag or UI unresponsiveness when handling large sitemaps.
  */
 class BasePageMenu extends BaseMenu {
     
@@ -59,10 +64,6 @@ class BasePageMenu extends BaseMenu {
     /*
     * Updates the menu based on a new sitemap state.
     *
-    * Returns `true` if the overall menu structure remains unchanged (i.e., no pages or frames 
-    * were added or removed). If the structure has changed, the function returns `false`, and 
-    * the view will reset to the `HomepageMenu` after the update.
-    *
     * Sitemap-assigned identifiers are effectively positional indexes. When a new element is 
     * inserted in the middle of a page, it receives the identifier previously assigned to the 
     * item at that position, and subsequent items are reindexed accordingly.
@@ -78,6 +79,9 @@ class BasePageMenu extends BaseMenu {
     * the types are compatible. For example, inserting a `Switch` in the middle of a list of `Switch` 
     * items will cause the menu item at that position to be reused for the new `Switch`, and subsequent 
     * items will be repurposed or extended as needed.
+    *
+    * The update() function also tracks whether the update affected the structure.
+    * See invalidateStructure() for more details.
     */
     public function update( sitemapPage as SitemapPage ) as Void {
         // Logger.debug( "PageMenu.update: updating page '" + _label + "'" );
@@ -86,20 +90,30 @@ class BasePageMenu extends BaseMenu {
         _label = sitemapPage.label;
         setTitleAsString( _label );
 
+        // The update is done by asynchronously executed tasks
         var taskQueue = TaskQueue.get();
 
-        // A bug in Garmin's native device implementation of the CustomMenu/Menu2
-        // affects updates to the currently displayed menu:
-        // - added menu items are not displayed,
-        // - and even worse, deleting menu items leads to an app crash
-        // This can be avoided by replacing the current view with itself,
-        // using switchToView. This seems to trigger the necessary refresh
-        // inside the CustomMenu to properly handle the changed number of items.
+        // Since the `SitemapProcessor` has already added tasks that should run
+        // AFTER the menu update, we prepend all tasks to the queue.
+        // As a result, the tasks here are added in REVERSE order of their
+        // intended execution. For example, we add the `SwitchViewIfItemCountChangedTask`
+        // first, because it is meant to be executed last.
+
+        // Workaround for a bug in Garmin's native device implementation 
+        // of the CustomMenu/Menu2. See `SwitchViewIfItemCountChangedTask`
+        // for details. This task needs to be created before any modifications
+        // to the menu structure, because on initialization it needs to save the
+        // current number of menu items.
         taskQueue.addToFront( new SwitchViewIfItemCountChangedTask( self ) );
 
+        // After we have cycled through all sitemap elements, 
+        // we'll delete any menu items that are not used anymore
         taskQueue.addToFront( new DeleteUnusedMenuItemsTask( sitemapPage, self ) );
 
         // Loop through all elements in the new sitemap state
+        // and add a task for each to process them.
+        // We do this in reverse order so that the tasks are
+        // executed in the same order as the corresponding sitemap elements.
         var elements = sitemapPage.elements;
         for( var i = elements.size() - 1; i >= 0; i-- ) {
             var element = elements[i];

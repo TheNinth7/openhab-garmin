@@ -16,7 +16,7 @@ import Toybox.Lang;
  *
  * 2) UpdateMenuTask:
  *     Updates the menu structure.
- *     NOTE: This can be time-consuming, so BaseMenuPage.update() splits the
+ *     NOTE: This can be time-consuming, so BasePageMenu.update() splits the
  *     update into smaller tasks, which are added to the **front** of the task queue.
  *
  * 3) RefreshUiTask:

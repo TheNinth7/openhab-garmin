@@ -15,15 +15,60 @@ The *Settings* menu is also implemented using a `CustomMenu`.
 
 ## Folder `commons`
 
+Contains classes used across all UI components.
+
+### `drawables/`
+
+Contains classes that represent and enhance drawable objects from the Garmin SDK. These classes extend the SDK's functionality, especially for improved positioning and compatibility with older SDK versions.
+
+* `BufferedBitmapDrawable`, `BufferedBitmapFactory`, and `LegacyBufferedBitmap`:
+  Provide workarounds for limitations in the Garmin SDK prior to CIQ 4.0.0, where `BufferedBitmap` lacked the functionality needed for custom positioning logic.
+
+* `CustomBitmap` and `CustomText`:
+  Extend the SDK’s `Bitmap` and `Text` classes to support proportional positioning relative to screen dimensions. While the SDK supports only basic centering, these enhancements allow placement based on percentages—e.g., positioning an element at 30% of the screen height.
+
+### `menu-base/`
+
 Contains base classes for menu implementations:
 
 * `BaseMenu`: Extends `CustomMenu` and applies consistent styling across all menus in the app.
 * `BaseMenuItem`: Extends `CustomMenuItem` to provide consistent behavior and styling support across the app. At present, its main function is to enable the focus indicator used on Garmin Edge devices.
-  Note that apart from that, the *Settings* menu and sitemap menus currently use differently styled menu items. Common styling for sitemap-related menu items is implemented in `sitemap-menu/base/BaseSitemapMenuItem`.
 
-This directory also includes:
+Note that apart from that, the *Settings* menu and sitemap menus currently use differently styled menu items. Common styling for sitemap-related menu items is implemented in `sitemap-menu/base/BaseSitemapMenuItem`.
 
-* `ViewHandler`: A centralized utility that **must** be used for switching between views instead of calling `WatchUi` functions directly.
+### `misc/`
+
+Contains basic utility classes used throughout the UI components:
+
+* `CustomMath`: Provides common math helper functions.
+* `TextDimensions`: Allows calculating the width of text without requiring a `Dc` (drawing context), useful in contexts where rendering is not yet possible.
+
+---
+
+## Folder `control-views`
+
+Contains classes that implement full-screen views for controlling openHAB items.
+
+### `commons/`
+
+Shared components used across different control views:
+
+* **`custom-view/`**
+  Defines the base class for control views (`CustomView`) and the input delegate.
+
+* **`input-hints/`**
+  Contains classes for rendering input hints—visual indicators that map physical button actions on the device.
+
+* **`picker/`**
+  Implements a custom replacement for the Garmin SDK's `Picker`, allowing users to scroll through and select from a list of text values.
+  See the `CustomPicker` class for details on why a custom implementation was chosen.
+
+* **`touch-area/`**
+  Enables the definition of circular and rectangular screen areas that trigger actions. These classes integrate with `CustomView` to support touch interaction.
+
+### `slider/`
+
+Implements the Slider widget, built on top of the `CustomPicker`, to allow selection from a range of numeric values.
 
 ---
 
@@ -117,3 +162,11 @@ The base class `base/BaseSitemapMenuItem` provides a standard structure for all 
 * `settings`: The *Settings* entry shown on touch-based devices.
 * `switch`: Items representing `Switch` sitemap elements.
 * `text`: Items representing `Text` sitemap elements.
+
+---
+
+## Folder `view-handling`
+
+This directory includes:
+
+* `ViewHandler`: A centralized utility that **must** be used for switching between views instead of calling `WatchUi` functions directly.
