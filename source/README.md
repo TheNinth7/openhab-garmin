@@ -60,13 +60,13 @@ Includes the `AppSettings` class, which reads, validates, and exposes applicatio
 
 ### Folder `sitemap`
 
-Provides the data model for parsing and representing sitemap content from openHAB. It includes:
+This folder defines the data model for parsing and representing sitemap content from openHAB. It forms the foundation for building the user interface menus. The following subdirectories and files are included:
 
-* `SitemapHomepage`: Represents the root (homepage) of the sitemap.
-* `SitemapElement`: Base class for all sitemap elements.
-* `SitemapPrimitiveElement`: Base class for all widget-type elements.
-
-These classes serve as the foundation for building the user interface menus.
+* `base/SitemapElement`: The abstract base class for all sitemap elements.
+* `factory/SitemapElementFactory`: Responsible for instantiating the appropriate `SitemapElement` subclass from a JSON representation of a sitemap element.
+* `item-descriptions`: Contains classes that model the state and command descriptions of openHAB items.
+* `sitemap-pages`: Contains `SitemapElement` subclasses that act as containers, grouping other sitemap elements (e.g., frames, groups).
+* `sitemap-primitives`: Contains `SitemapElement` subclasses representing basic UI components such as switches, sliders, and text labels.
 
 ---
 
@@ -108,10 +108,10 @@ Implements communication with the openHAB server using the Connect IQ SDK's `Com
     *(See the user manual for configuration details.)*
 
 * **`sitemap/`**
-  Implements sitemap retrieval and polling logic:
+  Handles sitemap retrieval, polling, and processing logic:
 
-  * `SitemapRequest`: Periodically fetches sitemap data and triggers UI updates.
-  * `GlanceSitemapRequest`: A simplified version used by the *Glance* to store responses for later use by the *Widget*.
+  * `SitemapRequest`: Periodically fetches sitemap data from openHAB and triggers its processing.
+  * `SitemapProcessor` and `SitemapProcessorTasks`: Process the retrieved sitemap data and act as the interface between `SitemapRequest` and the menu update logic in `/user-interface/sitemap-menu`.
 
 **Further reading:**
 
