@@ -121,6 +121,8 @@ class SitemapRequest extends BaseRequest {
         }
     }
 
+    private var _timeMeasurer as TimeMeasurerTask?;
+
     // Makes the web request
     public function makeRequest() as Void {
         // If we are stopped we do not execute any make
@@ -137,7 +139,7 @@ class SitemapRequest extends BaseRequest {
             // which would cancel the next request and thus stop the
             // sitemap request loop
             _hasPendingRequest = true;
-            NoIdleHandsTask.get().invoke();
+            _timeMeasurer = new TimeMeasurerTask();
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
             _requestTime = System.getTimer();
@@ -156,13 +158,14 @@ class SitemapRequest extends BaseRequest {
     ) as Void {
         _hasPendingRequest = false;
         _responseCount++;
+        
         TaskQueue.get().removeAll();
+        var elapsedTime = ( _timeMeasurer as TimeMeasurerTask ).getElapsedTime();
         var responseTime = System.getTimer() - _requestTime;
-        Logger.debug( "SitemapRequest.onReceive: #" + _responseCount + ", response time=" + responseTime );
-        if( responseTime > 500 ) {
-            Logger.debug( "Unusally long response time=" + responseTime );
-        }
 
+        Logger.debug( "SitemapRequest.onReceive: #" + _responseCount );
+
+        Logger.debug( "SitemapRequest.onReceive: total=" + responseTime + "ms pre-processing=" + ( responseTime - elapsedTime ) + "ms" );
         // When stop() is called, and there is a pending request, then
         // _ignoreNextResponse is set true. onReceive() acts on this,
         // ignores the next response and resets the member
@@ -242,22 +245,24 @@ class SitemapRequest extends BaseRequest {
     }
 }
 
-class NoIdleHandsTask extends BaseSitemapProcessorTask {
+class TimeMeasurerTask extends BaseSitemapProcessorTask {
 
-    private static var _instance as NoIdleHandsTask?;
-    
-    public static function get() as NoIdleHandsTask {
-        if( _instance == null ) {
-            _instance = new NoIdleHandsTask();
-        }
-        return _instance as NoIdleHandsTask;
-    }
+    private var _startTime as Number;
+    private var _elapsedTime as Number;
 
-    private function initialize() {
+    public function initialize() {
         BaseSitemapProcessorTask.initialize();
+        _startTime = System.getTimer();
+        _elapsedTime = 0;
+        invoke();
     }
 
     public function invoke() as Void {
+        _elapsedTime = System.getTimer() - _startTime;
         TaskQueue.get().add( self );
+    }
+
+    public function getElapsedTime() as Number {
+        return _elapsedTime;
     }
 }
