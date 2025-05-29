@@ -96,7 +96,7 @@ class TaskQueue {
                     removeAll();
                 }
             } while ( 
-                System.getTimer() < startTime + 100 
+                System.getTimer() < startTime + 50 
                 && _tasks.size() > 0
             );
 

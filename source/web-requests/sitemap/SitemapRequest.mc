@@ -70,6 +70,7 @@ class SitemapRequest extends BaseRequest {
     // purposes
     private var _requestCount as Number = 0;
     private var _responseCount as Number = 0;
+    private var _requestTime as Number = 0;
 
     // Store the memory usage before making the request, to
     // estimate the memory used by the received JSON
@@ -126,7 +127,7 @@ class SitemapRequest extends BaseRequest {
         // requests anymore
         if( _stopCount <= 0 && ! _hasPendingRequest ) {
             _requestCount++;
-            Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
+            Logger.debug( "SitemapRequest.makeRequest: #" + _requestCount );
             
             // _hasPendingRequest has to be set to true BEFORE makeWebRequest
             // For some errors (like -104/no phone), on receive is called
@@ -136,8 +137,10 @@ class SitemapRequest extends BaseRequest {
             // which would cancel the next request and thus stop the
             // sitemap request loop
             _hasPendingRequest = true;
+            NoIdleHandsTask.get().invoke();
             Communications.makeWebRequest( _url, null, getBaseOptions(), method( :onReceive ) );
             _memoryUsedBeforeRequest = System.getSystemStats().usedMemory;
+            _requestTime = System.getTimer();
         } else {
             Logger.debug( "SitemapRequest.makeRequest: stopped or has pending request, not executed" );
         }
@@ -153,7 +156,12 @@ class SitemapRequest extends BaseRequest {
     ) as Void {
         _hasPendingRequest = false;
         _responseCount++;
-        Logger.debug( "SitemapRequest.onReceive: start (#" + _responseCount + ")" );
+        TaskQueue.get().removeAll();
+        var responseTime = System.getTimer() - _requestTime;
+        Logger.debug( "SitemapRequest.onReceive: #" + _responseCount + ", response time=" + responseTime );
+        if( responseTime > 500 ) {
+            Logger.debug( "Unusally long response time=" + responseTime );
+        }
 
         // When stop() is called, and there is a pending request, then
         // _ignoreNextResponse is set true. onReceive() acts on this,
@@ -229,6 +237,27 @@ class SitemapRequest extends BaseRequest {
             );
         } else {
             makeRequest();
+
         }
+    }
+}
+
+class NoIdleHandsTask extends BaseSitemapProcessorTask {
+
+    private static var _instance as NoIdleHandsTask?;
+    
+    public static function get() as NoIdleHandsTask {
+        if( _instance == null ) {
+            _instance = new NoIdleHandsTask();
+        }
+        return _instance as NoIdleHandsTask;
+    }
+
+    private function initialize() {
+        BaseSitemapProcessorTask.initialize();
+    }
+
+    public function invoke() as Void {
+        TaskQueue.get().add( self );
     }
 }
