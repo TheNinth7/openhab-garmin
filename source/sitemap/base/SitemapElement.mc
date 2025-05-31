@@ -44,6 +44,19 @@ class SitemapElement {
         }
         return value;
     }
+
+    // Returns a String from a given JsonObject, 
+    // allowing empty strings, and also returning an empty string
+    // if the field is not present
+    protected function getOptionalString( data as JsonObject, id as String ) as String {
+        var value = data[id] as String?;
+        if( value == null ) {
+            return "";
+        } else {
+            return value;
+        }
+    }
+
     // Returns a Number from a given JsonObject, 
     // or defaults to the passed in def value if the value is not present
     protected function getNumber( data as JsonObject, id as String, def as Number ) as Number {

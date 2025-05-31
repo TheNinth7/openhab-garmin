@@ -239,6 +239,8 @@ If `mappings` are provided, the widget displays the current state as text:
 - If the state matches one of the mapped commands, the corresponding label is shown.
 - Otherwise, the raw state is displayed.
 
+**Note:** The label defined in a sitemap mappings entry can be an empty string. This can be useful when the item supports only a single command and the label of the sitemap element already provides sufficient context.
+
 **Selection behavior:**
 
 * If **one** command is defined, it is sent immediately when the item is selected.
@@ -246,12 +248,12 @@ If `mappings` are provided, the widget displays the current state as text:
 * In all other cases, an **action menu** appears on the right side of the screen, allowing the user to select from the list of available commands.
   If the current state matches one of the commands, that command is **not shown** in the menu.
 
-**Example configuration:**
+#### Example configuration
 
 ```openhab
 Frame label="Switches" {
-    Switch item=Light_Switch label="Light"
-    Switch item=Heating_Switch label="Heating" mappings=[ON="ACTIVE", OFF="INACTIVE"]
+    Switch item=Light label="Light"
+    Switch item=Heating label="Heating" mappings=[ON="ACTIVE", OFF="INACTIVE"]
     Switch item=Rollershutter label="Shutters" mappings=[0="UP", STOP="STOP", 100="DOWN"]
 }
 ```
@@ -279,6 +281,35 @@ In this example:
 
 1. The orange arrow to the right of the state indicates that selecting the item will trigger a command.
 2. The action menu shown in the lower-left screenshot is a **mockup**. The actual appearance may vary depending on the device, as it uses a native UI component.
+
+#### Example with Empty Mapping Entry
+
+Consider a garage door opener that acts as a toggle switch: sending an `ON` command triggers the gate to open or close, and the switch automatically resets to `OFF` after one second.
+
+This can be configured in the sitemap like so:
+
+```xtend
+sitemap garmin_demo label="My Home" {
+	Frame label="Entrance Gates" {
+		Switch item=EntranceGates_Operation label="Open/Close" mappings=[OFF="", ON="OK"]
+		Text item=EntranceGates_Status label="Status"
+	}
+}
+```
+
+In this configuration:
+
+* The switch typically stays in the `OFF` state, where the `"Open/Close"` label is sufficient.
+* When pressed, it sends the `ON` command, briefly displays `"OK"` as feedback, then returns to `OFF`.
+
+Here’s how the interface appears when the switch is in the `OFF` state:
+
+<table class="screenshot-table">
+  <tr>
+    <td width="50%"><img src="screenshots/app/6-switches-5.png"></td>
+    <td></td>
+  </tr>
+</table>
 
 ---
 

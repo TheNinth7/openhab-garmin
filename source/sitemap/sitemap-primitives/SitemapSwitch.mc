@@ -66,7 +66,7 @@ class SitemapSwitch extends SitemapPrimitiveElement {
                 commandDescriptions.add( 
                     new CommandDescription( 
                         getString( jsonCommandDescription, "command", "Element '" + label + "': command is missing from mapping/command description" ),
-                        getString( jsonCommandDescription, "label", "Element '" + label + "': label is missing from mapping/command description" )
+                        getOptionalString( jsonCommandDescription, "label" )
                     )
                 );
             }
