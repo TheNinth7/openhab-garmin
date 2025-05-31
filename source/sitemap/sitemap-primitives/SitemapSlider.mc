@@ -19,7 +19,7 @@ class SitemapSlider extends SitemapPrimitiveElement {
         maxValue = getNumber( data, "maxValue", 100 );
         step = getNumber( data, "step", 1 );
         releaseOnly = getBoolean( data, "releaseOnly" );
-        var cv = normalizedItemState.toNumber();
+        var cv = itemState.toNumber();
         if( cv == null ) {
             throw new JsonParsingException( "Slider item state is not numeric" );
         }

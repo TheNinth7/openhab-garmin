@@ -16,7 +16,7 @@ class TextMenuItem extends BaseSitemapMenuItem {
 
     // Constructor
     public function initialize( sitemapText as SitemapText ) {
-        _statusTextArea = new StatusTextArea( sitemapText.label, sitemapText.widgetState );
+        _statusTextArea = new StatusTextArea( sitemapText.label, sitemapText.transformedState );
         BaseSitemapMenuItem.initialize(
             {
                 :id => sitemapText.id,
@@ -31,7 +31,7 @@ class TextMenuItem extends BaseSitemapMenuItem {
         if( ! ( sitemapElement instanceof SitemapText ) ) {
             throw new GeneralException( "Sitemap element '" + sitemapElement.label + "' was passed into TextMenuItem but is of a different type" );
         }
-        _statusTextArea.update( sitemapElement.label, sitemapElement.widgetState );
+        _statusTextArea.update( sitemapElement.label, sitemapElement.transformedState );
         setLabel( sitemapElement.label );
     }
 

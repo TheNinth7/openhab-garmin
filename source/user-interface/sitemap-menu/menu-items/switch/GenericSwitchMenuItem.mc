@@ -68,7 +68,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         // If the state in the sitemap is the same as we got passed
         // in there is no need to update. updateState is relatively
         // costly due to the lookup of the description
-        if( ! _sitemapSwitch.normalizedItemState.equals( state ) ) {
+        if( ! _sitemapSwitch.itemState.equals( state ) ) {
             _sitemapSwitch.updateState( state );
         }
         
@@ -81,7 +81,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // Called by the superclass to determine the command
     // that shell be sent when the menu item is selected
     public function getNextCommand() as String? {
-        var normalizedItemState = _sitemapSwitch.normalizedItemState;
+        var itemState = _sitemapSwitch.itemState;
         var commandDescriptions = _sitemapSwitch.commandDescriptions;
         if( commandDescriptions.size() == 1 ) {
             // For one mapping, we just send that command
@@ -89,9 +89,9 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         } else if ( commandDescriptions.size() == 2 ) {
             // For two mappings, we check if the current state equals
             // to one of them and then send the other
-            if( normalizedItemState.equals( commandDescriptions[0].command ) ) {
+            if( itemState.equals( commandDescriptions[0].command ) ) {
                 return commandDescriptions[1].command;
-            } else if( normalizedItemState.equals( commandDescriptions[1].command ) ) {
+            } else if( itemState.equals( commandDescriptions[1].command ) ) {
                 return commandDescriptions[0].command;
             }
         }
@@ -102,7 +102,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         for( var i = 0; i < commandDescriptions.size(); i++ ) {
             var commandDescription = commandDescriptions[i];
             // We exclude the current state
-            if( ! commandDescription.command.equals( normalizedItemState ) ) {
+            if( ! commandDescription.command.equals( itemState ) ) {
                 actionMenu.addItem( new ActionMenuItem(
                     { :label => commandDescription.label },
                     commandDescription.command

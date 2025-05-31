@@ -25,29 +25,27 @@ class SitemapPrimitiveElement extends SitemapElement {
     // For the members declared private, there are public members 
     // further below, with processing applied ("normalized")
     public var itemName as String;
-    private var itemState as String?;
-    private var itemType as String;
     public var unit as String = "";
 
     // If the state is missing, NULL or UNDEF it
     // is set to NULL, which is displayed as em dash by the widgets
-    public var normalizedItemState as String;
+    public var itemState as String;
     
-    // If itemType is Group, the normalized itemType is
+    // If rawItemType is Group, the normalized itemType is
     // set to the groupType
-    public var normalizedItemType as String;
+    public var itemType as String;
     
     // For some elements, the widget label also contains state information,
     // which may include mappings and formatting. In this case, the state 
-    // is exctracted from the label into the widgetState.
-    public var widgetState as String;
+    // is exctracted from the label into the transformedState.
+    public var transformedState as String;
 
     // Functions to tell whether the widget and the item have a state
     public function hasItemState() as Boolean {
-        return !normalizedItemState.equals( NO_STATE );
+        return !itemState.equals( NO_STATE );
     }
     public function hasWidgetState() as Boolean {
-        return !widgetState.equals( NO_STATE );
+        return !transformedState.equals( NO_STATE );
     }
     
     // The label may include a state in the format:
@@ -56,21 +54,21 @@ class SitemapPrimitiveElement extends SitemapElement {
     // returning both as a tuple: [0] = label, [1] = state.
     private function normalizeLabel( fullLabel as String ) as [String, String?] {
         var widgetLabel = fullLabel;
-        var widgetState = null;
+        var transformedState = null;
         var bracket = label.find( " [" ) as Number?;
         if( bracket != null ) {
             widgetLabel = label.substring( null, bracket ) as String?;
             if( widgetLabel == null ) {
                 throw new JsonParsingException( "Label '" + label + "' does not have label before the [state]" );
             }
-            widgetState = label.substring( bracket+2, label.length()-1 ) as String?;
+            transformedState = label.substring( bracket+2, label.length()-1 ) as String?;
         }
-        return [widgetLabel, widgetState];
+        return [widgetLabel, transformedState];
     }
 
     // Takes a state value from the JSON and returns it
     // set to NO_STATE if it is empty, NULL or UNDEF
-    protected function normalizeState( value as String? ) as String {
+    protected function normalizeItemState( value as String? ) as String {
         if( value == null 
             || value.equals( "" )
             || value.equals( "NULL" ) 
@@ -81,9 +79,9 @@ class SitemapPrimitiveElement extends SitemapElement {
         return value;
     }
     // Apply an additional rule for the widget state
-    protected function normalizeWidgetState( value as String? ) as String {
-        value = normalizeState( value );
-        // "-" can be provided for the widget state, it it is empty
+    protected function normalizeTransformedState( value as String? ) as String {
+        value = normalizeItemState( value );
+        // "-" can be provided for the widget state, indicating that it is not available
         if( value.equals( "-" ) ) {
             return NO_STATE;
         }
@@ -100,31 +98,30 @@ class SitemapPrimitiveElement extends SitemapElement {
         // For some elements, the label includes a state in the format:
         //   label [state]
         // We split the two, storing the actual label in the `label` member
-        // and the state in `widgetState`.
+        // and the state in `transformedState`.
         // In this case we do not use a "normalized" label member, because
         // the changed ("normalized") value should be also available where
         // the base class is used. 
         var normalizedLabel = normalizeLabel( label );
         label = normalizedLabel[0];
-        widgetState = normalizeWidgetState( normalizedLabel[1] );
+        transformedState = normalizeTransformedState( normalizedLabel[1] );
 
         // ... and then read all the elements
         var item = getItem( data );
         itemName =  getString( item, ITEM_NAME, "Element '" + label + "': item has no name" );
 
-        itemType =  getString( item, ITEM_TYPE, "Element '" + label + "': item has no type" );
-        if( itemType.equals( ITEM_TYPE_GROUP ) ) {
-            normalizedItemType =  getString( item, ITEM_GROUP_TYPE, "Element '" + label + "': group has no type" );
+        var rawItemType =  getString( item, ITEM_TYPE, "Element '" + label + "': item has no type" );
+        if( rawItemType.equals( ITEM_TYPE_GROUP ) ) {
+            itemType =  getString( item, ITEM_GROUP_TYPE, "Element '" + label + "': group has no type" );
         } else {
-            normalizedItemType = itemType;
+            itemType = rawItemType;
         }
 
-        itemState = item[ITEM_STATE] as String?;
-        normalizedItemState = normalizeState( itemState );
+        itemState = normalizeItemState( item[ITEM_STATE] as String? );
 
-        if( normalizedItemType.equals( "Dimmer" ) ) {
+        if( itemType.equals( "Dimmer" ) ) {
             unit = "%";
-        } else if( normalizedItemType.equals( "Rollershutter" ) ) {
+        } else if( itemType.equals( "Rollershutter" ) ) {
             unit = "%";
         }
     }

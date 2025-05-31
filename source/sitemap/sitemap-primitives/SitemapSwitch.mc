@@ -93,10 +93,10 @@ class SitemapSwitch extends SitemapPrimitiveElement {
     // To be used to update the state if a change
     // is triggered from within the app
     public function updateState( state as String ) as Void {
-        normalizedItemState = state;
+        itemState = state;
         // If we update the state internally, the
         // calculated widget state is not valid anymore
-        widgetState = NO_STATE;
+        transformedState = NO_STATE;
 
         // Fill the state description
         itemStateDescription = describeState();
@@ -109,22 +109,22 @@ class SitemapSwitch extends SitemapPrimitiveElement {
         // First priority: lookup the mappings defined for the widget
         var localDesc = searchArray( 
             _widgetMappings as BaseDescriptionArray, 
-            normalizedItemState 
+            itemState 
         );
 
         // Second priority: lookup the state description
-        // If we got the state from the server, then the widgetState
+        // If we got the state from the server, then the transformedState
         // may be filled. For internal updates this is never the case
-        // The widgetState contains a processed state based on the
+        // The transformedState contains a processed state based on the
         // state descriptions, so if it is present, we do not need
         // to search in the array
         if( localDesc == null ) {
             if( hasWidgetState() ) {
-                localDesc = widgetState;
+                localDesc = transformedState;
             } else if( _itemStateDescriptions != null ) {
                 localDesc = searchArray( 
                     _itemStateDescriptions as BaseDescriptionArray, 
-                    normalizedItemState 
+                    itemState 
                 );
             }
         }
@@ -133,13 +133,13 @@ class SitemapSwitch extends SitemapPrimitiveElement {
         if( localDesc == null && _itemCommandDescriptions != null ) {
             localDesc = searchArray( 
                 _itemCommandDescriptions as BaseDescriptionArray, 
-                normalizedItemState 
+                itemState 
             );
         }
 
         // If all has failed, we just use the raw state
         if( localDesc == null ) {
-            localDesc = normalizedItemState;
+            localDesc = itemState;
         }
 
         return localDesc;

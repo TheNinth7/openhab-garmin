@@ -97,6 +97,6 @@ class BaseSwitchMenuItem extends BaseSitemapMenuItem {
         // so that updateItemState can already access the
         // updated label
         setLabel( sitemapSwitch.label );
-        updateItemState( sitemapSwitch.normalizedItemState );
+        updateItemState( sitemapSwitch.itemState );
     }
 }

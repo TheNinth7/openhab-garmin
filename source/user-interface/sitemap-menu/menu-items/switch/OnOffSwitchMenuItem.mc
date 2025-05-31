@@ -49,11 +49,11 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
 
     // Constructor
     public function initialize( sitemapSwitch as SitemapSwitch ) {
-        var itemState = sitemapSwitch.normalizedItemState;
+        var itemState = sitemapSwitch.itemState;
         if( ! ( itemState.equals( ITEM_STATE_ON ) || itemState.equals( ITEM_STATE_OFF ) ) ) {      
             throw new JsonParsingException( "Switch '" + sitemapSwitch.label + "': invalid state '" + itemState + "'" );
         }
-        _isEnabled = parseItemState( sitemapSwitch.normalizedItemState );
+        _isEnabled = parseItemState( sitemapSwitch.itemState );
         _statusDrawable = new OnOffStatusDrawable( _isEnabled );
         BaseSwitchMenuItem.initialize( sitemapSwitch, _statusDrawable, false );
     }

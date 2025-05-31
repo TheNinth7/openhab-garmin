@@ -96,13 +96,13 @@ class SliderMenuItem extends BaseSitemapMenuItem {
         }
         // Store the new state in the Sitemap Slider object
         _sitemapSlider.sliderState = newState;
-        _sitemapSlider.normalizedItemState = newState.toString();
+        _sitemapSlider.itemState = newState.toString();
         
         // Update the status
         _statusText.setText( _sitemapSlider.sliderState.toString() + _sitemapSlider.unit );
         
         // And send the command
-        ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapSlider.normalizedItemState );
+        ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapSlider.itemState );
     }
 
     // Nothing to be done, but needed to fullfil the delegate interface
