@@ -48,6 +48,7 @@
     - [`Switch`](#switch)
     - [`Slider`](#slider)
     - [`Text`](#text)
+  - [Dynamic Sitemaps](#dynamic-sitemaps)
 - [Settings Menu](#settings-menu)
 - [Troubleshooting](#troubleshooting)
   - [How the App Handles Errors](#how-the-app-handles-errors)
@@ -393,6 +394,12 @@ Frame label="Entrance Gates" {
     <td></td>
   </tr>
 </table>
+
+---
+
+### Dynamic Sitemaps
+
+Of the available [Dynamic Sitemaps](https://www.openhab.org/docs/ui/sitemaps.html#dynamic-sitemaps) features, only the `visibility` parameter is currently supported. For usage details and examples, see the official [visibility documentation](https://www.openhab.org/docs/ui/sitemaps.html#visibility).
 
 ---
 
