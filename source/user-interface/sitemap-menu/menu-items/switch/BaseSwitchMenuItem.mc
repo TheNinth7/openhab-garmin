@@ -38,9 +38,8 @@ class BaseSwitchMenuItem extends BaseSitemapMenuItem {
         _itemName = sitemapSwitch.itemName;
         BaseSitemapMenuItem.initialize(
             {
-                :id => sitemapSwitch.id,
-                :label => sitemapSwitch.label,
-                :status => statusDrawable,
+                :sitemapElement => sitemapSwitch,
+                :state => statusDrawable,
                 :isActionable => isActionable
             }
         );
@@ -92,11 +91,11 @@ class BaseSwitchMenuItem extends BaseSitemapMenuItem {
     // Called by the sitemap request when updated state data is received.
     // Updates the label and delegates status `Drawable` updates to the subclass.
     public function update( sitemapElement as SitemapElement ) as Void {
+        BaseSitemapMenuItem.update( sitemapElement );
         var sitemapSwitch = sitemapElement as SitemapSwitch;
-        // setLabel needs to come before updateItemState,
+        // BaseSitemapMenuItem.update needs to come before updateItemState,
         // so that updateItemState can already access the
         // updated label
-        setLabel( sitemapSwitch.label );
         updateItemState( sitemapSwitch.itemState );
     }
 }

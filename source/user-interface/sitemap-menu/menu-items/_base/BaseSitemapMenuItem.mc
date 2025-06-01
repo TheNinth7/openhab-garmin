@@ -17,11 +17,11 @@ import Toybox.Graphics;
 
 // Defines the options accepted by the `BaseSitemapMenuItem` class.
 typedef BaseSitemapMenuItemOptions as {
-    :id as Object,
+    :sitemapElement as SitemapElement?,
     :icon as ResourceId?,
     :label as String,
     :labelColor as ColorType?,
-    :status as Drawable?,
+    :state as Drawable?,
     :isActionable as Boolean? // if true, the action icon is displayed
 };
 
@@ -31,7 +31,8 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     private var _label as String;
     private var _labelColor as ColorType; // color the label text shall be printed in
     private var _labelTextArea as TextArea?; // label Drawable, optional because instantiated only when drawn
-    private var _status as Drawable?; // status is optional
+    private var _state as Drawable?; // state is optional
+    private var _stateColor as ColorType?; // color passed to the state drawable
     private var _isActionable as Boolean; // true if the action icon shall be displayed
 
     // The action icon is the same for all menu items, it is therefore
@@ -40,39 +41,9 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         :rezId => Rez.Drawables.iconRight
     } );
 
-    // Function for updating the label
-    // The base class CustomItem already has a setLabel function,
-    // so we need to use the same signature, but will throw an
-    // exception for ResourceId
-    public function setLabel( label as String or ResourceId ) as Void {
-        if( ! ( label instanceof String ) ) {
-            throw new GeneralException( "BaseSitemapMenuItem supports only String labels" );
-        }
-        _label = label;
-        if( _labelTextArea != null ) {
-            _labelTextArea.setText( label );
-        }
-    }
-    public function getLabel() as String {
-        return _label;
-    }
-
-    /*
-    * `onSelect()`: Optional override to handle item selection (e.g., Enter button or touch tap).
-    * `isMyType()`: Required override to determine if a given sitemap element matches this item type.
-    * `update()`: Required override to refresh the menu item content with new data from the sitemap request.
-    */
-    public function onSelect() as Void;
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean { 
-        throw new AbstractMethodException( "BaseSitemapMenuItem.getItemType" );
-    }
-    public function update( sitemapElement as SitemapElement ) as Void { 
-        throw new AbstractMethodException( "BaseSitemapMenuItem.update" );
-    }
-
     // Constructor
     protected function initialize( options as BaseSitemapMenuItemOptions ) {
-        BaseMenuItem.initialize( options );
+        BaseMenuItem.initialize();
 
         // Icon is passed in as ResourceId and we create a Bitmap Drawable from it
         if( options[:icon] != null ) {
@@ -81,18 +52,39 @@ class BaseSitemapMenuItem extends BaseMenuItem {
             } );
         }
         
-        // Save the other values passed in
-        _label = options[:label] as String;
-        _status = options[:status];
+        _state = options[:state];
 
         // isActionable defaults to false
         var isActionable = options[:isActionable] as Boolean?;
         _isActionable = isActionable == null ? false : isActionable;
 
-        // Label color will default to white
-        var labelColor = options[:labelColor] as ColorType?;
-        _labelColor = labelColor != null ? labelColor : Constants.UI_COLOR_TEXT;
+        var sitemapElement = options[:sitemapElement] as SitemapElement?;
+
+        if( sitemapElement != null ) {
+            _label = sitemapElement.label;
+            _labelColor = setLabelColor( sitemapElement.labelColor );
+            _stateColor = setStateColor( sitemapElement.valueColor );
+        } else {
+            _label = options[:label] as String;
+            _labelColor = setLabelColor( options[:labelColor] );
+        }
     }
+
+    public function getLabel() as String {
+        return _label;
+    }
+
+    /*
+    * `isMyType()`: Required override to determine if a given sitemap element matches this item type.
+    */
+    public static function isMyType( sitemapElement as SitemapElement ) as Boolean { 
+        throw new AbstractMethodException( "BaseSitemapMenuItem.getItemType" );
+    }
+
+    /*
+    * `onSelect()`: Optional override to handle item selection (e.g., Enter button or touch tap).
+    */
+    public function onSelect() as Void;
 
     // Called by the base class to render the menu item.
     public function onUpdate( dc as Dc ) as Void {
@@ -103,13 +95,30 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         }
         
         ( _labelTextArea as TextArea ).draw( dc );       
-        if( _status != null ) {
-            _status.draw( dc );
+        if( _state != null ) {
+            _state.draw( dc );
             // Action item is only applied if a status is shown
             if( _isActionable ) {
                 _isActionableIcon.draw( dc );
             }
         }
+    }
+
+    // Set the colors or apply the defaults
+    private function setLabelColor( labelColor as ColorType? ) as ColorType {
+        return labelColor != null ? labelColor : Constants.UI_COLOR_TEXT;
+    }
+    private function setStateColor( stateColor as ColorType? ) as ColorType {
+        return stateColor != null ? stateColor : Constants.UI_COLOR_INACTIVE;
+    }
+
+    /*
+    * `update()`: Optional override to refresh the menu item content with new data from the sitemap request.
+    */
+    public function update( sitemapElement as SitemapElement ) as Void { 
+        _label = sitemapElement.label;
+        _labelColor = setLabelColor( sitemapElement.labelColor );
+        _stateColor = setStateColor( sitemapElement.valueColor );
     }
 
    /*
@@ -153,8 +162,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         // Initially, the right padding is applied
         var rightX = dcWidth - paddingRight;
 
-        // The 
-        if( _status != null || _isActionable ) {
+        if( _state != null || _isActionable ) {
             rightX -= ( dcWidth * Constants.UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR ).toNumber();
         }        
 
@@ -171,8 +179,8 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         // If status is present, its location is set,
         // and width available for the title is adjusted
         // accordingly
-        if( _status != null ) {
-            var status = _status;
+        if( _state != null ) {
+            var status = _state;
             titleWidth -= spacing;
             
             if( status instanceof StatusTextArea ) {
@@ -191,6 +199,10 @@ class BaseSitemapMenuItem extends BaseMenuItem {
             status.setLocation( rightX, WatchUi.LAYOUT_VALIGN_CENTER );
 
             titleWidth -= statusWidth;
+
+            if( status has :setColor && _stateColor != null ) {
+                status.setColor( _stateColor );
+            }
         }
 
         // Finally the text area is initialized

@@ -14,11 +14,6 @@ import Toybox.Graphics;
  * - `onUpdate()` is called each time the menu item needs to be redrawn.
  */
 
-// Defines the options accepted by the `BaseMenuItem` class.
-typedef BaseMenuItemOptions as {
-    :id as Object,
-};
-
 class BaseMenuItem extends CustomMenuItem {
     
     // Set to true once onLayout() has been called
@@ -27,8 +22,8 @@ class BaseMenuItem extends CustomMenuItem {
     // Constructor
     // This base class currently only uses the `id` from the options;
     // all other options are used by derived classes.
-    protected function initialize( options as BaseMenuItemOptions ) {
-        CustomMenuItem.initialize( options[:id] as String, {} );
+    protected function initialize() {
+        CustomMenuItem.initialize( null, {} );
     }
 
     public function draw( dc as Dc ) as Void {

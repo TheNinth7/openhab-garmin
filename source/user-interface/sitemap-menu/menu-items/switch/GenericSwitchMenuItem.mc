@@ -53,8 +53,8 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // Override the update method of the super class
     // and obtain the updated list of commmand mappings
     public function update( sitemapElement as SitemapElement ) as Void {
-        _sitemapSwitch = sitemapElement as SitemapSwitch;
         BaseSwitchMenuItem.update( sitemapElement );
+        _sitemapSwitch = sitemapElement as SitemapSwitch;
     }
 
     // Called by the superclass if the state changes

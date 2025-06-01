@@ -19,7 +19,7 @@ class SettingsTextMenuItem extends BaseMenuItem {
     * Initializes the superclass and stores the label and sublabel.
     */
     public function initialize( label as String, subLabel as String ) {
-        BaseMenuItem.initialize( { :id => label } );
+        BaseMenuItem.initialize();
         _label = label;
         _subLabel = subLabel;
     }
