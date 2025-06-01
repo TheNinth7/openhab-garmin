@@ -11,6 +11,8 @@ import Toybox.WatchUi;
 class SitemapPrimitiveElement extends SitemapElement {
 
     // JSON field names
+    private const UNIT = "unit";
+
     private const ITEM = "item";
     private const ITEM_NAME = "name";
     private const ITEM_TYPE = "type";
@@ -25,7 +27,7 @@ class SitemapPrimitiveElement extends SitemapElement {
     // For the members declared private, there are public members 
     // further below, with processing applied ("normalized")
     public var itemName as String;
-    public var unit as String = "";
+    public var unit as String;
 
     // If the state is missing, NULL or UNDEF it
     // is set to NULL, which is displayed as em dash by the widgets
@@ -119,13 +121,19 @@ class SitemapPrimitiveElement extends SitemapElement {
 
         itemState = normalizeItemState( item[ITEM_STATE] as String? );
 
+        // For dimmer and rollershutter we always use "%",
+        // regardless of the JSON. For all other types we
+        // use the unit from the JSON if present
         if( itemType.equals( "Dimmer" ) ) {
             unit = "%";
         } else if( itemType.equals( "Rollershutter" ) ) {
             unit = "%";
+        } else {
+            unit = getOptionalString( item, UNIT );
         }
     }
 
+    // Accessor allowing subclasses to access the item associated with the widget
     protected function getItem( data as JsonObject ) as JsonObject {
         return getObject( data, ITEM, "Element '" + label + "': no item found" );
     }
