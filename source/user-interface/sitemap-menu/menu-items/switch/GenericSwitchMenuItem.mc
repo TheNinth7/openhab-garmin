@@ -41,7 +41,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         // Initialize the Drawable for the status text, and set the color
         _statusDrawable = new StatusTextArea( 
             sitemapSwitch.label, 
-            sitemapSwitch.itemStateDescription 
+            sitemapSwitch.transformedState 
         );
 
         _statusDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
@@ -65,16 +65,11 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // show the new state, even before the next sitemap update
     // arrives
     public function updateItemState( state as String ) as Void {
-        // If the state in the sitemap is the same as we got passed
-        // in there is no need to update. updateState is relatively
-        // costly due to the lookup of the description
-        if( ! _sitemapSwitch.itemState.equals( state ) ) {
-            _sitemapSwitch.updateState( state );
-        }
+        _sitemapSwitch.updateState( state );
         
         _statusDrawable.update( 
             _sitemapSwitch.label, 
-            _sitemapSwitch.itemStateDescription 
+            _sitemapSwitch.transformedState 
         );
     }
 

@@ -4,17 +4,12 @@ import Toybox.WatchUi;
 /*
  * Class representing `Switch` elements.
  */
-
 class SitemapSwitch extends SitemapPrimitiveElement {
     private var _widgetMappings  as CommandDescriptionArray;
     private var _itemCommandDescriptions as CommandDescriptionArray?;
     private var _itemStateDescriptions as StateDescriptionArray?;
 
     public var commandDescriptions as CommandDescriptionArray;
-
-    // The description of the state is what is displayed
-    // on the UI for the state
-    public var itemStateDescription as String;
 
     // Accessor
     public function hasMappings() as Boolean {
@@ -52,8 +47,7 @@ class SitemapSwitch extends SitemapPrimitiveElement {
             _itemStateDescriptions = readStateDescriptions( sd["options"] as JsonArray? );
         }
 
-        itemStateDescription = describeState();
-        addUnitToStateDescription();
+        transformedState = describeState();
     }
 
     // Used for reading both the widget's mapping and
@@ -93,21 +87,25 @@ class SitemapSwitch extends SitemapPrimitiveElement {
     // To be used to update the state if a change
     // is triggered from within the app
     public function updateState( state as String ) as Void {
-        itemState = state;
-        // If we update the state internally, the
-        // calculated widget state is not valid anymore
-        transformedState = NO_STATE;
+        // If the state in the sitemap is the same as we got passed
+        // in there is no need to update. updateState is relatively
+        // costly due to the lookup of the description
+        if( ! itemState.equals( state ) ) {
+            itemState = state;
+            // If we update the state internally, the
+            // calculated widget state is not valid anymore
+            transformedState = NO_STATE;
 
-        // Fill the state description
-        itemStateDescription = describeState();
-        addUnitToStateDescription();
+            // Fill the state description
+            transformedState = describeState();
+        }
     }
     
     // Determines the state description
     private function describeState() as String {
         
         // First priority: lookup the mappings defined for the widget
-        var localDesc = searchArray( 
+        var localTransformedState = searchArray( 
             _widgetMappings as BaseDescriptionArray, 
             itemState 
         );
@@ -118,11 +116,11 @@ class SitemapSwitch extends SitemapPrimitiveElement {
         // The transformedState contains a processed state based on the
         // state descriptions, so if it is present, we do not need
         // to search in the array
-        if( localDesc == null ) {
+        if( localTransformedState == null ) {
             if( hasWidgetState() ) {
-                localDesc = transformedState;
+                localTransformedState = transformedState;
             } else if( _itemStateDescriptions != null ) {
-                localDesc = searchArray( 
+                localTransformedState = searchArray( 
                     _itemStateDescriptions as BaseDescriptionArray, 
                     itemState 
                 );
@@ -130,19 +128,26 @@ class SitemapSwitch extends SitemapPrimitiveElement {
         }
 
         // Third priority: we lookup the command descriptions
-        if( localDesc == null && _itemCommandDescriptions != null ) {
-            localDesc = searchArray( 
+        if( localTransformedState == null && _itemCommandDescriptions != null ) {
+            localTransformedState = searchArray( 
                 _itemCommandDescriptions as BaseDescriptionArray, 
                 itemState 
             );
         }
 
         // If all has failed, we just use the raw state
-        if( localDesc == null ) {
-            localDesc = itemState;
+        if( localTransformedState == null ) {
+            localTransformedState = itemState;
         }
 
-        return localDesc;
+        // If the transformed state is numeric, then we
+        // add the unit
+        localTransformedState = 
+            localTransformedState.toFloat() != null
+            ? localTransformedState + unit
+            : localTransformedState;
+
+        return localTransformedState;
     }
 
     // Search in an Array of BaseDescriptions for
@@ -155,15 +160,5 @@ class SitemapSwitch extends SitemapPrimitiveElement {
             }
         }
         return null;
-    }
-
-
-    // This function can be used by subclasses to apply a unit to
-    // a state, but only if the state is numeric
-    private function addUnitToStateDescription() as Void {
-        itemStateDescription = 
-            itemStateDescription.toFloat() != null
-            ? itemStateDescription + unit
-            : itemStateDescription;
     }
 }
