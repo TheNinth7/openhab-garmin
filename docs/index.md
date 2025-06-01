@@ -399,7 +399,41 @@ Frame label="Entrance Gates" {
 
 ### Dynamic Sitemaps
 
-Of the available [Dynamic Sitemaps](https://www.openhab.org/docs/ui/sitemaps.html#dynamic-sitemaps) features, only the `visibility` parameter is currently supported. For usage details and examples, see the official [visibility documentation](https://www.openhab.org/docs/ui/sitemaps.html#visibility).
+Of the available [Dynamic Sitemaps](https://www.openhab.org/docs/ui/sitemaps.html#dynamic-sitemaps) features, the `visibility` parameter as well as label and icon colors are supported. 
+
+#### Visibility
+
+For usage details and examples, see the official [visibility documentation](https://www.openhab.org/docs/ui/sitemaps.html#visibility).
+
+Here’s an improved version with clearer phrasing, smoother flow, and a slightly more polished tone, while preserving the original structure:
+
+---
+
+#### Label and Value Colors
+
+For usage details and examples, refer to the official [openHAB documentation](https://www.openhab.org/docs/ui/sitemaps.html#label-value-and-icon-colors).
+
+The app supports both `labelcolor` and `valuecolor` attributes. Color values can be specified using either hexadecimal color codes (e.g., `#FF0000`) or named colors (e.g., `red`) as listed in the documentation.
+
+Here’s an example configuration:
+
+```
+sitemap garmin_demo label="My Home" {
+	Frame label="Entrance Gates" {
+		Switch item=Entrance_Gates_Power label="Open/Close" mappings=[OFF="", ON="DONE"]
+		Text item=Entrance_Gates_Status label="Status" valuecolor=[==OPEN="red", ==CLOSED="green", ==MOVING="yellow"]
+	}
+}
+```
+
+This results in the following display:
+
+<table class="screenshot-table">
+  <tr>
+    <td width="50%"><img src="screenshots/app/9-dynamics-colors.png"></td>
+    <td></td>
+  </tr>
+</table>
 
 ---
 
