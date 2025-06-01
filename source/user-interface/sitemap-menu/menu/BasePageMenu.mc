@@ -117,7 +117,7 @@ class BasePageMenu extends BaseMenu {
         var elements = sitemapPage.elements;
         for( var i = elements.size() - 1; i >= 0; i-- ) {
             var element = elements[i];
-            taskQueue.addToFront( new AddOrUpdateMenuItemTask( element, self ) );
+            taskQueue.addToFront( new AddOrUpdateMenuItemTask( i, element, self ) );
         }
     }
 }

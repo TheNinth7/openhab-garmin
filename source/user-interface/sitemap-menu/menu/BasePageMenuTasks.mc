@@ -34,23 +34,25 @@ import Toybox.WatchUi;
  * See also BasePageMenu.update() for further information on the update algorithm.
  */
 class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
+    private var _index as Number;
     private var _sitemapElement as SitemapElement;
     private var _pageMenu as BasePageMenu;
 
     // Constructor
     public function initialize( 
+        index as Number,
         sitemapElement as SitemapElement,
         pageMenu as BasePageMenu 
     ) {
         BaseSitemapProcessorTask.initialize();
-        _pageMenu = pageMenu;
+        _index = index;
         _sitemapElement = sitemapElement;
+        _pageMenu = pageMenu;
     }
     
     // Add the element
     public function invoke() as Void {
-        var itemIndex = _pageMenu.findItemById( _sitemapElement.id );
-        if( itemIndex == -1 ) {
+        if( _index >= _pageMenu.getItemCount() ) {
             // If the item does not exist yet, we create it
             _pageMenu.addItem( 
                 MenuItemFactory.createMenuItem( 
@@ -62,7 +64,7 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
         } else {
             // If the item is found, we check if the type of the menu
             // item is the same or has changed
-            var item = _pageMenu.getItem( itemIndex ) as BaseSitemapMenuItem;
+            var item = _pageMenu.getItem( _index ) as BaseSitemapMenuItem;
             if( item.isMyType( _sitemapElement ) ) {
                 // If the type is the same, we update the menu item
                 item.update( _sitemapElement );
@@ -79,7 +81,7 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
                     // Logger.debug( "PageMenu.update: page '" + _pageMenu.getLabel() + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
 
                 }
-                _pageMenu.updateItem( newItem, itemIndex );
+                _pageMenu.updateItem( newItem, _index );
             }
         }
     }
