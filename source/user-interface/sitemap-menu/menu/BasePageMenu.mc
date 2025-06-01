@@ -62,26 +62,29 @@ class BasePageMenu extends BaseMenu {
     }
 
     /*
-    * Updates the menu based on a new sitemap state.
+    * Updates the menu based on the current sitemap state.
     *
-    * Sitemap-assigned identifiers are effectively positional indexes. When a new element is 
-    * inserted in the middle of a page, it receives the identifier previously assigned to the 
-    * item at that position, and subsequent items are reindexed accordingly.
+    * This algorithm uses positional indexing based on the order of elements in the sitemap JSON.
+    * When a new element is inserted mid-page, it receives the identifier previously assigned
+    * to the item at that position, and all subsequent items are reindexed accordingly.
     *
-    * The update algorithm compares each new sitemap element with the existing menu item at 
-    * the corresponding position:
-    *   - If the types match, the item is updated in place.
-    *   - If the types differ, the existing item is replaced.
-    *   - If no matching menu item exists for a given index, a new one is added.
-    *   - If any existing menu items remain after processing all sitemap elements, they are removed.
+    * For each sitemap element, the algorithm compares it to the existing menu item at the same index:
+    *   - If types match, the item is updated in place.
+    *   - If types differ, the existing item is replaced.
+    *   - If no menu item exists at that index, a new one is added.
+    *   - Any remaining items beyond the end of the new sitemap list are removed.
     *
-    * This allows for efficient repurposing of menu items when changes are made mid-list, provided 
-    * the types are compatible. For example, inserting a `Switch` in the middle of a list of `Switch` 
-    * items will cause the menu item at that position to be reused for the new `Switch`, and subsequent 
-    * items will be repurposed or extended as needed.
+    * This enables efficient reuse of menu items when elements are added, removed, or reordered— 
+    * as long as the types are compatible. For example, inserting a `Switch` in the middle of a list 
+    * of `Switch` items will repurpose the existing item at that position and adjust the rest accordingly.
     *
-    * The update() function also tracks whether the update affected the structure.
-    * See invalidateStructure() for more details.
+    * The `update()` function also tracks whether the menu structure was affected.
+    * See `invalidateStructure()` for details.
+    *
+    * NOTE: This algorithm does *not* use the `widgetId`. While `widgetId` often reflects the 
+    * position of an element, this breaks down when the `visibility` parameter is used—hidden items 
+    * retain their `widgetId`, creating "holes" in the sequence. To avoid this, we rely on actual 
+    * array indices instead.
     */
     public function update( sitemapPage as SitemapPage ) as Void {
         // Logger.debug( "PageMenu.update: updating page '" + _label + "'" );
