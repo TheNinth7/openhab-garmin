@@ -12,16 +12,16 @@ class SitemapWidgetFactory {
         widget as JsonAdapter, 
         isSitemapFresh as Boolean,
         asyncProcessing as Boolean
-    ) as SitemapElement {
+    ) as SitemapWidget {
         var type = widget.getString( "type", "Widget without type" ); 
         if( type.equals( "Switch" ) ) {
-            return new SitemapSwitch( widget, isSitemapFresh );
+            return new SitemapSwitch( widget, isSitemapFresh, asyncProcessing );
         } else if( type.equals( "Slider" ) ) {
-            return new SitemapSlider( widget, isSitemapFresh );
+            return new SitemapSlider( widget, isSitemapFresh, asyncProcessing );
         } else if( type.equals( "Text" ) ) {
-            return new SitemapText( widget, isSitemapFresh );
+            return new SitemapText( widget, isSitemapFresh, asyncProcessing );
         } else if( type.equals( "Frame" ) ) {
-            return new SitemapPage( widget, isSitemapFresh, asyncProcessing );
+            return new SitemapFrame( widget, isSitemapFresh, asyncProcessing );
         } else {
             throw new JsonParsingException( "Unsupported element type '" + type + "'." );
         }

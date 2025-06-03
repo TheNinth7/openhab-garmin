@@ -28,8 +28,8 @@ class SliderPickerFactory extends CustomPickerFactory {
 
         // Get the data we need for building the list
         var sitemapSlider = menuItem.getSitemapSlider();
-        var unit = sitemapSlider.unit;
-        var currentValue = sitemapSlider.numericState;
+        var unit = sitemapSlider.item.unit;
+        var currentValue = sitemapSlider.item.numericState;
 
         // Start at minValue and increment by step
         // until the next value would exceed maxValue.

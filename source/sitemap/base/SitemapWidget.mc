@@ -13,7 +13,7 @@ import Toybox.Graphics;
 class SitemapWidget extends SitemapElement {
 
     public var label as String;
-    public var transformedState as String?;
+    public var transformedState as String;
     public var labelColor as ColorType?;
     public var valueColor as ColorType?;
     public var linkedPage as SitemapContainer?;
@@ -41,7 +41,7 @@ class SitemapWidget extends SitemapElement {
 
     // Determines if a transformed state is available
     public function hasTransformedState() as Boolean {
-        return !transformedState != null;
+        return ! ( transformedState != null );
     }
 
     // Parses a color field.

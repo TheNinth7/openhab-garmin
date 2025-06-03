@@ -37,10 +37,10 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
 
     // Converts the string state to a Boolean for _isEnabled
     // ON => true; OFF => false
-    private function parseItemState( itemState as String ) as Boolean {
-        if( itemState.equals( ITEM_STATE_ON ) ) {
+    private function parseItemState( itemState as String? ) as Boolean {
+        if( ITEM_STATE_ON.equals( itemState ) ) {
             return true;            
-        } else if( itemState.equals( ITEM_STATE_OFF ) ) {
+        } else if( ITEM_STATE_OFF.equals( itemState ) ) {
             return false;
         } else {
             throw new GeneralException( "OnOffSwitchMenuItem: state '" + itemState + "' is not supported" );

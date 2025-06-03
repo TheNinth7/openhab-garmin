@@ -35,18 +35,18 @@ import Toybox.WatchUi;
  */
 class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
     private var _index as Number;
-    private var _sitemapElement as SitemapElement;
+    private var _sitemapWidget as SitemapWidget;
     private var _pageMenu as BasePageMenu;
 
     // Constructor
     public function initialize( 
         index as Number,
-        sitemapElement as SitemapElement,
+        sitemapWidget as SitemapWidget,
         pageMenu as BasePageMenu 
     ) {
         BaseSitemapProcessorTask.initialize();
         _index = index;
-        _sitemapElement = sitemapElement;
+        _sitemapWidget = sitemapWidget;
         _pageMenu = pageMenu;
     }
     
@@ -56,7 +56,7 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
             // If the item does not exist yet, we create it
             _pageMenu.addItem( 
                 MenuItemFactory.createMenuItem( 
-                    _sitemapElement, 
+                    _sitemapWidget, 
                     _pageMenu 
                 ) 
             );
@@ -65,18 +65,18 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
             // If the item is found, we check if the type of the menu
             // item is the same or has changed
             var item = _pageMenu.getItem( _index ) as BaseSitemapMenuItem;
-            if( item.isMyType( _sitemapElement ) ) {
+            if( item.isMyType( _sitemapWidget ) ) {
                 // If the type is the same, we update the menu item
-                item.update( _sitemapElement );
+                item.update( _sitemapWidget );
             } else {
                 // If the type is not the same, we create a new item
                 // and replace the existing menu item with it
                 var newItem = MenuItemFactory.createMenuItem( 
-                    _sitemapElement, 
+                    _sitemapWidget, 
                     _pageMenu 
                 );
 
-                if( item instanceof PageMenuItem || newItem instanceof PageMenuItem ) {
+                if( item instanceof FrameMenuItem || newItem instanceof FrameMenuItem ) {
                     _pageMenu.invalidateStructure();
                     // Logger.debug( "PageMenu.update: page '" + _pageMenu.getLabel() + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
 
@@ -93,16 +93,16 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
  */
 class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
     private var _pageMenu as BasePageMenu;
-    private var _sitemapPage as SitemapPage;
+    private var _sitemapContainer as SitemapContainer;
 
     // Constructor
     public function initialize( 
-        sitemapPage as SitemapPage,
+        sitemapContainer as SitemapContainer,
         pageMenu as BasePageMenu 
     ) {
         BaseSitemapProcessorTask.initialize();
         _pageMenu = pageMenu;
-        _sitemapPage = sitemapPage;
+        _sitemapContainer = sitemapContainer;
     }
     
     // Delete the unused menu items
@@ -110,7 +110,7 @@ class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
         // The number of used menu items equals to the number
         // of sitemap elements. So number of elements equals
         // to the first UNUSED index.
-        var i = _sitemapPage.elements.size();
+        var i = _sitemapContainer.widgets.size();
         // Logger.debug( "DeleteUnusedMenuItemsTask.invoke: deleting menu item, starting from index " + i );
 
         // NOTE: getItemCount() receives special handling in `HomepageMenu`
@@ -119,9 +119,9 @@ class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
         // entry from being deleted as an unused menu item.
         while( i < _pageMenu.getItemCount() ) {
             var menuItem = _pageMenu.getItem( i ) as CustomMenuItem;
-            if( menuItem instanceof PageMenuItem ) {
+            if( menuItem instanceof FrameMenuItem ) {
                 _pageMenu.invalidateStructure();
-                // Logger.debug( "PageMenu.update: page '" + _sitemapPage.label + "' invalid because subpage was removed" );
+                // Logger.debug( "PageMenu.update: page '" + _sitemapContainer.label + "' invalid because subpage was removed" );
             }
             _pageMenu.deleteItem( i );
         }

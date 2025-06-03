@@ -16,10 +16,10 @@ class PageMenu extends BasePageMenu {
     }
 
     public function initialize( 
-        sitemapPage as SitemapPage,
+        sitemapContainer as SitemapContainerImplementation,
         parent as BasePageMenu 
     ) {
-        BasePageMenu.initialize( sitemapPage, null );
+        BasePageMenu.initialize( sitemapContainer, null );
         _parent = parent;
     }
 }

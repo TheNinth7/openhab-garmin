@@ -33,15 +33,15 @@ class SitemapStore  {
     // The JSON is stored together with a numeric timestamp
     typedef StoredJson as [JsonObject, Number];
     private static var _json as StoredJson?;
-    private static var _label as String?;
+    private static var _title as String?;
     private static var _estimatedSitemapSize as Number = 0;
 
     // Accessor functions for the label
     public static function getLabel() as String? {
-        if( _label == null ) {
-            _label = Storage.getValue( STORAGE_LABEL ) as String?;
+        if( _title == null ) {
+            _title = Storage.getValue( STORAGE_LABEL ) as String?;
         }
-        return _label;
+        return _title;
     }
 
     // Return the sitemap currently stored in Storage
@@ -49,7 +49,11 @@ class SitemapStore  {
     public static function getSitemapFromStorage() as SitemapHomepage? {
         _json = Storage.getValue( STORAGE_JSON ) as StoredJson?;
         if( _json != null ) {
-            return new SitemapHomepage( _json[0], isSitemapFresh(), false );
+            return new SitemapHomepage( 
+                new JsonAdapter( _json[0] ), 
+                isSitemapFresh(), 
+                false 
+            );
         }
         return null;
     }
@@ -79,8 +83,13 @@ class SitemapStore  {
     ) as SitemapHomepage {
         _json = incomingJson.getForStorage();
         _estimatedSitemapSize = incomingJson.estimatedSize;
-        var homepage = new SitemapHomepage( incomingJson.json, true, asyncProcessing );
-        _label = homepage.label;
+        var homepage = new SitemapHomepage( 
+            new JsonAdapter( incomingJson.json ), 
+            true, 
+            asyncProcessing 
+        );
+        
+        _title = homepage.title;
         return homepage;
     }
 
@@ -96,9 +105,9 @@ class SitemapStore  {
     // Persist the current data to storage
     // This function is called by OHApp wenn the application is stopped
     public static function persist() as Void {
-        if( _label != null ) {
-            Storage.setValue( STORAGE_LABEL, _label );
-            _label = null;
+        if( _title != null ) {
+            Storage.setValue( STORAGE_LABEL, _title );
+            _title = null;
         }
         
         // Logger.debugMemory( _estimatedSitemapSize );

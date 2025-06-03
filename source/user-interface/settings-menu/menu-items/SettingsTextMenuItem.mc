@@ -9,7 +9,7 @@ import Toybox.Graphics;
 class SettingsTextMenuItem extends BaseMenuItem {
 
     // The values and Drawables
-    private var _label as String;
+    private var _title as String;
     private var _subLabel as String;
     private var _labelTextArea as Text?;
     private var _subLabelTextArea as TextArea?;
@@ -20,7 +20,7 @@ class SettingsTextMenuItem extends BaseMenuItem {
     */
     public function initialize( label as String, subLabel as String ) {
         BaseMenuItem.initialize();
-        _label = label;
+        _title = label;
         _subLabel = subLabel;
     }
 
@@ -38,7 +38,7 @@ class SettingsTextMenuItem extends BaseMenuItem {
         // locY for label is set for the text to be on top of the center line,
         //      using the font height
         _labelTextArea = new Text( {
-            :text => _label,
+            :text => _title,
             :font => Constants.UI_MENU_ITEM_FONTS[0],
             :locX => locX,
             :locY => yCenter - Graphics.getFontHeight( Constants.UI_MENU_ITEM_FONTS[0] ),

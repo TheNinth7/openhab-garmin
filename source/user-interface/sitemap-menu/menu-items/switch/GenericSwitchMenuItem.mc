@@ -41,7 +41,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         // Initialize the Drawable for the status text, and set the color
         _statusDrawable = new StatusTextArea( 
             sitemapSwitch.label, 
-            sitemapSwitch.transformedState 
+            sitemapSwitch.transformedState
         );
 
         _statusDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
@@ -69,7 +69,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         
         _statusDrawable.update( 
             _sitemapSwitch.label, 
-            _sitemapSwitch.transformedState 
+            _sitemapSwitch.transformedState
         );
     }
 
@@ -84,9 +84,9 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         } else if ( commandDescriptions.size() == 2 ) {
             // For two mappings, we check if the current state equals
             // to one of them and then send the other
-            if( itemState.equals( commandDescriptions[0].command ) ) {
+            if( commandDescriptions[0].command.equals( itemState ) ) {
                 return commandDescriptions[1].command;
-            } else if( itemState.equals( commandDescriptions[1].command ) ) {
+            } else if( commandDescriptions[1].command.equals( itemState ) ) {
                 return commandDescriptions[0].command;
             }
         }

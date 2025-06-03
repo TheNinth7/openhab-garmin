@@ -9,6 +9,9 @@ import Toybox.WatchUi;
  */
 class Item {
 
+    // If state is missing, NULL or UNDEF it will be set to this constant.
+    public static const NO_STATE = "NULL";
+
     //! Name of the item.
     public var name as String;
 
@@ -18,7 +21,7 @@ class Item {
 
     //! State of the item.
     //! If the state NULL or UNDEF it is set to null, which is displayed as em dash by the widgets.
-    public var state as String?;
+    public var state as String;
 
     //! Unit of the item.
     //! The unit is set to "%" for Dimmer and Rollershutter items, and otherwise filled from the unit provided with the JSON, if available. If neither applies it is an empty string ("").
@@ -27,12 +30,12 @@ class Item {
     //! Determine whether the item has a valid state
     //! @return true if the state is not NULL or UNDEF
     public function hasState() as Boolean {
-        return state != null;
+        return ! state.equals( NO_STATE );
     }
 
     //! Constructor
     //! @param json The JSON object from which this Item should be built.
-    protected function initialize( json as JsonAdapter ) {
+    public function initialize( json as JsonAdapter ) {
         name =  json.getString( "name", "Item name is missing" );
 
         // If the item is a Group, we apply the groupType
@@ -43,11 +46,12 @@ class Item {
 
         // If no state is available, it will be set to null
         state = json.getOptionalString( "state" );
-        if( state.equals( "" )
-            || state.equals( "NULL" ) 
-            || state.equals( "UNDEF" ) ) 
-            {
-            state = null;
+        if( state != null 
+            || state.equals( "" ) 
+            || state.equals( "NULL" )
+            || state.equals( "UNDEF" )
+        ) {
+            state = NO_STATE;
         }
 
         // For dimmer and rollershutter we always use "%",

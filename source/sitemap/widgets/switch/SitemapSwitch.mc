@@ -25,7 +25,7 @@ class SitemapSwitch extends SitemapWidget {
     public var item as SwitchItem;
 
     // The mappings from the sitemap element (widget)
-    private var _mappings  as CommandDescriptionArray;
+    private var _mappings as CommandDescriptionArray;
     
     // Holds the command descriptions to be used by the widget (for non-toggle switches).
     // Priority is given to mappings defined in the sitemap. If none are present,
@@ -51,12 +51,12 @@ class SitemapSwitch extends SitemapWidget {
         // command descriptions, then we take those, otherwise
         // we take the widget mappings, even if empty
         if( _mappings.size() == 0 && item.commandDescriptions != null ) {
-            commandDescriptions = item.commandDescriptions;       
+            commandDescriptions = item.commandDescriptions as CommandDescriptionArray; 
         } else {
             commandDescriptions = _mappings;
         }
 
-        transformState( false );
+        transformState( item, _mappings, transformedState );
     }
 
 
@@ -73,9 +73,9 @@ class SitemapSwitch extends SitemapWidget {
         // If the state in the sitemap is the same as we got passed
         // in there is no need to update. updateState is relatively
         // costly due to the lookup of the description
-        if( ! item.state.equals( state ) ) {
+        if( item.state.equals( state ) ) {
             item.state = state;
-            transformState( true );
+            transformState( item, _mappings, null );
         }
     }
     
@@ -95,8 +95,8 @@ class SitemapSwitch extends SitemapWidget {
     private static function transformState( 
         item as SwitchItem, 
         mappings as CommandDescriptionArray, 
-        jsonTransformedState as String
-    ) as String {
+        jsonTransformedState as String?
+    ) as String? {
 
         // First priority: lookup the mappings defined for the widget
         var transformedState = searchArray( 
@@ -105,7 +105,7 @@ class SitemapSwitch extends SitemapWidget {
         );
 
         if( transformedState == null ) {
-            if( hasTransformedState() && ! update ) {
+            if( jsonTransformedState != null ) {
                 // Second priority: 
                 // If we got the state from the server, then the transformedState
                 // may be filled. For internal updates this is never the case
@@ -130,21 +130,23 @@ class SitemapSwitch extends SitemapWidget {
         // If all has failed, we just use the raw state
         if( transformedState == null ) {
             transformedState = item.state;
+            // If the transformed state is numeric, then we
+            // add the unit
+            transformedState = 
+                transformedState.toFloat() != null
+                ? transformedState + item.unit
+                : transformedState;
         }
-
-        // If the transformed state is numeric, then we
-        // add the unit
-        transformedState = 
-            transformedState.toFloat() != null
-            ? transformedState + item.unit
-            : transformedState;
 
         return transformedState;
     }
 
     // Search in an Array of BaseDescriptions for
     // the given state and if found return the label
-    private static function searchArray( descriptions as BaseDescriptionArray, state as String) as String? {
+    private static function searchArray( 
+        descriptions as BaseDescriptionArray, 
+        state as String 
+    ) as String? {
         for( var i = 0; i < descriptions.size(); i++ ) {
             var description = descriptions[i];
             if( description.equalsById( state ) ) {

@@ -13,20 +13,20 @@ class StatusTextArea extends TextArea {
     private const HEIGHT = ( Constants.UI_MENU_ITEM_HEIGHT * 0.8 ).toNumber();
 
     private var _text as String;
-    private var _label as String;
+    private var _title as String;
 
     // Called by BaseSitemapMenuItem to provide the total available width for the menu item.
     // Sets the size of the status drawable proportionally based on the relative lengths 
     // of the status text and the label.
     public function setAvailableWidth( availableWidth as Number ) as Void {
-        setSize( ( availableWidth * TextDimensions.getWidthRatio( _text, _label ) ).toNumber(), height );
+        setSize( ( availableWidth * TextDimensions.getWidthRatio( _text, _title ) ).toNumber(), height );
     }
 
     // Constructor  
     // Stores the label for later use in size calculation (see setAvailableWidth).  
     // Initializes the text area with all properties except size, which is set separately.
     public function initialize( label as String, text as String ) {
-        _label = label;
+        _title = label;
         _text = text;
         TextArea.initialize( {
             :text => _text,
@@ -40,7 +40,7 @@ class StatusTextArea extends TextArea {
 
     // Updates the text status
     public function update( label as String, text as String ) as Void {
-        _label = label;
+        _title = label;
         _text = text;
         setText( _text );
     }

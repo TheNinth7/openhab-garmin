@@ -29,7 +29,7 @@ class SitemapElement {
     // patterns applied. 
     // This function parses the input into two parts: the label and the state,
     // and returns them as a tuple: [0] = label, [1] = state.
-    protected static function parseLabelState( json as JsonAdapter, id as String, errorMessage as String ) as [String, String?] {
+    protected static function parseLabelState( json as JsonAdapter, id as String, errorMessage as String ) as [String, String] {
         var label = json.getString( id, errorMessage );
         var transformedState = null;
         var bracket = label.find( " [" ) as Number?;
@@ -40,8 +40,8 @@ class SitemapElement {
             }
             transformedState = label.substring( bracket+2, null ) as String?;
         }
-        if( transformedState.equals( "-" ) ) {
-            transformedState = null;
+        if( transformedState == null || transformedState.equals( "-" ) ) {
+            transformedState = Item.NO_STATE;
         }
         return [label, transformedState];
     }

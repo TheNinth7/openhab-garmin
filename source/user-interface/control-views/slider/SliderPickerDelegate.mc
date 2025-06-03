@@ -29,7 +29,7 @@ class SliderPickerDelegate extends CustomPickerDelegate {
     public function initialize( menuItem as SliderMenuItem ) {
         CustomPickerDelegate.initialize();
         _menuItem = menuItem;
-        _previousState = menuItem.getSitemapSlider().numericState;
+        _previousState = menuItem.getSitemapSlider().item.numericState;
     }
 
     // If the user confirms and we ARE in releaseOnly mode,
@@ -54,7 +54,7 @@ class SliderPickerDelegate extends CustomPickerDelegate {
     public function onCancel() as Boolean {
         // Logger.debug "SliderDelegate.onCancel" );
         if( ! _menuItem.getSitemapSlider().releaseOnly ) {
-            if( _menuItem.getSitemapSlider().numericState != _previousState ) {
+            if( _menuItem.getSitemapSlider().item.numericState != _previousState ) {
                 // Logger.debug "SliderDelegate.onCancel: reverting to state=" + _previousState.toString() );
                 _menuItem.updateState( _previousState );
             } else {

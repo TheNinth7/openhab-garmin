@@ -72,9 +72,9 @@ class HomepageMenu extends BasePageMenu {
     // Before an update we reset the indicator showing whether
     // the update left the structure intact.
     // Then we call the update function of the base class
-    public function update( sitemapPage as SitemapPage ) as Void {
+    public function update( sitemapContainer as SitemapContainerImplementation ) as Void {
         _structureRemainsValid = true;
-        BasePageMenu.update( sitemapPage );
+        BasePageMenu.update( sitemapContainer );
     }
 
     // On button-based devices, the settings icon is displayed in the footer

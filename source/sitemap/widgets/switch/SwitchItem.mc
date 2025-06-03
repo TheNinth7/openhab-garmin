@@ -45,7 +45,7 @@ class SwitchItem extends Item {
                 var jsonCommandDescription = jsonCommandDescriptions[i];
                 commandDescriptions.add( 
                     new CommandDescription( 
-                        jsonCommandDescription.getString( "command", "Element '" + label + "': command is missing from mapping/command description" ),
+                        jsonCommandDescription.getString( "command", "Switch: command is missing from mapping/command description" ),
                         jsonCommandDescription.getOptionalString( "label" )
                     )
                 );
@@ -62,8 +62,8 @@ class SwitchItem extends Item {
                 var jsonStateDescription = jsonStateDescriptions[i];
                 stateDescriptions.add( 
                     new StateDescription( 
-                        jsonStateDescription.getString( "value", "Element '" + label + "': value is missing from state description" ),
-                        jsonStateDescription.getString( "label", "Element '" + label + "': label is missing from state description" )
+                        jsonStateDescription.getString( "value", "Switch: value is missing from state description" ),
+                        jsonStateDescription.getString( "label", "Switch: label is missing from state description" )
                 ) );
             }
         }

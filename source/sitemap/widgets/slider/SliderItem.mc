@@ -17,9 +17,10 @@ class SliderItem extends Item {
         Item.initialize( json );
 
         var localNumericState = state.toNumber();
-        if( localNumericState == null ) {
+        if( localNumericState != null ) {
+            numericState = localNumericState;
+        } else {
             throw new JsonParsingException( "Slider item state is not numeric" );
         }
-        numericState = localNumericState;
     }
 }

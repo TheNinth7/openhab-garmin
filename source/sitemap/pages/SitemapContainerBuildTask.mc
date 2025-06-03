@@ -5,27 +5,26 @@ import Toybox.Lang;
  * adding it to the parent container.
  */
 class SitemapContainerBuildTask extends BaseSitemapProcessorTask {
-    private var _sitemapPage as SitemapPage;
+    private var _sitemapContainer as SitemapContainer;
     private var _widget as JsonAdapter;
-    private var _type as String;
 
     // Constructor
     // Storing all the data we need for adding
     public function initialize( 
-        sitemapPage as SitemapPage, 
+        sitemapContainer as SitemapContainer, 
         widget as JsonAdapter
     ) {
         BaseSitemapProcessorTask.initialize();
-        _sitemapPage = sitemapPage;
+        _sitemapContainer = sitemapContainer;
         _widget = widget;
     }
     
     // Add the element
     public function invoke() as Void {
-        _sitemapPage.widgets.add(
+        _sitemapContainer.widgets.add(
             SitemapWidgetFactory.createByType( 
                 _widget,
-                _sitemapPage.isSitemapFresh,
+                _sitemapContainer.isSitemapFresh,
                 true
             )
         );

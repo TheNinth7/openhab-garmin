@@ -21,9 +21,9 @@ import Toybox.Graphics;
 class BasePageMenu extends BaseMenu {
     
     // The label for the menu
-    private var _label as String;
-    public function getLabel() as String {
-        return _label;
+    private var _title as String;
+    public function getTitle() as String {
+        return _title;
     }
 
     // The menu structure remains valid after an update as long as
@@ -42,22 +42,22 @@ class BasePageMenu extends BaseMenu {
 
     // Constructor
     protected function initialize( 
-        sitemapPage as SitemapPage, 
+        sitemapContainer as SitemapContainerImplementation, 
         footer as Drawable?
     ) {
-        _label = sitemapPage.label;
+        _title = sitemapContainer.title;
         
         // Initialize the super class
         BaseMenu.initialize( {
-                :title => _label,
+                :title => _title,
                 :itemHeight => Constants.UI_MENU_ITEM_HEIGHT,
                 :footer => footer
             } );
 
         // For each element in the page, create a menu item
-        var elements = sitemapPage.elements;
-        for( var i = 0; i < elements.size(); i++ ) {
-            BasePageMenu.addItem( MenuItemFactory.createMenuItem( elements[i], self ) );
+        var widgets = sitemapContainer.widgets;
+        for( var i = 0; i < widgets.size(); i++ ) {
+            BasePageMenu.addItem( MenuItemFactory.createMenuItem( widgets[i], self ) );
         }
     }
 
@@ -86,12 +86,12 @@ class BasePageMenu extends BaseMenu {
     * retain their `widgetId`, creating "holes" in the sequence. To avoid this, we rely on actual 
     * array indices instead.
     */
-    public function update( sitemapPage as SitemapPage ) as Void {
-        // Logger.debug( "PageMenu.update: updating page '" + _label + "'" );
+    public function update( sitemapContainer as SitemapContainerImplementation ) as Void {
+        // Logger.debug( "PageMenu.update: updating page '" + _title + "'" );
 
         // Update the title of the menu
-        _label = sitemapPage.label;
-        setTitleAsString( _label );
+        _title = sitemapContainer.title;
+        setTitleAsString( _title );
 
         // The update is done by asynchronously executed tasks
         var taskQueue = TaskQueue.get();
@@ -111,16 +111,21 @@ class BasePageMenu extends BaseMenu {
 
         // After we have cycled through all sitemap elements, 
         // we'll delete any menu items that are not used anymore
-        taskQueue.addToFront( new DeleteUnusedMenuItemsTask( sitemapPage, self ) );
+        taskQueue.addToFront( 
+            new DeleteUnusedMenuItemsTask( 
+                sitemapContainer as SitemapContainer, 
+                self 
+            ) 
+        );
 
         // Loop through all elements in the new sitemap state
         // and add a task for each to process them.
         // We do this in reverse order so that the tasks are
         // executed in the same order as the corresponding sitemap elements.
-        var elements = sitemapPage.elements;
-        for( var i = elements.size() - 1; i >= 0; i-- ) {
-            var element = elements[i];
-            taskQueue.addToFront( new AddOrUpdateMenuItemTask( i, element, self ) );
+        var widgets = sitemapContainer.widgets;
+        for( var i = widgets.size() - 1; i >= 0; i-- ) {
+            var widget = widgets[i];
+            taskQueue.addToFront( new AddOrUpdateMenuItemTask( i, widget, self ) );
         }
     }
 }

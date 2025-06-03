@@ -17,7 +17,7 @@ import Toybox.Graphics;
 
 // Defines the options accepted by the `BaseSitemapMenuItem` class.
 typedef BaseSitemapMenuItemOptions as {
-    :sitemapWidget as SitemapElement?,
+    :sitemapWidget as SitemapWidget?,
     :icon as ResourceId?,
     :label as String,
     :labelColor as ColorType?,
@@ -28,7 +28,7 @@ typedef BaseSitemapMenuItemOptions as {
 class BaseSitemapMenuItem extends BaseMenuItem {
 
     private var _icon as Drawable?; // icon is optional
-    private var _label as String;
+    private var _title as String;
     private var _labelColor as ColorType; // color the label text shall be printed in
     private var _labelTextArea as TextArea?; // label Drawable, optional because instantiated only when drawn
     private var _state as Drawable?; // state is optional
@@ -58,20 +58,20 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         var isActionable = options[:isActionable] as Boolean?;
         _isActionable = isActionable == null ? false : isActionable;
 
-        var sitemapElement = options[:sitemapWidget] as SitemapElement?;
+        var sitemapWidget = options[:sitemapWidget] as SitemapWidget?;
 
-        if( sitemapElement != null ) {
-            _label = sitemapElement.label;
-            _labelColor = setLabelColor( sitemapElement.labelColor );
-            _stateColor = setStateColor( sitemapElement.valueColor );
+        if( sitemapWidget != null ) {
+            _title = sitemapWidget.label;
+            _labelColor = setLabelColor( sitemapWidget.labelColor );
+            _stateColor = setStateColor( sitemapWidget.valueColor );
         } else {
-            _label = options[:label] as String;
+            _title = options[:label] as String;
             _labelColor = setLabelColor( options[:labelColor] );
         }
     }
 
     public function getLabel() as String {
-        return _label;
+        return _title;
     }
 
     /*
@@ -116,9 +116,9 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     * `update()`: Optional override to refresh the menu item content with new data from the sitemap request.
     */
     public function update( sitemapWidget as SitemapWidget ) as Void { 
-        _label = sitemapElement.label;
-        _labelColor = setLabelColor( sitemapElement.labelColor );
-        _stateColor = setStateColor( sitemapElement.valueColor );
+        _title = sitemapWidget.label;
+        _labelColor = setLabelColor( sitemapWidget.labelColor );
+        _stateColor = setStateColor( sitemapWidget.valueColor );
     }
 
    /*
@@ -208,7 +208,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         // Finally the text area is initialized
         // At the calculated leftX and width
         _labelTextArea = new TextArea( {
-            :text => _label,
+            :text => _title,
             :font => Constants.UI_MENU_ITEM_FONTS,
             :locX => leftX,
             :locY => WatchUi.LAYOUT_VALIGN_CENTER,

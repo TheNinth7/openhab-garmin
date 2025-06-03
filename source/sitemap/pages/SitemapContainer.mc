@@ -15,10 +15,18 @@ import Toybox.WatchUi;
  * Processing large structures synchronously can block the UI and
  * lead to noticeable delays in user interaction.
  */
+
+// This type can be used as generic type for all implementations
+// This is needed for accessing members that are not provided by
+// SitemapContainer, but still are common to all implementations (=title)
+typedef SitemapContainerImplementation as 
+    SitemapPage or 
+    SitemapFramePage;
+
 class SitemapContainer extends SitemapElement {
 
     // The elements of this page
-    public var widgets as Array<SitemapElement> = new Array<SitemapElement>[0];
+    public var widgets as Array<SitemapWidget> = new Array<SitemapWidget>[0];
 
     // Constructor
     public function initialize( 
@@ -26,7 +34,7 @@ class SitemapContainer extends SitemapElement {
         isSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapElement.initialize( data, isSitemapFresh );
+        SitemapElement.initialize( isSitemapFresh );
 
         // Loop through all JSON array elements
         var jsonWidgets = json.getArray( "widgets", "Frame or page contains no elements" );

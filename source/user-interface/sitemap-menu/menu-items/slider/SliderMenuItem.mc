@@ -43,7 +43,7 @@ class SliderMenuItem extends BaseSitemapMenuItem {
 
         // The status shown in the menu item
         _statusText = new StatusText( 
-            sitemapSlider.numericState.toString() + sitemapSlider.unit
+            sitemapSlider.item.numericState.toString() + sitemapSlider.item.unit
         );
         
         BaseSitemapMenuItem.initialize( {
@@ -62,7 +62,7 @@ class SliderMenuItem extends BaseSitemapMenuItem {
             throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into SliderMenuItem but is of a different type" );
         }
         _sitemapSlider = sitemapWidget;
-        _statusText.setText( sitemapWidget.numericState.toString() + sitemapWidget.unit );
+        _statusText.setText( sitemapWidget.item.numericState.toString() + sitemapWidget.item.unit );
     }
 
     // When the menu item is selected, the CustomPicker is initialized
@@ -94,14 +94,18 @@ class SliderMenuItem extends BaseSitemapMenuItem {
             throw new GeneralException( "SliderMenuItem: state update not possible because command support is not active" );
         }
         // Store the new state in the Sitemap Slider object
-        _sitemapSlider.numericState = newState;
-        _sitemapSlider.item.state = newState.toString();
+        _sitemapSlider.item.numericState = newState;
+        var newStateAsString = newState.toString();
+        _sitemapSlider.item.state = newStateAsString.toString();
         
         // Update the status
-        _statusText.setText( _sitemapSlider.numericState.toString() + _sitemapSlider.unit );
+        _statusText.setText( 
+            _sitemapSlider.item.numericState.toString() 
+            + _sitemapSlider.item.unit 
+        );
         
         // And send the command
-        ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapSlider.item.state );
+        ( _commandRequest as BaseCommandRequest ).sendCommand( newStateAsString );
     }
 
     // Nothing to be done, but needed to fullfil the delegate interface

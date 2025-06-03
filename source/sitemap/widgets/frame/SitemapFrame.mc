@@ -10,12 +10,15 @@ import Toybox.WatchUi;
  */
 class SitemapFrame extends SitemapWidget {
 
+    public var linkedFrame as SitemapFramePage;
+
     public function initialize( 
         json as JsonAdapter, 
         isSitemapFresh as Boolean, 
         asyncProcessing as Boolean 
     ) {
-        SitemapWidget.initialize( json, isSitemapFresh );
-        linkedPage = new SitemapFramePage( json, isSitemapFresh, asyncProcessing );
+        SitemapWidget.initialize( json, isSitemapFresh, asyncProcessing );
+        linkedFrame = new SitemapFramePage( json, isSitemapFresh, asyncProcessing );
+        linkedPage = linkedFrame;
     }
 }
