@@ -15,10 +15,10 @@ import Toybox.WatchUi;
 class SliderMenuItem extends BaseSitemapMenuItem {
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
+    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
-            sitemapElement instanceof SitemapSlider
-            && sitemapElement.hasItemState();
+            sitemapWidget instanceof SitemapSlider
+            && sitemapWidget.item.hasState();
     }
 
     // The text status Drawable
@@ -43,11 +43,11 @@ class SliderMenuItem extends BaseSitemapMenuItem {
 
         // The status shown in the menu item
         _statusText = new StatusText( 
-            sitemapSlider.sliderState.toString() + sitemapSlider.unit
+            sitemapSlider.numericState.toString() + sitemapSlider.unit
         );
         
         BaseSitemapMenuItem.initialize( {
-            :sitemapElement => sitemapSlider,
+            :sitemapWidget => sitemapSlider,
             :state => _statusText,
             :isActionable => true
         } );
@@ -56,13 +56,13 @@ class SliderMenuItem extends BaseSitemapMenuItem {
     // Updates the menu item
     // This function is called when new data comes in from the
     // sitemap polling
-    public function update( sitemapElement as SitemapElement ) as Void {
-        BaseSitemapMenuItem.update( sitemapElement );
-        if( ! ( sitemapElement instanceof SitemapSlider ) ) {
-            throw new GeneralException( "Sitemap element '" + sitemapElement.label + "' was passed into SliderMenuItem but is of a different type" );
+    public function update( sitemapWidget as SitemapWidget ) as Void {
+        BaseSitemapMenuItem.update( sitemapWidget );
+        if( ! ( sitemapWidget instanceof SitemapSlider ) ) {
+            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into SliderMenuItem but is of a different type" );
         }
-        _sitemapSlider = sitemapElement;
-        _statusText.setText( sitemapElement.sliderState.toString() + sitemapElement.unit );
+        _sitemapSlider = sitemapWidget;
+        _statusText.setText( sitemapWidget.numericState.toString() + sitemapWidget.unit );
     }
 
     // When the menu item is selected, the CustomPicker is initialized
@@ -83,7 +83,7 @@ class SliderMenuItem extends BaseSitemapMenuItem {
     // This function is called during a command request to identify
     // the target item that the command should be sent to.
     public function getItemName() as String {
-        return _sitemapSlider.itemName;
+        return _sitemapSlider.item.name;
     }
 
     // The Picker uses this function to update the state
@@ -94,14 +94,14 @@ class SliderMenuItem extends BaseSitemapMenuItem {
             throw new GeneralException( "SliderMenuItem: state update not possible because command support is not active" );
         }
         // Store the new state in the Sitemap Slider object
-        _sitemapSlider.sliderState = newState;
-        _sitemapSlider.itemState = newState.toString();
+        _sitemapSlider.numericState = newState;
+        _sitemapSlider.item.state = newState.toString();
         
         // Update the status
-        _statusText.setText( _sitemapSlider.sliderState.toString() + _sitemapSlider.unit );
+        _statusText.setText( _sitemapSlider.numericState.toString() + _sitemapSlider.unit );
         
         // And send the command
-        ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapSlider.itemState );
+        ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapSlider.item.state );
     }
 
     // Nothing to be done, but needed to fullfil the delegate interface

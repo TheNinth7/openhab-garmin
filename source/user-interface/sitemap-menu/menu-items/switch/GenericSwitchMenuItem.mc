@@ -25,13 +25,13 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     private var _statusDrawable as StatusTextArea;
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
+    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         // This menu item applies to all Switches, that
         // have a mapping defined
         return 
-            sitemapElement instanceof SitemapSwitch 
-            && sitemapElement.hasMappings()
-            && sitemapElement.hasItemState();
+            sitemapWidget instanceof SitemapSwitch 
+            && sitemapWidget.hasMappings()
+            && sitemapWidget.item.hasState();
     }
 
     // Constructor
@@ -52,9 +52,9 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
 
     // Override the update method of the super class
     // and obtain the updated list of commmand mappings
-    public function update( sitemapElement as SitemapElement ) as Void {
-        BaseSwitchMenuItem.update( sitemapElement );
-        _sitemapSwitch = sitemapElement as SitemapSwitch;
+    public function update( sitemapWidget as SitemapWidget ) as Void {
+        BaseSwitchMenuItem.update( sitemapWidget );
+        _sitemapSwitch = sitemapWidget as SitemapSwitch;
     }
 
     // Called by the superclass if the state changes
@@ -76,7 +76,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // Called by the superclass to determine the command
     // that shell be sent when the menu item is selected
     public function getNextCommand() as String? {
-        var itemState = _sitemapSwitch.itemState;
+        var itemState = _sitemapSwitch.item.state;
         var commandDescriptions = _sitemapSwitch.commandDescriptions;
         if( commandDescriptions.size() == 1 ) {
             // For one mapping, we just send that command

@@ -16,15 +16,15 @@ class NoStateMenuItem extends BaseSitemapMenuItem {
     // Updates the menu item
     // No action needed here - once a state becomes available, this
     // item will be replaced by the actual menu item for this element
-    public function update( sitemapElement as SitemapElement ) as Void {
+    public function update( sitemapWidget as SitemapWidget ) as Void {
         BaseSitemapMenuItem.update( sitemapElement );
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
+    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
             sitemapElement instanceof SitemapPrimitiveElement
-            && ! sitemapElement.hasItemState() 
+            && ! sitemapElement.item.hasState() 
             && ! sitemapElement.hasWidgetState();
     }
 }

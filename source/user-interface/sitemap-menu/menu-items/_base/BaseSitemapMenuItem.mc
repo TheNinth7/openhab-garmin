@@ -17,7 +17,7 @@ import Toybox.Graphics;
 
 // Defines the options accepted by the `BaseSitemapMenuItem` class.
 typedef BaseSitemapMenuItemOptions as {
-    :sitemapElement as SitemapElement?,
+    :sitemapWidget as SitemapElement?,
     :icon as ResourceId?,
     :label as String,
     :labelColor as ColorType?,
@@ -58,7 +58,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         var isActionable = options[:isActionable] as Boolean?;
         _isActionable = isActionable == null ? false : isActionable;
 
-        var sitemapElement = options[:sitemapElement] as SitemapElement?;
+        var sitemapElement = options[:sitemapWidget] as SitemapElement?;
 
         if( sitemapElement != null ) {
             _label = sitemapElement.label;
@@ -77,7 +77,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     /*
     * `isMyType()`: Required override to determine if a given sitemap element matches this item type.
     */
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean { 
+    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean { 
         throw new AbstractMethodException( "BaseSitemapMenuItem.getItemType" );
     }
 
@@ -115,7 +115,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     /*
     * `update()`: Optional override to refresh the menu item content with new data from the sitemap request.
     */
-    public function update( sitemapElement as SitemapElement ) as Void { 
+    public function update( sitemapWidget as SitemapWidget ) as Void { 
         _label = sitemapElement.label;
         _labelColor = setLabelColor( sitemapElement.labelColor );
         _stateColor = setStateColor( sitemapElement.valueColor );

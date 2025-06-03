@@ -9,11 +9,11 @@ import Toybox.Graphics;
 class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
+    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
-               sitemapElement instanceof SitemapSwitch 
-            && ! sitemapElement.hasMappings()
-            && sitemapElement.hasItemState();
+               sitemapWidget instanceof SitemapSwitch 
+            && ! sitemapWidget.hasMappings()
+            && sitemapWidget.item.hasState();
     }
 
     // True if the switch is on
@@ -49,11 +49,11 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
 
     // Constructor
     public function initialize( sitemapSwitch as SitemapSwitch ) {
-        var itemState = sitemapSwitch.itemState;
+        var itemState = sitemapSwitch.item.state;
         if( ! ( itemState.equals( ITEM_STATE_ON ) || itemState.equals( ITEM_STATE_OFF ) ) ) {      
             throw new JsonParsingException( "Switch '" + sitemapSwitch.label + "': invalid state '" + itemState + "'" );
         }
-        _isEnabled = parseItemState( sitemapSwitch.itemState );
+        _isEnabled = parseItemState( sitemapSwitch.item.state );
         _statusDrawable = new OnOffStatusDrawable( _isEnabled );
         BaseSwitchMenuItem.initialize( sitemapSwitch, _statusDrawable, false );
     }

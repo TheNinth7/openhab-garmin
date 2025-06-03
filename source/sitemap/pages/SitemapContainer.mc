@@ -3,9 +3,10 @@ import Toybox.WatchUi;
 
 /*
  * This class represents container elements within the sitemap,
- * such as the homepage and frame elements, which can hold other elements.
+ * such as the homepage, other pages and frame elements. Containers
+ * can hold multiple widgets.
  *
- * It supports two modes for creating child elements:
+ * It supports two modes for creating widget elements:
  * - Synchronous: used when no menu is currently displayed and speed is important
  * - Asynchronous: used when a menu is already displayed and UI responsiveness is a priority
  *
@@ -14,24 +15,21 @@ import Toybox.WatchUi;
  * Processing large structures synchronously can block the UI and
  * lead to noticeable delays in user interaction.
  */
-class SitemapPage extends SitemapElement {
-
-    // JSON field names used
-    private const WIDGETS = "widgets";
-    private const TYPE = "type";
+class SitemapContainer extends SitemapElement {
 
     // The elements of this page
-    public var elements as Array<SitemapElement> = new Array<SitemapElement>[0];
+    public var widgets as Array<SitemapElement> = new Array<SitemapElement>[0];
 
     // Constructor
     public function initialize( 
-        data as JsonObject, 
+        json as JsonAdapter, 
         isSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
         SitemapElement.initialize( data, isSitemapFresh );
+
         // Loop through all JSON array elements
-        var widgets = getArray( data, WIDGETS, "Page '" + label + "': no elements found" );
+        var jsonWidgets = json.getArray( "widgets", "Frame or page contains no elements" );
 
         if( asyncProcessing ) {
             // For async processing we queue a task
@@ -42,25 +40,23 @@ class SitemapPage extends SitemapElement {
             // the queue, they will be processed in reverse
             // order. Therefore we add the last widget first
             // and then continue down to the first from there
-            for( var i = widgets.size() - 1; i >= 0; i-- ) {
-                var widget = widgets[i];
+            for( var i = jsonWidgets.size() - 1; i >= 0; i-- ) {
+                var jsonWidget = jsonWidgets[i];
                 TaskQueue.get().addToFront( 
-                    new SitemapPageBuildTask(
+                    new SitemapContainerBuildTask(
                         self,
-                        widget,
-                        getString( widget, TYPE, "Page '" + label + "': widget without type" )
+                        jsonWidget
                     )
                 );
             }
         } else {
             // For synchronous processing we create and add the elements 
             // right away, in same the order as in the JSON
-            for( var i = 0; i < widgets.size(); i++ ) {
-                var widget = widgets[i];
-                elements.add( 
-                    SitemapElementFactory.createByType( 
-                        getString( widget, TYPE, "Page '" + label + "': widget without type" ), 
-                        widget,
+            for( var i = 0; i < jsonWidgets.size(); i++ ) {
+                var jsonWidget = jsonWidgets[i];
+                widgets.add( 
+                    SitemapWidgetFactory.createByType( 
+                        jsonWidget,
                         isSitemapFresh,
                         asyncProcessing
                     ) 

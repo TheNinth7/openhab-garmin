@@ -19,25 +19,25 @@ class TextMenuItem extends BaseSitemapMenuItem {
         _statusTextArea = new StatusTextArea( sitemapText.label, sitemapText.transformedState );
         BaseSitemapMenuItem.initialize(
             {
-                :sitemapElement => sitemapText,
+                :sitemapWidget => sitemapText,
                 :state => _statusTextArea
             }
         );
     }
 
     // Updates the menu item
-    public function update( sitemapElement as SitemapElement ) as Void {
-        BaseSitemapMenuItem.update( sitemapElement );
-        if( ! ( sitemapElement instanceof SitemapText ) ) {
-            throw new GeneralException( "Sitemap element '" + sitemapElement.label + "' was passed into TextMenuItem but is of a different type" );
+    public function update( sitemapWidget as SitemapWidget ) as Void {
+        BaseSitemapMenuItem.update( sitemapWidget );
+        if( ! ( sitemapWidget instanceof SitemapText ) ) {
+            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into TextMenuItem but is of a different type" );
         }
-        _statusTextArea.update( sitemapElement.label, sitemapElement.transformedState );
+        _statusTextArea.update( sitemapWidget.label, sitemapWidget.transformedState );
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
-    public static function isMyType( sitemapElement as SitemapElement ) as Boolean {
+    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
-            sitemapElement instanceof SitemapText
-            && sitemapElement.hasWidgetState(); 
+            sitemapWidget instanceof SitemapText
+            && sitemapWidget.hasTransformedState(); 
     }
 }
