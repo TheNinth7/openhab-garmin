@@ -13,10 +13,10 @@ class SitemapText extends SitemapWidget {
 
     public function initialize( 
         json as JsonAdapter, 
-        isStateFresh as Boolean,
+        initSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapWidget.initialize( json, isSitemapFresh, asyncProcessing );
+        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
         item = new Item( json.getObject( "item", "Text '" + label + "' has no item" ) );
     }
 }

@@ -35,10 +35,10 @@ class SitemapSwitch extends SitemapWidget {
     // Constructor
     public function initialize( 
         json as JsonAdapter, 
-        isStateFresh as Boolean,
+        initSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapWidget.initialize( json, isSitemapFresh, asyncProcessing );
+        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
 
         // Obtain the item part of the element
         item = new SwitchItem( json.getObject( "item", "Switch '" + label + "' has no item" ) );
@@ -56,7 +56,10 @@ class SitemapSwitch extends SitemapWidget {
             commandDescriptions = _mappings;
         }
 
-        transformState( item, _mappings, transformedState );
+        // For switch items, the mapping take precedence over the
+        // transformed state provided in the sitemap element
+        // Therefore we trigger a manual transformation here
+        transformState();
     }
 
 
@@ -75,44 +78,38 @@ class SitemapSwitch extends SitemapWidget {
         // costly due to the lookup of the description
         if( item.state.equals( state ) ) {
             item.state = state;
-            transformState( item, _mappings, null );
+            transformedState = Item.NO_STATE;
+            transformState();
         }
     }
     
     // Transforms the raw state into a descriptive form for display.
     //
-    // Inputs for the transformation are:
-    // 1. The `SwitchItem`, which provides the raw state, along with command and state descriptions.
-    // 2. Mappings defined in the sitemap element.
-    // 3. The transformed state from the incoming JSON (should be set to null for internal updates).
-    //
     // The transformation uses these sources in the following priority:
     // 1. A matching entry in the sitemap element’s mappings.
-    // 2. The transformed state from the JSON, if present.
+    // 2. The transformed state from the widget, if present.
     // 3. A matching entry in the item’s state descriptions.
     // 4. A matching entry in the item’s command descriptions.
     // 5. The raw state itself. If the state is numeric and a unit is defined for the item, the unit is appended.
-    private static function transformState( 
-        item as SwitchItem, 
-        mappings as CommandDescriptionArray, 
-        jsonTransformedState as String?
-    ) as String? {
+    private function transformState() as Void {
 
         // First priority: lookup the mappings defined for the widget
-        var transformedState = searchArray( 
-            mappings as BaseDescriptionArray, 
+        var localTransformedState = searchArray( 
+            _mappings as BaseDescriptionArray, 
             item.state
         );
 
-        if( transformedState == null ) {
-            if( jsonTransformedState != null ) {
+        if( localTransformedState == null ) {
+            if( hasTransformedState() ) {
                 // Second priority: 
                 // If we got the state from the server, then the transformedState
-                // may be filled. For internal updates this is never the case
-                transformedState = transformedState;
+                // may be filled and we'll just use it. 
+                // For internal updates this is never the case, since we
+                // set the transformedState to NO_STATE before calling this function
+                return;
             } else if( item.stateDescriptions != null ) {
                 // Third priority: lookup the state description
-                transformedState = searchArray( 
+                localTransformedState = searchArray( 
                     item.stateDescriptions as BaseDescriptionArray, 
                     item.state 
                 );
@@ -120,25 +117,25 @@ class SitemapSwitch extends SitemapWidget {
         }
 
         // Fourth priority: we lookup the command descriptions
-        if( transformedState == null && item.commandDescriptions != null ) {
-            transformedState = searchArray( 
+        if( localTransformedState == null && item.commandDescriptions != null ) {
+            localTransformedState = searchArray( 
                 item.commandDescriptions as BaseDescriptionArray, 
                 item.state 
             );
         }
 
         // If all has failed, we just use the raw state
-        if( transformedState == null ) {
-            transformedState = item.state;
+        if( localTransformedState == null ) {
+            localTransformedState = item.state;
             // If the transformed state is numeric, then we
             // add the unit
-            transformedState = 
-                transformedState.toFloat() != null
-                ? transformedState + item.unit
-                : transformedState;
+            localTransformedState = 
+                localTransformedState.toFloat() != null
+                ? localTransformedState + item.unit
+                : localTransformedState;
         }
 
-        return transformedState;
+        transformedState = localTransformedState;
     }
 
     // Search in an Array of BaseDescriptions for

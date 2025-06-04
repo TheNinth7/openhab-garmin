@@ -14,11 +14,11 @@ class SitemapFrame extends SitemapWidget {
 
     public function initialize( 
         json as JsonAdapter, 
-        isSitemapFresh as Boolean, 
+        initSitemapFresh as Boolean, 
         asyncProcessing as Boolean 
     ) {
-        SitemapWidget.initialize( json, isSitemapFresh, asyncProcessing );
-        linkedFrame = new SitemapFramePage( json, isSitemapFresh, asyncProcessing );
+        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
+        linkedFrame = new SitemapFramePage( json, initSitemapFresh, asyncProcessing );
         linkedPage = linkedFrame;
     }
 }

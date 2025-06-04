@@ -10,17 +10,22 @@ import Toybox.WatchUi;
  */
 class SliderItem extends Item {
 
-    public var numericState as Number;
+    public var numericState as Number = 0;
 
     // Constructor
     public function initialize( json as JsonAdapter ) {
         Item.initialize( json );
 
-        var localNumericState = state.toNumber();
-        if( localNumericState != null ) {
-            numericState = localNumericState;
-        } else {
-            throw new JsonParsingException( "Slider item state is not numeric" );
+        // If there is no state, we leave the numeric
+        // state at 0, analogue to how the 
+        // openHAB Main UI handles it
+        if( hasState() ) {
+            var localNumericState = state.toNumber();
+            if( localNumericState != null ) {
+                numericState = localNumericState;
+            } else {
+                throw new JsonParsingException( "Slider item state is not numeric" );
+            }
         }
     }
 }

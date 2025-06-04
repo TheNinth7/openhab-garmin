@@ -18,10 +18,10 @@ class SitemapSlider extends SitemapWidget {
  
     public function initialize( 
         json as JsonAdapter, 
-        isStateFresh as Boolean,
+        initSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapWidget.initialize( json, isSitemapFresh, asyncProcessing );
+        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
 
         // Obtain the item part of the element
         item = new SliderItem( json.getObject( "item", "Slider '" + label + "' has no item" ) );

@@ -19,10 +19,10 @@ class SitemapFramePage extends SitemapContainer {
     // Constructor
     public function initialize( 
         json as JsonAdapter, 
-        isSitemapFresh as Boolean,
+        initSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapContainer.initialize( json, isSitemapFresh, asyncProcessing );
+        SitemapContainer.initialize( json, initSitemapFresh, asyncProcessing );
         title = parseLabelState( json, "label", "Frame label is missing" )[0];
     }
 }

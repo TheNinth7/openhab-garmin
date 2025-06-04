@@ -19,8 +19,8 @@ class SitemapElement {
     public var isSitemapFresh as Boolean;
 
     // Constructor
-    protected function initialize( initStateFresh as Boolean ) {
-        isSitemapFresh = initStateFresh;
+    protected function initialize( initSitemapFresh as Boolean ) {
+        isSitemapFresh = initSitemapFresh;
     }
 
     // Widget labels and page titles may include a transformed state in the format:
@@ -30,15 +30,16 @@ class SitemapElement {
     // This function parses the input into two parts: the label and the state,
     // and returns them as a tuple: [0] = label, [1] = state.
     protected static function parseLabelState( json as JsonAdapter, id as String, errorMessage as String ) as [String, String] {
-        var label = json.getString( id, errorMessage );
+        var fullLabel = json.getString( id, errorMessage );
+        var label = fullLabel;
         var transformedState = null;
-        var bracket = label.find( " [" ) as Number?;
+        var bracket = fullLabel.find( " [" ) as Number?;
         if( bracket != null ) {
-            label = label.substring( null, bracket ) as String?;
+            label = fullLabel.substring( null, bracket ) as String?;
             if( label == null ) {
                 throw new JsonParsingException( "Label '" + label + "' does not have label before the [state]" );
             }
-            transformedState = label.substring( bracket+2, null ) as String?;
+            transformedState = fullLabel.substring( bracket+2, fullLabel.length()-1 ) as String?;
         }
         if( transformedState == null || transformedState.equals( "-" ) ) {
             transformedState = Item.NO_STATE;

@@ -21,10 +21,10 @@ class SitemapWidget extends SitemapElement {
     // Constructor
     protected function initialize( 
         json as JsonAdapter, 
-        isStateFresh as Boolean,
+        initSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapElement.initialize( isStateFresh );
+        SitemapElement.initialize( initSitemapFresh );
 
         var fullLabel = parseLabelState( json, "label", "Widget label is missing" );
         label = fullLabel[0];
@@ -35,13 +35,13 @@ class SitemapWidget extends SitemapElement {
 
         var jsonLinkedPage = json.getOptionalObject( "linkedPage" );
         if( jsonLinkedPage != null ) {
-            linkedPage = new SitemapPage( json, isStateFresh, asyncProcessing );
+            linkedPage = new SitemapPage( jsonLinkedPage, initSitemapFresh, asyncProcessing );
         }
     }
 
     // Determines if a transformed state is available
     public function hasTransformedState() as Boolean {
-        return ! ( transformedState != null );
+        return ! transformedState.equals( Item.NO_STATE );
     }
 
     // Parses a color field.

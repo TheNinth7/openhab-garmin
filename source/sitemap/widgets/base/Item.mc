@@ -46,7 +46,7 @@ class Item {
 
         // If no state is available, it will be set to null
         state = json.getOptionalString( "state" );
-        if( state != null 
+        if( state == null 
             || state.equals( "" ) 
             || state.equals( "NULL" )
             || state.equals( "UNDEF" )
