@@ -94,12 +94,12 @@ class CustomPicker extends CustomView {
 
         // The up/down arrows
         addDrawable( new CustomBitmap( {
-            :rezId => Rez.Drawables.iconUp,
+            :rezId => Rez.Drawables.chevronUp,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => yStart
         } ) );
         addDrawable( new CustomBitmap( {
-            :rezId => Rez.Drawables.iconDown,
+            :rezId => Rez.Drawables.chevronDown,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => yStart + 0.5
         } ) );

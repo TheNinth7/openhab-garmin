@@ -1,14 +1,14 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class NoStateMenuItem extends BaseSitemapMenuItem {
+class NoStateMenuItem extends BaseWidgetMenuItem {
     
     // Constructor
-    public function initialize( sitemapWidget as SitemapWidget ) {
-        BaseSitemapMenuItem.initialize(
-            {
+    public function initialize( sitemapWidget as SitemapWidget, parent as BasePageMenu ) {
+        BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapWidget,
-                :state => new StatusText( "—" )
+                :state => new StatusText( "—" ),
+                :parent => parent
             }
         );
     }
@@ -16,8 +16,8 @@ class NoStateMenuItem extends BaseSitemapMenuItem {
     // Updates the menu item
     // No action needed here - once a state becomes available, this
     // item will be replaced by the actual menu item for this element
-    public function update( sitemapWidget as SitemapWidget ) as Void {
-        BaseSitemapMenuItem.update( sitemapWidget );
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
+        BaseWidgetMenuItem.updateWidget( sitemapWidget );
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.

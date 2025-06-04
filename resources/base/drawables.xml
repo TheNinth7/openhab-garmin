@@ -1,12 +1,13 @@
 <drawables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
     <bitmap id="logoOpenhabText" scaleX="40%" filename="../svg/openhab_text_light.svg" dithering="none" />
     <bitmap id="logoOpenhabSquare" scaleX="10%" filename="../svg/openhab_logo_light.svg" dithering="none" />
-    <bitmap id="iconWarning" personality="system_icon_light__warning" />
 
+    <bitmap id="iconWarning" personality="system_icon_light__warning" />
     <bitmap id="iconDownToSettings" scaleY="15%" filename="../svg/down-to-settings.svg" dithering="none" />
-    <bitmap id="iconUp" scaleX="10%" filename="../svg/arrow-up.svg" dithering="none" />
-    <bitmap id="iconDown" scaleX="10%" filename="../svg/arrow-down.svg" dithering="none" />
-    <bitmap id="iconRight" scaleY="5%" filename="../svg/arrow-right.svg" dithering="none" />
+    <bitmap id="chevronUp" scaleX="10%" filename="../svg/arrow-up.svg" dithering="none" />
+    <bitmap id="chevronDown" scaleX="10%" filename="../svg/arrow-down.svg" dithering="none" />
+    <bitmap id="chevronRight" scaleY="5%" filename="../svg/arrow-right.svg" dithering="none" />
+    <bitmap id="chevronDoubleRight" scaleY="5%" filename="../svg/chevron-right.svg" dithering="none" />
     <bitmap id="iconCheck" scaleX="15%" filename="../svg/check.svg" dithering="none" />
     <bitmap id="iconCancel" scaleX="15%" filename="../svg/cancel.svg" dithering="none" />
     <!-- 

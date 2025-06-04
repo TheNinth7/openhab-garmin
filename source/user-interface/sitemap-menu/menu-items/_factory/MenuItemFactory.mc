@@ -11,25 +11,25 @@ class MenuItemFactory {
     public static function createMenuItem( 
         sitemapWidget as SitemapWidget, 
         parent as BasePageMenu 
-    ) as CustomMenuItem {
+    ) as BaseWidgetMenuItem {
         if( sitemapWidget instanceof SitemapFrame ) {
             return new FrameMenuItem( sitemapWidget, parent );
         } else if( ! sitemapWidget.isSitemapFresh ) {
             // If the sitemap is not fresh, we display no state - regardless of type matching
-            return new NoStateMenuItem( sitemapWidget );
+            return new NoStateMenuItem( sitemapWidget, parent );
         } else if( OnOffSwitchMenuItem.isMyType( sitemapWidget ) ) {
-            return new OnOffSwitchMenuItem( sitemapWidget as SitemapSwitch );
+            return new OnOffSwitchMenuItem( sitemapWidget as SitemapSwitch, parent );
         } else if( TextMenuItem.isMyType( sitemapWidget ) ) {
-            return new TextMenuItem( sitemapWidget as SitemapText );
+            return new TextMenuItem( sitemapWidget as SitemapText, parent );
         } else if( SliderMenuItem.isMyType( sitemapWidget ) ) {
-            return new SliderMenuItem( sitemapWidget as SitemapSlider );
+            return new SliderMenuItem( sitemapWidget as SitemapSlider, parent );
         } else if( GenericSwitchMenuItem.isMyType( sitemapWidget ) ) {
-            return new GenericSwitchMenuItem( sitemapWidget as SitemapSwitch );
+            return new GenericSwitchMenuItem( sitemapWidget as SitemapSwitch, parent );
          } else if( NoStateMenuItem.isMyType( sitemapWidget ) ) {
             // If none of the widgets was a match, we default to no state
             // The widgets above verify if there is a valid state, so
             // they won't trigger a match if there is none
-            return new NoStateMenuItem( sitemapWidget );
+            return new NoStateMenuItem( sitemapWidget, parent );
        } else {
             throw new JsonParsingException( "Element '" + sitemapWidget.label + "' is not supported" );
         }

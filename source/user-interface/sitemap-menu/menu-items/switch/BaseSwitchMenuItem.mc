@@ -8,7 +8,16 @@ import Toybox.WatchUi;
  * This class is intended for switches where user interaction should directly
  * trigger a state change (e.g., ON/OFF).
  */
-class BaseSwitchMenuItem extends BaseSitemapMenuItem {
+
+// Defines the options accepted by the `BaseWidgetMenuItem` class.
+typedef BaseSwitchMenuItemOptions as {
+    :sitemapWidget as SitemapSwitch,
+    :state as Drawable?,
+    :isActionable as Boolean?, // if true, the action icon is displayed
+    :parent as BasePageMenu
+};
+
+class BaseSwitchMenuItem extends BaseWidgetMenuItem {
     // The openHAB item linked to the sitemap element
     private var _itemName as String;
     public function getItemName() as String {
@@ -34,15 +43,10 @@ class BaseSwitchMenuItem extends BaseSitemapMenuItem {
     }
     
     // Constructor
-    protected function initialize( sitemapSwitch as SitemapSwitch, statusDrawable as Drawable, isActionable as Boolean ) {
-        _itemName = sitemapSwitch.item.name;
-        BaseSitemapMenuItem.initialize(
-            {
-                :sitemapWidget => sitemapSwitch,
-                :state => statusDrawable,
-                :isActionable => isActionable
-            }
-        );
+    protected function initialize( options as BaseSwitchMenuItemOptions ) {
+        _itemName = ( options[:sitemapWidget] as SitemapSwitch ).item.name;
+        
+        BaseWidgetMenuItem.initialize( options );
         
         _commandRequest = BaseCommandRequest.get( self );
     }
@@ -52,13 +56,17 @@ class BaseSwitchMenuItem extends BaseSitemapMenuItem {
     // If getNextCommand() returns null, the menu item delegates command selection
     // to an asynchronous process, which is responsible for calling
     // sendCommand() directly.
-    public function onSelect() as Void {
-        if( _newState == null && _commandRequest != null ) {
+    public function onSelect() as Boolean {
+        if( ! BaseWidgetMenuItem.onSelect() 
+            && _newState == null 
+            && _commandRequest != null 
+        ) {
             var command = getNextCommand();
             if( command != null ) {
                 sendCommand( command );
             }
         }
+        return true;
     }
     
     // The new state is stored in `_newState` and only applied after the request succeeds.
@@ -90,11 +98,11 @@ class BaseSwitchMenuItem extends BaseSitemapMenuItem {
 
     // Called by the sitemap request when updated state data is received.
     // Updates the label and delegates status `Drawable` updates to the subclass.
-    public function update( sitemapWidget as SitemapWidget ) as Void {
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
         // BaseSitemapMenuItem.update needs to come before updateItemState,
         // so that updateItemState can already access the
         // updated label
-        BaseSitemapMenuItem.update( sitemapWidget );
+        BaseWidgetMenuItem.updateWidget( sitemapWidget );
         var sitemapSwitch = sitemapWidget as SitemapSwitch;
         updateItemState( sitemapSwitch.item.state );
     }

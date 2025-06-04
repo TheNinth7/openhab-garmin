@@ -48,13 +48,24 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     }
 
     // Constructor
-    public function initialize( sitemapSwitch as SitemapSwitch ) {
+    public function initialize( 
+        sitemapSwitch as SitemapSwitch,
+        parent as BasePageMenu
+    ) {
         var itemState = sitemapSwitch.item.state;
         if( ! ( itemState.equals( ITEM_STATE_ON ) || itemState.equals( ITEM_STATE_OFF ) ) ) {      
             throw new JsonParsingException( "Switch '" + sitemapSwitch.label + "': invalid state '" + itemState + "'" );
         }
         _isEnabled = parseItemState( sitemapSwitch.item.state );
         _statusDrawable = new OnOffStatusDrawable( _isEnabled );
-        BaseSwitchMenuItem.initialize( sitemapSwitch, _statusDrawable, false );
+        
+        // Initialize the superclass
+        BaseSwitchMenuItem.initialize( {
+                :sitemapWidget => sitemapSwitch,
+                :state => _statusDrawable,
+                :isActionable => false,
+                :parent => parent
+            }
+        );
     }
 }

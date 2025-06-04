@@ -3,7 +3,10 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 
 /*
- * Base class for menu items representing sitemap elements.
+ * Base class for sitemap menu items. Handles layout responsibilities and
+ * supports non-widget menu items not linked to specific sitemap elements.
+ * Currently, the only non-widget menu item is for the settings menu item 
+ * on touch-based devices.
  *
  * Each menu item comprises:
  * - An optional left-side icon (`ResourceId`), currently not updatable
@@ -17,18 +20,18 @@ import Toybox.Graphics;
 
 // Defines the options accepted by the `BaseSitemapMenuItem` class.
 typedef BaseSitemapMenuItemOptions as {
-    :sitemapWidget as SitemapWidget?,
     :icon as ResourceId?,
     :label as String,
     :labelColor as ColorType?,
     :state as Drawable?,
+    :stateColor as ColorType?,
     :isActionable as Boolean? // if true, the action icon is displayed
 };
 
 class BaseSitemapMenuItem extends BaseMenuItem {
 
     private var _icon as Drawable?; // icon is optional
-    private var _title as String;
+    private var _label as String; // The label is passed in as String and this class creates the Drawable
     private var _labelColor as ColorType; // color the label text shall be printed in
     private var _labelTextArea as TextArea?; // label Drawable, optional because instantiated only when drawn
     private var _state as Drawable?; // state is optional
@@ -38,7 +41,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     // The action icon is the same for all menu items, it is therefore
     // loaded once as static member
     private static var _isActionableIcon as Bitmap = new Bitmap( {
-        :rezId => Rez.Drawables.iconRight
+        :rezId => Rez.Drawables.chevronRight
     } );
 
     // Constructor
@@ -58,37 +61,24 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         var isActionable = options[:isActionable] as Boolean?;
         _isActionable = isActionable == null ? false : isActionable;
 
-        var sitemapWidget = options[:sitemapWidget] as SitemapWidget?;
-
-        if( sitemapWidget != null ) {
-            _title = sitemapWidget.label;
-            _labelColor = setLabelColor( sitemapWidget.labelColor );
-            _stateColor = setStateColor( sitemapWidget.valueColor );
-        } else {
-            _title = options[:label] as String;
-            _labelColor = setLabelColor( options[:labelColor] );
-        }
+        _label = options[:label] as String;
+        _labelColor = setLabelColor( options[:labelColor] );
+        _stateColor = setStateColor( options[:stateColor] );
     }
 
     public function getLabel() as String {
-        return _title;
+        return _label;
     }
 
-    /*
-    * `isMyType()`: Required override to determine if a given sitemap element matches this item type.
-    */
-    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean { 
-        throw new AbstractMethodException( "BaseSitemapMenuItem.getItemType" );
-    }
-
-    /*
-    * `onSelect()`: Optional override to handle item selection (e.g., Enter button or touch tap).
-    */
-    public function onSelect() as Void;
+    // Optional override to handle item selection (e.g., enter button or touch tap).
+    // @return true if the event was handled, false otherwise.
+    // In class hierarchies, a subclass can call the parent's onSelect and proceed
+    // with its own logic only if the parent did not handle the event.
+    public function onSelect() as Boolean { return false; }
 
     // Called by the base class to render the menu item.
     public function onUpdate( dc as Dc ) as Void {
-        updateDrawables( dc );
+        onUpdateLayout( dc );
     
         if( _icon != null ) {
             _icon.draw( dc );
@@ -104,21 +94,24 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         }
     }
 
-    // Set the colors or apply the defaults
+    // Updates the option set for this menu item.
+    // Currently supports the following options:
+    // - :label
+    // - :labelColor
+    // - :stateColor
+    public function updateOptions( options as BaseSitemapMenuItemOptions ) as Void { 
+        _label = options[:label] as String;
+        _labelColor = setLabelColor( options[:labelColor] );
+        _stateColor = setStateColor( options[:stateColor] );
+    }
+
+    // Returns the optional label color, or the default color if none is set.
     private function setLabelColor( labelColor as ColorType? ) as ColorType {
         return labelColor != null ? labelColor : Constants.UI_COLOR_TEXT;
     }
+    // Returns the optional state color, or the default color if none is set.
     private function setStateColor( stateColor as ColorType? ) as ColorType {
         return stateColor != null ? stateColor : Constants.UI_COLOR_INACTIVE;
-    }
-
-    /*
-    * `update()`: Optional override to refresh the menu item content with new data from the sitemap request.
-    */
-    public function update( sitemapWidget as SitemapWidget ) as Void { 
-        _title = sitemapWidget.label;
-        _labelColor = setLabelColor( sitemapWidget.labelColor );
-        _stateColor = setStateColor( sitemapWidget.valueColor );
     }
 
    /*
@@ -132,7 +125,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     * For more details, refer to `DefaultConstants`, where these constants are defined 
     * and their relationships are visually explained.
     */
-    private function updateDrawables( dc as Dc ) as Void {
+    private function onUpdateLayout( dc as Dc ) as Void {
         var dcWidth = dc.getWidth();
         
         // Calculate spacing and left padding
@@ -208,7 +201,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         // Finally the text area is initialized
         // At the calculated leftX and width
         _labelTextArea = new TextArea( {
-            :text => _title,
+            :text => _label,
             :font => Constants.UI_MENU_ITEM_FONTS,
             :locX => leftX,
             :locY => WatchUi.LAYOUT_VALIGN_CENTER,

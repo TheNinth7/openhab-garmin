@@ -35,7 +35,10 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     }
 
     // Constructor
-    public function initialize( sitemapSwitch as SitemapSwitch ) {
+    public function initialize( 
+        sitemapSwitch as SitemapSwitch,
+        parent as BasePageMenu
+    ) {
         _sitemapSwitch = sitemapSwitch;
         
         // Initialize the Drawable for the status text, and set the color
@@ -47,13 +50,19 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         _statusDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
         
         // Initialize the superclass
-        BaseSwitchMenuItem.initialize( sitemapSwitch, _statusDrawable, true );
+        BaseSwitchMenuItem.initialize( {
+                :sitemapWidget => sitemapSwitch,
+                :state => _statusDrawable,
+                :isActionable => true,
+                :parent => parent
+            }
+        );
     }
 
     // Override the update method of the super class
     // and obtain the updated list of commmand mappings
-    public function update( sitemapWidget as SitemapWidget ) as Void {
-        BaseSwitchMenuItem.update( sitemapWidget );
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
+        BaseSwitchMenuItem.updateWidget( sitemapWidget );
         _sitemapSwitch = sitemapWidget as SitemapSwitch;
     }
 

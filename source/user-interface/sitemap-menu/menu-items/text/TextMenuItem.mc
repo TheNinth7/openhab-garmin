@@ -9,29 +9,23 @@ import Toybox.WatchUi;
  * This approach is preferred over retrieving the status from the associated item,
  * as the embedded status includes any formatting defined for the sitemap text element.
  */
-class TextMenuItem extends BaseSitemapMenuItem {
+class TextMenuItem extends BaseWidgetMenuItem {
     
     // The text status Drawable
     private var _statusTextArea as StatusTextArea;
 
     // Constructor
-    public function initialize( sitemapText as SitemapText ) {
+    public function initialize( 
+        sitemapText as SitemapText,
+        parent as BasePageMenu
+    ) {
         _statusTextArea = new StatusTextArea( sitemapText.label, sitemapText.transformedState );
-        BaseSitemapMenuItem.initialize(
-            {
+        BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapText,
-                :state => _statusTextArea
+                :state => _statusTextArea,
+                :parent => parent
             }
         );
-    }
-
-    // Updates the menu item
-    public function update( sitemapWidget as SitemapWidget ) as Void {
-        BaseSitemapMenuItem.update( sitemapWidget );
-        if( ! ( sitemapWidget instanceof SitemapText ) ) {
-            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into TextMenuItem but is of a different type" );
-        }
-        _statusTextArea.update( sitemapWidget.label, sitemapWidget.transformedState );
     }
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
@@ -39,5 +33,14 @@ class TextMenuItem extends BaseSitemapMenuItem {
         return 
             sitemapWidget instanceof SitemapText
             && sitemapWidget.hasTransformedState(); 
+    }
+
+    // Updates the menu item
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
+        BaseWidgetMenuItem.updateWidget( sitemapWidget );
+        if( ! ( sitemapWidget instanceof SitemapText ) ) {
+            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into TextMenuItem but is of a different type" );
+        }
+        _statusTextArea.update( sitemapWidget.label, sitemapWidget.transformedState );
     }
 }

@@ -1,0 +1,21 @@
+typedef TestOptions as {
+    :option as TestOption
+};
+
+class TestClass {
+    public static function test() as Void {
+        new TestClass( {
+            :option => "Hello World!"
+        } );
+    }
+    public function initialize( options as TestOptions ) {
+        // options[:option].doSomething();
+        ( options[:option] as TestOption ).doSomething();
+    }
+}
+
+class TestOption {
+    public function doSomething() as Void {
+        System.println( "Do Something!" );
+    }
+}

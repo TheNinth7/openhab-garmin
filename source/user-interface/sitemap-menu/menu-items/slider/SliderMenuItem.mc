@@ -12,7 +12,7 @@ import Toybox.WatchUi;
  * only after the user confirms their selection. If disabled, the state updates
  * continuously as the user scrolls through values.
  */
-class SliderMenuItem extends BaseSitemapMenuItem {
+class SliderMenuItem extends BaseWidgetMenuItem {
 
     // Returns true if the given sitemap element matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
@@ -37,7 +37,10 @@ class SliderMenuItem extends BaseSitemapMenuItem {
     // Constructor
     // Initializes the BaseCommandRequest used for changing the state,
     // the Drawable for the displayed status and the superclass
-    public function initialize( sitemapSlider as SitemapSlider ) {
+    public function initialize( 
+        sitemapSlider as SitemapSlider,
+        parent as BasePageMenu 
+    ) {
         _sitemapSlider = sitemapSlider;
         _commandRequest = BaseCommandRequest.get( self );
 
@@ -46,18 +49,20 @@ class SliderMenuItem extends BaseSitemapMenuItem {
             sitemapSlider.item.numericState.toString() + sitemapSlider.item.unit
         );
         
-        BaseSitemapMenuItem.initialize( {
-            :sitemapWidget => sitemapSlider,
-            :state => _statusText,
-            :isActionable => true
-        } );
+        BaseWidgetMenuItem.initialize( {
+                :sitemapWidget => sitemapSlider,
+                :state => _statusText,
+                :isActionable => true,
+                :parent => parent
+            }
+        );
     }
 
     // Updates the menu item
     // This function is called when new data comes in from the
     // sitemap polling
-    public function update( sitemapWidget as SitemapWidget ) as Void {
-        BaseSitemapMenuItem.update( sitemapWidget );
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
+        BaseWidgetMenuItem.updateWidget( sitemapWidget );
         if( ! ( sitemapWidget instanceof SitemapSlider ) ) {
             throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into SliderMenuItem but is of a different type" );
         }
@@ -67,17 +72,20 @@ class SliderMenuItem extends BaseSitemapMenuItem {
 
     // When the menu item is selected, the CustomPicker is initialized
     // and pushed to the view stack
-    public function onSelect() as Void {
-        if( _commandRequest != null ) {
-            ViewHandler.pushView(
-                new CustomPicker( 
-                    getLabel(),
-                    new SliderPickerFactory( self )
-                ),
-                new SliderPickerDelegate( self ),
-                WatchUi.SLIDE_LEFT
-            );
+    public function onSelect() as Boolean {
+        if( ! BaseWidgetMenuItem.onSelect() ) {
+            if( _commandRequest != null ) {
+                ViewHandler.pushView(
+                    new CustomPicker( 
+                        getLabel(),
+                        new SliderPickerFactory( self )
+                    ),
+                    new SliderPickerDelegate( self ),
+                    WatchUi.SLIDE_LEFT
+                );
+            }
         }
+        return true;
     }
 
     // This function is called during a command request to identify

@@ -64,10 +64,10 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
         } else {
             // If the item is found, we check if the type of the menu
             // item is the same or has changed
-            var item = _pageMenu.getItem( _index ) as BaseSitemapMenuItem;
+            var item = _pageMenu.getItem( _index ) as BaseWidgetMenuItem;
             if( item.isMyType( _sitemapWidget ) ) {
                 // If the type is the same, we update the menu item
-                item.update( _sitemapWidget );
+                item.updateWidget( _sitemapWidget );
             } else {
                 // If the type is not the same, we create a new item
                 // and replace the existing menu item with it
@@ -76,7 +76,7 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
                     _pageMenu 
                 );
 
-                if( item instanceof FrameMenuItem || newItem instanceof FrameMenuItem ) {
+                if( item.hasPage() || newItem.hasPage() ) {
                     _pageMenu.invalidateStructure();
                     // Logger.debug( "PageMenu.update: page '" + _pageMenu.getLabel() + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
 
