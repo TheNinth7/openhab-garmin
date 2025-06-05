@@ -34,7 +34,8 @@ class SettingsMenuItem extends BaseSitemapMenuItem {
     }
 
     // On select, show the settings
-    public function onSelect() as Void {
+    public function onSelect() as Boolean {
         SettingsMenuHandler.showSettings( WatchUi.SLIDE_LEFT );
+        return true;
     }
 }
