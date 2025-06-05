@@ -9,13 +9,21 @@ import Toybox.Graphics;
  * on touch-based devices.
  *
  * Each menu item comprises:
+ *
  * - An optional left-side icon (`ResourceId`), currently not updatable
+ *
  * - A center label, passed in as `String` and updatable via `setLabel()`
+ *
  * - An optional right-side status indicator (`Drawable`), updatable by updating the Drawable itself
- * - An optional action icon, used to indicate that selecting the item will trigger an action.
- *   This icon should be shown only if the label or status does not clearly convey that an action is available.
- *   For example, `Frame` and toggle-style `Switch` elements do not display an action icon.
- *   In contrast, `Slider` elements and standard `Switch` elements with text-based statuses do display it.
+ *
+ * - An optional action icon used to indicate that selecting the item will trigger an action.
+ *   This icon should be displayed only when the label or status does not clearly convey that
+ *   an action is available. For example, toggle-style `Switch` elements do not display an
+ *   action icon, whereas `Slider` elements and text-based `Switch` elements do.
+ *    
+ *   While any `Drawable` can be used as an action icon, this base implementation provides
+ *   two standard icons. These are defined as static constants so they can be shared across
+ *   all menu items without redundant instantiation.
  */
 
 // Defines the options accepted by the `BaseSitemapMenuItem` class.
@@ -25,7 +33,7 @@ typedef BaseSitemapMenuItemOptions as {
     :labelColor as ColorType?,
     :state as Drawable?,
     :stateColor as ColorType?,
-    :isActionable as Boolean? // if true, the action icon is displayed
+    :actionIcon as Drawable?
 };
 
 class BaseSitemapMenuItem extends BaseMenuItem {
@@ -36,36 +44,39 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     private var _labelTextArea as TextArea?; // label Drawable, optional because instantiated only when drawn
     private var _state as Drawable?; // state is optional
     private var _stateColor as ColorType?; // color passed to the state drawable
-    private var _isActionable as Boolean; // true if the action icon shall be displayed
+    private var _actionIcon as Drawable?; // true if the action icon shall be displayed
 
-    // The action icon is the same for all menu items, it is therefore
-    // loaded once as static member
-    private static var _isActionableIcon as Bitmap = new Bitmap( {
-        :rezId => Rez.Drawables.chevronRight
-    } );
+    // While any Drawable can be used as an action icon, this base implementation
+    // provides two standard icons. These are stored as static constants so that
+    // they can be shared across all menu items without redundant instantiation.
+    protected static const ACTION_ICON_COMMAND = new Bitmap( { :rezId => Rez.Drawables.chevronRight } );
+    protected static const ACTION_ICON_PAGE = new Bitmap( { :rezId => Rez.Drawables.chevronDoubleRight } );
 
     // Constructor
     protected function initialize( options as BaseSitemapMenuItemOptions ) {
         BaseMenuItem.initialize();
 
         // Icon is passed in as ResourceId and we create a Bitmap Drawable from it
-        if( options[:icon] != null ) {
-            _icon = new Bitmap( {
-                :bitmap => WatchUi.loadResource( options[:icon] as ResourceId ) as BitmapResource
-            } );
+        var icon = options[:icon];
+        if( icon != null ) {
+            _icon = new Bitmap( { :rezId => icon } );
         }
         
         _state = options[:state];
 
-        // isActionable defaults to false
-        var isActionable = options[:isActionable] as Boolean?;
-        _isActionable = isActionable == null ? false : isActionable;
-
         _label = options[:label] as String;
         _labelColor = setLabelColor( options[:labelColor] );
         _stateColor = setStateColor( options[:stateColor] );
+
+        _actionIcon = options[:actionIcon];
     }
 
+    // Removes the action icon
+    public function clearActionIcon() as Void {
+        _actionIcon = null;
+    }
+    
+    // Returns the label of the menu item as String
     public function getLabel() as String {
         return _label;
     }
@@ -85,12 +96,13 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         }
         
         ( _labelTextArea as TextArea ).draw( dc );       
+
         if( _state != null ) {
             _state.draw( dc );
-            // Action item is only applied if a status is shown
-            if( _isActionable ) {
-                _isActionableIcon.draw( dc );
-            }
+        }
+
+        if( _actionIcon != null ) {
+            _actionIcon.draw( dc );
         }
     }
 
@@ -155,14 +167,14 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         // Initially, the right padding is applied
         var rightX = dcWidth - paddingRight;
 
-        if( _state != null || _isActionable ) {
+        if( _state != null || _actionIcon != null ) {
             rightX -= ( dcWidth * Constants.UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR ).toNumber();
         }        
 
-        if( _isActionable ) {
-            rightX -= _isActionableIcon.width;
-            if( _isActionableIcon.locX == 0 ) {
-                _isActionableIcon.setLocation( rightX, WatchUi.LAYOUT_VALIGN_CENTER );
+        if( _actionIcon != null ) {
+            rightX -= _actionIcon.width;
+            if( _actionIcon.locX == 0 ) {
+                _actionIcon.setLocation( rightX, WatchUi.LAYOUT_VALIGN_CENTER );
             }
             rightX -= ( dcWidth * Constants.UI_MENU_ITEM_ACTION_PADDING_LEFT_FACTOR ).toNumber();
         }
