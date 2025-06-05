@@ -175,30 +175,47 @@ The following element types are currently supported:
 
 - [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame)
 
+- [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text)
+
+- [`Group`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-group)
+
 - [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch)
 
 - [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider)
 
-- [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text)
-
 The following sections describe the supported parameters and the Sitemap Widget associated with each of these elements.
+
+Here’s a revised and more concise version of your section with improved flow, grammar, and clarity:
+
+#### Nested Elements
+
+Nested elements are fully supported.
+
+Certain sitemap elements — namely `Frame`, `Text`, and `Group` — can contain nested elements to help structure your sitemap hierarchically.
+
+In openHAB, `Frame` elements are used to visually separate areas on a page, while nested elements under `Text` and `Group` are presented as navigable subpages. The Garmin app adopts a menu-based navigation structure and implements nested elements under all three types as submenus.
+
+* For `Frame` and `Text`, nested elements must be defined manually. The only functional difference is that `Text` displays the associated item’s state, whereas `Frame` does not.
+* `Group` elements automatically populate their nested elements based on the members of the referenced group item.
+
+For more details, refer to the [openHAB documentation on nested elements](https://www.openhab.org/docs/ui/sitemaps.html#nested-elements).
 
 ---
 
 ### `Frame`
 
-The [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame) element is used to group other elements, helping to organize your Sitemap Widgets into a hierarchical structure.
+The [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame) element is [one of three](#nested-elements) sitemap elements that support hierarchical structuring.
 
-The app presents the sitemap using a menu-based structure. The root of the sitemap corresponds to the app’s **home screen**. Each `Frame` is represented as its own **menu**, and `Frame` elements can be **nested** within other `Frames` to create submenus.
+You can nest `Frame` elements within other `Frame` elements. While this is allowed by the specification, openHAB may log a warning when doing so — but it still functions as expected.
 
-**Important:** The home screen and each `Frame` may contain either only `Frame` elements (i.e., submenus) or only non-`Frame` elements (`Switch`, `Slider`, `Text`, etc.). Mixing both types within the same `Frame` is not supported.
+Technically, the specification does *not* permit mixing `Frame` elements alongside other element types at the same hierarchy level. However, in practice, this does work in openHAB. If you choose to use this unsupported approach, be aware that you're doing so at your own risk.
 
 Here is an example of a sitemap containing three `Frame` elements.
 
 ```openhab
 sitemap garmin_demo label="My Home" {
 	Frame label="Entrance Gates" {
-		Switch item=EntranceGatesTrigger label="Open/Close" mappings=[OFF="GO", ON="DONE"]
+		Switch item=EntranceGatesTrigger label="Open/Close" mappings=[OFF="", ON="OK"]
 		Text item=EntranceGateStatus label="Status"
 	}
 	Frame label="Ground Floor" {
@@ -215,7 +232,70 @@ This configuration produces the following display in the UI:
 <table class="screenshot-table">
   <tr>
     <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
-    <td><img src="screenshots/app/8-text.png"></td>
+    <td><img src="screenshots/app/3-entrance-gates.png"></td>
+  </tr>
+</table>
+
+---
+
+### `Text`
+
+The [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text) Sitemap Widget is used to display the current state of an item without allowing any user interaction.
+
+**Supported parameters:**
+
+* `label`: the label shown in the UI.
+* `item`: the name of the openHAB item whose state should be displayed.
+
+This widget is ideal for showing read-only information, such as temperature, system status, or sensor readings. It also supports [nested elements](#nested-elements), making it suitable for creating a hierarchical sitemap structure.
+
+**Example configuration:**
+
+In this example, the `Text` Sitemap Widget is used to display the status of entrance gates. Triggering the gates is handled by a separate `Switch` element.
+
+```openhab
+Frame label="Entrance Gates" {
+  Switch item=EntranceGatesTrigger label="Open/Close" mappings=[OFF="GO", ON="DONE"]
+  Text item=EntranceGateStatus label="Status"
+}
+```
+
+**Resulting UI:**
+
+<table class="screenshot-table">
+  <tr>
+    <td width="50%"><img src="screenshots/app/3-entrance-gates.png"></td>
+    <td></td>
+  </tr>
+</table>
+
+---
+
+### `Group`
+
+The [`Group`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-group) Sitemap Widget will present a submenu containing all the items in the associated item of type `Group`. This also works recursively, if the `Group` item itself contains other `Group` items, those will again open their own submenus.
+
+**Example configuration:**
+
+In this example, the `Text` Sitemap Widget is used to display the status of entrance gates. Triggering the gates is handled by a separate `Switch` element.
+
+```openhab
+sitemap garmin_demo label="My Home" {
+	Group item=CC_House_Lights label="All Lights"
+  // ...
+}
+```
+
+**Resulting UI:**
+
+<table class="screenshot-table">
+  <tr>
+    <td width="50%"><img src="screenshots/app/8-group-1.png"></td>
+    <td><img src="screenshots/app/8-group-2.png"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/app/8-group-3.png"></td>
+    <td></td>
   </tr>
 </table>
 
@@ -361,39 +441,6 @@ Note: Even button-based devices may support touch input, and on those, the UI re
 
 * **With `releaseOnly`:** The value is only sent when the dialog is confirmed. Cancelling leaves the value unchanged.
 * **Without `releaseOnly`:** Values are sent immediately as the slider is moved. Confirming keeps the current value; cancelling reverts to the value before the dialog was opened.
-
----
-
-### `Text`
-
-The [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text) Sitemap Widget is used to display the current state of an item without allowing any user interaction.
-
-**Supported parameters:**
-
-* `label`: the label shown in the UI.
-* `item`: the name of the openHAB item whose state should be displayed.
-
-This widget is ideal for showing read-only information, such as temperature, system status, or sensor readings.
-
-**Example configuration:**
-
-In this example, the `Text` Sitemap Widget is used to display the status of entrance gates. Triggering the gates is handled by a separate `Switch` element.
-
-```openhab
-Frame label="Entrance Gates" {
-  Switch item=EntranceGatesTrigger label="Open/Close" mappings=[OFF="GO", ON="DONE"]
-  Text item=EntranceGateStatus label="Status"
-}
-```
-
-**Resulting UI:**
-
-<table class="screenshot-table">
-  <tr>
-    <td width="50%"><img src="screenshots/app/8-text.png"></td>
-    <td></td>
-  </tr>
-</table>
 
 ---
 
