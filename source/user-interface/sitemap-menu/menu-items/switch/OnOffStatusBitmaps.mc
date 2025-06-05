@@ -23,6 +23,9 @@ class OnOffStatusBitmaps {
     // Height and width of the switch is defined relative to the menu item height
     private const HEIGHT = ( Constants.UI_MENU_ITEM_HEIGHT * 0.8 ).toNumber();
     private const WIDTH = ( Constants.UI_MENU_ITEM_HEIGHT * 0.45 ).toNumber();
+    private const SMALL_HEIGHT = ( HEIGHT * 0.65 ).toNumber();
+    private const SMALL_WIDTH = ( WIDTH * 0.65 ).toNumber();
+    
     // The circles are again defines as a factor the the WIDTH defined above
     private const OUTER_CIRCLE_FACTOR = 0.8;
     private const INNER_CIRCLE_FACTOR = 0.75;
@@ -30,6 +33,8 @@ class OnOffStatusBitmaps {
     // The BufferedBitmaps for ON and OFF
     public var on as BufferedBitmapType;
     public var off as BufferedBitmapType;
+    public var small_on as BufferedBitmapType;
+    public var small_off as BufferedBitmapType;
 
     // Constructor
     private function initialize() {
@@ -44,6 +49,18 @@ class OnOffStatusBitmaps {
             :height => HEIGHT,
         } );
         draw( off, false );
+
+        small_on = BufferedBitmapFactory.createBufferedBitmap( {
+            :width => SMALL_WIDTH,
+            :height => SMALL_HEIGHT,
+        } );
+        draw( small_on, true );
+
+        small_off = BufferedBitmapFactory.createBufferedBitmap( {
+            :width => SMALL_WIDTH,
+            :height => SMALL_HEIGHT,
+        } );
+        draw( small_off, false );
     }
 
     // Draws the switch UI element.

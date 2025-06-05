@@ -13,13 +13,16 @@ class OnOffStatusDrawable extends BufferedBitmapDrawable {
     // Storing the state helps us determining if there was an
     // actual change of state, when setEnabled is called.
     private var _isEnabled as Boolean;
+    private var _smallIcon as Boolean;
 
     // Constructor
     // Processes the initial state
-    public function initialize( isEnabled as Boolean ) {
+    public function initialize( isEnabled as Boolean, smallIcon as Boolean ) {
         _isEnabled = isEnabled;
+        _smallIcon = smallIcon;
+
         BufferedBitmapDrawable.initialize( {
-            :bufferedBitmap => getOnOffBitmap( isEnabled )
+            :bufferedBitmap => getOnOffBitmap( isEnabled, smallIcon )
         } );
     }
 
@@ -27,19 +30,24 @@ class OnOffStatusDrawable extends BufferedBitmapDrawable {
     // setEnabled is called with every sitemap update
     // To improve performance, we only switch the BufferedBitmap
     // if the state changed
-    public function setEnabled( isEnabled as Boolean ) as Void {
-        if( _isEnabled != isEnabled ) {
+    public function setEnabled( isEnabled as Boolean, smallIcon as Boolean ) as Void {
+        if( _isEnabled != isEnabled || _smallIcon != smallIcon ) {
             _isEnabled = isEnabled;
-            setBufferedBitmap( getOnOffBitmap( isEnabled ) );
+            _smallIcon = smallIcon;
+            setBufferedBitmap( getOnOffBitmap( isEnabled, smallIcon ) );
         }
     }
 
     // Returns the right bitmap for a given state
-    private function getOnOffBitmap( isEnabled as Boolean ) as BufferedBitmapType {
+    private function getOnOffBitmap( isEnabled as Boolean, smallIcon as Boolean ) as BufferedBitmapType {
         return
-            isEnabled
-            ? OnOffStatusBitmaps.get().on
-            : OnOffStatusBitmaps.get().off;
+            smallIcon
+                ? isEnabled
+                    ? OnOffStatusBitmaps.get().small_on
+                    : OnOffStatusBitmaps.get().small_off
+                : isEnabled
+                    ? OnOffStatusBitmaps.get().on
+                    : OnOffStatusBitmaps.get().off;
     }
 }
 

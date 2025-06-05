@@ -18,6 +18,11 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
 
     // True if the switch is on
     private var _isEnabled as Boolean;
+
+    // True if the widget has nested elements and
+    // thus a smaller icon shall be displayed
+    private var _smallIcon as Boolean;
+
     // The actual Drawable for drawing the switch
     private var _statusDrawable as OnOffStatusDrawable;
 
@@ -32,7 +37,14 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     // Update the member and Drawable
     public function updateItemState( state as String ) as Void {
         _isEnabled = parseItemState( state );
-        _statusDrawable.setEnabled( _isEnabled );
+        _statusDrawable.setEnabled( _isEnabled, _smallIcon );
+    }
+
+    // Override the update method of the super class
+    // and obtain the updated list of commmand mappings
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
+        BaseSwitchMenuItem.updateWidget( sitemapWidget );
+        _smallIcon = sitemapWidget.linkedPage != null;
     }
 
     // Converts the string state to a Boolean for _isEnabled
@@ -57,7 +69,8 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
             throw new JsonParsingException( "Switch '" + sitemapSwitch.label + "': invalid state '" + itemState + "'" );
         }
         _isEnabled = parseItemState( sitemapSwitch.item.state );
-        _statusDrawable = new OnOffStatusDrawable( _isEnabled );
+        _smallIcon = sitemapSwitch.linkedPage != null;
+        _statusDrawable = new OnOffStatusDrawable( _isEnabled, _smallIcon );
         
         // Initialize the superclass
         BaseSwitchMenuItem.initialize( {

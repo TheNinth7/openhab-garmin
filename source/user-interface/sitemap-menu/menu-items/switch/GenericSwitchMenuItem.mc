@@ -59,13 +59,6 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         );
     }
 
-    // Override the update method of the super class
-    // and obtain the updated list of commmand mappings
-    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
-        BaseSwitchMenuItem.updateWidget( sitemapWidget );
-        _sitemapSwitch = sitemapWidget as SitemapSwitch;
-    }
-
     // Called by the superclass if the state changes
     // Updates the member and Drawable
     // This is called by update() of the superclass, and thus
@@ -74,12 +67,21 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // show the new state, even before the next sitemap update
     // arrives
     public function updateItemState( state as String ) as Void {
-        _sitemapSwitch.updateState( state );
+        if( ! _sitemapSwitch.item.state.equals( state ) ) {
+            _sitemapSwitch.updateState( state );
+        }
         
         _statusDrawable.update( 
             _sitemapSwitch.label, 
             _sitemapSwitch.transformedState
         );
+    }
+
+    // Override the update method of the super class
+    // and obtain the updated list of commmand mappings
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
+        BaseSwitchMenuItem.updateWidget( sitemapWidget );
+        _sitemapSwitch = sitemapWidget as SitemapSwitch;
     }
 
     // Called by the superclass to determine the command
