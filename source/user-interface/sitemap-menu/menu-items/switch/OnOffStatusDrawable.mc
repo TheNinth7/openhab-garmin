@@ -43,8 +43,8 @@ class OnOffStatusDrawable extends BufferedBitmapDrawable {
         return
             smallIcon
                 ? isEnabled
-                    ? OnOffStatusBitmaps.get().small_on
-                    : OnOffStatusBitmaps.get().small_off
+                    ? SmallOnOffStatusBitmaps.get().on
+                    : SmallOnOffStatusBitmaps.get().off
                 : isEnabled
                     ? OnOffStatusBitmaps.get().on
                     : OnOffStatusBitmaps.get().off;
