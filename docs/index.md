@@ -51,6 +51,8 @@
   - [`Switch`](#switch)
   - [`Slider`](#slider)
   - [Dynamic Sitemaps](#dynamic-sitemaps)
+    - [Visibility](#visibility)
+    - [Label and Value Colors](#label-and-value-colors)
 - [Settings Menu](#settings-menu)
 - [Troubleshooting](#troubleshooting)
   - [How the App Handles Errors](#how-the-app-handles-errors)
