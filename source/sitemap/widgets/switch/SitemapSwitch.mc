@@ -76,7 +76,7 @@ class SitemapSwitch extends SitemapWidget {
         // If the state in the sitemap is the same as we got passed
         // in there is no need to update. updateState is relatively
         // costly due to the lookup of the description
-        if( item.state.equals( state ) ) {
+        if( ! item.state.equals( state ) ) {
             item.state = state;
             transformedState = Item.NO_STATE;
             transformState();

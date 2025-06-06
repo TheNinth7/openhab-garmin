@@ -94,12 +94,12 @@ class CustomPicker extends CustomView {
 
         // The up/down arrows
         addDrawable( new CustomBitmap( {
-            :rezId => Rez.Drawables.chevronUp,
+            :rezId => Rez.Drawables.chevronUpGrey,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => yStart
         } ) );
         addDrawable( new CustomBitmap( {
-            :rezId => Rez.Drawables.chevronDown,
+            :rezId => Rez.Drawables.chevronDownGrey,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
             :locY => yStart + 0.5
         } ) );
@@ -138,8 +138,8 @@ class CustomPicker extends CustomView {
     // feature of the CustomView
     (:exclForTouch)
     private function addInputHints( y as Float ) as Void {
-        addInputHint( InputHint.HINT_KEY_ENTER, InputHint.HINT_TYPE_POSITIVE, :touchCheck );
-        addInputHint( InputHint.HINT_KEY_BACK, InputHint.HINT_TYPE_DESTRUCTIVE, :touchCancel );
+        addInputHint( InputHint.HINT_KEY_ENTER, InputHint.HINT_TYPE_CHECK, :touchCheck );
+        addInputHint( InputHint.HINT_KEY_BACK, InputHint.HINT_TYPE_CANCEL, :touchCancel );
     }
 
     // On touch-based devices we place two icons for

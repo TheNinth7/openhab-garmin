@@ -23,6 +23,8 @@ class MenuItemFactory {
             return new TextMenuItem( sitemapWidget as SitemapText, parent );
         } else if( SliderMenuItem.isMyType( sitemapWidget ) ) {
             return new SliderMenuItem( sitemapWidget as SitemapSlider, parent );
+        } else if( RollershutterMenuItem.isMyType( sitemapWidget ) ) {
+            return new RollershutterMenuItem( sitemapWidget as SitemapSwitch, parent );
         } else if( GenericSwitchMenuItem.isMyType( sitemapWidget ) ) {
             return new GenericSwitchMenuItem( sitemapWidget as SitemapSwitch, parent );
          } else if( NoStateMenuItem.isMyType( sitemapWidget ) ) {

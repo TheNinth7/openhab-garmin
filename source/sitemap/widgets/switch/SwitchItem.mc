@@ -10,6 +10,15 @@ import Toybox.WatchUi;
  */
 class SwitchItem extends Item {
 
+    // Strings representing the on/off state
+    public static const ITEM_STATE_ON = "ON";
+    public static const ITEM_STATE_OFF = "OFF";
+
+    // Strings representing the states of a rollershutter item
+    public static const ITEM_STATE_UP = "UP";
+    public static const ITEM_STATE_DOWN = "DOWN";
+    public static const ITEM_STATE_STOP = "STOP";
+
     public var commandDescriptions as CommandDescriptionArray?;
     public var stateDescriptions as StateDescriptionArray?;
 

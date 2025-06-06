@@ -8,12 +8,13 @@ import Toybox.Graphics;
  */
 class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
 
-    // Returns true if the given sitemap element matches the type handled by this menu item.
+    // Returns true if the given widget matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
                sitemapWidget instanceof SitemapSwitch 
+            && sitemapWidget.item.hasState()
             && ! sitemapWidget.hasMappings()
-            && sitemapWidget.item.hasState();
+            && ! sitemapWidget.item.type.equals( "Rollershutter" );
     }
 
     // True if the switch is on
@@ -26,13 +27,12 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     // The actual Drawable for drawing the switch
     private var _statusDrawable as OnOffStatusDrawable;
 
-    // Strings representing the on/off state in the sitemap state
-    private static const ITEM_STATE_ON = "ON";
-    private static const ITEM_STATE_OFF = "OFF";
-
     // Toggle the state
     public function getNextCommand() as String? {
-        return _isEnabled ? ITEM_STATE_OFF : ITEM_STATE_ON;
+        return 
+            _isEnabled 
+            ? SwitchItem.ITEM_STATE_OFF 
+            : SwitchItem.ITEM_STATE_ON;
     }
     // Update the member and Drawable
     public function updateItemState( state as String ) as Void {
@@ -49,10 +49,10 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
 
     // Converts the string state to a Boolean for _isEnabled
     // ON => true; OFF => false
-    private function parseItemState( itemState as String? ) as Boolean {
-        if( ITEM_STATE_ON.equals( itemState ) ) {
+    private function parseItemState( itemState as String ) as Boolean {
+        if( itemState.equals( SwitchItem.ITEM_STATE_ON ) ) {
             return true;            
-        } else if( ITEM_STATE_OFF.equals( itemState ) ) {
+        } else if( itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) {
             return false;
         } else {
             throw new GeneralException( "OnOffSwitchMenuItem: state '" + itemState + "' is not supported" );
@@ -65,7 +65,9 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
         parent as BasePageMenu
     ) {
         var itemState = sitemapSwitch.item.state;
-        if( ! ( itemState.equals( ITEM_STATE_ON ) || itemState.equals( ITEM_STATE_OFF ) ) ) {      
+        if( ! ( itemState.equals( SwitchItem.ITEM_STATE_ON ) 
+                || itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) 
+        ) {      
             throw new JsonParsingException( "Switch '" + sitemapSwitch.label + "': invalid state '" + itemState + "'" );
         }
         _isEnabled = parseItemState( sitemapSwitch.item.state );

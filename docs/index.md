@@ -72,8 +72,8 @@ The **Glance** displays the name of the sitemap and acts as the entry point into
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/1-glance.png"></td>
-    <td><img src="screenshots/app/2-homepage.png"></td>
+    <td width="50%"><img src="screenshots/app/01-glance.png"></td>
+    <td><img src="screenshots/app/02-homepage.png"></td>
   </tr>
 </table>
 
@@ -235,8 +235,8 @@ This configuration produces the following display in the UI:
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/2-homepage.png"></td>
-    <td><img src="screenshots/app/3-entrance-gates.png"></td>
+    <td width="50%"><img src="screenshots/app/02-homepage.png"></td>
+    <td><img src="screenshots/app/03-entrance-gates.png"></td>
   </tr>
 </table>
 
@@ -268,7 +268,7 @@ Frame label="Entrance Gates" {
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/3-entrance-gates.png"></td>
+    <td width="50%"><img src="screenshots/app/03-entrance-gates.png"></td>
     <td></td>
   </tr>
 </table>
@@ -294,11 +294,11 @@ sitemap garmin_demo label="My Home" {
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/8-group-1.png"></td>
-    <td><img src="screenshots/app/8-group-2.png"></td>
+    <td width="50%"><img src="screenshots/app/08-group-1.png"></td>
+    <td><img src="screenshots/app/08-group-2.png"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="screenshots/app/8-group-3.png"></td>
+    <td width="50%"><img src="screenshots/app/08-group-3.png"></td>
     <td></td>
   </tr>
 </table>
@@ -307,7 +307,12 @@ sitemap garmin_demo label="My Home" {
 
 ### `Switch`
 
-The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) Sitemap Widget displays the state of an item and allows the user to change it.
+The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) Sitemap Widget shows the current state of an item and allows the user to change it.  
+It supports three variants:
+
+1. **Toggle Switch** – for items that support `ON`/`OFF` commands.
+2. **Rollershutter Control** – a full-screen view with `UP`, `DOWN`, and `STOP` buttons for rollershutter items.
+3. **Generic Switch** – for items that accept other commands, as defined by mappings or the item's command descriptions.
 
 **Supported parameters:**
 
@@ -353,12 +358,12 @@ In this example:
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/6-switches-1.png"></td>
-    <td><img src="screenshots/app/6-switches-2.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-1.png"></td>
+    <td><img src="screenshots/app/06-switches-2.png"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="screenshots/app/6-switches-3.png"></td>
-    <td><img src="screenshots/app/6-switches-4.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-3.png"></td>
+    <td><img src="screenshots/app/06-switches-4.png"></td>
   </tr>
 </table>
 
@@ -391,7 +396,7 @@ Here’s how the interface appears when the switch is in the `OFF` state:
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/6-switches-5.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-5.png"></td>
     <td></td>
   </tr>
 </table>
@@ -427,12 +432,12 @@ Frame label="First Floor" {
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/7-slider-1.png"></td>
+    <td width="50%"><img src="screenshots/app/07-slider-1.png"></td>
     <td></td>
   </tr>
   <tr>
-    <td width="50%"><img src="screenshots/app/7-slider-2.png"></td>
-    <td><img src="screenshots/app/7-slider-3.png"></td>
+    <td width="50%"><img src="screenshots/app/07-slider-2.png"></td>
+    <td><img src="screenshots/app/07-slider-3.png"></td>
   </tr>
 </table>
 
@@ -481,7 +486,7 @@ This results in the following display:
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/9-dynamics-colors.png"></td>
+    <td width="50%"><img src="screenshots/app/09-dynamics-colors.png"></td>
     <td></td>
   </tr>
 </table>
@@ -499,8 +504,8 @@ The settings menu currently displays the app version and server URL. Additional 
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/5-settings-1.png"></td>
-    <td><img src="screenshots/app/5-settings-2.png"></td>
+    <td width="50%"><img src="screenshots/app/05-settings-1.png"></td>
+    <td><img src="screenshots/app/05-settings-2.png"></td>
   </tr>
 </table>
 
@@ -657,3 +662,15 @@ Derived from:
 ![Cancel](iconography/cancel.svg)
 
 [Cancel](https://thenounproject.com/icon/clear-2801731/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/cancel/) (CC BY 3.0)
+
+---
+
+![Stop](iconography/stop.svg)
+
+[Stop](https://thenounproject.com/icon/stop-1939990/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/stop/) (CC BY 3.0)
+
+---
+
+![Stop Hint](iconography/stop_hint.svg)
+
+[Stop Hint](https://thenounproject.com/icon/stop-1939970/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/stop/) (CC BY 3.0)

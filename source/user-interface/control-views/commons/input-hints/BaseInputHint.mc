@@ -25,20 +25,23 @@ class BaseInputHint extends Drawable {
     // DESTRUCTIVE = red, with cancel icon
     enum Type {
         HINT_TYPE_NEUTRAL,
-        HINT_TYPE_POSITIVE,
-        HINT_TYPE_DESTRUCTIVE,
+        HINT_TYPE_CHECK,
+        HINT_TYPE_CANCEL,
+        HINT_TYPE_STOP,
     }
     // Association of Type with colors
     private const UI_INPUT_HINT_COLORS as Array<ColorType> = [
         Constants.UI_COLOR_TEXT,
-        Constants.UI_COLOR_TEXT,  // Constants.UI_COLOR_POSITIVE,
-        Constants.UI_COLOR_TEXT   //Constants.UI_COLOR_DESTRUCTIVE
+        Constants.UI_COLOR_TEXT,
+        Constants.UI_COLOR_TEXT,
+        Constants.UI_COLOR_TEXT
     ];
     // Association of Type with icons
     private const UI_INPUT_HINT_ICONS as Array<ResourceId?> = [
         null,
         Rez.Drawables.iconCheckHint,
-        Rez.Drawables.iconCancelHint
+        Rez.Drawables.iconCancelHint,
+        Rez.Drawables.iconStopHint
     ];
 
     // Default line width

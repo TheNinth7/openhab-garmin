@@ -1,23 +1,22 @@
 <drawables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
-    <bitmap id="logoOpenhabText" scaleX="40%" filename="../svg/openhab_text_light.svg" dithering="none" />
-    <bitmap id="logoOpenhabSquare" scaleX="10%" filename="../svg/openhab_logo_light.svg" dithering="none" />
+    <bitmap id="logoOpenhabText" scaleX="40%" filename="../svg/openhab-text-light.svg" dithering="none" />
+    <bitmap id="logoOpenhabSquare" scaleX="10%" filename="../svg/openhab-logo-light.svg" dithering="none" />
 
     <bitmap id="iconWarning" personality="system_icon_light__warning" />
     <bitmap id="iconDownToSettings" scaleY="15%" filename="../svg/down-to-settings.svg" dithering="none" />
-    <bitmap id="chevronUp" scaleX="10%" filename="../svg/arrow-up.svg" dithering="none" />
-    <bitmap id="chevronDown" scaleX="10%" filename="../svg/arrow-down.svg" dithering="none" />
-    <bitmap id="chevronRight" scaleY="5%" filename="../svg/arrow-right.svg" dithering="none" />
-    <bitmap id="chevronDoubleRight" scaleY="5%" filename="../svg/chevron-right.svg" dithering="none" />
+    <bitmap id="chevronUpGreen" scaleX="10%" filename="../svg/chevron-up-green.svg" dithering="none" />
+    <bitmap id="chevronUpGrey" scaleX="10%" filename="../svg/chevron-up-grey.svg" dithering="none" />
+    <bitmap id="chevronDownGreen" scaleX="10%" filename="../svg/chevron-down-green.svg" dithering="none" />
+    <bitmap id="chevronDownGrey" scaleX="10%" filename="../svg/chevron-down-grey.svg" dithering="none" />
+    <bitmap id="chevronRightOrange" scaleY="5%" filename="../svg/chevron-right-orange.svg" dithering="none" />
+    <bitmap id="chevronRightOrangeDoubleOrange" scaleY="5%" filename="../svg/chevron-right-double-orange.svg" dithering="none" />
     <bitmap id="iconCheck" scaleX="15%" filename="../svg/check.svg" dithering="none" />
     <bitmap id="iconCancel" scaleX="15%" filename="../svg/cancel.svg" dithering="none" />
-    <!-- 
-    Custom icons for check and cancel
-    If using those, also set the centerToCenter factor to 1.3 in InputHicon-round.mc
-    <bitmap id="iconCheckHint" scaleY="10%" filename="../svg/check_hint.svg" dithering="none" />
-    <bitmap id="iconCancelHint" scaleY="10%" filename="../svg/cancel_hint.svg" dithering="none" />
-    -->
+    <bitmap id="iconStop" scaleY="15%" filename="../svg/stop.svg" dithering="none" />
+
     <bitmap id="iconCheckHint" scaleY="9%" personality="system_icon_positive__check" />
     <bitmap id="iconCancelHint" scaleY="8%" personality="system_icon_destructive__cancel" />
+    <bitmap id="iconStopHint" scaleY="7%" filename="../svg/stop-hint-orange.svg" dithering="none" />
  
     <bitmap id="menuSettings" scaleX="10%" filename="../svg/settings.svg" dithering="none" />
     <bitmap id="menuFolder" scaleY="20%" filename="../svg/folder.svg" dithering="none" />

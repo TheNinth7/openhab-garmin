@@ -28,7 +28,7 @@ class TextMenuItem extends BaseWidgetMenuItem {
         );
     }
 
-    // Returns true if the given sitemap element matches the type handled by this menu item.
+    // Returns true if the given widget matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
             sitemapWidget instanceof SitemapText

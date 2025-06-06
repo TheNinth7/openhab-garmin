@@ -24,7 +24,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // The Drawable that shows the current state
     private var _statusDrawable as StatusTextArea;
 
-    // Returns true if the given sitemap element matches the type handled by this menu item.
+    // Returns true if the given widget matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         // This menu item applies to all Switches, that
         // have a mapping defined
