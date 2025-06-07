@@ -14,7 +14,7 @@ class SitemapWidgetFactory {
         asyncProcessing as Boolean
     ) as SitemapWidget {
         var type = widget.getString( "type", "Widget without type" ); 
-        if( type.equals( "Switch" ) ) {
+        if( type.equals( "Switch" ) || type.equals( "Selection" ) ) {
             return new SitemapSwitch( widget, isSitemapFresh, asyncProcessing );
         } else if( type.equals( "Setpoint" ) || type.equals( "Slider" ) ) {
             return new SitemapNumeric( widget, isSitemapFresh, asyncProcessing );

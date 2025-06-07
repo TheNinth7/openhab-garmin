@@ -48,11 +48,11 @@
   - [`Frame`](#frame)
   - [`Text`](#text)
   - [`Group`](#group)
-  - [`Switch`](#switch)
+  - [`Switch` and `Selection`](#switch-and-selection)
     - [Toggle Switch](#toggle-switch)
     - [Rollershutter](#rollershutter)
     - [Generic Switch](#generic-switch)
-  - [`Slider`](#slider)
+  - [`Setpoint` and `Slider`](#setpoint-and-slider)
   - [Dynamic Sitemaps](#dynamic-sitemaps)
     - [Visibility](#visibility)
     - [Label and Value Colors](#label-and-value-colors)
@@ -308,9 +308,18 @@ sitemap garmin_demo label="My Home" {
 
 ---
 
-### `Switch`
+### `Switch` and `Selection`
 
-The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) widget displays the current state of an item and allows the user to send commands to change it.
+The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) and [`Selection`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) widgets display the current state of an item and allows the user to send commands to change it.
+
+In other UIs, the `Switch` and `Selection` widgets behave differently:
+
+* `Switch` presents all available options **inline** within the page.
+* `Selection` opens a **dedicated selection dialog** to choose a value.
+
+However, due to the limited screen space on wearables, the Garmin app always opens a dedicated action menu whenever there are more than one or two options.
+
+As a result, `Selection` is treated as a **synonym for `Switch`**, and both behave identically in the Garmin app.
 
 **Supported parameters:**
 
