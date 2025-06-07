@@ -49,6 +49,9 @@
   - [`Text`](#text)
   - [`Group`](#group)
   - [`Switch`](#switch)
+    - [Toggle Switch](#toggle-switch)
+    - [Rollershutter](#rollershutter)
+    - [Generic Switch](#generic-switch)
   - [`Slider`](#slider)
   - [Dynamic Sitemaps](#dynamic-sitemaps)
     - [Visibility](#visibility)
@@ -308,23 +311,83 @@ sitemap garmin_demo label="My Home" {
 ### `Switch`
 
 The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) Sitemap Widget shows the current state of an item and allows the user to change it.  
-It supports three variants:
-
-1. **Toggle Switch** – for items that support `ON`/`OFF` commands.
-2. **Rollershutter Control** – a full-screen view with `UP`, `DOWN`, and `STOP` buttons for rollershutter items.
-3. **Generic Switch** – for items that accept other commands, as defined by mappings or the item's command descriptions.
 
 **Supported parameters:**
 
 - `label`: the label displayed in the UI.
 - `item`: the name of the associated openHAB item.
-- `mappings` (optional): used when commands other than `ON`/`OFF` should be sent.
+- `mappings` (optional): defines commands the item accepts, and their display label.
 
-If no `mappings` are provided, the widget will use the item's command and state descriptions, which may come from the underlying channel or be manually defined via metadata. Command descriptions are used to label both the current state and the available command options (if multiple exist). If state descriptions are present, they take precedence for labeling the current state only—not for the list of selectable commands.
+The widget supports three variants:
 
-If neither `mappings` nor command descriptions are available, the widget falls back to rendering a **toggle switch**, where selecting the item sends either an `ON` or `OFF` command.
+1. **Toggle Switch** – for items that support `ON`/`OFF` commands.
+2. **Rollershutter Control** – a full-screen view with `UP`, `DOWN`, and `STOP` buttons for rollershutter items.
+3. **Generic Switch** – for items that accept other commands, as defined by mappings or the item's command descriptions.
 
-If `mappings` are provided, the widget displays the current state as text:
+Let's dive into each of them:
+
+#### Toggle Switch
+
+The **toggle switch** is the basic variant of the Switch widget. It is used when neither `mappings` nor command descriptions are available, and the item is not of the `Rollershutter` type.
+
+**Example Configuration:**
+
+```openhab
+Frame label="Switches" {
+    Switch item=Light label="Light"
+    // ...
+}
+```
+
+**UI Rendering**
+
+<table class="screenshot-table">
+  <tr>
+    <td width="50%"><img src="screenshots/app/06-switches-1-toggle.png"></td>
+    <td>"></td>
+  </tr>
+</table>
+
+#### Rollershutter
+
+The **rollershutter switch** is used if the item type is `Rollershutter`. In this case the widget displays a textual state in the menu item, and selecting it opens up a full-screen view with up, down and stop controls. 
+
+Mappings can be provided (e.g. to map 0 to the string "Open" and 100 to "Closed"), but are used only for displaying the textual state in the menu item. The full-screen view will always show the numeric opening state in percent.
+
+The reason for not showing descriptive states in the full-screen view is that those can be confusing. The states 0 and 100 do not only mean that the rollershutter is open or closed, but are set immediately after the `UP` and `DOWN` commands and so for some time mean that the rollershutter is opening or closing, not that it actually is open or closed.
+
+**Example Configuration:**
+
+```openhab
+Frame label="Switches" {
+		// ...
+    Switch item=Rollershutter label="Rollershutter" mappings=[0="Open", 100="Closed"]
+    // ...
+}
+```
+
+**UI Rendering**
+
+The following screenshots show how this switch renders as menu item with different states, and the full-screen view on button-based and touch-based devices.
+
+<table class="screenshot-table">
+  <tr>
+    <td width="50%"><img src="screenshots/app/06-switches-rollershutter-1.png"></td>
+    <td><img src="screenshots/app/06-switches-rollershutter-2.png"></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="screenshots/app/06-switches-rollershutter-3.png"></td>
+    <td><img src="screenshots/app/06-switches-rollershutter-4.png"></td>
+  </tr>
+</table>
+
+#### Generic Switch
+
+The **Generic Switch** is used when neither of the two variants above apply.
+
+It relies on command `mappings` specified in the sitemap, or will use the item's command and state descriptions, which may come from the underlying channel or be manually defined via metadata. Command descriptions are used to label both the current state and the available command options (if multiple exist). If state descriptions are present, they take precedence for labeling the current state only—not for the list of selectable commands.
+
+In the menu, the widget displays the current state as text:
 
 - If the state matches one of the mapped commands, the corresponding label is shown.
 - Otherwise, the raw state is displayed.
@@ -338,47 +401,33 @@ If `mappings` are provided, the widget displays the current state as text:
 * In all other cases, an **action menu** appears on the right side of the screen, allowing the user to select from the list of available commands.
   If the current state matches one of the commands, that command is **not shown** in the menu.
 
-#### Example configuration
+**Example configuration**
 
 ```openhab
 Frame label="Switches" {
-    Switch item=Light label="Light"
-    Switch item=Heating label="Heating" mappings=[ON="ACTIVE", OFF="INACTIVE"]
-    Switch item=Rollershutter label="Shutters" mappings=[0="UP", STOP="STOP", 100="DOWN"]
+		// ...
+    Switch item=TV label="TV" mappings=[0="ABC", 1="BBC", 2="CNN"]
 }
 ```
 
-In this example:
-
-* **"Light"** will render as a toggle switch.
-* **"Heating"** will display either `ACTIVE` or `INACTIVE`, depending on the current state.
-* **"Shutters"** will show the current state and allow selection from the three commands (`UP`, `STOP`, `DOWN`).
-
-**Resulting UI:**
+**UI Rendering:**
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/06-switches-1.png"></td>
-    <td><img src="screenshots/app/06-switches-2.png"></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="screenshots/app/06-switches-3.png"></td>
-    <td><img src="screenshots/app/06-switches-4.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-generic-1.png"></td>
+    <td><img src="screenshots/app/06-switches-generic-2.png"></td>
   </tr>
 </table>
 
-**Notes:**
+**Note:** The action menu shown in the right screenshot is a **mockup**. The actual appearance may vary depending on the device, as it uses a native UI component.
 
-1. The orange arrow to the right of the state indicates that selecting the item will trigger a command.
-2. The action menu shown in the lower-left screenshot is a **mockup**. The actual appearance may vary depending on the device, as it uses a native UI component.
-
-#### Example with Empty Mapping Entry
+**Example with Empty Mapping Entry**
 
 Consider a garage door opener that acts as a toggle switch: sending an `ON` command triggers the gate to open or close, and the switch automatically resets to `OFF` after one second.
 
 This can be configured in the sitemap like so:
 
-```xtend
+```openhab
 sitemap garmin_demo label="My Home" {
 	Frame label="Entrance Gates" {
 		Switch item=EntranceGates_Operation label="Open/Close" mappings=[OFF="", ON="OK"]
@@ -396,7 +445,7 @@ Here’s how the interface appears when the switch is in the `OFF` state:
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/06-switches-5.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-generic-3.png"></td>
     <td></td>
   </tr>
 </table>
