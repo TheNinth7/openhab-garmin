@@ -21,8 +21,8 @@ class MenuItemFactory {
             return new OnOffSwitchMenuItem( sitemapWidget as SitemapSwitch, parent );
         } else if( TextMenuItem.isMyType( sitemapWidget ) ) {
             return new TextMenuItem( sitemapWidget as SitemapText, parent );
-        } else if( SliderMenuItem.isMyType( sitemapWidget ) ) {
-            return new SliderMenuItem( sitemapWidget as SitemapSlider, parent );
+        } else if( NumericMenuItem.isMyType( sitemapWidget ) ) {
+            return new NumericMenuItem( sitemapWidget as SitemapNumeric, parent );
         } else if( RollershutterMenuItem.isMyType( sitemapWidget ) ) {
             return new RollershutterMenuItem( sitemapWidget as SitemapSwitch, parent );
         } else if( GenericSwitchMenuItem.isMyType( sitemapWidget ) ) {

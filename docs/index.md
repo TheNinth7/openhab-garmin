@@ -461,9 +461,15 @@ Here’s how the interface appears when the switch is in the `OFF` state:
 
 ---
 
-### `Slider`
+### `Setpoint` and `Slider`
 
-The [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider) Sitemap Widget displays a numeric item state. When selected, it opens a full-screen view for picking a new value, which is then sent as a command.
+The [`Setpoint`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-setpoint) and [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider) widgets are **numeric controls** used to display and adjust the numeric state of an item.
+
+When selected, both widgets open a full-screen view for choosing a new value, which is then sent as a command to the item.
+
+The only behavioral difference between the two is the `Slider` widget’s support for the `releaseOnly` parameter (see below).
+
+---
 
 **Supported parameters:**
 
@@ -472,10 +478,12 @@ The [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider
 - `minValue`: lower bound of the selectable range (default: `0`).
 - `maxValue`: upper bound of the selectable range (default: `100`).
 - `step`: interval between selectable values (default: `1`).
-- `releaseOnly`: if set, the new value is only sent when the selection is confirmed. Otherwise, values are sent immediately while scrolling.
+- `releaseOnly`: *(Slider only)*
+  - **With `releaseOnly`:** The value is only sent when the dialog is confirmed. Cancelling leaves the value unchanged.
+  - **Without `releaseOnly`:** Values are sent immediately as the slider is moved. Confirming keeps the current value; cancelling reverts to the value before the dialog was opened.
 
 **Important note:**
-While `step=1` is consistent with openHAB’s default, it often results in too many steps (e.g., 100 steps for a range of 0–100), which is impractical for wearable interfaces. Increasing `step` to `10` reduces the number of steps to 10, making interaction much more manageable.
+While the default `step=1` is consistent with openHAB’s default, it often results in too many steps (e.g., 100 steps for a range of 0–100), which is impractical for wearable interfaces. Increasing `step` to `10` reduces the number of steps to 10, making interaction much more manageable.
 
 **Example configuration:**
 
@@ -503,11 +511,6 @@ Frame label="First Floor" {
 - The **lower-right** screenshot shows the slider on a touch-based device.
 
 Note: Even button-based devices may support touch input, and on those, the UI reacts to both. On **button-based devices**, use **up/down** to scroll through the values, press **enter** (upper-right button) to confirm or **back** (lower-right button) to cancel. On **touch-based devices** simply **tap the icons** corresponding to the desired action or value to make a selection.
-
-**Behavior of `releaseOnly`:**
-
-* **With `releaseOnly`:** The value is only sent when the dialog is confirmed. Cancelling leaves the value unchanged.
-* **Without `releaseOnly`:** Values are sent immediately as the slider is moved. Confirming keeps the current value; cancelling reverts to the value before the dialog was opened.
 
 ---
 

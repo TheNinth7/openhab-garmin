@@ -12,6 +12,7 @@ import Toybox.Graphics;
  */
 class SitemapWidget extends SitemapElement {
 
+    public var type as String;
     public var label as String;
     public var transformedState as String;
     public var labelColor as ColorType?;
@@ -25,6 +26,8 @@ class SitemapWidget extends SitemapElement {
         asyncProcessing as Boolean
     ) {
         SitemapElement.initialize( initSitemapFresh );
+
+        type = json.getString( "type", "Widget without type" ); 
 
         var fullLabel = parseLabelState( json, "label", "Widget label is missing" );
         label = fullLabel[0];

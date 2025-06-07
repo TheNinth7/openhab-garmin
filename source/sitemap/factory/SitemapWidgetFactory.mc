@@ -16,8 +16,8 @@ class SitemapWidgetFactory {
         var type = widget.getString( "type", "Widget without type" ); 
         if( type.equals( "Switch" ) ) {
             return new SitemapSwitch( widget, isSitemapFresh, asyncProcessing );
-        } else if( type.equals( "Slider" ) ) {
-            return new SitemapSlider( widget, isSitemapFresh, asyncProcessing );
+        } else if( type.equals( "Setpoint" ) || type.equals( "Slider" ) ) {
+            return new SitemapNumeric( widget, isSitemapFresh, asyncProcessing );
         } else if( type.equals( "Text" ) ) {
             return new SitemapText( widget, isSitemapFresh, asyncProcessing );
         } else if( type.equals( "Frame" ) ) {
@@ -31,7 +31,7 @@ class SitemapWidgetFactory {
             if( groupType.equals( "Switch" ) ) {
                 return new SitemapSwitch( widget, isSitemapFresh, asyncProcessing );
             } else if( groupType.equals( "Dimmer" ) ) {
-                return new SitemapSlider( widget, isSitemapFresh, asyncProcessing );
+                return new SitemapNumeric( widget, isSitemapFresh, asyncProcessing );
             } else {
                 return new SitemapText( widget, isSitemapFresh, asyncProcessing );
             }

@@ -2,13 +2,13 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
- * Class representing the item associated with a `SitemapSlider`.
+ * Class representing the item associated with a `SitemapNumeric`.
  *
- * The slider widget uses data from the base item, and this class
+ * The Numeric widget uses data from the base item, and this class
  * adds the state transformed into a numeric value. This ensures
  * that the widget implementation can rely on the state being numeric.
  */
-class SliderItem extends Item {
+class NumericItem extends Item {
 
     public var numericState as Number = 0;
 
@@ -24,7 +24,7 @@ class SliderItem extends Item {
             if( localNumericState != null ) {
                 numericState = localNumericState;
             } else {
-                throw new JsonParsingException( "Slider item state is not numeric" );
+                throw new JsonParsingException( "state is not numeric" );
             }
         }
     }

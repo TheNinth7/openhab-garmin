@@ -2,8 +2,8 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 /*
- * This menu item represents the Slider widget in the app.
- * It displays the current slider value and, when selected,
+ * This menu item represents the Setpoint and Slider widget in the app.
+ * It displays the current item value and, when selected,
  * opens a separate view (a CustomPicker implementation) that allows
  * the user to adjust the value.
  *
@@ -12,45 +12,45 @@ import Toybox.WatchUi;
  * only after the user confirms their selection. If disabled, the state updates
  * continuously as the user scrolls through values.
  */
-class SliderMenuItem extends BaseWidgetMenuItem {
+class NumericMenuItem extends BaseWidgetMenuItem {
 
     // Returns true if the given widget matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
-            sitemapWidget instanceof SitemapSlider
+            sitemapWidget instanceof SitemapNumeric
             && sitemapWidget.item.hasState();
     }
 
     // The text status Drawable
     private var _statusText as Text;
 
-    // Since we need a bunch of values from the slider configuration,
-    // we just keep the SitemapSlider
-    private var _sitemapSlider as SitemapSlider;
-    public function getSitemapSlider() as SitemapSlider {
-        return _sitemapSlider;
+    // Since we need a bunch of values from the sitemap configuration,
+    // we just keep the SitemapNumeric
+    private var _sitemapNumeric as SitemapNumeric;
+    public function getSitemapNumeric() as SitemapNumeric {
+        return _sitemapNumeric;
     }
     
-    // For changing the state of the slider
+    // For changing the state of the item
     private var _commandRequest as BaseCommandRequest?;
 
     // Constructor
     // Initializes the BaseCommandRequest used for changing the state,
     // the Drawable for the displayed status and the superclass
     public function initialize( 
-        sitemapSlider as SitemapSlider,
+        sitemapNumeric as SitemapNumeric,
         parent as BasePageMenu 
     ) {
-        _sitemapSlider = sitemapSlider;
+        _sitemapNumeric = sitemapNumeric;
         _commandRequest = BaseCommandRequest.get( self );
 
         // The status shown in the menu item
         _statusText = new StatusText( 
-            sitemapSlider.item.numericState.toString() + sitemapSlider.item.unit
+            sitemapNumeric.item.numericState.toString() + sitemapNumeric.item.unit
         );
         
         BaseWidgetMenuItem.initialize( {
-                :sitemapWidget => sitemapSlider,
+                :sitemapWidget => sitemapNumeric,
                 :state => _statusText,
                 :isActionable => true,
                 :parent => parent
@@ -63,10 +63,10 @@ class SliderMenuItem extends BaseWidgetMenuItem {
     // sitemap polling
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
         BaseWidgetMenuItem.updateWidget( sitemapWidget );
-        if( ! ( sitemapWidget instanceof SitemapSlider ) ) {
-            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into SliderMenuItem but is of a different type" );
+        if( ! ( sitemapWidget instanceof SitemapNumeric ) ) {
+            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into NumericMenuItem but is of a different type" );
         }
-        _sitemapSlider = sitemapWidget;
+        _sitemapNumeric = sitemapWidget;
         _statusText.setText( sitemapWidget.item.numericState.toString() + sitemapWidget.item.unit );
     }
 
@@ -78,9 +78,9 @@ class SliderMenuItem extends BaseWidgetMenuItem {
                 ViewHandler.pushView(
                     new CustomPicker( 
                         getLabel(),
-                        new SliderPickerFactory( self )
+                        new NumericPickerFactory( self )
                     ),
-                    new SliderPickerDelegate( self ),
+                    new NumericPickerDelegate( self ),
                     WatchUi.SLIDE_LEFT
                 );
             }
@@ -91,7 +91,7 @@ class SliderMenuItem extends BaseWidgetMenuItem {
     // This function is called during a command request to identify
     // the target item that the command should be sent to.
     public function getItemName() as String {
-        return _sitemapSlider.item.name;
+        return _sitemapNumeric.item.name;
     }
 
     // The Picker uses this function to update the state
@@ -99,17 +99,17 @@ class SliderMenuItem extends BaseWidgetMenuItem {
     // request to change it on the server
     public function updateState( newState as Number ) as Void {
         if( _commandRequest == null ) {
-            throw new GeneralException( "SliderMenuItem: state update not possible because command support is not active" );
+            throw new GeneralException( "NumericMenuItem: state update not possible because command support is not active" );
         }
-        // Store the new state in the Sitemap Slider object
-        _sitemapSlider.item.numericState = newState;
+        // Store the new state in the sitemap object
+        _sitemapNumeric.item.numericState = newState;
         var newStateAsString = newState.toString();
-        _sitemapSlider.item.state = newStateAsString.toString();
+        _sitemapNumeric.item.state = newStateAsString.toString();
         
         // Update the status
         _statusText.setText( 
-            _sitemapSlider.item.numericState.toString() 
-            + _sitemapSlider.item.unit 
+            _sitemapNumeric.item.numericState.toString() 
+            + _sitemapNumeric.item.unit 
         );
         
         // And send the command

@@ -15,7 +15,7 @@ import Toybox.Graphics;
  *    - The built-in Picker does not support removing options after initialization.
  *    - While PickerFactory controls the option list, the Picker manages the current index,
  *      making it fragile when options disappear.
- *    - This is problematic for sliders, which might initially show a state outside 
+ *    - This is problematic for numerics, which might initially show a state outside 
  *      the configured range and later remove it after a new selection.
  *
  * 3. Poor Input Hint Design:
@@ -32,8 +32,8 @@ import Toybox.Graphics;
  * - The CustomPickerDelegate defines callbacks for onUp() and onDown(), 
  *   in addition to the standard onAccept() and onCancel().
  *
- * See the Slider implementation for an example of how to implement 
- * a CustomPickerFactory and CustomPickerDelegate.
+ * See the Numeric menu item and control view implementation for an example of how to 
+ * implement a CustomPickerFactory and CustomPickerDelegate.
  */
 class CustomPicker extends CustomView {
 
