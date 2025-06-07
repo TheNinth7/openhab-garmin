@@ -376,12 +376,12 @@ Frame label="Switches" {
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/06-switches-rollershutter-1.png"></td>
-    <td><img src="screenshots/app/06-switches-rollershutter-2.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-2-rollershutter-1.png"></td>
+    <td><img src="screenshots/app/06-switches-2-rollershutter-2.png"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="screenshots/app/06-switches-rollershutter-3.png"></td>
-    <td><img src="screenshots/app/06-switches-rollershutter-4.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-2-rollershutter-3.png"></td>
+    <td><img src="screenshots/app/06-switches-2-rollershutter-4.png"></td>
   </tr>
 </table>
 
@@ -423,8 +423,8 @@ Frame label="Switches" {
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/06-switches-generic-1.png"></td>
-    <td><img src="screenshots/app/06-switches-generic-2.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-3-generic-1.png"></td>
+    <td><img src="screenshots/app/06-switches-3-generic-2.png"></td>
   </tr>
 </table>
 
@@ -454,7 +454,7 @@ Here’s how the interface appears when the switch is in the `OFF` state:
 
 <table class="screenshot-table">
   <tr>
-    <td width="50%"><img src="screenshots/app/06-switches-generic-3.png"></td>
+    <td width="50%"><img src="screenshots/app/06-switches-3-generic-3.png"></td>
     <td></td>
   </tr>
 </table>
