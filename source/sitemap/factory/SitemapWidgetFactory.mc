@@ -13,7 +13,21 @@ class SitemapWidgetFactory {
         isSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) as SitemapWidget {
+
         var type = widget.getString( "type", "Widget without type" ); 
+
+        if( type.equals( "Group" ) ) {
+            var groupType = 
+                widget.getObject( "item", "Group without item" )
+                    .getString( "groupType", "Group item without groupType" );
+            switch( groupType ) {
+                case "Switch": type = "Switch"; break;
+                case "Rollershutter": type = "Switch"; break;
+                case "Dimmer": type = "Slider"; break;
+                default: type = "Text"; break;
+            }
+        }
+
         if( type.equals( "Switch" ) || type.equals( "Selection" ) ) {
             return new SitemapSwitch( widget, isSitemapFresh, asyncProcessing );
         } else if( type.equals( "Setpoint" ) || type.equals( "Slider" ) ) {
@@ -22,20 +36,6 @@ class SitemapWidgetFactory {
             return new SitemapText( widget, isSitemapFresh, asyncProcessing );
         } else if( type.equals( "Frame" ) ) {
             return new SitemapFrame( widget, isSitemapFresh, asyncProcessing );
-        } else if( type.equals( "Group" ) ) {
-            
-            var groupType = 
-                widget.getObject( "item", "Group without item" )
-                    .getString( "groupType", "Group item without groupType" );
-            
-            if( groupType.equals( "Switch" ) ) {
-                return new SitemapSwitch( widget, isSitemapFresh, asyncProcessing );
-            } else if( groupType.equals( "Dimmer" ) ) {
-                return new SitemapNumeric( widget, isSitemapFresh, asyncProcessing );
-            } else {
-                return new SitemapText( widget, isSitemapFresh, asyncProcessing );
-            }
-        
         } else {
             throw new JsonParsingException( "Unsupported element type '" + type + "'." );
         }

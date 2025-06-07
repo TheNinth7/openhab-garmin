@@ -46,6 +46,7 @@
   - [Supported Elements](#supported-elements)
     - [Nested Elements](#nested-elements)
   - [`Frame`](#frame)
+  - [`Frame`](#default)
   - [`Text`](#text)
   - [`Group`](#group)
   - [`Switch` and `Selection`](#switch-and-selection)
@@ -242,6 +243,14 @@ This configuration produces the following display in the UI:
     <td><img src="screenshots/app/03-entrance-gates.png"></td>
   </tr>
 </table>
+
+---
+
+### `Default`
+
+The [`Default`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame) element displays an item using the default widget determined by its type. This widget selection is handled automatically by openHAB.
+
+The Garmin app supports `Default` only if the item’s type maps to one of the app’s supported widgets. If this is not the case, an error will be shown instead.
 
 ---
 
