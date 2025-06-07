@@ -132,25 +132,17 @@ class RollershutterView extends CustomView {
     private function updateStateDrawable() as Void {
         if( _stateDrawable != null ) {
             var stateDrawable = _stateDrawable as Text;
+            // In the view, we'll show the numeric state, 
+            // regardless of any mappings. If the state
+            // is not numeric, we'll leave it at the previous
+            // state.
             if( _sitemapSwitch.item.state.toNumber() != null ) {
-                // In the view, we'll show the numeric state, 
-                // regardless of any mappings
                 stateDrawable.setText( 
                     _sitemapSwitch.item.state 
                     + _sitemapSwitch.item.unit
                 );
-            } else {
-                stateDrawable.setText( "" );
             }
         }
-    }
-
-    // After the delegate sends a command via the `RollershutterMenuItem`
-    // that class updates the SitemapSwitch and then calls this function
-    // to request an update of the view
-    public function requestUpdate() as Void {
-        updateStateDrawable();
-        WatchUi.requestUpdate();
     }
 
     // This function is called when an updated sitemap is received.

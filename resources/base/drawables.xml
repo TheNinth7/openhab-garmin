@@ -12,7 +12,7 @@
     <bitmap id="chevronRightOrangeDoubleOrange" scaleY="5%" filename="../svg/chevron-right-double-orange.svg" dithering="none" />
     <bitmap id="iconCheck" scaleX="15%" filename="../svg/check.svg" dithering="none" />
     <bitmap id="iconCancel" scaleX="15%" filename="../svg/cancel.svg" dithering="none" />
-    <bitmap id="iconStop" scaleY="15%" filename="../svg/stop.svg" dithering="none" />
+    <bitmap id="iconStop" scaleY="15%" filename="../svg/stop-orange.svg" dithering="none" />
 
     <bitmap id="iconCheckHint" scaleY="9%" personality="system_icon_positive__check" />
     <bitmap id="iconCancelHint" scaleY="8%" personality="system_icon_destructive__cancel" />

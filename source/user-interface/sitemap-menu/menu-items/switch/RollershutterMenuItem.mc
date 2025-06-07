@@ -23,9 +23,8 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
     // menu item is selected
     private var _rollershutterView as RollershutterView?;
 
-    // The SitemapSwitch is retained and updated when the
-    // delegate sends a command, to communicate the change
-    // to the view
+    // The SitemapSwitch is retained so it can be passed on
+    // to the full-screen view when it is opened
     private var _sitemapSwitch as SitemapSwitch;
 
     // The Drawable for the state
@@ -95,27 +94,14 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
     }
 
     // The delegate uses this function to update the state
-    // It stores the new state and sends a command
-    // request to change it on the server
+    // Note that the command is sent but the local state is NOT
+    // updated. This is because for Rollershutter, the state
+    // does not reflect the actual command (up/down/stop), but 
+    // always shows the numeric opening percentage
     public function sendCommand( newState as String ) as Void {
         if( _commandRequest == null ) {
             throw new GeneralException( "RollershutterMenuItem: state update not possible because command support is not active" );
         }
-
-        // First, we store the new state ...
-        _sitemapSwitch.updateState( newState );
-
-        // ... and if still open, request an update of the
-        // full-screen view, which is linked to the element
-        // updated above ...
-        if( _rollershutterView != null ) {
-            _rollershutterView.requestUpdate();
-        }
-
-        // ... and update the state Drawable ...
-        _stateDrawable.setText( _sitemapSwitch.transformedState );
-        
-        // ... and finally send the command.
         ( _commandRequest as BaseCommandRequest ).sendCommand( newState );
     }
 
