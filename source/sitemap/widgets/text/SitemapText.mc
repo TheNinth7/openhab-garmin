@@ -16,7 +16,10 @@ class SitemapText extends SitemapWidget {
         initSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
         item = new Item( json.getObject( "item", "Text '" + label + "' has no item" ) );
+
+        // The superclass relies on the item for parsing the icon, 
+        // therefore we initialize it after the item was created
+        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
     }
 }

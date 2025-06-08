@@ -65,6 +65,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
         // And initialize the base class, partly with data from
         // the SitemapWidget, partly with other options
         BaseSitemapMenuItem.initialize( {
+            :icon => sitemapWidget.icon,
             :label => sitemapWidget.label,
             :labelColor => sitemapWidget.labelColor,
             :state => options[:state],
@@ -118,6 +119,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
      */
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void { 
         var updateOptions = {
+            :icon => sitemapWidget.icon,
             :label => sitemapWidget.label,
             :labelColor => sitemapWidget.labelColor,
             :stateColor => sitemapWidget.valueColor,
@@ -137,7 +139,6 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
         } else {
             clearActionIcon();
         }
-
 
         updateOptions( updateOptions );
     }

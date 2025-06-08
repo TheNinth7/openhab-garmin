@@ -38,7 +38,8 @@ typedef BaseSitemapMenuItemOptions as {
 
 class BaseSitemapMenuItem extends BaseMenuItem {
 
-    private var _icon as Drawable?; // icon is optional
+    private var _iconResourceId as ResourceId?; // icon is optional
+    private var _iconBitmap as Drawable?; // icon is optional
     private var _label as String; // The label is passed in as String and this class creates the Drawable
     private var _labelColor as ColorType; // color the label text shall be printed in
     private var _labelTextArea as TextArea?; // label Drawable, optional because instantiated only when drawn
@@ -57,9 +58,9 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         BaseMenuItem.initialize();
 
         // Icon is passed in as ResourceId and we create a Bitmap Drawable from it
-        var icon = options[:icon];
-        if( icon != null ) {
-            _icon = new Bitmap( { :rezId => icon } );
+        _iconResourceId = options[:icon];
+        if( _iconResourceId != null ) {
+            _iconBitmap = new Bitmap( { :rezId => _iconResourceId } );
         }
         
         _state = options[:state];
@@ -91,8 +92,8 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     public function onUpdate( dc as Dc ) as Void {
         onUpdateLayout( dc );
     
-        if( _icon != null ) {
-            _icon.draw( dc );
+        if( _iconBitmap != null ) {
+            _iconBitmap.draw( dc );
         }
         
         ( _labelTextArea as TextArea ).draw( dc );       
@@ -106,12 +107,29 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         }
     }
 
-    // Updates the option set for this menu item.
+    // Updates the icon only
+    protected function updateIcon( iconResourceId as ResourceId? ) as Void {
+        if( iconResourceId != null ) {
+            if( _iconResourceId == null ) {
+                _iconBitmap = new Bitmap( { :rezId => iconResourceId } );
+            } else if( ! iconResourceId.equals( _iconResourceId ) ) {
+                ( _iconBitmap as Bitmap ).setBitmap( iconResourceId );
+            }
+        } else if( _iconResourceId != null ) {
+            _iconBitmap = null;
+        }
+        _iconResourceId = iconResourceId;
+    }
+
+    // Updates the options set for this menu item.
     // Currently supports the following options:
+    // - :icon
     // - :label
     // - :labelColor
     // - :stateColor
-    public function updateOptions( options as BaseSitemapMenuItemOptions ) as Void { 
+    protected function updateOptions( options as BaseSitemapMenuItemOptions ) as Void { 
+        updateIcon( options[:icon] as ResourceId? );
+
         _label = options[:label] as String;
         _labelColor = setLabelColor( options[:labelColor] );
         _stateColor = setStateColor( options[:stateColor] );
@@ -150,8 +168,8 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         // If there is an icon, we initialize it and
         // then set leftX to the position next to it
         // Also the title width is adjusted
-        if( _icon != null ) {
-            var icon = _icon;
+        if( _iconBitmap != null ) {
+            var icon = _iconBitmap;
             icon.setLocation( leftX, ( ( (dc.getHeight()/2) - icon.height/2 ) * 1.1 ).toNumber() );
             leftX += Constants.UI_MENU_ITEM_ICON_WIDTH + spacing;
         }

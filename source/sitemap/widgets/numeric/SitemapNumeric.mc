@@ -21,8 +21,6 @@ class SitemapNumeric extends SitemapWidget {
         initSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
-
         // Obtain the item part of the element
         try {
             item = new NumericItem( json.getObject( "item", "no item" ) );
@@ -33,9 +31,32 @@ class SitemapNumeric extends SitemapWidget {
                 type + " '" + label + "': " + ex.getErrorMessage() );
         }
 
+        // The superclass relies on the item for parsing the icon, 
+        // therefore we initialize it after the item was created
+        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
+
         minValue = json.getNumber( "minValue", 0 );
         maxValue = json.getNumber( "maxValue", 100 );
         step = json.getNumber( "step", 1 );
         releaseOnly = json.getBoolean( "releaseOnly" );
+
+        // For numeric we override the transformed state to
+        // achieve consistent formatting with the full-screen
+        // widgets that allow changing the number
+        transformedState = item.state + item.unit;
+    }
+
+    // To be used to update the state if a change
+    // is triggered from within the app
+    public function updateState( numericState as Number ) as Void {
+        // If the state in the sitemap is the same as we got passed
+        // in there is no need to update. updateState is relatively
+        // costly due to the lookup of the description
+        if( item.numericState != numericState ) {
+            item.numericState = numericState;
+            item.state = numericState.toString();
+            icon = parseIcon( iconType, item );
+            transformedState = item.state + item.unit;
+        }
     }
 }

@@ -21,27 +21,29 @@ import Toybox.WatchUi;
  */
 class SitemapSwitch extends SitemapWidget {
 
+    // Holds the command descriptions to be used by the widget (for non-toggle switches).
+    // Priority is given to mappings defined in the sitemap. If none are present,
+    // and the item provides command descriptions, those will be used instead.
+    public var commandDescriptions as CommandDescriptionArray;
+
     // The associated item and its state
     public var item as SwitchItem;
 
     // The mappings from the sitemap element (widget)
     private var _mappings as CommandDescriptionArray;
     
-    // Holds the command descriptions to be used by the widget (for non-toggle switches).
-    // Priority is given to mappings defined in the sitemap. If none are present,
-    // and the item provides command descriptions, those will be used instead.
-    public var commandDescriptions as CommandDescriptionArray;
-
     // Constructor
     public function initialize( 
         json as JsonAdapter, 
         initSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
-
         // Obtain the item part of the element
         item = new SwitchItem( json.getObject( "item", "Switch '" + label + "' has no item" ) );
+ 
+        // The superclass relies on the item for parsing the icon, 
+        // therefore we initialize it after the item was created
+        SitemapWidget.initialize( json, initSitemapFresh, asyncProcessing );
 
         // Read the mappings ...
         _mappings = SwitchItem.readCommandDescriptions( json.getOptionalArray( "mappings" ) );
@@ -62,27 +64,27 @@ class SitemapSwitch extends SitemapWidget {
         transformState();
     }
 
-
     // Returns true if mappings are defined (either via the mappings
     // in the sitemap or via command descriptions for the item)
     public function hasMappings() as Boolean {
         return commandDescriptions.size() > 0;
     }
 
-
-    // To be used to update the state if a change
-    // is triggered from within the app
-    public function updateState( state as String ) as Void {
-        // If the state in the sitemap is the same as we got passed
-        // in there is no need to update. updateState is relatively
-        // costly due to the lookup of the description
-        if( ! item.state.equals( state ) ) {
-            item.state = state;
-            transformedState = Item.NO_STATE;
-            transformState();
+    // Search in an Array of BaseDescriptions for
+    // the given state and if found return the label
+    private static function searchArray( 
+        descriptions as BaseDescriptionArray, 
+        state as String 
+    ) as String? {
+        for( var i = 0; i < descriptions.size(); i++ ) {
+            var description = descriptions[i];
+            if( description.equalsById( state ) ) {
+                return description.label;
+            }
         }
+        return null;
     }
-    
+
     // Transforms the raw state into a descriptive form for display.
     //
     // The transformation uses these sources in the following priority:
@@ -138,18 +140,17 @@ class SitemapSwitch extends SitemapWidget {
         transformedState = localTransformedState;
     }
 
-    // Search in an Array of BaseDescriptions for
-    // the given state and if found return the label
-    private static function searchArray( 
-        descriptions as BaseDescriptionArray, 
-        state as String 
-    ) as String? {
-        for( var i = 0; i < descriptions.size(); i++ ) {
-            var description = descriptions[i];
-            if( description.equalsById( state ) ) {
-                return description.label;
-            }
+    // To be used to update the state if a change
+    // is triggered from within the app
+    public function updateState( state as String ) as Void {
+        // If the state in the sitemap is the same as we got passed
+        // in there is no need to update. updateState is relatively
+        // costly due to the lookup of the description
+        if( ! item.state.equals( state ) ) {
+            item.state = state;
+            icon = parseIcon( iconType, item );
+            transformedState = Item.NO_STATE;
+            transformState();
         }
-        return null;
     }
 }

@@ -102,18 +102,13 @@ class NumericMenuItem extends BaseWidgetMenuItem {
             throw new GeneralException( "NumericMenuItem: state update not possible because command support is not active" );
         }
         // Store the new state in the sitemap object
-        _sitemapNumeric.item.numericState = newState;
-        var newStateAsString = newState.toString();
-        _sitemapNumeric.item.state = newStateAsString.toString();
+        _sitemapNumeric.updateState( newState );
         
-        // Update the status
-        _statusText.setText( 
-            _sitemapNumeric.item.numericState.toString() 
-            + _sitemapNumeric.item.unit 
-        );
+        // Update the state
+        _statusText.setText( _sitemapNumeric.transformedState );
         
         // And send the command
-        ( _commandRequest as BaseCommandRequest ).sendCommand( newStateAsString );
+        ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapNumeric.item.state );
     }
 
     // Nothing to be done, but needed to fullfil the delegate interface

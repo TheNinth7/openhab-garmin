@@ -36,6 +36,7 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     }
     // Update the member and Drawable
     public function updateItemState( state as String ) as Void {
+        BaseSwitchMenuItem.updateItemState( state );
         _isEnabled = parseItemState( state );
         _statusDrawable.setEnabled( _isEnabled, _smallIcon );
     }

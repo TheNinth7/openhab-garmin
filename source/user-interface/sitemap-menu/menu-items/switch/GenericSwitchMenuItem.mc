@@ -17,10 +17,6 @@ import Toybox.Graphics;
  *   manually select a command to send.
  */
 class GenericSwitchMenuItem extends BaseSwitchMenuItem {
-    // We keep the sitemap element for all the configuration
-    // but will also update the state there if it is changed by the app
-    private var _sitemapSwitch as SitemapSwitch;
-
     // The Drawable that shows the current state
     private var _statusDrawable as StatusTextArea;
 
@@ -39,8 +35,6 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         sitemapSwitch as SitemapSwitch,
         parent as BasePageMenu
     ) {
-        _sitemapSwitch = sitemapSwitch;
-        
         // Initialize the Drawable for the status text, and set the color
         _statusDrawable = new StatusTextArea( 
             sitemapSwitch.label, 
@@ -67,21 +61,11 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // show the new state, even before the next sitemap update
     // arrives
     public function updateItemState( state as String ) as Void {
-        if( ! _sitemapSwitch.item.state.equals( state ) ) {
-            _sitemapSwitch.updateState( state );
-        }
-        
+        BaseSwitchMenuItem.updateItemState( state );
         _statusDrawable.update( 
             _sitemapSwitch.label, 
             _sitemapSwitch.transformedState
         );
-    }
-
-    // Override the update method of the super class
-    // and obtain the updated list of commmand mappings
-    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
-        BaseSwitchMenuItem.updateWidget( sitemapWidget );
-        _sitemapSwitch = sitemapWidget as SitemapSwitch;
     }
 
     // Called by the superclass to determine the command

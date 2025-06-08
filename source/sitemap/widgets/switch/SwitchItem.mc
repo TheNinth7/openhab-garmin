@@ -19,6 +19,10 @@ class SwitchItem extends Item {
     public static const ITEM_STATE_DOWN = "DOWN";
     public static const ITEM_STATE_STOP = "STOP";
 
+    // Strings representing the open/closed states
+    public static const ITEM_STATE_OPEN = "OPEN";
+    public static const ITEM_STATE_CLOSED = "CLOSED";
+
     public var commandDescriptions as CommandDescriptionArray?;
     public var stateDescriptions as StateDescriptionArray?;
 
