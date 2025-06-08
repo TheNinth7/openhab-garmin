@@ -583,8 +583,17 @@ For detailed usage and examples, refer to the official [openHAB sitemap document
 
 The Garmin app supports both the `icon` and `staticIcon` parameters, using a subset of the [classic openHAB icon set](https://www.openhab.org/docs/configuration/iconsets/classic/). Where applicable, the app automatically selects an icon variant based on the item's state—for example, showing different icons for a light that is `ON` or `OFF`.
 
-Further below is a screenshot illustrating this behavior:
+Below is a screenshot illustrating this behavior:
 The second menu item shows a filled lightbulb icon (indicating the light is ON), and the third item shows a state-aware rollershutter icon.
+
+<table class="screenshot-table">
+  <tr>
+    <td width="50%"><img src="screenshots/app/11-icons.png"></td>
+    <td></td>
+  </tr>
+</table>
+
+**Tip:** Even if you don't explicitly define icons in your sitemap, some may be applied automatically based on item metadata. To suppress this behavior, you can set the icon to an empty string in the sitemap: `icon=""`.
 
 Currently supported icons include:
 
@@ -602,13 +611,6 @@ Currently supported icons include:
 * `temperature`
 
 More icons can be added upon request. If you need support for additional icons, please post a request in the [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891).
-
-<table class="screenshot-table">
-  <tr>
-    <td width="50%"><img src="screenshots/app/11-icons.png"></td>
-    <td></td>
-  </tr>
-</table>
 
 ---
 
