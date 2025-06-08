@@ -591,7 +591,7 @@ The second menu item shows a filled lightbulb icon (indicating the light is ON),
 
 **Tip:** Even if you don't explicitly define icons in your sitemap, some may be applied automatically based on item metadata. To suppress this behavior, you can set the icon to an empty string in the sitemap: `icon=""`.
 
-Currently supported icons include:
+Currently supported icons are:
 
 * `batterylevel`
 * `blinds`
