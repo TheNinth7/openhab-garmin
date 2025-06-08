@@ -573,10 +573,6 @@ This results in the following display:
 
 ---
 
-Here’s a clearer and more polished version of your text:
-
----
-
 #### Icons
 
 For detailed usage and examples, refer to the official [openHAB sitemap documentation](https://www.openhab.org/docs/ui/sitemaps.html#icons).
