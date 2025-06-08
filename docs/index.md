@@ -22,7 +22,7 @@
 
 ➡️ [Install on Garmin Connect IQ Store](https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a)
 
-➡️ [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891)  
+➡️ [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891)
 
 ➡️ [Report Issues on GitHub](https://github.com/TheNinth7/ohg/issues)
 
@@ -57,6 +57,7 @@
   - [Dynamic Sitemaps](#dynamic-sitemaps)
     - [Visibility](#visibility)
     - [Label and Value Colors](#label-and-value-colors)
+    - [Icons](#icons)
 - [Settings Menu](#settings-menu)
 - [Troubleshooting](#troubleshooting)
   - [How the App Handles Errors](#how-the-app-handles-errors)
@@ -566,6 +567,45 @@ This results in the following display:
 <table class="screenshot-table">
   <tr>
     <td width="50%"><img src="screenshots/app/09-dynamics-colors.png"></td>
+    <td></td>
+  </tr>
+</table>
+
+---
+
+Here’s a clearer and more polished version of your text:
+
+---
+
+#### Icons
+
+For detailed usage and examples, refer to the official [openHAB sitemap documentation](https://www.openhab.org/docs/ui/sitemaps.html#icons).
+
+The Garmin app supports both the `icon` and `staticIcon` parameters, using a subset of the [classic openHAB icon set](https://www.openhab.org/docs/configuration/iconsets/classic/). Where applicable, the app automatically selects an icon variant based on the item's state—for example, showing different icons for a light that is `ON` or `OFF`.
+
+Further below is a screenshot illustrating this behavior:
+The second menu item shows a filled lightbulb icon (indicating the light is ON), and the third item shows a state-aware rollershutter icon.
+
+Currently supported icons include:
+
+* `batterylevel`
+* `blinds`
+* `garagedoor`
+* `humidity`
+* `light`
+* `lightbulb`
+* `lowbattery`
+* `radiator`
+* `rollershutter`
+* `screen`
+* `slider`
+* `temperature`
+
+More icons can be added upon request. If you need support for additional icons, please post a request in the [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891).
+
+<table class="screenshot-table">
+  <tr>
+    <td width="50%"><img src="screenshots/app/11-icons.png"></td>
     <td></td>
   </tr>
 </table>
