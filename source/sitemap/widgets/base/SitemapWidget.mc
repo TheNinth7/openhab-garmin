@@ -36,8 +36,23 @@ class SitemapWidget extends SitemapElement {
         label = fullLabel[0];
         transformedState = fullLabel[1];
 
+        // If staticIcon is true, we do not use the
+        // item state when selecting an icon but
+        // use the default presentation of the
+        // dynamic icons 
         iconType = json.getOptionalString( "icon" );
-        icon = parseIcon( iconType, item );
+        icon = parseIcon( 
+            iconType, 
+            json.getBoolean( "staticIcon" )
+                ? null
+                : item           
+        );
+
+        if( ! iconType.equals( "" ) ) {
+        } else {
+            iconType = json.getOptionalString( "staticIcon" );
+            icon = parseIcon( iconType, null );
+        }
 
         labelColor = parseColor( json, "labelcolor", "Widget '" + label + "': invalid label color" );
         valueColor = parseColor( json, "valuecolor", "Widget '" + label + "': invalid value color" );
@@ -263,7 +278,7 @@ class SitemapWidget extends SitemapElement {
                     var numericItemState = itemState.toNumber();
                     
                     if( numericItemState == null ) {
-                        return Rez.Drawables.menuBatteryLevel05;
+                        return Rez.Drawables.menuBatteryLevel07;
                     } else {
                         if( numericItemState >= 100 ) {
                             return Rez.Drawables.menuBatteryLevel10;
@@ -292,6 +307,9 @@ class SitemapWidget extends SitemapElement {
                 }
 
                 case "lowbattery": return Rez.Drawables.menuBatteryLevel00;
+
+                case "radiator": return Rez.Drawables.menuRadiator;
+
             }
         }
         return null;

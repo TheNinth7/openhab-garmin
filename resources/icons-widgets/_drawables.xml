@@ -47,6 +47,8 @@
     <bitmap id="menuLight09" scaleY="12%" filename="light-09.svg" dithering="none"/>
     <bitmap id="menuLight10" scaleY="12%" filename="light-10.svg" dithering="none"/>
 
+    <bitmap id="menuRadiator" scaleY="11%" filename="radiator.svg" dithering="none"/>
+
     <bitmap id="menuRollershutter00" scaleY="12%" filename="rollershutter-00.svg" dithering="none"/>
     <bitmap id="menuRollershutter01" scaleY="12%" filename="rollershutter-01.svg" dithering="none"/>
     <bitmap id="menuRollershutter02" scaleY="12%" filename="rollershutter-02.svg" dithering="none"/>
