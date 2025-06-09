@@ -23,7 +23,7 @@ class NoStateMenuItem extends BaseWidgetMenuItem {
     // Returns true if the given widget matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
 
-        if( ! sitemapWidget.hasTransformedState() ) {
+        if( ! sitemapWidget.hasDisplayState() ) {
             if( sitemapWidget has :item ) {
                 var item = sitemapWidget.item;
                 if( item != null ) {

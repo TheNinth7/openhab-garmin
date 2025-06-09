@@ -40,10 +40,10 @@ class SitemapNumeric extends SitemapWidget {
         step = json.getNumber( "step", 1 );
         releaseOnly = json.getBoolean( "releaseOnly" );
 
-        // For numeric we override the transformed state to
+        // For numeric we override the display state to
         // achieve consistent formatting with the full-screen
         // widgets that allow changing the number
-        transformedState = item.state + item.unit;
+        displayState = item.state + item.unit;
     }
 
     // To be used to update the state if a change
@@ -56,7 +56,8 @@ class SitemapNumeric extends SitemapWidget {
             item.numericState = numericState;
             item.state = numericState.toString();
             icon = parseIcon( iconType, item );
-            transformedState = item.state + item.unit;
+            remoteDisplayState = Item.NO_STATE;
+            displayState = item.state + item.unit;
         }
     }
 }

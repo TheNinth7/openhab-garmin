@@ -42,7 +42,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
         _commandRequest = BaseCommandRequest.get( self );
 
         // The state shown in the menu item
-        _stateDrawable = new StateText( sitemapSwitch.transformedState );
+        _stateDrawable = new StateText( sitemapSwitch.displayState );
         
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
@@ -120,7 +120,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
         _sitemapSwitch = sitemapWidget;
         
         // Update the state drawable
-        _stateDrawable.setText( sitemapWidget.transformedState );
+        _stateDrawable.setText( sitemapWidget.displayState );
         
         // If the view is currently open, we update it as well      
         if( _rollershutterView != null ) {

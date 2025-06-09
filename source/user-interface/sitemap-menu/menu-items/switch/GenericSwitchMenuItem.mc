@@ -38,7 +38,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         // Initialize the Drawable for the state text, and set the color
         _stateDrawable = new StateTextArea( 
             sitemapSwitch.label, 
-            sitemapSwitch.transformedState
+            sitemapSwitch.displayState
         );
 
         _stateDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
@@ -64,7 +64,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         BaseSwitchMenuItem.updateItemState( state );
         _stateDrawable.update( 
             _sitemapSwitch.label, 
-            _sitemapSwitch.transformedState
+            _sitemapSwitch.displayState
         );
     }
 

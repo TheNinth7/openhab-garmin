@@ -13,11 +13,11 @@ import Toybox.WatchUi;
  * Since the widget should reflect state changes immediately after a command—
  * even before the next sitemap update—it supports updates via the `updateState()` function.
  * 
- * For this reason, it includes special handling for the `transformedState` member
- * inherited from the base class. `transformedState` is overwritten using the
+ * For this reason, it includes special handling for the `displayState` member
+ * inherited from the base class. `displayState` is overwritten using the
  * description from the sitemap element mapping. During updates, this transformation
  * is re-applied, including the command and state descriptions from the item.
- * See `transformState()` for more details.
+ * See `updateDisplayState()` for more details.
  */
 class SitemapSwitch extends SitemapWidget {
 
@@ -59,9 +59,9 @@ class SitemapSwitch extends SitemapWidget {
         }
 
         // For switch items, the mapping take precedence over the
-        // transformed state provided in the sitemap element
+        // display state provided in the sitemap element
         // Therefore we trigger a manual transformation here
-        transformState();
+        updateDisplayState();
     }
 
     // Returns true if mappings are defined (either via the mappings
@@ -89,29 +89,29 @@ class SitemapSwitch extends SitemapWidget {
     //
     // The transformation uses these sources in the following priority:
     // 1. A matching entry in the sitemap element’s mappings.
-    // 2. The transformed state from the widget, if present.
+    // 2. The display state from the widget, if present.
     // 3. A matching entry in the item’s state descriptions.
     // 4. A matching entry in the item’s command descriptions.
     // 5. The raw state itself. If the state is numeric and a unit is defined for the item, the unit is appended.
-    private function transformState() as Void {
+    private function updateDisplayState() as Void {
 
         // First priority: lookup the mappings defined for the widget
-        var localTransformedState = searchArray( 
+        var localDisplayState = searchArray( 
             _mappings as BaseDescriptionArray, 
             item.state
         );
 
-        if( localTransformedState == null ) {
-            if( hasTransformedState() ) {
+        if( localDisplayState == null ) {
+            if( hasDisplayState() ) {
                 // Second priority: 
-                // If we got the state from the server, then the transformedState
+                // If we got the state from the server, then the displayState
                 // may be filled and we'll just use it. 
                 // For internal updates this is never the case, since we
-                // set the transformedState to NO_STATE before calling this function
+                // set the displayState to NO_STATE before calling this function
                 return;
             } else if( item.stateDescriptions != null ) {
                 // Third priority: lookup the state description
-                localTransformedState = searchArray( 
+                localDisplayState = searchArray( 
                     item.stateDescriptions as BaseDescriptionArray, 
                     item.state 
                 );
@@ -119,25 +119,25 @@ class SitemapSwitch extends SitemapWidget {
         }
 
         // Fourth priority: we lookup the command descriptions
-        if( localTransformedState == null && item.commandDescriptions != null ) {
-            localTransformedState = searchArray( 
+        if( localDisplayState == null && item.commandDescriptions != null ) {
+            localDisplayState = searchArray( 
                 item.commandDescriptions as BaseDescriptionArray, 
                 item.state 
             );
         }
 
         // If all has failed, we just use the raw state
-        if( localTransformedState == null ) {
-            localTransformedState = item.state;
-            // If the transformed state is numeric, then we
+        if( localDisplayState == null ) {
+            localDisplayState = item.state;
+            // If the display state is numeric, then we
             // add the unit
-            localTransformedState = 
-                localTransformedState.toFloat() != null
-                ? localTransformedState + item.unit
-                : localTransformedState;
+            localDisplayState = 
+                localDisplayState.toFloat() != null
+                ? localDisplayState + item.unit
+                : localDisplayState;
         }
 
-        transformedState = localTransformedState;
+        displayState = localDisplayState;
     }
 
     // To be used to update the state if a change
@@ -149,8 +149,9 @@ class SitemapSwitch extends SitemapWidget {
         if( ! item.state.equals( state ) ) {
             item.state = state;
             icon = parseIcon( iconType, item );
-            transformedState = Item.NO_STATE;
-            transformState();
+            remoteDisplayState = Item.NO_STATE;
+            displayState = Item.NO_STATE;
+            updateDisplayState();
         }
     }
 }

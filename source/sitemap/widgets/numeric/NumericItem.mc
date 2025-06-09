@@ -5,7 +5,7 @@ import Toybox.WatchUi;
  * Class representing the item associated with a `SitemapNumeric`.
  *
  * The Numeric widget uses data from the base item, and this class
- * adds the state transformed into a numeric value. This ensures
+ * adds the state display into a numeric value. This ensures
  * that the widget implementation can rely on the state being numeric.
  */
 class NumericItem extends Item {

@@ -23,27 +23,27 @@ class SitemapElement {
         isSitemapFresh = initSitemapFresh;
     }
 
-    // Widget labels and page titles may include a transformed state in the format:
+    // Widget labels and page titles may include a display state in the format:
     //   label [state]
-    // The transformed state represents the item's current state with display
+    // The display state represents the item's current state with display
     // patterns applied. 
     // This function parses the input into two parts: the label and the state,
     // and returns them as a tuple: [0] = label, [1] = state.
     protected static function parseLabelState( json as JsonAdapter, id as String, errorMessage as String ) as [String, String] {
         var fullLabel = json.getString( id, errorMessage );
         var label = fullLabel;
-        var remoteTransformedState = null;
+        var remoteDisplayState = null;
         var bracket = fullLabel.find( " [" ) as Number?;
         if( bracket != null ) {
             label = fullLabel.substring( null, bracket ) as String?;
             if( label == null ) {
                 throw new JsonParsingException( "Label '" + label + "' does not have label before the [state]" );
             }
-            remoteTransformedState = fullLabel.substring( bracket+2, fullLabel.length()-1 ) as String?;
+            remoteDisplayState = fullLabel.substring( bracket+2, fullLabel.length()-1 ) as String?;
         }
-        if( remoteTransformedState == null || remoteTransformedState.equals( "-" ) ) {
-            remoteTransformedState = Item.NO_STATE;
+        if( remoteDisplayState == null || remoteDisplayState.equals( "-" ) ) {
+            remoteDisplayState = Item.NO_STATE;
         }
-        return [label, remoteTransformedState];
+        return [label, remoteDisplayState];
     }
 }

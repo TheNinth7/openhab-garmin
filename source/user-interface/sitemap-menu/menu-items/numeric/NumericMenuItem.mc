@@ -105,7 +105,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         _sitemapNumeric.updateState( newState );
         
         // Update the state
-        _stateText.setText( _sitemapNumeric.transformedState );
+        _stateText.setText( _sitemapNumeric.displayState );
         
         // And send the command
         ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapNumeric.item.state );

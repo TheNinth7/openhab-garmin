@@ -6,21 +6,47 @@ import Toybox.Graphics;
  * Base class for all widget elements. Contains members and functions
  * common to all widgets, including:
  * - the label
- * - the transformed state (the item's state with display patterns applied)
+ * - The display state: the item's state with display patterns applied.
+ *   - `remoteDisplayState` holds the display state as provided by the server.
+ *   - `displayState` may override `remoteDisplayState` with additional local display logic.
  * - the display colors
  * - any page linked to this widget
  */
 class SitemapWidget extends SitemapElement {
 
-    public var type as String;
-    public var label as String;
-    public var transformedState as String;
-    public var iconType as String;
+    // Initializes displayState with remoteDisplayState; 
+    // subclasses may override it with custom display logic.
+    public var displayState as String;
+    
+    // The iconType transformed into a bitmap resource id
     public var icon as ResourceId?;
-    public var labelColor as ColorType?;
-    public var valueColor as ColorType?;
-    public var linkedPage as SitemapContainer?;
+    
+    // The icon type as specified in the sitemap
+    public var iconType as String;
+    
+    // The item associated with this widget
     public var item as Item?;
+    
+    // The label, without any embedded display state
+    // See remoteDisplayState and SitemapElement.parseLabel()
+    public var label as String;
+
+    // The color to be applied to the label
+    public var labelColor as ColorType?;
+    
+    // For Group elements and nested elements
+    public var linkedPage as SitemapContainer?;
+    
+    // The display state provided by the server.
+    // Extracted from the item label in the format: "Label [displayState]"
+    // See SitemapElement.parseLabel()
+    public var remoteDisplayState as String;
+    
+    // The widget type
+    public var type as String;
+
+    // The value color is applied to the displayed state
+    public var valueColor as ColorType?;
 
     // Constructor
     protected function initialize( 
@@ -34,7 +60,11 @@ class SitemapWidget extends SitemapElement {
 
         var fullLabel = parseLabelState( json, "label", "Widget label is missing" );
         label = fullLabel[0];
-        transformedState = fullLabel[1];
+        remoteDisplayState = fullLabel[1];
+        
+        // displayState is initialized with the one from the server
+        // but may be updated with local logic by subclasses
+        displayState = remoteDisplayState;
 
         // If staticIcon is true, we do not use the
         // item state when selecting an icon but
@@ -63,9 +93,9 @@ class SitemapWidget extends SitemapElement {
         }
     }
 
-    // Determines if a transformed state is available
-    public function hasTransformedState() as Boolean {
-        return ! transformedState.equals( Item.NO_STATE );
+    // Determines if a display state is available
+    public function hasDisplayState() as Boolean {
+        return ! displayState.equals( Item.NO_STATE );
     }
 
     // Parses a color field.
