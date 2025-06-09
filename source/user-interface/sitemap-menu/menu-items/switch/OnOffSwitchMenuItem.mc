@@ -3,7 +3,7 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 
 /*
- * A menu item that displays an on/off switch as its status.
+ * A menu item that displays an on/off switch as its state.
  * Selecting the item toggles the switch state.
  */
 class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
@@ -25,7 +25,7 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     private var _smallIcon as Boolean;
 
     // The actual Drawable for drawing the switch
-    private var _statusDrawable as OnOffStatusDrawable;
+    private var _stateDrawable as OnOffStateDrawable;
 
     // Toggle the state
     public function getNextCommand() as String? {
@@ -38,7 +38,7 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     public function updateItemState( state as String ) as Void {
         BaseSwitchMenuItem.updateItemState( state );
         _isEnabled = parseItemState( state );
-        _statusDrawable.setEnabled( _isEnabled, _smallIcon );
+        _stateDrawable.setEnabled( _isEnabled, _smallIcon );
     }
 
     // Override the update method of the super class
@@ -73,12 +73,12 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
         }
         _isEnabled = parseItemState( sitemapSwitch.item.state );
         _smallIcon = sitemapSwitch.linkedPage != null;
-        _statusDrawable = new OnOffStatusDrawable( _isEnabled, _smallIcon );
+        _stateDrawable = new OnOffStateDrawable( _isEnabled, _smallIcon );
         
         // Initialize the superclass
         BaseSwitchMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
-                :state => _statusDrawable,
+                :state => _stateDrawable,
                 :isActionable => false,
                 :parent => parent
             }

@@ -3,11 +3,11 @@ import Toybox.WatchUi;
 import Toybox.Graphics;
 
 /*
- * Drawable for displaying the status as text with a fixed font.
- * The status is printed in light grey to visually offset it from the label,
+ * Drawable for displaying the state as text with a fixed font.
+ * The state is printed in light grey to visually offset it from the label,
  * matching the style of an "off" state in on/off switches.
  */
-class StatusText extends Text {
+class StateText extends Text {
 
     private const FONT as FontDefinition = Constants.UI_MENU_ITEM_FONTS[0];
 
@@ -33,7 +33,7 @@ class StatusText extends Text {
         precomputedWidth = TextDimensions.getTextWidthInPixels( text, FONT );
     }
 
-    // Updates the text status
+    // Updates the text state
     public function setText( text as Lang.String or Lang.ResourceId ) as Void {
         if( ! text.equals( _text ) ) {
             if( text instanceof String ) {
@@ -41,7 +41,7 @@ class StatusText extends Text {
                 precomputedWidth = TextDimensions.getTextWidthInPixels( text, FONT );
                 Text.setText( text );
             } else {
-                throw new GeneralException( "StatusText does not support ResourceIds" );
+                throw new GeneralException( "StateText does not support ResourceIds" );
             }
         }
     }

@@ -3,26 +3,26 @@ import Toybox.WatchUi;
 
 /*
  * Menu item implementation for `Text` sitemap elements.
- * The text status is displayed in the status field of BaseSitemapMenuItem.
- * The status is extracted from the sitemap element's label, which contains
- * both the label text and the status enclosed in square brackets.
- * This approach is preferred over retrieving the status from the associated item,
- * as the embedded status includes any formatting defined for the sitemap text element.
+ * The text state is displayed in the state field of BaseSitemapMenuItem.
+ * The state is extracted from the sitemap element's label, which contains
+ * both the label text and the state enclosed in square brackets.
+ * This approach is preferred over retrieving the state from the associated item,
+ * as the embedded state includes any formatting defined for the sitemap text element.
  */
 class TextMenuItem extends BaseWidgetMenuItem {
     
-    // The text status Drawable
-    private var _statusTextArea as StatusTextArea;
+    // The text state Drawable
+    private var _stateTextArea as StateTextArea;
 
     // Constructor
     public function initialize( 
         sitemapText as SitemapText,
         parent as BasePageMenu
     ) {
-        _statusTextArea = new StatusTextArea( sitemapText.label, sitemapText.transformedState );
+        _stateTextArea = new StateTextArea( sitemapText.label, sitemapText.transformedState );
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapText,
-                :state => _statusTextArea,
+                :state => _stateTextArea,
                 :parent => parent
             }
         );
@@ -41,6 +41,6 @@ class TextMenuItem extends BaseWidgetMenuItem {
         if( ! ( sitemapWidget instanceof SitemapText ) ) {
             throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into TextMenuItem but is of a different type" );
         }
-        _statusTextArea.update( sitemapWidget.label, sitemapWidget.transformedState );
+        _stateTextArea.update( sitemapWidget.label, sitemapWidget.transformedState );
     }
 }

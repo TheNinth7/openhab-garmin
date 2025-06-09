@@ -14,10 +14,10 @@ import Toybox.Graphics;
  *
  * - A center label, passed in as `String` and updatable via `setLabel()`
  *
- * - An optional right-side status indicator (`Drawable`), updatable by updating the Drawable itself
+ * - An optional right-side state indicator (`Drawable`), updatable by updating the Drawable itself
  *
  * - An optional action icon used to indicate that selecting the item will trigger an action.
- *   This icon should be displayed only when the label or status does not clearly convey that
+ *   This icon should be displayed only when the label or state does not clearly convey that
  *   an action is available. For example, toggle-style `Switch` elements do not display an
  *   action icon, whereas `Slider` elements and text-based `Switch` elements do.
  *    
@@ -181,7 +181,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         // Right padding is calculated
         var paddingRight = ( dcWidth * Constants.UI_MENU_ITEM_PADDING_RIGHT_FACTOR ).toNumber();
         // Throughout this function, rightX is the current position
-        // of elements that are aligned to the right (status and action icon)
+        // of elements that are aligned to the right (state and action icon)
         // Initially, the right padding is applied
         var rightX = dcWidth - paddingRight;
 
@@ -199,32 +199,32 @@ class BaseSitemapMenuItem extends BaseMenuItem {
 
         titleWidth -= dcWidth - rightX;
 
-        // If status is present, its location is set,
+        // If state is present, its location is set,
         // and width available for the title is adjusted
         // accordingly
         if( _state != null ) {
-            var status = _state;
+            var state = _state;
             titleWidth -= spacing;
             
-            if( status instanceof StatusTextArea ) {
-                status.setAvailableWidth( titleWidth.toNumber() );
-            } else if( status instanceof Text && ! ( status instanceof StatusText ) ) {
-                throw new GeneralException( "BaseSitemapMenuItem does not support Text, use StatusText instead" );
+            if( state instanceof StateTextArea ) {
+                state.setAvailableWidth( titleWidth.toNumber() );
+            } else if( state instanceof Text && ! ( state instanceof StateText ) ) {
+                throw new GeneralException( "BaseSitemapMenuItem does not support Text, use StateText instead" );
             }
 
-            var statusWidth = 
-                status instanceof StatusText
-                ? status.precomputedWidth
-                : status.width;
+            var stateWidth = 
+                state instanceof StateText
+                ? state.precomputedWidth
+                : state.width;
             
-            rightX -= statusWidth;
+            rightX -= stateWidth;
 
-            status.setLocation( rightX, WatchUi.LAYOUT_VALIGN_CENTER );
+            state.setLocation( rightX, WatchUi.LAYOUT_VALIGN_CENTER );
 
-            titleWidth -= statusWidth;
+            titleWidth -= stateWidth;
 
-            if( status has :setColor && _stateColor != null ) {
-                status.setColor( _stateColor );
+            if( state has :setColor && _stateColor != null ) {
+                state.setColor( _stateColor );
             }
         }
 

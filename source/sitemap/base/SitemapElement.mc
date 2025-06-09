@@ -32,18 +32,18 @@ class SitemapElement {
     protected static function parseLabelState( json as JsonAdapter, id as String, errorMessage as String ) as [String, String] {
         var fullLabel = json.getString( id, errorMessage );
         var label = fullLabel;
-        var transformedState = null;
+        var remoteTransformedState = null;
         var bracket = fullLabel.find( " [" ) as Number?;
         if( bracket != null ) {
             label = fullLabel.substring( null, bracket ) as String?;
             if( label == null ) {
                 throw new JsonParsingException( "Label '" + label + "' does not have label before the [state]" );
             }
-            transformedState = fullLabel.substring( bracket+2, fullLabel.length()-1 ) as String?;
+            remoteTransformedState = fullLabel.substring( bracket+2, fullLabel.length()-1 ) as String?;
         }
-        if( transformedState == null || transformedState.equals( "-" ) ) {
-            transformedState = Item.NO_STATE;
+        if( remoteTransformedState == null || remoteTransformedState.equals( "-" ) ) {
+            remoteTransformedState = Item.NO_STATE;
         }
-        return [label, transformedState];
+        return [label, remoteTransformedState];
     }
 }

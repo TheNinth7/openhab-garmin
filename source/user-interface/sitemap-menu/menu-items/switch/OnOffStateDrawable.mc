@@ -5,10 +5,10 @@ import Toybox.Graphics;
 /*
  * Drawable for rendering an on/off toggle switch.
  *
- * Uses the two bitmaps provided by OnOffStatusBitmaps and updates
+ * Uses the two bitmaps provided by OnOffStateBitmaps and updates
  * the BufferedBitmap in its superclass based on the current toggle state.
  */
-class OnOffStatusDrawable extends BufferedBitmapDrawable {
+class OnOffStateDrawable extends BufferedBitmapDrawable {
 
     // Storing the state helps us determining if there was an
     // actual change of state, when setEnabled is called.
@@ -43,19 +43,19 @@ class OnOffStatusDrawable extends BufferedBitmapDrawable {
         return
             smallIcon
                 ? isEnabled
-                    ? SmallOnOffStatusBitmaps.get().on
-                    : SmallOnOffStatusBitmaps.get().off
+                    ? SmallOnOffStateBitmaps.get().on
+                    : SmallOnOffStateBitmaps.get().off
                 : isEnabled
-                    ? OnOffStatusBitmaps.get().on
-                    : OnOffStatusBitmaps.get().off;
+                    ? OnOffStateBitmaps.get().on
+                    : OnOffStateBitmaps.get().off;
     }
 }
 
 /* Simple implementation for rendering the state as text
-class OnOffStatusDrawable extends Text {
+class OnOffStateDrawable extends Text {
     public function initialize( isEnabled as Boolean ) {
         Text.initialize( {
-            :text => getStatusText( isEnabled ),
+            :text => getStateText( isEnabled ),
             :font => Graphics.FONT_SMALL,
             :color => getColor( isEnabled ),
             :justification => Graphics.TEXT_JUSTIFY_RIGHT | Graphics.TEXT_JUSTIFY_VCENTER
@@ -63,9 +63,9 @@ class OnOffStatusDrawable extends Text {
     }
     public function setEnabled( isEnabled as Boolean ) as Void {
         setColor( getColor( isEnabled ) );
-        setText( getStatusText( isEnabled ) );
+        setText( getStateText( isEnabled ) );
     }
-    private function getStatusText( isEnabled as Boolean ) as String {
+    private function getStateText( isEnabled as Boolean ) as String {
         return isEnabled ? "ON" : "OFF";
     }
     private function getColor( isEnabled as Boolean ) as ColorType {

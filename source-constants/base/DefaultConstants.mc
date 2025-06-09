@@ -81,7 +81,7 @@ class DefaultConstants {
         ( UI_SCREEN_HEIGHT * 0.3 ).toNumber();
 
 
-    // List of fonts available for menu item labels and status text.
+    // List of fonts available for menu item labels and state text.
     // An appropriate font size is chosen based on available space and text length.
     public static const UI_MENU_ITEM_FONTS as Array<FontDefinition> = [Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];
 
@@ -95,12 +95,12 @@ class DefaultConstants {
     * Below is an example of how the spacings (represented with underscores) 
     * are applied around the elements (in angle brackets):
     *
-    * _PL_ [ <icon> _SP_ ] <label> [ [ _SP_ <status> ] [ _APL_ <action> ] _SPR_ ] _PR_
+    * _PL_ [ <icon> _SP_ ] <label> [ [ _SP_ <state> ] [ _APL_ <action> ] _SPR_ ] _PR_
     *
     * _PL_ / Padding Left:           Space applied to the left edge of the menu item.
     * _PR_ / Padding Right:          Space applied to the right edge of the menu item.
-    * _SP_ / Spacing:                Space between primary elements (icon, label, status).
-    * _SPR_ / Status Padding Right:  Additional right padding applied when a status or action icon 
+    * _SP_ / Spacing:                Space between primary elements (icon, label, state).
+    * _SPR_ / State Padding Right:  Additional right padding applied when a state or action icon 
     *                                is present. This improves visibility on devices with constrained 
     *                                layouts, such as round watch faces.
     * _APL_ / Action Padding Left:   Space applied to the left of the action icon, if present.

@@ -18,7 +18,7 @@ import Toybox.Graphics;
  */
 class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // The Drawable that shows the current state
-    private var _statusDrawable as StatusTextArea;
+    private var _stateDrawable as StateTextArea;
 
     // Returns true if the given widget matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
@@ -35,18 +35,18 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         sitemapSwitch as SitemapSwitch,
         parent as BasePageMenu
     ) {
-        // Initialize the Drawable for the status text, and set the color
-        _statusDrawable = new StatusTextArea( 
+        // Initialize the Drawable for the state text, and set the color
+        _stateDrawable = new StateTextArea( 
             sitemapSwitch.label, 
             sitemapSwitch.transformedState
         );
 
-        _statusDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
+        _stateDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
         
         // Initialize the superclass
         BaseSwitchMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
-                :state => _statusDrawable,
+                :state => _stateDrawable,
                 :isActionable => true,
                 :parent => parent
             }
@@ -62,7 +62,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // arrives
     public function updateItemState( state as String ) as Void {
         BaseSwitchMenuItem.updateItemState( state );
-        _statusDrawable.update( 
+        _stateDrawable.update( 
             _sitemapSwitch.label, 
             _sitemapSwitch.transformedState
         );

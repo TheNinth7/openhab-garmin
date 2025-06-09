@@ -9,15 +9,15 @@ import Toybox.Graphics;
  * Each BufferedBitmap is used to obtain a corresponding Dc (Drawing Context),
  * allowing the switch to be rendered using primitive shapes such as circles and rectangles.
  */
-class OnOffStatusBitmaps {
+class OnOffStateBitmaps {
     
     // Singleton accessor
-    private static var _instance as OnOffStatusBitmaps?;
-    public static function get() as OnOffStatusBitmaps {
+    private static var _instance as OnOffStateBitmaps?;
+    public static function get() as OnOffStateBitmaps {
         if( _instance == null ) {
-            _instance = new OnOffStatusBitmaps();
+            _instance = new OnOffStateBitmaps();
         }
-        return _instance as OnOffStatusBitmaps;
+        return _instance as OnOffStateBitmaps;
     }
 
     // Height and width of the switch is defined relative to the menu item height

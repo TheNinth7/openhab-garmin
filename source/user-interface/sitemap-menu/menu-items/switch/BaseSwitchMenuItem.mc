@@ -117,7 +117,7 @@ class BaseSwitchMenuItem extends BaseWidgetMenuItem {
     }
 
     // Called by the sitemap request when updated state data is received.
-    // Updates the label and delegates status `Drawable` updates to the subclass.
+    // Updates the label and delegates state `Drawable` updates to the subclass.
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
         // BaseSitemapMenuItem.update needs to come before updateItemState,
         // so that updateItemState can already access the

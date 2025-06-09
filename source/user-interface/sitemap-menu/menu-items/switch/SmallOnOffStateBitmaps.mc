@@ -6,19 +6,19 @@ import Toybox.Graphics;
  * Singleton class that provides two BufferedBitmaps representing
  * a toggle switch in the "on" and "off" positions.
  *
- * `OnOffStatusDrawable` provides the standard-sized version,
+ * `OnOffStateDrawable` provides the standard-sized version,
  * while this class offers a smaller version intended for use 
  * alongside a submenu indicator.
  */
-class SmallOnOffStatusBitmaps extends OnOffStatusBitmaps {
+class SmallOnOffStateBitmaps extends OnOffStateBitmaps {
     
     // Singleton accessor
-    private static var _instance as SmallOnOffStatusBitmaps?;
-    public static function get() as SmallOnOffStatusBitmaps {
+    private static var _instance as SmallOnOffStateBitmaps?;
+    public static function get() as SmallOnOffStateBitmaps {
         if( _instance == null ) {
-            _instance = new SmallOnOffStatusBitmaps();
+            _instance = new SmallOnOffStateBitmaps();
         }
-        return _instance as SmallOnOffStatusBitmaps;
+        return _instance as SmallOnOffStateBitmaps;
     }
 
     // When combined with a sub-menu indicator, the toggle switch will be rendered smaller 
@@ -28,6 +28,6 @@ class SmallOnOffStatusBitmaps extends OnOffStatusBitmaps {
 
     // Constructor
     private function initialize() {
-        OnOffStatusBitmaps.initialize();
+        OnOffStateBitmaps.initialize();
     }
 }

@@ -21,8 +21,8 @@ class NumericMenuItem extends BaseWidgetMenuItem {
             && sitemapWidget.item.hasState();
     }
 
-    // The text status Drawable
-    private var _statusText as Text;
+    // The text state Drawable
+    private var _stateText as Text;
 
     // Since we need a bunch of values from the sitemap configuration,
     // we just keep the SitemapNumeric
@@ -36,7 +36,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
 
     // Constructor
     // Initializes the BaseCommandRequest used for changing the state,
-    // the Drawable for the displayed status and the superclass
+    // the Drawable for the displayed state and the superclass
     public function initialize( 
         sitemapNumeric as SitemapNumeric,
         parent as BasePageMenu 
@@ -44,14 +44,14 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         _sitemapNumeric = sitemapNumeric;
         _commandRequest = BaseCommandRequest.get( self );
 
-        // The status shown in the menu item
-        _statusText = new StatusText( 
+        // The state shown in the menu item
+        _stateText = new StateText( 
             sitemapNumeric.item.numericState.toString() + sitemapNumeric.item.unit
         );
         
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapNumeric,
-                :state => _statusText,
+                :state => _stateText,
                 :isActionable => true,
                 :parent => parent
             }
@@ -67,7 +67,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
             throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into NumericMenuItem but is of a different type" );
         }
         _sitemapNumeric = sitemapWidget;
-        _statusText.setText( sitemapWidget.item.numericState.toString() + sitemapWidget.item.unit );
+        _stateText.setText( sitemapWidget.item.numericState.toString() + sitemapWidget.item.unit );
     }
 
     // When the menu item is selected, the CustomPicker is initialized
@@ -105,7 +105,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         _sitemapNumeric.updateState( newState );
         
         // Update the state
-        _statusText.setText( _sitemapNumeric.transformedState );
+        _stateText.setText( _sitemapNumeric.transformedState );
         
         // And send the command
         ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapNumeric.item.state );

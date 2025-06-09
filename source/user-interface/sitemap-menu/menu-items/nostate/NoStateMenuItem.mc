@@ -7,7 +7,7 @@ class NoStateMenuItem extends BaseWidgetMenuItem {
     public function initialize( sitemapWidget as SitemapWidget, parent as BasePageMenu ) {
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapWidget,
-                :state => new StatusText( "—" ),
+                :state => new StateText( "—" ),
                 :parent => parent
             }
         );

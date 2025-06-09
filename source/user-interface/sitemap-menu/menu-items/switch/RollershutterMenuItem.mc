@@ -32,7 +32,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
 
     // Constructor
     // Initializes the BaseCommandRequest used for changing the state,
-    // the Drawable for the displayed status and the superclass
+    // the Drawable for the displayed state and the superclass
     public function initialize( 
         sitemapSwitch as SitemapSwitch,
         parent as BasePageMenu 
@@ -41,8 +41,8 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
         
         _commandRequest = BaseCommandRequest.get( self );
 
-        // The status shown in the menu item
-        _stateDrawable = new StatusText( sitemapSwitch.transformedState );
+        // The state shown in the menu item
+        _stateDrawable = new StateText( sitemapSwitch.transformedState );
         
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
