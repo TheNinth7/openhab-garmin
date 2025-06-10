@@ -99,7 +99,7 @@ Once the app is installed, you can configure the following settings by opening i
 |---------------------|-------------|
 | **URL** | Your openHAB URL in the format `https://host:port` or `http://host:port`. Note: HTTP only works with iOS. See [Connectivity](#connectivity) and [Using myopenHAB](#-using-myopenhab) for details. |
 | **Sitemap Name** | Name of the sitemap to display. See [Sitemap Setup](#-sitemap-setup) for details. | 
-| **Native REST API Support** | Enable if your openHAB supports the new JSON-based REST API for sending commands. See [Sending Commands](#-sending-commands) for details. |
+| **Native REST API Support** | Enable if your openHAB supports the new JSON-based REST API for sending commands. See [Sending Commands](#sending-commands) for details. |
 | **Webhook Identifier** | If your openHAB version doesn't support the JSON-based REST API (see above), you can configure a custom webhook to send commands. See [Custom Webhook](#custom-webhook) for details. |
 | **Username** | For basic authentication (used for [myopenHAB](#-using-myopenhab), see below) |
 | **Password** | Password for basic authentication |
@@ -144,6 +144,8 @@ For earlier versions (openHAB 4.x), you can either install a backported version 
 To enable JSON-based command support on openHAB 4.x, install the backported API bundle. Follow the instructions here:
 
 ➡️ [Backport Installation Guide](https://github.com/florian-h05/openhab-core/releases/tag/4.3.x-command-json)
+
+**Note:** If you update your openHAB version after installing the backport, you may need to reinstall the backport.
 
 ### Option 2: Custom Webhook
 
