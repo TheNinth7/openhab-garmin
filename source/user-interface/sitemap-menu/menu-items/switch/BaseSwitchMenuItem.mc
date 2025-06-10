@@ -37,7 +37,7 @@ class BaseSwitchMenuItem extends BaseWidgetMenuItem {
     // Constructor
     protected function initialize( options as BaseSwitchMenuItemOptions ) {
         _sitemapSwitch = options[:sitemapWidget] as SitemapSwitch;
-        _itemName = _sitemapSwitch.item.name;
+        _itemName = _sitemapSwitch.getSwitchItem().getName();
         
         BaseWidgetMenuItem.initialize( options );
         
@@ -110,9 +110,9 @@ class BaseSwitchMenuItem extends BaseWidgetMenuItem {
     // superclass implementation to ensure the SitemapSwitch object
     // is properly updated.
     public function updateItemState( state as String ) as Void {
-        if( ! _sitemapSwitch.item.state.equals( state ) ) {
+        if( ! _sitemapSwitch.getSwitchItem().getState().equals( state ) ) {
             _sitemapSwitch.updateState( state );
-            updateIcon( _sitemapSwitch.icon );
+            updateIcon( _sitemapSwitch.getIcon() );
         }
     }
 
@@ -124,6 +124,6 @@ class BaseSwitchMenuItem extends BaseWidgetMenuItem {
         // updated label
         BaseWidgetMenuItem.updateWidget( sitemapWidget );
         _sitemapSwitch = sitemapWidget as SitemapSwitch;
-        updateItemState( _sitemapSwitch.item.state );
+        updateItemState( _sitemapSwitch.getSwitchItem().getState() );
     }
 }

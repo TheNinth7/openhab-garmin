@@ -30,7 +30,8 @@ class NumericPickerDelegate extends CustomPickerDelegate {
     public function initialize( menuItem as NumericMenuItem ) {
         CustomPickerDelegate.initialize();
         _menuItem = menuItem;
-        _previousState = menuItem.getSitemapNumeric().item.numericState;
+        _previousState = 
+            menuItem.getSitemapNumeric().getNumericItem().getNumericState();
     }
 
     // If the user confirms and we ARE in releaseOnly mode,
@@ -38,7 +39,7 @@ class NumericPickerDelegate extends CustomPickerDelegate {
     // pop the Picker from the view stack.
     public function onAccept( newState as Object ) as Boolean {
         // Logger.debug "NumericPickerDelegate.onAccept" );
-        if( _menuItem.getSitemapNumeric().releaseOnly ) {
+        if( _menuItem.getSitemapNumeric().isReleaseOnly() ) {
             if( ! ( newState instanceof Number ) ) {
                 throw new GeneralException( "NumericPickerDelegate: invalid value selected" );    
             }
@@ -54,8 +55,8 @@ class NumericPickerDelegate extends CustomPickerDelegate {
     // pop the Picker from the view stack.
     public function onCancel() as Boolean {
         // Logger.debug "NumericPickerDelegate.onCancel" );
-        if( ! _menuItem.getSitemapNumeric().releaseOnly ) {
-            if( _menuItem.getSitemapNumeric().item.numericState != _previousState ) {
+        if( ! _menuItem.getSitemapNumeric().isReleaseOnly() ) {
+            if( _menuItem.getSitemapNumeric().getNumericItem().getNumericState() != _previousState ) {
                 // Logger.debug "NumericPickerDelegate.onCancel: reverting to state=" + _previousState.toString() );
                 _menuItem.updateState( _previousState );
             } else {
@@ -83,7 +84,7 @@ class NumericPickerDelegate extends CustomPickerDelegate {
             throw new GeneralException( "NumericPickerDelegate: invalid state type" );
         }
         // Update only if releaseOnly is false
-        if( ! _menuItem.getSitemapNumeric().releaseOnly ) {
+        if( ! _menuItem.getSitemapNumeric().isReleaseOnly() ) {
             _menuItem.updateState( state );
         }
     }     

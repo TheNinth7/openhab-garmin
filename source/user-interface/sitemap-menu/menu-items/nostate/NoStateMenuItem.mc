@@ -24,11 +24,9 @@ class NoStateMenuItem extends BaseWidgetMenuItem {
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
 
         if( ! sitemapWidget.hasDisplayState() ) {
-            if( sitemapWidget has :item ) {
-                var item = sitemapWidget.item;
-                if( item != null ) {
-                    return ! ( sitemapWidget.item as Item ).hasState();
-                }
+            var item = sitemapWidget.getItem();
+            if( item != null ) {
+                return ! item.hasState();
             }
         }
         return false;

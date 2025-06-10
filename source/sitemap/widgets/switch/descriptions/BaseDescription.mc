@@ -10,15 +10,21 @@ typedef BaseDescriptionArray as Array<BaseDescription>;
 
 class BaseDescription {
     private var _id as String;
-    public var label as String;
+    private var _label as String;
  
-    protected function initialize( id as String, l as String ) {
+    // Constructor
+    protected function initialize( id as String, label as String ) {
         _id = id;
-        label = l;
+        _label = label;
     }
 
     // Checks if the ID of this instance equals a given ID
     public function equalsById( otherId as String ) as Boolean {
         return _id.equals( otherId );
+    }
+
+    // Returns the label
+    public function getLabel() as String {
+        return _label;
     }
 }

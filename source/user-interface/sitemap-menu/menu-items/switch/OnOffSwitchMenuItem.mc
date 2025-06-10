@@ -12,9 +12,9 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
                sitemapWidget instanceof SitemapSwitch 
-            && sitemapWidget.item.hasState()
+            && sitemapWidget.getSwitchItem().hasState()
             && ! sitemapWidget.hasMappings()
-            && ! sitemapWidget.item.type.equals( "Rollershutter" );
+            && ! sitemapWidget.getSwitchItem().getType().equals( "Rollershutter" );
     }
 
     // True if the switch is on
@@ -27,25 +27,37 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     // The actual Drawable for drawing the switch
     private var _stateDrawable as OnOffStateDrawable;
 
+    // Constructor
+    public function initialize( 
+        sitemapSwitch as SitemapSwitch,
+        parent as BasePageMenu
+    ) {
+        var itemState = sitemapSwitch.getSwitchItem().getState();
+        if( ! ( itemState.equals( SwitchItem.ITEM_STATE_ON ) 
+                || itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) 
+        ) {      
+            throw new JsonParsingException( "Switch '" + sitemapSwitch.getLabel() + "': invalid state '" + itemState + "'" );
+        }
+        _isEnabled = parseItemState( itemState );
+        _smallIcon = sitemapSwitch.getLinkedPage() != null;
+        _stateDrawable = new OnOffStateDrawable( _isEnabled, _smallIcon );
+        
+        // Initialize the superclass
+        BaseSwitchMenuItem.initialize( {
+                :sitemapWidget => sitemapSwitch,
+                :state => _stateDrawable,
+                :isActionable => false,
+                :parent => parent
+            }
+        );
+    }
+
     // Toggle the state
     public function getNextCommand() as String? {
         return 
             _isEnabled 
             ? SwitchItem.ITEM_STATE_OFF 
             : SwitchItem.ITEM_STATE_ON;
-    }
-    // Update the member and Drawable
-    public function updateItemState( state as String ) as Void {
-        BaseSwitchMenuItem.updateItemState( state );
-        _isEnabled = parseItemState( state );
-        _stateDrawable.setEnabled( _isEnabled, _smallIcon );
-    }
-
-    // Override the update method of the super class
-    // and obtain the updated list of commmand mappings
-    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
-        BaseSwitchMenuItem.updateWidget( sitemapWidget );
-        _smallIcon = sitemapWidget.linkedPage != null;
     }
 
     // Converts the string state to a Boolean for _isEnabled
@@ -60,28 +72,17 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
         }
     }
 
-    // Constructor
-    public function initialize( 
-        sitemapSwitch as SitemapSwitch,
-        parent as BasePageMenu
-    ) {
-        var itemState = sitemapSwitch.item.state;
-        if( ! ( itemState.equals( SwitchItem.ITEM_STATE_ON ) 
-                || itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) 
-        ) {      
-            throw new JsonParsingException( "Switch '" + sitemapSwitch.label + "': invalid state '" + itemState + "'" );
-        }
-        _isEnabled = parseItemState( sitemapSwitch.item.state );
-        _smallIcon = sitemapSwitch.linkedPage != null;
-        _stateDrawable = new OnOffStateDrawable( _isEnabled, _smallIcon );
-        
-        // Initialize the superclass
-        BaseSwitchMenuItem.initialize( {
-                :sitemapWidget => sitemapSwitch,
-                :state => _stateDrawable,
-                :isActionable => false,
-                :parent => parent
-            }
-        );
+    // Update the member and Drawable
+    public function updateItemState( state as String ) as Void {
+        BaseSwitchMenuItem.updateItemState( state );
+        _isEnabled = parseItemState( state );
+        _stateDrawable.setEnabled( _isEnabled, _smallIcon );
+    }
+
+    // Override the update method of the super class
+    // and obtain the updated list of commmand mappings
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
+        BaseSwitchMenuItem.updateWidget( sitemapWidget );
+        _smallIcon = sitemapWidget.getLinkedPage() != null;
     }
 }

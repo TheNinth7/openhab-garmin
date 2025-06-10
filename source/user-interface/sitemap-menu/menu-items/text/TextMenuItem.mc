@@ -19,7 +19,11 @@ class TextMenuItem extends BaseWidgetMenuItem {
         sitemapText as SitemapText,
         parent as BasePageMenu
     ) {
-        _stateTextArea = new StateTextArea( sitemapText.label, sitemapText.displayState );
+        _stateTextArea = new StateTextArea( 
+            sitemapText.getLabel(), 
+            sitemapText.getDisplayState()
+        );
+        
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapText,
                 :state => _stateTextArea,
@@ -39,8 +43,8 @@ class TextMenuItem extends BaseWidgetMenuItem {
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
         BaseWidgetMenuItem.updateWidget( sitemapWidget );
         if( ! ( sitemapWidget instanceof SitemapText ) ) {
-            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into TextMenuItem but is of a different type" );
+            throw new GeneralException( "Sitemap element '" + sitemapWidget.getLabel() + "' was passed into TextMenuItem but is of a different type" );
         }
-        _stateTextArea.update( sitemapWidget.label, sitemapWidget.displayState );
+        _stateTextArea.update( sitemapWidget.getLabel(), sitemapWidget.getDisplayState() );
     }
 }

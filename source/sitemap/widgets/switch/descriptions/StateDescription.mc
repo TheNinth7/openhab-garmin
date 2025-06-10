@@ -5,13 +5,15 @@ import Toybox.Lang;
  * Used to handle both widget mappings and item command descriptions.
  */
 
-// An array of commands
-typedef StateDescriptionArray as Array<StateDescription>;
-
 class StateDescription extends BaseDescription {
-    public var value as String;
-    public function initialize( v as String, l as String ) {
-        BaseDescription.initialize( v, l );
-        value = v;
+    private var _value as String;
+    
+    public function initialize( value as String, label as String ) {
+        BaseDescription.initialize( value, label );
+        _value = value;
+    }
+
+    public function getValue() as String {
+        return _value;
     }
 }

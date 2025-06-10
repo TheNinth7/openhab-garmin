@@ -28,14 +28,18 @@ class NumericPickerFactory extends CustomPickerFactory {
 
         // Get the data we need for building the list
         var sitemapNumeric = menuItem.getSitemapNumeric();
-        var unit = sitemapNumeric.item.unit;
-        var currentValue = sitemapNumeric.item.numericState;
+        var numericItem = sitemapNumeric.getNumericItem();
+
+        var unit = numericItem.getUnit();
+        var currentValue = numericItem.getNumericState();
 
         // Start at minValue and increment by step
         // until the next value would exceed maxValue.
         // If maxValue is not an exact multiple of the step,
         // the final entry will be the last step below maxValue.
-        for( var i = sitemapNumeric.minValue; i <= sitemapNumeric.maxValue; i += sitemapNumeric.step ) {
+        var maxValue = sitemapNumeric.getMaxValue();
+        var step = sitemapNumeric.getStep();
+        for( var i = sitemapNumeric.getMinValue(); i <= maxValue; i += step ) {
             if( _currentIndex == -1 && currentValue <= i ) {
                 _currentIndex = _pickables.size();
                 if( i != currentValue ) {
@@ -49,10 +53,10 @@ class NumericPickerFactory extends CustomPickerFactory {
         // This code can be enabled to add maxValue as a separate step,
         // even if it doesn't align exactly with the defined step intervals.
         // NOTE: If enabled, the loop condition above must be changed to
-        // `i < sitemapNumeric.maxValue` to avoid adding maxValue twice
+        // `i < maxValue` to avoid adding maxValue twice
         // when it already falls on a step boundary.
         /*
-        _drawables.add( new SliderPickerDrawable( sitemapNumeric.maxValue, unit ) );
+        _drawables.add( new SliderPickerDrawable( maxValue, unit ) );
         if( _currentIndex == -1 ) {
             _currentIndex = _drawables.size()-1;
         }

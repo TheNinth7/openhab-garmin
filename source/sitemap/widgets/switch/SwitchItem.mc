@@ -23,63 +23,51 @@ class SwitchItem extends Item {
     public static const ITEM_STATE_OPEN = "OPEN";
     public static const ITEM_STATE_CLOSED = "CLOSED";
 
-    public var commandDescriptions as CommandDescriptionArray?;
-    public var stateDescriptions as StateDescriptionArray?;
+    private var _commandDescriptions as CommandDescriptions?;
+    private var _stateDescriptions as StateDescriptions?;
 
     // Constructor
     public function initialize( json as JsonAdapter ) {
         Item.initialize( json );
 
-        // Then we read the item's command descriptions, if there are any
-        var localCommandDescriptions = json.getOptionalObject( "commandDescription" );
-        if( localCommandDescriptions != null ) {
-            commandDescriptions = 
-                readCommandDescriptions( 
-                    localCommandDescriptions.getOptionalArray( "commandOptions" ) 
-                );
-        }
-
-        var localStateDescriptions = json.getOptionalObject( "stateDescription" );
-        if( localStateDescriptions != null ) {
-            stateDescriptions = 
-                readStateDescriptions( 
-                    localStateDescriptions.getOptionalArray( "options" ) 
-                );
-        }
-
-    }
-
-    // Used for reading both the widget's mapping and
-    // the items command descriptions
-    public static function readCommandDescriptions( jsonCommandDescriptions as JsonAdapterArray? ) as CommandDescriptionArray {
-        var commandDescriptions = new CommandDescriptionArray[0];
+        // Then we read the item's command descriptions, if there are any ...
+        var jsonCommandDescriptions = json.getOptionalObject( "commandDescription" );
         if( jsonCommandDescriptions != null ) {
-            for( var i = 0; i < jsonCommandDescriptions.size(); i++ ) {
-                var jsonCommandDescription = jsonCommandDescriptions[i];
-                commandDescriptions.add( 
-                    new CommandDescription( 
-                        jsonCommandDescription.getString( "command", "Switch: command is missing from mapping/command description" ),
-                        jsonCommandDescription.getOptionalString( "label" )
-                    )
-                );
-            }
+            _commandDescriptions = new CommandDescriptions( 
+                jsonCommandDescriptions.getOptionalArray( "commandOptions" ) 
+            );
         }
-        return commandDescriptions;
+
+        // ... and do the same for the state descriptions
+        var jsonStateDescriptions = json.getOptionalObject( "stateDescription" );
+        if( jsonStateDescriptions != null ) {
+            _stateDescriptions = new StateDescriptions ( 
+                    jsonStateDescriptions.getOptionalArray( "options" ) 
+                );
+        }
     }
 
-    // Used for reading the items state descriptions
-    private static function readStateDescriptions( jsonStateDescriptions as JsonAdapterArray? ) as StateDescriptionArray {
-        var stateDescriptions = new StateDescriptionArray[0];
-        if( jsonStateDescriptions != null ) {
-            for( var i = 0; i < jsonStateDescriptions.size(); i++ ) {
-                var jsonStateDescription = jsonStateDescriptions[i];
-                stateDescriptions.add( 
-                    new StateDescription( 
-                        jsonStateDescription.getString( "value", "Switch: value is missing from state description" ),
-                        jsonStateDescription.getString( "label", "Switch: label is missing from state description" )
-                ) );
-            }
+    public function getCommandDescriptions() as CommandDescriptions? {
+        return _commandDescriptions;
+    }
+
+    public function getStateDescriptions() as StateDescriptions? {
+        return _stateDescriptions;
+    }
+
+    public function lookupCommandDescription( command as String ) as String? {
+        if( _commandDescriptions != null ) {
+            return _commandDescriptions.lookup( command );
+        } else {
+            return null;
         }
-        return stateDescriptions;
+    }
+
+    public function lookupStateDescription( state as String ) as String? {
+        if( _stateDescriptions != null ) {
+            return _stateDescriptions.lookup( state );
+        } else {
+            return null;
+        }
     }
 }

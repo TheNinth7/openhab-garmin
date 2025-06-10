@@ -31,10 +31,10 @@ class SitemapContainer extends SitemapElement {
     // Constructor
     public function initialize( 
         json as JsonAdapter, 
-        initSitemapFresh as Boolean,
+        isSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapElement.initialize( initSitemapFresh );
+        SitemapElement.initialize( isSitemapFresh );
 
         // Loop through all JSON array elements
         var jsonWidgets = json.getArray( "widgets", "Frame or page contains no elements" );
@@ -65,7 +65,7 @@ class SitemapContainer extends SitemapElement {
                 widgets.add( 
                     SitemapWidgetFactory.createByType( 
                         jsonWidget,
-                        initSitemapFresh,
+                        isSitemapFresh,
                         asyncProcessing
                     ) 
                 );

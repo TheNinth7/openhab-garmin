@@ -7,341 +7,133 @@ import Toybox.Graphics;
  * common to all widgets, including:
  * - the label
  * - The display state: the item's state with display patterns applied.
- *   - `remoteDisplayState` holds the display state as provided by the server.
- *   - `displayState` may override `remoteDisplayState` with additional local display logic.
+ *   - `_remoteDisplayState` holds the display state as provided by the server.
+ *   - `_displayState` may override `_remoteDisplayState` with additional local display logic.
  * - the display colors
  * - any page linked to this widget
  */
 class SitemapWidget extends SitemapElement {
 
-    // Initializes displayState with remoteDisplayState; 
-    // subclasses may override it with custom display logic.
-    public var displayState as String;
-    
-    // The iconType transformed into a bitmap resource id
-    public var icon as ResourceId?;
-    
-    // The icon type as specified in the sitemap
-    public var iconType as String;
-    
-    // The item associated with this widget
-    public var item as Item?;
-    
-    // The label, without any embedded display state
-    // See remoteDisplayState and SitemapElement.parseLabel()
-    public var label as String;
-
-    // The color to be applied to the label
-    public var labelColor as ColorType?;
-    
-    // For Group elements and nested elements
-    public var linkedPage as SitemapContainer?;
-    
-    // The display state provided by the server.
-    // Extracted from the item label in the format: "Label [displayState]"
-    // See SitemapElement.parseLabel()
-    public var remoteDisplayState as String;
-    
-    // The widget type
-    public var type as String;
-
-    // The value color is applied to the displayed state
-    public var valueColor as ColorType?;
+    // See the get accessors for documentation
+    private var _displayState as String;
+    private var _icon as ResourceId?;
+    private var _iconType as String;
+    private var _item as Item?;
+    private var _label as String;
+    private var _labelColor as ColorType?;
+    private var _linkedPage as SitemapContainer?;
+    private var _remoteDisplayState as String;
+    private var _type as String;
+    private var _valueColor as ColorType?;
 
     // Constructor
     protected function initialize( 
         json as JsonAdapter, 
-        initSitemapFresh as Boolean,
+        item as Item?,
+        linkedPage as SitemapContainer?,
+        isSitemapFresh as Boolean,
         asyncProcessing as Boolean
     ) {
-        SitemapElement.initialize( initSitemapFresh );
+        SitemapElement.initialize( isSitemapFresh );
 
-        type = json.getString( "type", "Widget without type" );
+        _item = item;
+
+        _type = json.getString( "type", "Widget without type" );
 
         var fullLabel = parseLabelState( json, "label", "Widget label is missing" );
-        label = fullLabel[0];
-        remoteDisplayState = fullLabel[1];
+        _label = fullLabel[0];
+        _remoteDisplayState = fullLabel[1];
         
-        // displayState is initialized with the one from the server
+        // _displayState is initialized with the one from the server
         // but may be updated with local logic by subclasses
-        displayState = remoteDisplayState;
+        _displayState = _remoteDisplayState != null
+                            ? _remoteDisplayState
+                            : _item != null
+                                ? _item.getState()
+                                : NO_DISPLAY_STATE;
 
         // If staticIcon is true, we do not use the
         // item state when selecting an icon but
         // use the default presentation of the
         // dynamic icons 
-        iconType = json.getOptionalString( "icon" );
-        icon = parseIcon( 
-            iconType, 
+        _iconType = json.getOptionalString( "icon" );
+        _icon = IconParser.parse( 
+            _iconType, 
             json.getBoolean( "staticIcon" )
                 ? null
-                : item           
+                : _item           
         );
 
-        if( ! iconType.equals( "" ) ) {
+        if( ! _iconType.equals( "" ) ) {
         } else {
-            iconType = json.getOptionalString( "staticIcon" );
-            icon = parseIcon( iconType, null );
+            _iconType = json.getOptionalString( "staticIcon" );
+            _icon = IconParser.parse( _iconType, null );
         }
 
-        labelColor = parseColor( json, "labelcolor", "Widget '" + label + "': invalid label color" );
-        valueColor = parseColor( json, "valuecolor", "Widget '" + label + "': invalid value color" );
+        _labelColor = ColorParser.parse( json, "labelcolor", "Widget '" + _label + "': invalid label color" );
+        _valueColor = ColorParser.parse( json, "valuecolor", "Widget '" + _label + "': invalid value color" );
 
-        var jsonLinkedPage = json.getOptionalObject( "linkedPage" );
-        if( jsonLinkedPage != null ) {
-            linkedPage = new SitemapPage( jsonLinkedPage, initSitemapFresh, asyncProcessing );
+        if( linkedPage != null ) {
+            _linkedPage = linkedPage;
+        } else {
+            var jsonLinkedPage = json.getOptionalObject( "linkedPage" );
+            if( jsonLinkedPage != null ) {
+                _linkedPage = new SitemapPage( jsonLinkedPage, isSitemapFresh, asyncProcessing );
+            }
         }
+    }
+
+    // The display state is initialized with the remote display state; 
+    // subclasses may override it with custom display logic.
+    public function getDisplayState() as String { return _displayState; }
+    
+    // The _iconType transformed into a bitmap resource id
+    public function getIcon() as ResourceId? { return _icon; }
+    
+    // The icon type as specified in the sitemap
+    public function getIconType() as String { return _iconType; }
+    
+    // The item associated with this widget
+    public function getItem() as Item? { return _item; }
+    
+    // The label, without any embedded display state
+    // See _remoteDisplayState and SitemapElement.parseLabel()
+    public function getLabel() as String { return _label; }
+
+    // The color to be applied to the label
+    public function getLabelColor() as ColorType? { return _labelColor; }
+    
+    // For Group elements and nested elements
+    public function getLinkedPage() as SitemapContainer? { return _linkedPage; }
+    
+    // The display state provided by the server.
+    // Extracted from the item label in the format: "Label [_displayState]"
+    // See SitemapElement.parseLabel()
+    public function getRemoteDisplayState() as String { return _remoteDisplayState; }
+
+    // The widget type
+    public function getType() as String { return _type; }
+
+    // The value color is applied to the displayed state
+    public function getValueColor() as ColorType? { return _valueColor; }
+
+    // Determines if a display state is available
+    protected function hasRemoteDisplayState() as Boolean {
+        return ! _displayState.equals( NO_DISPLAY_STATE );
     }
 
     // Determines if a display state is available
     public function hasDisplayState() as Boolean {
-        return ! displayState.equals( Item.NO_STATE );
+        return ! _displayState.equals( NO_DISPLAY_STATE );
     }
 
-    // Parses a color field.
-    // The field may be missing or empty, in which case null is returned.
-    // Otherwise, it can contain either a color name (e.g., "red") or a hex code 
-    // (e.g., "#FF0000"). In both cases, a ColorType is returned—specifically, 
-    // a number between 0x000000 and 0xFFFFFF.
-    private function parseColor( json as JsonAdapter, id as String, errorMessage as String ) as ColorType? {
-        var colorString = json.getOptionalString( id );
-        if( colorString == null || colorString.equals( "" ) ) {
-            return null;
-        }
-        switch ( colorString ) {
-            case "maroon": return 0x800000;
-            case "red": return 0xff0000;
-            case "orange": return 0xffa500;
-            case "olive": return 0x808000;
-            case "yellow": return 0xffff00;
-            case "purple": return 0x800080;
-            case "fuchsia": return 0xff00ff;
-            case "pink": return 0xffc0cb;
-            case "white": return 0xffffff;
-            case "lime": return 0x00ff00;
-            case "green": return 0x008000;
-            case "navy": return 0x000080;
-            case "blue": return 0x0000ff;
-            case "teal": return 0x008080;
-            case "aqua": return 0x00ffff;
-            case "black": return 0x000000;
-            case "silver": return 0xc0c0c0;
-            case "gray": return 0x808080;
-            case "gold": return 0xffd700;
-        }
-        var leadChar = colorString.substring( null, 1);
-        if( leadChar != null && leadChar.equals( "#" ) ) {
-            colorString = colorString.substring( 1, null );
-            if( colorString != null ) {
-                var colorNumber = ( colorString ).toNumberWithBase( 0x10 );
-                if( colorNumber != null ) {
-                    if( colorNumber >= 0 && colorNumber <= 16777215 ) {
-                        return colorNumber;
-                    }
-                }
-            }
-        }
-        throw new JsonParsingException( errorMessage );
-    }
-
-    // Get the ResourceId for the icon
-    // Icon is optional, so this function may return null
-    // If available we also apply the item state
-    protected static function parseIcon( iconType as String, item as Item? ) as ResourceId? {
-        if( ! iconType.equals( "" ) ) {
-            var itemState = Item.NO_STATE;
-            if( item != null ) {
-                itemState = item.state;
-            }
-            switch( iconType ) {
-                case "slider":
-                case "light": {
-                    var numericItemState = itemState.toNumber();
-                    
-                    if( numericItemState == null ) {
-                        if( itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) {
-                            return Rez.Drawables.menuLight00;
-                        } else {
-                            return Rez.Drawables.menuLight10;
-                        }
-                    } else {
-                        if( numericItemState >= 100 ) {
-                            return Rez.Drawables.menuLight10;
-                        } else if( numericItemState >= 90 ) {
-                            return Rez.Drawables.menuLight09;
-                        } else if( numericItemState >= 80 ) {
-                            return Rez.Drawables.menuLight08;
-                        } else if( numericItemState >= 70 ) {
-                            return Rez.Drawables.menuLight07;
-                        } else if( numericItemState >= 60 ) {
-                            return Rez.Drawables.menuLight06;
-                        } else if( numericItemState >= 50 ) {
-                            return Rez.Drawables.menuLight05;
-                        } else if( numericItemState >= 40 ) {
-                            return Rez.Drawables.menuLight04;
-                        } else if( numericItemState >= 30 ) {
-                            return Rez.Drawables.menuLight03;
-                        } else if( numericItemState >= 20 ) {
-                            return Rez.Drawables.menuLight02;
-                        } else if( numericItemState >= 10 ) {
-                            return Rez.Drawables.menuLight01;
-                        } else {
-                            return Rez.Drawables.menuLight00;
-                        }
-                    }
-                }
-
-                case "lightbulb": return Rez.Drawables.menuLight10;
-
-                case "garagedoor": {
-                    var numericItemState = itemState.toNumber();
-                    
-                    if( numericItemState == null ) {
-                        if( itemState.equals( SwitchItem.ITEM_STATE_CLOSED ) ) {
-                            return Rez.Drawables.menuGaragedoor10;
-                        } else if( itemState.equals( SwitchItem.ITEM_STATE_OPEN ) ) {
-                            return Rez.Drawables.menuGaragedoor00;
-                        } else {
-                            return Rez.Drawables.menuGaragedoor05;
-                        }
-                    } else {
-                        if( numericItemState >= 100 ) {
-                            return Rez.Drawables.menuGaragedoor10;
-                        } else if( numericItemState >= 90 ) {
-                            return Rez.Drawables.menuGaragedoor09;
-                        } else if( numericItemState >= 80 ) {
-                            return Rez.Drawables.menuGaragedoor08;
-                        } else if( numericItemState >= 70 ) {
-                            return Rez.Drawables.menuGaragedoor07;
-                        } else if( numericItemState >= 60 ) {
-                            return Rez.Drawables.menuGaragedoor06;
-                        } else if( numericItemState >= 50 ) {
-                            return Rez.Drawables.menuGaragedoor05;
-                        } else if( numericItemState >= 40 ) {
-                            return Rez.Drawables.menuGaragedoor04;
-                        } else if( numericItemState >= 30 ) {
-                            return Rez.Drawables.menuGaragedoor03;
-                        } else if( numericItemState >= 20 ) {
-                            return Rez.Drawables.menuGaragedoor02;
-                        } else if( numericItemState >= 10 ) {
-                            return Rez.Drawables.menuGaragedoor01;
-                        } else {
-                            return Rez.Drawables.menuGaragedoor00;
-                        }
-                    }
-                }
-
-                case "blinds":
-                case "rollershutter": {
-                    var numericItemState = itemState.toNumber();
-                    
-                    if( numericItemState == null || numericItemState >= 100 ) {
-                        return Rez.Drawables.menuRollershutter10;
-                    } else if( numericItemState >= 90 ) {
-                        return Rez.Drawables.menuRollershutter09;
-                    } else if( numericItemState >= 80 ) {
-                        return Rez.Drawables.menuRollershutter08;
-                    } else if( numericItemState >= 70 ) {
-                        return Rez.Drawables.menuRollershutter07;
-                    } else if( numericItemState >= 60 ) {
-                        return Rez.Drawables.menuRollershutter06;
-                    } else if( numericItemState >= 50 ) {
-                        return Rez.Drawables.menuRollershutter05;
-                    } else if( numericItemState >= 40 ) {
-                        return Rez.Drawables.menuRollershutter04;
-                    } else if( numericItemState >= 30 ) {
-                        return Rez.Drawables.menuRollershutter03;
-                    } else if( numericItemState >= 20 ) {
-                        return Rez.Drawables.menuRollershutter02;
-                    } else if( numericItemState >= 10 ) {
-                        return Rez.Drawables.menuRollershutter01;
-                    } else {
-                        return Rez.Drawables.menuRollershutter00;
-                    }
-                }
- 
-                case "screen": {
-                    if( itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) {
-                        return Rez.Drawables.menuScreenOff;
-                    } else {
-                        return Rez.Drawables.menuScreenOn;
-                    }
-                }
-
-                case "temperature": {
-                    return Rez.Drawables.menuTemperature;
-                }
-
-                case "humidity": {
-                    var numericItemState = itemState.toNumber();
-                    
-                    if( numericItemState == null ) {
-                        return Rez.Drawables.menuHumidity05;
-                    } else {
-                        if( numericItemState >= 100 ) {
-                            return Rez.Drawables.menuHumidity10;
-                        } else if( numericItemState >= 90 ) {
-                            return Rez.Drawables.menuHumidity09;
-                        } else if( numericItemState >= 80 ) {
-                            return Rez.Drawables.menuHumidity08;
-                        } else if( numericItemState >= 70 ) {
-                            return Rez.Drawables.menuHumidity07;
-                        } else if( numericItemState >= 60 ) {
-                            return Rez.Drawables.menuHumidity06;
-                        } else if( numericItemState >= 50 ) {
-                            return Rez.Drawables.menuHumidity05;
-                        } else if( numericItemState >= 40 ) {
-                            return Rez.Drawables.menuHumidity04;
-                        } else if( numericItemState >= 30 ) {
-                            return Rez.Drawables.menuHumidity03;
-                        } else if( numericItemState >= 20 ) {
-                            return Rez.Drawables.menuHumidity02;
-                        } else if( numericItemState >= 10 ) {
-                            return Rez.Drawables.menuHumidity01;
-                        } else {
-                            return Rez.Drawables.menuHumidity00;
-                        }
-                    }
-                }
-
-                case "batterylevel": {
-                    var numericItemState = itemState.toNumber();
-                    
-                    if( numericItemState == null ) {
-                        return Rez.Drawables.menuBatteryLevel07;
-                    } else {
-                        if( numericItemState >= 100 ) {
-                            return Rez.Drawables.menuBatteryLevel10;
-                        } else if( numericItemState >= 90 ) {
-                            return Rez.Drawables.menuBatteryLevel09;
-                        } else if( numericItemState >= 80 ) {
-                            return Rez.Drawables.menuBatteryLevel08;
-                        } else if( numericItemState >= 70 ) {
-                            return Rez.Drawables.menuBatteryLevel07;
-                        } else if( numericItemState >= 60 ) {
-                            return Rez.Drawables.menuBatteryLevel06;
-                        } else if( numericItemState >= 50 ) {
-                            return Rez.Drawables.menuBatteryLevel05;
-                        } else if( numericItemState >= 40 ) {
-                            return Rez.Drawables.menuBatteryLevel04;
-                        } else if( numericItemState >= 30 ) {
-                            return Rez.Drawables.menuBatteryLevel03;
-                        } else if( numericItemState >= 20 ) {
-                            return Rez.Drawables.menuBatteryLevel02;
-                        } else if( numericItemState >= 10 ) {
-                            return Rez.Drawables.menuBatteryLevel01;
-                        } else {
-                            return Rez.Drawables.menuBatteryLevel00;
-                        }
-                    }
-                }
-
-                case "lowbattery": return Rez.Drawables.menuBatteryLevel00;
-
-                case "radiator": return Rez.Drawables.menuRadiator;
-
-            }
-        }
-        return null;
+    // To be used to update the state if a change
+    // is triggered from within the app
+    public function processUpdatedState() as Void {
+        _icon = IconParser.parse( _iconType, _item );
+        _remoteDisplayState = NO_DISPLAY_STATE;
+        _displayState = _item != null
+                            ? _item.getState()
+                            : NO_DISPLAY_STATE;
     }
 }

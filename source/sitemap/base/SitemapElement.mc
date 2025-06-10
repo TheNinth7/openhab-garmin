@@ -13,14 +13,20 @@ import Toybox.Graphics;
  */
 class SitemapElement {
 
+    protected static const NO_DISPLAY_STATE as String = "-";
+
+    private var _isSitemapFresh as Boolean;
+
+    // Constructor
+    protected function initialize( isSitemapFresh as Boolean ) {
+        _isSitemapFresh = isSitemapFresh;
+    }
+
     // Indicates whether the state is fresh
     // If received via web request, it is always considered
     // fresh, if read from storage it depends on the data's age
-    public var isSitemapFresh as Boolean;
-
-    // Constructor
-    protected function initialize( initSitemapFresh as Boolean ) {
-        isSitemapFresh = initSitemapFresh;
+    public function isSitemapFresh() as Boolean {
+        return _isSitemapFresh;
     }
 
     // Widget labels and page titles may include a display state in the format:
@@ -42,7 +48,7 @@ class SitemapElement {
             remoteDisplayState = fullLabel.substring( bracket+2, fullLabel.length()-1 ) as String?;
         }
         if( remoteDisplayState == null || remoteDisplayState.equals( "-" ) ) {
-            remoteDisplayState = Item.NO_STATE;
+            remoteDisplayState = NO_DISPLAY_STATE;
         }
         return [label, remoteDisplayState];
     }

@@ -37,7 +37,7 @@ class RollershutterView extends CustomView {
 
         // The title
         _titleDrawable = new TextArea( {
-            :text => _sitemapSwitch.label,
+            :text => _sitemapSwitch.getLabel(),
             :font => Constants.UI_PICKER_TITLE_FONTS,
             :justification => Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER,
             :locX => WatchUi.LAYOUT_HALIGN_CENTER,
@@ -136,10 +136,10 @@ class RollershutterView extends CustomView {
             // regardless of any mappings. If the state
             // is not numeric, we'll leave it at the previous
             // state.
-            if( _sitemapSwitch.item.state.toNumber() != null ) {
+            if( _sitemapSwitch.getSwitchItem().getState().toNumber() != null ) {
                 stateDrawable.setText( 
-                    _sitemapSwitch.item.state 
-                    + _sitemapSwitch.item.unit
+                    _sitemapSwitch.getSwitchItem().getState() 
+                    + _sitemapSwitch.getSwitchItem().getUnit()
                 );
             }
         }
@@ -152,7 +152,7 @@ class RollershutterView extends CustomView {
         _sitemapSwitch = sitemapSwitch;
         
         if( _titleDrawable != null ) {
-            _titleDrawable.setText( _sitemapSwitch.label );
+            _titleDrawable.setText( _sitemapSwitch.getLabel() );
         }
         
         updateStateDrawable();

@@ -52,9 +52,10 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
         _parent = options[:parent] as BasePageMenu;
 
         // If the widget has a linked page, we initialize a sub menu for it
-        if( sitemapWidget.linkedPage != null ) {
+        var linkedPage = sitemapWidget.getLinkedPage();
+        if( linkedPage != null ) {
             _page = new PageMenu( 
-                sitemapWidget.linkedPage as SitemapContainerImplementation, 
+                linkedPage as SitemapContainerImplementation, 
                 _parent 
             );
         }
@@ -65,11 +66,11 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
         // And initialize the base class, partly with data from
         // the SitemapWidget, partly with other options
         BaseSitemapMenuItem.initialize( {
-            :icon => sitemapWidget.icon,
-            :label => sitemapWidget.label,
-            :labelColor => sitemapWidget.labelColor,
+            :icon => sitemapWidget.getIcon(),
+            :label => sitemapWidget.getLabel(),
+            :labelColor => sitemapWidget.getLabelColor(),
             :state => options[:state],
-            :stateColor => sitemapWidget.valueColor,
+            :stateColor => sitemapWidget.getValueColor(),
             // If there is a page, we show the page icon, otherwise if
             // isActionable was set by the subclass, we show the command icon
             :actionIcon => 
@@ -119,13 +120,13 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
      */
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void { 
         var updateOptions = {
-            :icon => sitemapWidget.icon,
-            :label => sitemapWidget.label,
-            :labelColor => sitemapWidget.labelColor,
-            :stateColor => sitemapWidget.valueColor,
+            :icon => sitemapWidget.getIcon(),
+            :label => sitemapWidget.getLabel(),
+            :labelColor => sitemapWidget.getLabelColor(),
+            :stateColor => sitemapWidget.getValueColor(),
         };
 
-        var linkedPage = sitemapWidget.linkedPage as SitemapContainerImplementation;
+        var linkedPage = sitemapWidget.getLinkedPage() as SitemapContainerImplementation;
 
         if( linkedPage != null && _page != null ) {
             _page.update( linkedPage );

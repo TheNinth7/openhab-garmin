@@ -10,7 +10,7 @@ import Toybox.WatchUi;
  */
 class NumericItem extends Item {
 
-    public var numericState as Number = 0;
+    private var _numericState as Number = 0;
 
     // Constructor
     public function initialize( json as JsonAdapter ) {
@@ -20,12 +20,22 @@ class NumericItem extends Item {
         // state at 0, analogue to how the 
         // openHAB Main UI handles it
         if( hasState() ) {
-            var localNumericState = state.toNumber();
-            if( localNumericState != null ) {
-                numericState = localNumericState;
+            var numericState = getState().toNumber();
+            if( numericState != null ) {
+                _numericState = numericState;
             } else {
                 throw new JsonParsingException( "state is not numeric" );
             }
         }
+    }
+
+    // Returns the numeric state
+    public function getNumericState() as Number { return _numericState; }
+
+    // Updates the numeric state as well as the
+    // string state of the base class
+    public function updateNumericState( numericState as Number ) as Void {
+        _numericState = numericState;
+        updateState( numericState.toString() );
     }
 }

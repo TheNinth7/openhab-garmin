@@ -12,8 +12,8 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
             sitemapWidget instanceof SitemapSwitch
-            && sitemapWidget.item.type.equals( "Rollershutter" )
-            && sitemapWidget.item.hasState();
+            && sitemapWidget.getSwitchItem().getType().equals( "Rollershutter" )
+            && sitemapWidget.getSwitchItem().hasState();
     }
 
     // For sending commands
@@ -42,7 +42,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
         _commandRequest = BaseCommandRequest.get( self );
 
         // The state shown in the menu item
-        _stateDrawable = new StateText( sitemapSwitch.displayState );
+        _stateDrawable = new StateText( sitemapSwitch.getDisplayState() );
         
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
@@ -56,7 +56,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
     // This function is called during a command request to identify
     // the target item that the command should be sent to.
     public function getItemName() as String {
-        return _sitemapSwitch.item.name;
+        return _sitemapSwitch.getSwitchItem().getName();
     }
 
     // Nothing to be done, but needed to fullfil the delegate interface
@@ -113,14 +113,14 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
         
         // Verify that the passed in element is of the right type
         if( ! ( sitemapWidget instanceof SitemapSwitch ) ) {
-            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into RollershutterMenuItem but is of a different type" );
+            throw new GeneralException( "Sitemap element '" + sitemapWidget.getLabel() + "' was passed into RollershutterMenuItem but is of a different type" );
         }
         
         // Store the new widget
         _sitemapSwitch = sitemapWidget;
         
         // Update the state drawable
-        _stateDrawable.setText( sitemapWidget.displayState );
+        _stateDrawable.setText( sitemapWidget.getDisplayState() );
         
         // If the view is currently open, we update it as well      
         if( _rollershutterView != null ) {

@@ -18,7 +18,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
             sitemapWidget instanceof SitemapNumeric
-            && sitemapWidget.item.hasState();
+            && sitemapWidget.getNumericItem().hasState();
     }
 
     // The text state Drawable
@@ -45,8 +45,10 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         _commandRequest = BaseCommandRequest.get( self );
 
         // The state shown in the menu item
+        var item = sitemapNumeric.getNumericItem();
         _stateText = new StateText( 
-            sitemapNumeric.item.numericState.toString() + sitemapNumeric.item.unit
+            item.getNumericState().toString() 
+            + item.getUnit()
         );
         
         BaseWidgetMenuItem.initialize( {
@@ -64,10 +66,10 @@ class NumericMenuItem extends BaseWidgetMenuItem {
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
         BaseWidgetMenuItem.updateWidget( sitemapWidget );
         if( ! ( sitemapWidget instanceof SitemapNumeric ) ) {
-            throw new GeneralException( "Sitemap element '" + sitemapWidget.label + "' was passed into NumericMenuItem but is of a different type" );
+            throw new GeneralException( "Sitemap element '" + sitemapWidget.getLabel() + "' was passed into NumericMenuItem but is of a different type" );
         }
         _sitemapNumeric = sitemapWidget;
-        _stateText.setText( sitemapWidget.item.numericState.toString() + sitemapWidget.item.unit );
+        _stateText.setText( sitemapWidget.getDisplayState() );
     }
 
     // When the menu item is selected, the CustomPicker is initialized
@@ -91,7 +93,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
     // This function is called during a command request to identify
     // the target item that the command should be sent to.
     public function getItemName() as String {
-        return _sitemapNumeric.item.name;
+        return _sitemapNumeric.getNumericItem().getName();
     }
 
     // The Picker uses this function to update the state
@@ -105,10 +107,12 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         _sitemapNumeric.updateState( newState );
         
         // Update the state
-        _stateText.setText( _sitemapNumeric.displayState );
+        _stateText.setText( _sitemapNumeric.getDisplayState() );
         
         // And send the command
-        ( _commandRequest as BaseCommandRequest ).sendCommand( _sitemapNumeric.item.state );
+        ( _commandRequest as BaseCommandRequest ).sendCommand( 
+            _sitemapNumeric.getNumericItem().getState() 
+        );
     }
 
     // Nothing to be done, but needed to fullfil the delegate interface

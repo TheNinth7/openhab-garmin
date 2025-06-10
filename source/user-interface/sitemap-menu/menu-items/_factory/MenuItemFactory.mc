@@ -14,7 +14,7 @@ class MenuItemFactory {
     ) as BaseWidgetMenuItem {
         if( sitemapWidget instanceof SitemapFrame ) {
             return new FrameMenuItem( sitemapWidget, parent );
-        } else if( ! sitemapWidget.isSitemapFresh ) {
+        } else if( ! sitemapWidget.isSitemapFresh() ) {
             // If the sitemap is not fresh, we display no state - regardless of type matching
             return new NoStateMenuItem( sitemapWidget, parent );
         } else if( OnOffSwitchMenuItem.isMyType( sitemapWidget ) ) {
@@ -27,13 +27,13 @@ class MenuItemFactory {
             return new RollershutterMenuItem( sitemapWidget as SitemapSwitch, parent );
         } else if( GenericSwitchMenuItem.isMyType( sitemapWidget ) ) {
             return new GenericSwitchMenuItem( sitemapWidget as SitemapSwitch, parent );
-         } else if( NoStateMenuItem.isMyType( sitemapWidget ) ) {
+        } else if( NoStateMenuItem.isMyType( sitemapWidget ) ) {
             // If none of the widgets was a match, we default to no state
             // The widgets above verify if there is a valid state, so
             // they won't trigger a match if there is none
             return new NoStateMenuItem( sitemapWidget, parent );
        } else {
-            throw new JsonParsingException( "Element '" + sitemapWidget.label + "' is not supported" );
+            throw new JsonParsingException( "Element '" + sitemapWidget.getLabel() + "' is not supported" );
         }
     }
 }

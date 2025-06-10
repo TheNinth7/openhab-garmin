@@ -24,7 +24,7 @@ class SitemapContainerBuildTask extends BaseSitemapProcessorTask {
         _sitemapContainer.widgets.add(
             SitemapWidgetFactory.createByType( 
                 _widget,
-                _sitemapContainer.isSitemapFresh,
+                _sitemapContainer.isSitemapFresh(),
                 true
             )
         );

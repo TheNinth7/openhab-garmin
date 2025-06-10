@@ -27,7 +27,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         return 
             sitemapWidget instanceof SitemapSwitch 
             && sitemapWidget.hasMappings()
-            && sitemapWidget.item.hasState();
+            && sitemapWidget.getSwitchItem().hasState();
     }
 
     // Constructor
@@ -37,8 +37,8 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     ) {
         // Initialize the Drawable for the state text, and set the color
         _stateDrawable = new StateTextArea( 
-            sitemapSwitch.label, 
-            sitemapSwitch.displayState
+            sitemapSwitch.getLabel(), 
+            sitemapSwitch.getDisplayState()
         );
 
         _stateDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
@@ -63,26 +63,28 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     public function updateItemState( state as String ) as Void {
         BaseSwitchMenuItem.updateItemState( state );
         _stateDrawable.update( 
-            _sitemapSwitch.label, 
-            _sitemapSwitch.displayState
+            _sitemapSwitch.getLabel(), 
+            _sitemapSwitch.getDisplayState()
         );
     }
 
     // Called by the superclass to determine the command
     // that shell be sent when the menu item is selected
     public function getNextCommand() as String? {
-        var itemState = _sitemapSwitch.item.state;
-        var commandDescriptions = _sitemapSwitch.commandDescriptions;
+        var itemState = _sitemapSwitch.getSwitchItem().getState();
+        var commandDescriptions = _sitemapSwitch.getCommandDescriptions();
         if( commandDescriptions.size() == 1 ) {
             // For one mapping, we just send that command
-            return commandDescriptions[0].command;
+            return commandDescriptions.getCommandDescription( 0 ).getCommand();
         } else if ( commandDescriptions.size() == 2 ) {
             // For two mappings, we check if the current state equals
             // to one of them and then send the other
-            if( commandDescriptions[0].command.equals( itemState ) ) {
-                return commandDescriptions[1].command;
-            } else if( commandDescriptions[1].command.equals( itemState ) ) {
-                return commandDescriptions[0].command;
+            var firstCommand = commandDescriptions.getCommandDescription( 0 ).getCommand();
+            var secondCommand = commandDescriptions.getCommandDescription( 1 ).getCommand();
+            if( firstCommand.equals( itemState ) ) {
+                return secondCommand;
+            } else if( secondCommand.equals( itemState ) ) {
+                return firstCommand;
             }
         }
         
@@ -90,12 +92,13 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         var actionMenu = new ActionMenu( null );
         // Add items
         for( var i = 0; i < commandDescriptions.size(); i++ ) {
-            var commandDescription = commandDescriptions[i];
+            var commandDescription = commandDescriptions.getCommandDescription( i );
             // We exclude the current state
-            if( ! commandDescription.command.equals( itemState ) ) {
+            var command = commandDescription.getCommand();
+            if( ! command.equals( itemState ) ) {
                 actionMenu.addItem( new ActionMenuItem(
-                    { :label => commandDescription.label },
-                    commandDescription.command
+                    { :label => commandDescription.getLabel() },
+                    command
                 ) );
             }
         }
