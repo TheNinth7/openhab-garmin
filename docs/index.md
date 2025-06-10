@@ -735,16 +735,6 @@ SOFTWARE.
 
 The in-app iconography is attributed to the following sources:
 
-![Lightbulb On](iconography/light-bulb-on.svg)
-
-[Lightbulb](https://thenounproject.com/icon/lightbulb-3194358/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/lightbulb/) (CC BY 3.0)
-
----
-
-![Folder](iconography/folder.svg)
-
-[Folder](https://thenounproject.com/icon/folder-1637828/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/folder/) (CC BY 3.0)
-
 ---
 
 ![Settings](iconography/settings.svg)
@@ -789,6 +779,6 @@ Derived from:
 
 ---
 
-![Stop Hint](iconography/stop_hint.svg)
+![Stop Hint](iconography/stop-hint.svg)
 
 [Stop Hint](https://thenounproject.com/icon/stop-1939970/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/stop/) (CC BY 3.0)
