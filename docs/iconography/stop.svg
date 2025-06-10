@@ -6,7 +6,7 @@
    viewBox="0 0 95 95"
    xml:space="preserve"
    id="svg4"
-   sodipodi:docname="stop.svg"
+   sodipodi:docname="stop-orange.svg"
    width="95"
    height="95"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
@@ -16,7 +16,7 @@
    xmlns:svg="http://www.w3.org/2000/svg"><defs
      id="defs4" /><sodipodi:namedview
      id="namedview4"
-     pagecolor="#ffffff"
+     pagecolor="#000000"
      bordercolor="#000000"
      borderopacity="0.25"
      inkscape:showpageshadow="2"
@@ -34,7 +34,7 @@
      inkscape:current-layer="svg4" /><path
      d="M 61.21164,29.732804 H 33.78836 c -2.2209,0 -4.055556,1.834656 -4.055556,4.055556 v 27.42328 c 0,2.2209 1.834656,4.055556 4.055556,4.055556 h 27.42328 c 2.2209,0 4.055556,-1.834656 4.055556,-4.055556 V 33.78836 c 0,-2.2209 -1.834656,-4.055556 -4.055556,-4.055556 z"
      id="path1"
-     style="fill:#000000;stroke:#000000;stroke-width:0.965608;stroke-opacity:1" /><path
-     d="M 47.5,0 C 21.3,0 0,21.3 0,47.5 0,73.7 21.3,95 47.5,95 73.7,95 95,73.7 95,47.5 95,21.3 73.7,0 47.5,0 Z m 0,88.5 c -22.6,0 -41,-18.4 -41,-41 0,-22.6 18.4,-41 41,-41 22.6,0 41,18.4 41,41 0,22.6 -18.4,41 -41,41 z"
+     style="fill:#e64e19;stroke:#e64e19;stroke-width:0.965608;stroke-opacity:1;fill-opacity:1" /><path
+     d="M 47.5,1.95e-7 C 21.3,1.95e-7 2.4999999e-8,21.3 2.4999999e-8,47.5 2.4999999e-8,73.7 21.3,95 47.5,95 73.7,95 95,73.7 95,47.5 95,21.3 73.7,1.95e-7 47.5,1.95e-7 Z M 47.5,88.5 c -22.6,0 -41,-18.4 -41,-41 0,-22.6 18.4,-40.9999998 41,-40.9999998 22.6,0 41,18.3999998 41,40.9999998 0,22.6 -18.4,41 -41,41 z"
      id="path5"
-     style="fill:#000000;fill-opacity:1" /></svg>
+     style="fill:#e64e19;fill-opacity:1" /></svg>

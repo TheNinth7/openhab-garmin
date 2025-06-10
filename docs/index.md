@@ -777,10 +777,14 @@ Derived from:
 
 ![Stop](iconography/stop.svg)
 
+Derived from:
+
 [Stop](https://thenounproject.com/icon/stop-1939990/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/stop/) (CC BY 3.0)
 
 ---
 
 ![Stop Hint](iconography/stop-hint.svg)
+
+Derived from:
 
 [Stop Hint](https://thenounproject.com/icon/stop-1939970/) by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/term/stop/) (CC BY 3.0)
