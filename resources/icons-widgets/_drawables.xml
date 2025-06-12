@@ -64,7 +64,7 @@
     <bitmap id="menuScreenOff" scaleY="11%" filename="screen-off.svg" dithering="none"/>
     <bitmap id="menuScreenOn" scaleY="11%" filename="screen-on.svg" dithering="none"/>
 
-    <bitmap id="menuSettings" scaleY="12%" filename="settings.svg" dithering="none" />
+    <bitmap id="menuSettings" scaleY="10%" filename="settings.svg" dithering="none" />
 
     <bitmap id="menuTemperature" scaleY="12%" filename="temperature.svg" dithering="none"/>
 
