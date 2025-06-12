@@ -20,7 +20,8 @@ import Toybox.Graphics;
 // Defines the options accepted by the `BaseSitemapWidgetItem` class.
 typedef BaseWidgetMenuItemOptions as {
     :sitemapWidget as SitemapWidget,
-    :state as Drawable?,
+    :stateTextResponsive as String?,
+    :stateDrawable as BaseSitemapMenuItem.StateDrawable?,
     :isActionable as Boolean?, // if true, the action icon is displayed
     :parent as BasePageMenu
 };
@@ -45,20 +46,8 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
     protected function initialize( 
         options as BaseWidgetMenuItemOptions
     ) {
-        // Extract the widget
-        var sitemapWidget = options[:sitemapWidget] as SitemapWidget;
-
         // Store the parent
         _parent = options[:parent] as BasePageMenu;
-
-        // If the widget has a linked page, we initialize a sub menu for it
-        var linkedPage = sitemapWidget.getLinkedPage();
-        if( linkedPage != null ) {
-            _page = new PageMenu( 
-                linkedPage as SitemapContainerImplementation, 
-                _parent 
-            );
-        }
 
         var isActionable = options[:isActionable] as Boolean?;
         _isActionable = isActionable != null && isActionable;
@@ -66,20 +55,11 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
         // And initialize the base class, partly with data from
         // the SitemapWidget, partly with other options
         BaseSitemapMenuItem.initialize( {
-            :icon => sitemapWidget.getIcon(),
-            :label => sitemapWidget.getLabel(),
-            :labelColor => sitemapWidget.getLabelColor(),
-            :state => options[:state],
-            :stateColor => sitemapWidget.getValueColor(),
-            // If there is a page, we show the page icon, otherwise if
-            // isActionable was set by the subclass, we show the command icon
-            :actionIcon => 
-                _page != null
-                    ? ACTION_ICON_PAGE
-                    : _isActionable
-                        ? ACTION_ICON_COMMAND
-                        : null
+            :stateDrawable => options[:stateDrawable],
+            :stateTextResponsive => options[:stateTextResponsive]
         } );
+
+        updateWidget( options[:sitemapWidget] as SitemapWidget );
     }
 
     // Returns true if the widget is linked to a page (sub menu)
@@ -119,28 +99,22 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
      * updateWidget() to ensure core functionality is preserved.
      */
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void { 
-        var updateOptions = {
-            :icon => sitemapWidget.getIcon(),
-            :label => sitemapWidget.getLabel(),
-            :labelColor => sitemapWidget.getLabelColor(),
-            :stateColor => sitemapWidget.getValueColor(),
-        };
+        setIcon( sitemapWidget.getIcon() );
+        setLabel( sitemapWidget.getLabel() );
+        setLabelColor( sitemapWidget.getLabelColor() );
+        setStateColor( sitemapWidget.getValueColor() );
 
-        var linkedPage = sitemapWidget.getLinkedPage() as SitemapContainerImplementation;
-
-        if( linkedPage != null && _page != null ) {
-            _page.update( linkedPage );
-        } else if( linkedPage != null && _page == null ) {
-            _page = new PageMenu( linkedPage, _parent );
-
-            updateOptions[:actionIcon] = ACTION_ICON_PAGE;
+        var linkedPage = sitemapWidget.getLinkedPage() as SitemapContainerImplementation?;
+        if( linkedPage != null ) {
+            setActionIcon( ACTION_ICON_PAGE );
+            if( _page != null ) {
+                _page.update( linkedPage );
+            } else {
+                _page = new PageMenu( linkedPage, _parent );
+            }
         } else if( _isActionable ) {
             _page = null;
-            updateOptions[:actionIcon] = ACTION_ICON_COMMAND;
-        } else {
-            clearActionIcon();
+            setActionIcon( ACTION_ICON_COMMAND );
         }
-
-        updateOptions( updateOptions );
     }
 }

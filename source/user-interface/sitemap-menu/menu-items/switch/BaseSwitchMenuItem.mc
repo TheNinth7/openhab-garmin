@@ -12,7 +12,8 @@ import Toybox.WatchUi;
 // Defines the options accepted by the `BaseWidgetMenuItem` class.
 typedef BaseSwitchMenuItemOptions as {
     :sitemapWidget as SitemapSwitch,
-    :state as Drawable?,
+    :stateTextResponsive as String?,
+    :stateDrawable as BaseSitemapMenuItem.StateDrawable?,
     :isActionable as Boolean?, // if true, the action icon is displayed
     :parent as BasePageMenu
 };
@@ -112,7 +113,7 @@ class BaseSwitchMenuItem extends BaseWidgetMenuItem {
     public function updateItemState( state as String ) as Void {
         if( ! _sitemapSwitch.getSwitchItem().getState().equals( state ) ) {
             _sitemapSwitch.updateState( state );
-            updateIcon( _sitemapSwitch.getIcon() );
+            setIcon( _sitemapSwitch.getIcon() );
         }
     }
 

@@ -26,7 +26,6 @@ class EdgeDefaultConstants extends DefaultConstants {
     // Less padding but more spacing
     public static const UI_MENU_ITEM_PADDING_LEFT_FACTOR as Float = 0.01;
     public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.01;
-    public static const UI_MENU_ITEM_STATUS_PADDING_RIGHT_FACTOR as Float = 0.0;
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.05;
 
     // Also the item heights are set differently (smaller in proportion to screen height), 

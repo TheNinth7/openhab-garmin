@@ -28,7 +28,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
     private var _sitemapSwitch as SitemapSwitch;
 
     // The Drawable for the state
-    private var _stateDrawable as Text;
+    private var _stateDrawable as StateText;
 
     // Constructor
     // Initializes the BaseCommandRequest used for changing the state,
@@ -46,7 +46,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
         
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
-                :state => _stateDrawable,
+                :stateDrawable => _stateDrawable,
                 :isActionable => true,
                 :parent => parent
             }

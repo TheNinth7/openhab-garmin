@@ -43,9 +43,15 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
         _stateDrawable = new OnOffStateDrawable( _isEnabled, _smallIcon );
         
         // Initialize the superclass
+        // For the toggle switch we support the display
+        // of a display state, if provided by the server
         BaseSwitchMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
-                :state => _stateDrawable,
+                :stateTextResponsive => 
+                    sitemapSwitch.hasRemoteDisplayState()
+                    ? sitemapSwitch.getRemoteDisplayState()
+                    : null,
+                :stateDrawable => _stateDrawable,
                 :isActionable => false,
                 :parent => parent
             }
@@ -84,5 +90,11 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
         BaseSwitchMenuItem.updateWidget( sitemapWidget );
         _smallIcon = sitemapWidget.getLinkedPage() != null;
+        // Update the display state provided by the server
+        setStateTextResponsive( 
+            sitemapWidget.hasRemoteDisplayState()
+            ? sitemapWidget.getRemoteDisplayState()
+            : null
+        );
     }
 }

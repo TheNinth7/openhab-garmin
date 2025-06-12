@@ -17,9 +17,6 @@ import Toybox.Graphics;
  *   manually select a command to send.
  */
 class GenericSwitchMenuItem extends BaseSwitchMenuItem {
-    // The Drawable that shows the current state
-    private var _stateDrawable as StateTextArea;
-
     // Returns true if the given widget matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         // This menu item applies to all Switches, that
@@ -35,18 +32,10 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
         sitemapSwitch as SitemapSwitch,
         parent as BasePageMenu
     ) {
-        // Initialize the Drawable for the state text, and set the color
-        _stateDrawable = new StateTextArea( 
-            sitemapSwitch.getLabel(), 
-            sitemapSwitch.getDisplayState()
-        );
-
-        _stateDrawable.setColor( Constants.UI_COLOR_ACTIONABLE );
-        
         // Initialize the superclass
         BaseSwitchMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
-                :state => _stateDrawable,
+                :stateTextResponsive => sitemapSwitch.getDisplayState(),
                 :isActionable => true,
                 :parent => parent
             }
@@ -62,10 +51,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // arrives
     public function updateItemState( state as String ) as Void {
         BaseSwitchMenuItem.updateItemState( state );
-        _stateDrawable.update( 
-            _sitemapSwitch.getLabel(), 
-            _sitemapSwitch.getDisplayState()
-        );
+        setStateTextResponsive( _sitemapSwitch.getDisplayState() );
     }
 
     // Called by the superclass to determine the command

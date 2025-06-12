@@ -53,7 +53,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapNumeric,
-                :state => _stateText,
+                :stateDrawable => _stateText,
                 :isActionable => true,
                 :parent => parent
             }

@@ -11,25 +11,16 @@ import Toybox.WatchUi;
  */
 class TextMenuItem extends BaseWidgetMenuItem {
     
-    // The text state Drawable
-    private var _stateTextArea as StateTextArea;
-
     // Constructor
     public function initialize( 
         sitemapText as SitemapText,
         parent as BasePageMenu
     ) {
-        _stateTextArea = new StateTextArea( 
-            sitemapText.getLabel(), 
-            sitemapText.getDisplayState()
-        );
-        
         BaseWidgetMenuItem.initialize( {
-                :sitemapWidget => sitemapText,
-                :state => _stateTextArea,
-                :parent => parent
-            }
-        );
+            :sitemapWidget => sitemapText,
+            :stateTextResponsive => sitemapText.getDisplayState(),
+            :parent => parent
+        } );
     }
 
     // Returns true if the given widget matches the type handled by this menu item.
@@ -45,6 +36,6 @@ class TextMenuItem extends BaseWidgetMenuItem {
         if( ! ( sitemapWidget instanceof SitemapText ) ) {
             throw new GeneralException( "Sitemap element '" + sitemapWidget.getLabel() + "' was passed into TextMenuItem but is of a different type" );
         }
-        _stateTextArea.update( sitemapWidget.getLabel(), sitemapWidget.getDisplayState() );
+        setStateTextResponsive( sitemapWidget.getDisplayState() );
     }
 }
