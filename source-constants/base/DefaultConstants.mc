@@ -113,6 +113,15 @@ class DefaultConstants {
     public static const UI_MENU_ITEM_ICON_WIDTH as Number = 
         ( UI_SCREEN_WIDTH * 0.09 ).toNumber();
 
+    // This offset in pixel is applied to the positioning of the menu item icon
+    // Positive means the icon is shifted down, negative means up
+    public static const UI_MENU_ITEM_ICON_OFFSET as Number = 0;
+        // ( UI_SCREEN_HEIGHT * 0.005 ).toNumber();
+
+    // This offset in pixel is applied to the positioning of the menu item label
+    // Positive means the label is shifted down, negative means up
+    public static const UI_MENU_ITEM_LABEL_OFFSET as Number = 0;
+
     /*
     * Background color of menu items. Some newer devices, such as the Fenix 8 series,
     * provide a colored background for the focused item. Therefore, the menu item

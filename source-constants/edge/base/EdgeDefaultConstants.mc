@@ -11,7 +11,7 @@ class EdgeDefaultConstants extends DefaultConstants {
 
     // Default height of title and footer is too high
     public static const UI_MENU_TITLE_HEIGHT as Number = 
-        ( DefaultConstants.UI_SCREEN_HEIGHT * 0.25 ).toNumber();
+        ( DefaultConstants.UI_SCREEN_WIDTH * 0.35 ).toNumber();
     public static const UI_MENU_FOOTER_HEIGHT as Number = 
         ( DefaultConstants.UI_SCREEN_HEIGHT * 0.2 ).toNumber();
 
@@ -28,17 +28,23 @@ class EdgeDefaultConstants extends DefaultConstants {
     public static const UI_MENU_ITEM_PADDING_RIGHT_FACTOR as Float = 0.01;
     public static const UI_MENU_ITEM_SPACING_FACTOR as Float = 0.05;
 
-    // Also the item heights are set differently (smaller in proportion to screen height), 
-    // due to the relatively tall displays of the Edge devices
+    // Also the item heights are set differently and defined as proportion
+    // of screen width, not height. This allows to fit more items on devices
+    // with taller displays (such as 1040/1050)
     public static const UI_MENU_ITEM_HEIGHT as Number = 
-        ( DefaultConstants.UI_SCREEN_HEIGHT * 0.175 ).toNumber();
+        ( DefaultConstants.UI_SCREEN_WIDTH * 0.25 ).toNumber();
     public static const UI_SETTINGS_ITEM_HEIGHT as Number = 
-        ( DefaultConstants.UI_SCREEN_HEIGHT * 0.25 ).toNumber();
+        ( DefaultConstants.UI_SCREEN_WIDTH * 0.35 ).toNumber();
 
     // If an icon is present, the amount of space defined below will be reserved,
     // to allow alignment of labels that have icons of different widths.
     public static const UI_MENU_ITEM_ICON_WIDTH as Number = 
         ( DefaultConstants.UI_SCREEN_WIDTH * 0.13 ).toNumber();
+
+    // This offset in pixel is applied to the positioning of the menu item label
+    // Positive means the label is shifted down, negative means up
+    public static const UI_MENU_ITEM_LABEL_OFFSET as Number =
+        ( DefaultConstants.UI_SCREEN_HEIGHT * 0.011 ).toNumber();
 
     // Also for the error view we add FONT_LARGE
     public static const UI_ERROR_FONTS as Array<FontDefinition> = [Graphics.FONT_LARGE, Graphics.FONT_MEDIUM, Graphics.FONT_SMALL, Graphics.FONT_TINY, Graphics.FONT_GLANCE, Graphics.FONT_XTINY];

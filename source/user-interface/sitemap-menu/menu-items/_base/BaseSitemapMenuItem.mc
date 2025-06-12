@@ -97,7 +97,6 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         BaseMenuItem.initialize();
         _labelTextArea = new TextArea( {
             :font => Constants.UI_MENU_ITEM_FONTS,
-            :locY => WatchUi.LAYOUT_VALIGN_CENTER,
             :justification => Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER,
             :color => ensureLabelColor( null ),
             :backgroundColor => Constants.UI_MENU_ITEM_BG_COLOR,
@@ -173,7 +172,8 @@ class BaseSitemapMenuItem extends BaseMenuItem {
         Logger.debug( "onLayout" );
         var dcWidth = dc.getWidth();
         var dcHeight = dc.getHeight();
-        
+        var yCenter = dcHeight/2;
+
         // Calculate spacing and left padding
         var spacing = ( dcWidth * Constants.UI_MENU_ITEM_SPACING_FACTOR ).toNumber();
         var stateSpacing = ( dcWidth * Constants.UI_MENU_ITEM_STATE_SPACING_FACTOR ).toNumber();
@@ -190,7 +190,8 @@ class BaseSitemapMenuItem extends BaseMenuItem {
             var iconBitmap = _icon[1];
             iconBitmap.setLocation( 
                 leftX, 
-                ( ( (dc.getHeight()/2) - iconBitmap.height/2 ) * 1.1 ).toNumber() 
+                ( yCenter - iconBitmap.height/2 ).toNumber()
+                    + Constants.UI_MENU_ITEM_ICON_OFFSET 
             );
             leftX += Constants.UI_MENU_ITEM_ICON_WIDTH + spacing;
         }
@@ -233,8 +234,13 @@ class BaseSitemapMenuItem extends BaseMenuItem {
 
         // Finally the text area is initialized
         // At the calculated leftX and width
-        _labelTextArea.locX = leftX;
         _labelTextArea.setSize( rightX - leftX, dcHeight );
+        _labelTextArea.setLocation( 
+            leftX, 
+            Constants.UI_MENU_ITEM_LABEL_OFFSET != 0
+                ? yCenter - _labelTextArea.height/2 + Constants.UI_MENU_ITEM_LABEL_OFFSET
+                : WatchUi.LAYOUT_VALIGN_CENTER 
+        );
     }
 
     // Optional override to handle item selection (e.g., enter button or touch tap).
@@ -251,6 +257,9 @@ class BaseSitemapMenuItem extends BaseMenuItem {
             updateOldStateWidth();
         }
     
+        //dc.setColor( Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT );
+        //dc.drawRectangle( 0, 0, dc.getWidth(), dc.getHeight() );
+
         LittleHelpers.drawTupleIfNotNull( _icon, dc );
         _labelTextArea.draw( dc );
         LittleHelpers.drawTupleIfNotNull( _stateTextResponsive, dc );
