@@ -127,16 +127,21 @@ class BaseMenu extends CustomMenu {
 
             /*
             * The first time this function is called, we set the Y-position of the title `Drawable`.
-            * On Edge devices (with full-height titles), centering the element looks best.
-            * On round watch faces (with reduced title height), positioning the title slightly 
-            * below center provides more horizontal space and a better visual balance.
+            *
+            * On Edge devices (with full-height titles), slightly offsetting the title downward looks better.
+            * We use half the font descent for a subtle adjustment.
+            *
+            * On round watch faces (with reduced title height), placing the title further below center
+            * provides more horizontal space and achieves better visual balance. We use the full font descent.
             */
             if( _title.locY == 0 ) {
-                var locY;
-                if( Constants.UI_MENU_TITLE_HEIGHT_FACTOR == 1 ) {
-                    locY = WatchUi.LAYOUT_VALIGN_CENTER;
+                var locY = clipHeight * 0.5 - Graphics.getFontHeight( Constants.UI_MENU_TITLE_FONT ) / 2;
+                
+                if( System.getDeviceSettings().screenShape == Toybox.System.SCREEN_SHAPE_RECTANGLE ) {
+                    //locY = WatchUi.LAYOUT_VALIGN_CENTER;
+                    locY += Graphics.getFontDescent( Constants.UI_MENU_TITLE_FONT )/2;
                 } else {
-                    locY = clipHeight * 0.5 - Graphics.getFontHeight( Constants.UI_MENU_TITLE_FONT ) / 2 + Graphics.getFontDescent( Constants.UI_MENU_TITLE_FONT );
+                    locY += Graphics.getFontDescent( Constants.UI_MENU_TITLE_FONT );
                 }
                 _title.setLocation( WatchUi.LAYOUT_HALIGN_CENTER, locY );
             }
