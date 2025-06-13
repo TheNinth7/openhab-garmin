@@ -16,7 +16,7 @@
 
 # openHAB for Garmin
 
-**openHAB for Garmin** connects your Garmin wearable to your [openHAB](https://www.openhab.org) smart home system, giving you convenient access to essential devices and real-time information.
+**openHAB for Garmin** connects your Garmin wearable to your ➡️ [openHAB](https://www.openhab.org) smart home system, giving you convenient access to essential devices and real-time information.
 
 **Resources**
 
@@ -118,16 +118,16 @@ Garmin wearables rely on your smartphone for network access. If your phone can r
 - **iOS**: HTTP and HTTPS supported  
 - **Android**: Only HTTPS with a valid certificate is supported due to Garmin SDK limitations
 
-You can use [myopenHAB](https://www.myopenhab.org) to securely access your local openHAB instance over the Internet using HTTPS.
+You can use ➡️ [myopenHAB](https://www.myopenhab.org) to securely access your local openHAB instance over the Internet using HTTPS.
 
 ---
 
 ## Using myopenHAB
 
-To connect using [myopenHAB](https://myopenhab.org):
+To connect using ➡️ [myopenHAB](https://myopenhab.org):
 
-1. Install the [openHAB Cloud Connector](https://www.openhab.org/addons/integrations/openhabcloud/)
-2. Register at [myopenhab.org](https://myopenhab.org)
+1. Install the ➡️ [openHAB Cloud Connector](https://www.openhab.org/addons/integrations/openhabcloud/)
+2. Register at ➡️ [myopenhab.org](https://myopenhab.org)
 3. Set the URL in the app to `https://home.myopenhab.org`
 4. Use your myopenHAB username and password for authentication
 
@@ -184,19 +184,21 @@ sitemap garmin_demo label="My Home" {
 
 The following element types are currently supported:
 
-- [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame)
+- [`Frame`](#frame)
 
-- [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text)
+- [`Text`](#text)
 
-- [`Group`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-group)
+- [`Group`](#group)
 
-- [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch)
+- [`Switch`](#switch-and-selection)
 
-- [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider)
+- [`Selection`](#switch-and-selection)
+
+- [`Setpoint`](#setpoint-and-slider)
+
+- [`Slider`](#setpoint-and-slider)
 
 The following sections describe the supported parameters and the Sitemap Widget associated with each of these elements.
-
-Here’s a revised and more concise version of your section with improved flow, grammar, and clarity:
 
 #### Nested Elements
 
@@ -209,13 +211,13 @@ In openHAB, `Frame` elements are used to visually separate areas on a page, whil
 * For `Frame` and `Text`, nested elements must be defined manually. The only functional difference is that `Text` displays the associated item’s state, whereas `Frame` does not.
 * `Group` elements automatically populate their nested elements based on the members of the referenced group item.
 
-For more details, refer to the [openHAB documentation on nested elements](https://www.openhab.org/docs/ui/sitemaps.html#nested-elements).
+For more details, refer to the ➡️ [openHAB documentation on nested elements](https://www.openhab.org/docs/ui/sitemaps.html#nested-elements).
 
 ---
 
 ### `Frame`
 
-The [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame) element is [one of three](#nested-elements) sitemap elements that support hierarchical structuring.
+The ➡️ [`Frame`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame) element is [one of three](#nested-elements) sitemap elements that support hierarchical structuring.
 
 You can nest `Frame` elements within other `Frame` elements. While this is allowed by the specification, openHAB may log a warning when doing so — but it still functions as expected.
 
@@ -251,7 +253,7 @@ This configuration produces the following display in the UI:
 
 ### `Default`
 
-The [`Default`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame) element displays an item using the default widget determined by its type. This widget selection is handled automatically by openHAB.
+The ➡️ [`Default`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-frame) element displays an item using the default widget determined by its type. This widget selection is handled automatically by openHAB.
 
 The Garmin app supports `Default` only if the item’s type maps to one of the app’s supported widgets. If this is not the case, an error will be shown instead.
 
@@ -259,7 +261,7 @@ The Garmin app supports `Default` only if the item’s type maps to one of the a
 
 ### `Text`
 
-The [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text) Sitemap Widget is used to display the current state of an item without allowing any user interaction.
+The ➡️ [`Text`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-text) Sitemap Widget is used to display the current state of an item without allowing any user interaction.
 
 **Supported parameters:**
 
@@ -292,7 +294,7 @@ Frame label="Entrance Gates" {
 
 ### `Group`
 
-The [`Group`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-group) Sitemap Widget will present a submenu containing all the items in the associated item of type `Group`. This also works recursively, if the `Group` item itself contains other `Group` items, those will again open their own submenus.
+The ➡️ [`Group`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-group) Sitemap Widget will present a submenu containing all the items in the associated item of type `Group`. This also works recursively, if the `Group` item itself contains other `Group` items, those will again open their own submenus.
 
 **Example configuration:**
 
@@ -322,7 +324,7 @@ sitemap garmin_demo label="My Home" {
 
 ### `Switch` and `Selection`
 
-The [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) and [`Selection`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) widgets display the current state of an item and allows the user to send commands to change it.
+The ➡️ [`Switch`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) and ➡️ [`Selection`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-switch) widgets display the current state of an item and allows the user to send commands to change it.
 
 In other UIs, the `Switch` and `Selection` widgets behave differently:
 
@@ -484,7 +486,7 @@ Here’s how the interface appears when the switch is in the `OFF` state:
 
 ### `Setpoint` and `Slider`
 
-The [`Setpoint`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-setpoint) and [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider) widgets are **numeric controls** used to display and adjust the numeric state of an item.
+The ➡️ [`Setpoint`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-setpoint) and ➡️ [`Slider`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-slider) widgets are **numeric controls** used to display and adjust the numeric state of an item.
 
 When selected, both widgets open a full-screen view for choosing a new value, which is then sent as a command to the item.
 
@@ -537,11 +539,11 @@ Note: Even button-based devices may support touch input, and on those, the UI re
 
 ### Dynamic Sitemaps
 
-Of the available [Dynamic Sitemaps](https://www.openhab.org/docs/ui/sitemaps.html#dynamic-sitemaps) features, the `visibility` parameter as well as label and icon colors are supported. 
+Of the available ➡️ [Dynamic Sitemaps](https://www.openhab.org/docs/ui/sitemaps.html#dynamic-sitemaps) features, the `visibility` parameter as well as label and icon colors are supported. 
 
 #### Visibility
 
-For usage details and examples, see the official [visibility documentation](https://www.openhab.org/docs/ui/sitemaps.html#visibility).
+For usage details and examples, see the official ➡️ [visibility documentation](https://www.openhab.org/docs/ui/sitemaps.html#visibility).
 
 Here’s an improved version with clearer phrasing, smoother flow, and a slightly more polished tone, while preserving the original structure:
 
@@ -549,7 +551,7 @@ Here’s an improved version with clearer phrasing, smoother flow, and a slightl
 
 #### Label and Value Colors
 
-For usage details and examples, refer to the official [openHAB documentation](https://www.openhab.org/docs/ui/sitemaps.html#label-value-and-icon-colors).
+For usage details and examples, refer to the official ➡️ [openHAB documentation](https://www.openhab.org/docs/ui/sitemaps.html#label-value-and-icon-colors).
 
 The app supports both `labelcolor` and `valuecolor` attributes. Color values can be specified using either hexadecimal color codes (e.g., `#FF0000`) or named colors (e.g., `red`) as listed in the documentation.
 
@@ -577,9 +579,9 @@ This results in the following display:
 
 #### Icons
 
-For detailed usage and examples, refer to the official [openHAB sitemap documentation](https://www.openhab.org/docs/ui/sitemaps.html#icons).
+For detailed usage and examples, refer to the official ➡️ [openHAB sitemap documentation](https://www.openhab.org/docs/ui/sitemaps.html#icons).
 
-The Garmin app supports both the `icon` and `staticIcon` parameters, using a subset of the [classic openHAB icon set](https://www.openhab.org/docs/configuration/iconsets/classic/). Where applicable, the app automatically selects an icon variant based on the item's state—for example, showing different icons for a light that is `ON` or `OFF`.
+The Garmin app supports both the `icon` and `staticIcon` parameters, using a subset of the ➡️ [classic openHAB icon set](https://www.openhab.org/docs/configuration/iconsets/classic/). Where applicable, the app automatically selects an icon variant based on the item's state—for example, showing different icons for a light that is `ON` or `OFF`.
 
 Below is a screenshot illustrating this behavior:
 The second menu item shows a filled lightbulb icon (indicating the light is ON), and the third item shows a state-aware rollershutter icon.
@@ -608,7 +610,7 @@ Currently supported icons are:
 * `slider`
 * `temperature`
 
-More icons can be added upon request. If you need support for additional icons, please post a request in the [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891).
+More icons can be added upon request. If you need support for additional icons, please post a request in the ➡️ [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891).
 
 ---
 
