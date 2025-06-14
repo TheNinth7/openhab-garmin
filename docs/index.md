@@ -298,7 +298,7 @@ The ➡️ [`Group`](https://www.openhab.org/docs/ui/sitemaps.html#element-type-
 
 **Example configuration:**
 
-In this example, the `Text` Sitemap Widget is used to display the status of entrance gates. Triggering the gates is handled by a separate `Switch` element.
+In this example, the `CC_House_Lights` item represents a hierarchical structure: it contains groups for each floor (e.g., the first floor), which in turn contain groups for individual rooms, and those room groups include the actual light switch items.
 
 ```openhab
 sitemap garmin_demo label="My Home" {
