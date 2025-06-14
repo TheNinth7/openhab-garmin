@@ -27,6 +27,18 @@ class SitemapWidget extends SitemapElement {
     private var _valueColor as ColorType?;
 
     // Constructor
+    // @param json - The JSON object representing this widget.
+    // @param item - The associated item. Not all subclasses require one,
+    //               and the item type may vary by widget. The subclass
+    //               creates and passes in the item so it can be accessed
+    //               through the generic SitemapWidget interface.
+    // @param linkedPage - By default, this class parses the `linkedPage`
+    //                     from the JSON. For special cases like Frame elements,
+    //                     the `linkedPage` is passed explicitly to override
+    //                     the default behavior.
+    // @param isSitemapFresh - Indicates whether the sitemap is fresh
+    //                         (i.e., within its expiry period and containing up-to-date state).
+    // @param asyncProcessing - Whether asynchronous processing should be applied.
     protected function initialize( 
         json as JsonAdapter, 
         item as Item?,
@@ -86,7 +98,18 @@ class SitemapWidget extends SitemapElement {
     // The display state is initialized with the remote display state; 
     // subclasses may override it with custom display logic.
     public function getDisplayState() as String { return _displayState; }
-    
+
+    // As default the display state is set to NO_DISPLAY_STATE if it
+    // is not available. This function can be used if absence of a
+    // display state should be expressed as null.
+    public function getDisplayStateOrNull() as String? { 
+        if( _displayState.equals( NO_DISPLAY_STATE ) ) {
+            return null;
+        } else {
+            return _displayState; 
+        }
+    }
+
     // The _iconType transformed into a bitmap resource id
     public function getIcon() as ResourceId? { return _icon; }
     

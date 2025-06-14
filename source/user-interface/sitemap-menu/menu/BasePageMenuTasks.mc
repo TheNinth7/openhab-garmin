@@ -119,7 +119,7 @@ class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
         // entry from being deleted as an unused menu item.
         while( i < _pageMenu.getItemCount() ) {
             var menuItem = _pageMenu.getItem( i ) as CustomMenuItem;
-            if( menuItem instanceof FrameMenuItem ) {
+            if( menuItem instanceof ContainerMenuItem ) {
                 _pageMenu.invalidateStructure();
                 // Logger.debug( "PageMenu.update: page '" + _sitemapContainer.label + "' invalid because subpage was removed" );
             }

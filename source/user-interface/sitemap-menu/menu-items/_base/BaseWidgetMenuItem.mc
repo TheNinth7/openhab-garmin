@@ -79,7 +79,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
     // parent class’s onSelect() method. If it returns false (i.e., the event was not handled),
     // the subclass can proceed with its own selection logic (e.g., state changes).
     //
-    // Subclasses without custom selection behavior, such as FrameMenuItem or TextMenuItem,
+    // Subclasses without custom selection behavior, such as ContainerMenuItem or TextMenuItem,
     // do not need to override this method.
     public function onSelect() as Boolean { 
         if( _page != null ) {

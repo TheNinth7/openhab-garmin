@@ -25,7 +25,10 @@ class Item {
         // If the item is a Group, we apply the groupType
         _type =  json.getString( "type", "Item '" + _name + "' has no type" );
         if( _type.equals( "Group" ) ) {
-            _type =  json.getString( "groupType", "Item '" + _name + "': group has no type" );
+            var groupType = json.getOptionalString( "groupType" );
+            if( ! groupType.equals( "" ) ) {
+                _type = groupType;
+            }            
         }
 
         // If no state is available, it will be set to null

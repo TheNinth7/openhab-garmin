@@ -12,8 +12,8 @@ class MenuItemFactory {
         sitemapWidget as SitemapWidget, 
         parent as BasePageMenu 
     ) as BaseWidgetMenuItem {
-        if( sitemapWidget instanceof SitemapFrame ) {
-            return new FrameMenuItem( sitemapWidget, parent );
+        if( ContainerMenuItem.isMyType( sitemapWidget ) ) {
+            return new ContainerMenuItem( sitemapWidget as SitemapFrame or SitemapGroup, parent );
         } else if( ! sitemapWidget.isSitemapFresh() ) {
             // If the sitemap is not fresh, we display no state - regardless of type matching
             return new NoStateMenuItem( sitemapWidget, parent );
