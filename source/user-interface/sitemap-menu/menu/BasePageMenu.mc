@@ -39,6 +39,9 @@ class BasePageMenu extends BaseMenu {
             } );
 
         // For each element in the page, create a menu item
+        // The menu item is not created directly but by a
+        // task in the passed in task queue. See 
+        // HomepageMenu.create() and SyncTaskQueue for details
         var widgets = sitemapContainer.getWidgets();
         for( var i = widgets.size() - 1; i >= 0; i-- ) {
             taskQueue.addToFront( new CreateMenuItemTask( widgets[i], self, taskQueue ) );

@@ -17,11 +17,17 @@ import Toybox.System;
  * and are conditionally excluded from compilation for the other device type.
  */
 class HomepageMenu extends BasePageMenu {
-    // Accessor for the Singleton instance
+    
+    /***** STATIC *****/
+
+    // The Singleton instance
     private static var _instance as HomepageMenu?;
-    public static function exists() as Boolean {
-        return _instance != null;
-    }
+    
+    // Creates the menu from a sitemap.
+    // This function uses a synchronous task queue to iterate over the entire sitemap,
+    // instead of relying on recursive function calls. CIQ apps have a relatively small
+    // maximum stack size, so this approach helps avoid stack overflow errors when
+    // processing sitemaps with many levels of hierarchy.
     public static function create( sitemapHomepage as SitemapHomepage ) as HomepageMenu {
         if( _instance == null ) {
             var syncTaskQueue = new SyncTaskQueue();
@@ -30,13 +36,7 @@ class HomepageMenu extends BasePageMenu {
         }
         return _instance as HomepageMenu;
     }
-    public static function get() as HomepageMenu {
-        if( _instance == null ) {
-            throw new GeneralException( "HomepageMenu: call create() before get()" );
-        }
-        return _instance as HomepageMenu;
-    }
-
+    
     // This function is called on startup by OHApp, and 
     // if available initializes the menu from sitemap data
     // in storage
@@ -54,6 +54,23 @@ class HomepageMenu extends BasePageMenu {
         }
         return homepageMenu;
     }
+
+    // True if the menu was already created
+    public static function exists() as Boolean {
+        return _instance != null;
+    }
+
+    // Returns the menu, or throws an exception if
+    // the menu was not created yet
+    public static function get() as HomepageMenu {
+        if( _instance == null ) {
+            throw new GeneralException( "HomepageMenu: call create() before get()" );
+        }
+        return _instance as HomepageMenu;
+    }
+
+    
+    /***** INSTANCE *****/
 
     // See BasePageMenu.invalidateStructure for details
     private var _structureRemainsValid as Boolean = true;
