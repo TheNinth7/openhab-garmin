@@ -15,7 +15,8 @@ typedef BaseSwitchMenuItemOptions as {
     :stateTextResponsive as String?,
     :stateDrawable as BaseSitemapMenuItem.StateDrawable?,
     :isActionable as Boolean?, // if true, the action icon is displayed
-    :parent as BasePageMenu
+    :parent as BasePageMenu,
+    :taskQueue as TaskQueue
 };
 
 class BaseSwitchMenuItem extends BaseWidgetMenuItem {

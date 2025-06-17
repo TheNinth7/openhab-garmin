@@ -113,7 +113,7 @@ class SitemapRequest extends BaseRequest {
         // processing is also halted. Tasks in the task queue are atomic
         // in the sense that stopping between tasks will not cause any
         // data inconsistencies.
-        TaskQueue.get().removeAll();
+        AsyncTaskQueue.get().removeAll();
         if( _hasPendingRequest ) {
             // Logger.debug( "SitemapRequest.stop: pending request, will ignore the next response" );
             _ignoreNextResponse = true;

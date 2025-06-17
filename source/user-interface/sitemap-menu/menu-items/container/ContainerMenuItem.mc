@@ -9,16 +9,18 @@ import Toybox.WatchUi;
  */
 class ContainerMenuItem extends BaseWidgetMenuItem {
 
-    // Constructor  
+    // Constructor
     // Initializes the base class and sets the menu view to open when this item is selected.
     public function initialize( 
         sitemapContainer as SitemapFrame or SitemapGroup, 
-        parent as BasePageMenu 
+        parent as BasePageMenu,
+        taskQueue as TaskQueue
     ) {
         BaseWidgetMenuItem.initialize( { 
             :sitemapWidget => sitemapContainer,
             :stateTextResponsive => sitemapContainer.getDisplayStateOrNull(),
-            :parent => parent 
+            :parent => parent,
+            :taskQueue => taskQueue
         } );
     }
 

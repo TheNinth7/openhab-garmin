@@ -35,7 +35,8 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
     // the Drawable for the displayed state and the superclass
     public function initialize( 
         sitemapSwitch as SitemapSwitch,
-        parent as BasePageMenu 
+        parent as BasePageMenu,
+        taskQueue as TaskQueue
     ) {
         _sitemapSwitch = sitemapSwitch;
         
@@ -48,7 +49,8 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
                 :sitemapWidget => sitemapSwitch,
                 :stateDrawable => _stateDrawable,
                 :isActionable => true,
-                :parent => parent
+                :parent => parent,
+                :taskQueue => taskQueue
             }
         );
     }

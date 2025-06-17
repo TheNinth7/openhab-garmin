@@ -14,7 +14,7 @@ class SitemapText extends SitemapWidget {
     public function initialize( 
         json as JsonAdapter, 
         isSitemapFresh as Boolean,
-        asyncProcessing as Boolean
+        taskQueue as TaskQueue
     ) {
         _item = new Item( json.getObject( "item", "Text '" + getLabel() + "' has no item" ) );
 
@@ -24,8 +24,8 @@ class SitemapText extends SitemapWidget {
             json, 
             _item,
             null,
-            isSitemapFresh, 
-            asyncProcessing 
+            isSitemapFresh,
+            taskQueue
         );
     }
 }

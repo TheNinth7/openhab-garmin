@@ -57,7 +57,7 @@ class CreateSitemapTask extends BaseSitemapProcessorTask {
     public function invoke() as Void {
         // Logger.debug( "CreateSitemapTask.invoke" );
 
-        TaskQueue.get().add( 
+        AsyncTaskQueue.get().add( 
             new UpdateMenuTask(
                 SitemapStore.updateSitemapFromJson( 
                     _json,
@@ -87,7 +87,7 @@ class UpdateMenuTask extends BaseSitemapProcessorTask {
         
         HomepageMenu.get().update( _sitemapHomepage );
 
-        TaskQueue.get().add( new RefreshUiTask() );
+        AsyncTaskQueue.get().add( new RefreshUiTask() );
     }
 }
 
@@ -140,7 +140,7 @@ class RefreshUiTask extends BaseSitemapProcessorTask {
                 WatchUi.requestUpdate();
             }
         }
-        TaskQueue.get().add( new TriggerNextRequestTask() );
+        AsyncTaskQueue.get().add( new TriggerNextRequestTask() );
     }
 }
 

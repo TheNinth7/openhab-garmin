@@ -38,13 +38,15 @@ class SitemapWidget extends SitemapElement {
     //                     the default behavior.
     // @param isSitemapFresh - Indicates whether the sitemap is fresh
     //                         (i.e., within its expiry period and containing up-to-date state).
-    // @param asyncProcessing - Whether asynchronous processing should be applied.
+    // @param taskQueue - The task queue to be used. Recursive structures are traversed
+    //                    iteratively to avoid stack overflows and unresponsive UI.
+    //                    See the task queue classes for details.
     protected function initialize( 
         json as JsonAdapter, 
         item as Item?,
         linkedPage as SitemapContainer?,
         isSitemapFresh as Boolean,
-        asyncProcessing as Boolean
+        taskQueue as TaskQueue
     ) {
         SitemapElement.initialize( isSitemapFresh );
 
@@ -90,7 +92,7 @@ class SitemapWidget extends SitemapElement {
         } else {
             var jsonLinkedPage = json.getOptionalObject( "linkedPage" );
             if( jsonLinkedPage != null ) {
-                _linkedPage = new SitemapPage( jsonLinkedPage, isSitemapFresh, asyncProcessing );
+                _linkedPage = new SitemapPage( jsonLinkedPage, isSitemapFresh, taskQueue );
             }
         }
     }

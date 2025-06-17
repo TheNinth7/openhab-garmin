@@ -30,7 +30,8 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     // Constructor
     public function initialize( 
         sitemapSwitch as SitemapSwitch,
-        parent as BasePageMenu
+        parent as BasePageMenu,
+        taskQueue as TaskQueue
     ) {
         var itemState = sitemapSwitch.getSwitchItem().getState();
         if( ! ( itemState.equals( SwitchItem.ITEM_STATE_ON ) 
@@ -53,7 +54,8 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
                     : null,
                 :stateDrawable => _stateDrawable,
                 :isActionable => false,
-                :parent => parent
+                :parent => parent,
+                :taskQueue => taskQueue
             }
         );
     }

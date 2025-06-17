@@ -4,11 +4,16 @@ import Toybox.WatchUi;
 class NoStateMenuItem extends BaseWidgetMenuItem {
     
     // Constructor
-    public function initialize( sitemapWidget as SitemapWidget, parent as BasePageMenu ) {
+    public function initialize( 
+        sitemapWidget as SitemapWidget, 
+        parent as BasePageMenu,
+        taskQueue as TaskQueue 
+    ) {
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapWidget,
                 :stateDrawable => new StateText( "—" ),
-                :parent => parent
+                :parent => parent,
+                :taskQueue => taskQueue
             }
         );
     }

@@ -26,50 +26,43 @@ typedef SitemapContainerImplementation as
 class SitemapContainer extends SitemapElement {
 
     // The elements of this page
-    public var widgets as Array<SitemapWidget> = new Array<SitemapWidget>[0];
+    private var _widgets as Array<SitemapWidget> = new Array<SitemapWidget>[0];
 
     // Constructor
     public function initialize( 
         json as JsonAdapter, 
         isSitemapFresh as Boolean,
-        asyncProcessing as Boolean
+        taskQueue as TaskQueue
     ) {
         SitemapElement.initialize( isSitemapFresh );
 
         // Loop through all JSON array elements
         var jsonWidgets = json.getArray( "widgets", "Frame or page contains no elements" );
 
-        if( asyncProcessing ) {
-            // For async processing we queue a task
-            // TO THE FRONT of the queue (it needs to be 
-            // processed before the UI update task that has
-            // already been scheduled by `SitemapProcessor`)
-            // Because each element is added to the front of
-            // the queue, they will be processed in reverse
-            // order. Therefore we add the last widget first
-            // and then continue down to the first from there
-            for( var i = jsonWidgets.size() - 1; i >= 0; i-- ) {
-                var jsonWidget = jsonWidgets[i];
-                TaskQueue.get().addToFront( 
-                    new SitemapContainerBuildTask(
-                        self,
-                        jsonWidget
-                    )
-                );
-            }
-        } else {
-            // For synchronous processing we create and add the elements 
-            // right away, in same the order as in the JSON
-            for( var i = 0; i < jsonWidgets.size(); i++ ) {
-                var jsonWidget = jsonWidgets[i];
-                widgets.add( 
-                    SitemapWidgetFactory.createByType( 
-                        jsonWidget,
-                        isSitemapFresh,
-                        asyncProcessing
-                    ) 
-                );
-            }
+        // We queue tasks at the FRONT of the queue because they must be processed
+        // before previously scheduled tasks (e.g., UI updates already scheduled by `SitemapProcessor`).
+        // Since each task is added to the front, the order of execution is reversed —
+        // the last widget added will be processed first. Therefore, we add widgets
+        // in reverse order: starting with the last and ending with the first.
+        for( var i = jsonWidgets.size() - 1; i >= 0; i-- ) {
+            var jsonWidget = jsonWidgets[i];
+            taskQueue.addToFront( 
+                new SitemapContainerBuildTask(
+                    self,
+                    jsonWidget,
+                    taskQueue
+                )
+            );
         }
+    }
+
+    // Adds a widget, used by the build task
+    public function addWidget( widget as SitemapWidget ) as Void {
+        _widgets.add( widget );
+    }
+
+    // Returns the elements of this page
+    public function getWidgets() as Array<SitemapWidget> {
+        return _widgets;
     }
 }

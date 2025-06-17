@@ -14,12 +14,14 @@ class TextMenuItem extends BaseWidgetMenuItem {
     // Constructor
     public function initialize( 
         sitemapText as SitemapText,
-        parent as BasePageMenu
+        parent as BasePageMenu,
+        taskQueue as TaskQueue
     ) {
         BaseWidgetMenuItem.initialize( {
             :sitemapWidget => sitemapText,
             :stateTextResponsive => sitemapText.getDisplayState(),
-            :parent => parent
+            :parent => parent,
+            :taskQueue => taskQueue
         } );
     }
 

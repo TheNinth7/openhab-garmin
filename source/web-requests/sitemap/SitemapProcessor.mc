@@ -13,7 +13,7 @@ import Toybox.WatchUi;
  * If the HomepageMenu already exists, it is updated asynchronously using 
  * updateHomepageAsync(). Since updates can take time and CIQ apps are 
  * single-threaded, the update is broken into multiple tasks.
- * These tasks are managed by the TaskQueue, allowing gaps between them
+ * These tasks are managed by the AsyncTaskQueue, allowing gaps between them
  * for user input to be processed. This avoids noticeable lag or UI
  * unresponsiveness when handling large sitemaps.
  *
@@ -57,7 +57,7 @@ class SitemapProcessor {
     private static function updateHomepageAsync( incomingJson as SitemapJsonIncoming ) as Void {
         // Logger.debug( "SitemapProcessor.updateHomepageAsync" );
 
-        var taskQueue = TaskQueue.get();
+        var taskQueue = AsyncTaskQueue.get();
         // Verify that the task queue is empty
         // It should always be at this point, because a new 
         // web request is only initiated when processing of the

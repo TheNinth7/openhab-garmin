@@ -14,7 +14,7 @@ import Toybox.Graphics;
  * and the logic for updating the menu in response to changes in the sitemap.
  *
  * Since updates can take time and CIQ apps are single-threaded, the update 
- * is broken into multiple tasks. These tasks are managed by the TaskQueue, 
+ * is broken into multiple tasks. These tasks are managed by the AsyncTaskQueue, 
  * allowing gaps between them for user input to be processed. This avoids 
  * noticeable lag or UI unresponsiveness when handling large sitemaps.
  */
@@ -22,8 +22,27 @@ class BasePageMenu extends BaseMenu {
     
     // The label for the menu
     private var _title as String;
-    public function getTitle() as String {
-        return _title;
+
+    // Constructor
+    protected function initialize( 
+        sitemapContainer as SitemapContainerImplementation, 
+        footer as Drawable?,
+        taskQueue as TaskQueue 
+    ) {
+        _title = sitemapContainer.title;
+        
+        // Initialize the super class
+        BaseMenu.initialize( {
+                :title => _title,
+                :itemHeight => Constants.UI_MENU_ITEM_HEIGHT,
+                :footer => footer
+            } );
+
+        // For each element in the page, create a menu item
+        var widgets = sitemapContainer.getWidgets();
+        for( var i = widgets.size() - 1; i >= 0; i-- ) {
+            taskQueue.addToFront( new CreateMenuItemTask( widgets[i], self, taskQueue ) );
+        }
     }
 
     // The menu structure remains valid after an update as long as
@@ -40,25 +59,9 @@ class BasePageMenu extends BaseMenu {
         throw new AbstractMethodException( "BasePageMenu.invalidateStructure" );
     }
 
-    // Constructor
-    protected function initialize( 
-        sitemapContainer as SitemapContainerImplementation, 
-        footer as Drawable?
-    ) {
-        _title = sitemapContainer.title;
-        
-        // Initialize the super class
-        BaseMenu.initialize( {
-                :title => _title,
-                :itemHeight => Constants.UI_MENU_ITEM_HEIGHT,
-                :footer => footer
-            } );
-
-        // For each element in the page, create a menu item
-        var widgets = sitemapContainer.widgets;
-        for( var i = 0; i < widgets.size(); i++ ) {
-            BasePageMenu.addItem( MenuItemFactory.createMenuItem( widgets[i], self ) );
-        }
+    // Returns the menu title
+    public function getTitle() as String {
+        return _title;
     }
 
     /*
@@ -94,7 +97,7 @@ class BasePageMenu extends BaseMenu {
         setTitleAsString( _title );
 
         // The update is done by asynchronously executed tasks
-        var taskQueue = TaskQueue.get();
+        var taskQueue = AsyncTaskQueue.get();
 
         // Since the `SitemapProcessor` has already added tasks that should run
         // AFTER the menu update, we prepend all tasks to the queue.
@@ -122,7 +125,7 @@ class BasePageMenu extends BaseMenu {
         // and add a task for each to process them.
         // We do this in reverse order so that the tasks are
         // executed in the same order as the corresponding sitemap elements.
-        var widgets = sitemapContainer.widgets;
+        var widgets = sitemapContainer.getWidgets();
         for( var i = widgets.size() - 1; i >= 0; i-- ) {
             var widget = widgets[i];
             taskQueue.addToFront( new AddOrUpdateMenuItemTask( i, widget, self ) );

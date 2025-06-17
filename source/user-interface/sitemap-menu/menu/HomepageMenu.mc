@@ -24,7 +24,9 @@ class HomepageMenu extends BasePageMenu {
     }
     public static function create( sitemapHomepage as SitemapHomepage ) as HomepageMenu {
         if( _instance == null ) {
-            _instance = new HomepageMenu( sitemapHomepage );
+            var syncTaskQueue = new SyncTaskQueue();
+            _instance = new HomepageMenu( sitemapHomepage, syncTaskQueue );
+            syncTaskQueue.executeTasks();
         }
         return _instance as HomepageMenu;
     }
@@ -53,6 +55,14 @@ class HomepageMenu extends BasePageMenu {
         return homepageMenu;
     }
 
+    // See BasePageMenu.invalidateStructure for details
+    private var _structureRemainsValid as Boolean = true;
+
+    // See BasePageMenu.invalidateStructure for details
+    public function invalidateStructure() as Void {
+        _structureRemainsValid = false;
+    }
+
     // The HomepageMenu is the entry point into the
     // menu structure, where we want to display toast notifications for
     // non-fatal errors
@@ -61,10 +71,6 @@ class HomepageMenu extends BasePageMenu {
     }
 
     // See BasePageMenu.invalidateStructure for details
-    private var _structureRemainsValid as Boolean = true;
-    public function invalidateStructure() as Void {
-        _structureRemainsValid = false;
-    }
     public function structureRemainsValid() as Boolean {
         return _structureRemainsValid;
     }
@@ -79,13 +85,17 @@ class HomepageMenu extends BasePageMenu {
 
     // On button-based devices, the settings icon is displayed in the footer
     (:exclForTouch)
-    private function initialize( sitemapHomepage as SitemapHomepage ) {
+    private function initialize(
+        sitemapHomepage as SitemapHomepage,
+        syncTaskQueue as SyncTaskQueue 
+    ) {
         BasePageMenu.initialize( 
             sitemapHomepage, 
             new Bitmap( {
                     :rezId => Rez.Drawables.iconDownToSettings,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
-                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } )
+                    :locY => WatchUi.LAYOUT_VALIGN_CENTER } ),
+            syncTaskQueue
         );
     }
 
@@ -95,8 +105,11 @@ class HomepageMenu extends BasePageMenu {
     (:exclForButton)
     private var _hasSettingsMenu as Boolean = false;
     (:exclForButton)
-    private function initialize( sitemapHomepage as SitemapHomepage ) {
-        BasePageMenu.initialize( sitemapHomepage, null );
+    private function initialize(
+        sitemapHomepage as SitemapHomepage,
+        syncTaskQueue as SyncTaskQueue 
+    ) {
+        BasePageMenu.initialize( sitemapHomepage, null, syncTaskQueue );
         BasePageMenu.addItem( SettingsMenuItem.get() );
         _hasSettingsMenu = true;
     }

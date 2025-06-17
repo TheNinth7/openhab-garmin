@@ -23,7 +23,8 @@ typedef BaseWidgetMenuItemOptions as {
     :stateTextResponsive as String?,
     :stateDrawable as BaseSitemapMenuItem.StateDrawable?,
     :isActionable as Boolean?, // if true, the action icon is displayed
-    :parent as BasePageMenu
+    :parent as BasePageMenu,
+    :taskQueue as TaskQueue
 };
 
 class BaseWidgetMenuItem extends BaseSitemapMenuItem {
@@ -59,7 +60,10 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
             :stateTextResponsive => options[:stateTextResponsive]
         } );
 
-        updateWidget( options[:sitemapWidget] as SitemapWidget );
+        processWidget( 
+            options[:sitemapWidget] as SitemapWidget,
+            options[:taskQueue] as TaskQueue
+        );
     }
 
     // Returns true if the widget is linked to a page (sub menu)
@@ -99,6 +103,19 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
      * updateWidget() to ensure core functionality is preserved.
      */
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void { 
+        // When creating a PageMenu during an update, we always
+        // use the async task queue
+        processWidget( sitemapWidget, AsyncTaskQueue.get() );
+    }
+
+    /*
+     * Internal function used to process data both during initialization and
+     * when processing an update.
+     */
+    private function processWidget( 
+        sitemapWidget as SitemapWidget,
+        taskQueue as TaskQueue
+    ) as Void { 
         setIcon( sitemapWidget.getIcon() );
         setLabel( sitemapWidget.getLabel() );
         setLabelColor( sitemapWidget.getLabelColor() );
@@ -110,7 +127,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
             if( _page != null ) {
                 _page.update( linkedPage );
             } else {
-                _page = new PageMenu( linkedPage, _parent );
+                _page = new PageMenu( linkedPage, _parent, taskQueue );
             }
         } else if( _isActionable ) {
             _page = null;

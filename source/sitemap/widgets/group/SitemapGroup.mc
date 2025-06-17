@@ -9,15 +9,15 @@ import Toybox.WatchUi;
 class SitemapGroup extends SitemapWidget {
     public function initialize( 
         json as JsonAdapter, 
-        isSitemapFresh as Boolean, 
-        asyncProcessing as Boolean 
+        isSitemapFresh as Boolean,
+        taskQueue as TaskQueue
     ) {
         SitemapWidget.initialize( 
             json, 
             null,
             null,
-            isSitemapFresh, 
-            asyncProcessing 
+            isSitemapFresh,
+            taskQueue as TaskQueue
         );
     }
 }

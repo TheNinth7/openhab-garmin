@@ -11,7 +11,7 @@ class SitemapWidgetFactory {
     public static function createByType( 
         widget as JsonAdapter, 
         isSitemapFresh as Boolean,
-        asyncProcessing as Boolean
+        taskQueue as TaskQueue
     ) as SitemapWidget {
 
         // Determine the widget type
@@ -33,15 +33,15 @@ class SitemapWidgetFactory {
 
         // Now we create the widget object based on the type
         if( type.equals( "Switch" ) || type.equals( "Selection" ) ) {
-            return new SitemapSwitch( widget, isSitemapFresh, asyncProcessing );
+            return new SitemapSwitch( widget, isSitemapFresh, taskQueue );
         } else if( type.equals( "Setpoint" ) || type.equals( "Slider" ) ) {
-            return new SitemapNumeric( widget, isSitemapFresh, asyncProcessing );
+            return new SitemapNumeric( widget, isSitemapFresh, taskQueue );
         } else if( type.equals( "Text" ) ) {
-            return new SitemapText( widget, isSitemapFresh, asyncProcessing );
+            return new SitemapText( widget, isSitemapFresh, taskQueue );
         } else if( type.equals( "Group" ) ) {
-            return new SitemapGroup( widget, isSitemapFresh, asyncProcessing );
+            return new SitemapGroup( widget, isSitemapFresh, taskQueue );
         } else if( type.equals( "Frame" ) ) {
-            return new SitemapFrame( widget, isSitemapFresh, asyncProcessing );
+            return new SitemapFrame( widget, isSitemapFresh, taskQueue );
         } else {
             throw new JsonParsingException( "Unsupported element type '" + type + "'." );
         }

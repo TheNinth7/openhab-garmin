@@ -57,7 +57,8 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
             _pageMenu.addItem( 
                 MenuItemFactory.createMenuItem( 
                     _sitemapWidget, 
-                    _pageMenu 
+                    _pageMenu,
+                    AsyncTaskQueue.get()
                 ) 
             );
             // Logger.debug( "PageMenu.update: adding new item to page '" + _pageMenu.getLabel() + "'" );
@@ -73,7 +74,8 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
                 // and replace the existing menu item with it
                 var newItem = MenuItemFactory.createMenuItem( 
                     _sitemapWidget, 
-                    _pageMenu 
+                    _pageMenu,
+                    AsyncTaskQueue.get()
                 );
 
                 if( item.hasPage() || newItem.hasPage() ) {
@@ -110,7 +112,7 @@ class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
         // The number of used menu items equals to the number
         // of sitemap elements. So number of elements equals
         // to the first UNUSED index.
-        var i = _sitemapContainer.widgets.size();
+        var i = _sitemapContainer.getWidgets().size();
         // Logger.debug( "DeleteUnusedMenuItemsTask.invoke: deleting menu item, starting from index " + i );
 
         // NOTE: getItemCount() receives special handling in `HomepageMenu`

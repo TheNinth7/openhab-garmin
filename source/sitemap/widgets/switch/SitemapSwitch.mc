@@ -39,7 +39,7 @@ class SitemapSwitch extends SitemapWidget {
     public function initialize( 
         json as JsonAdapter, 
         isSitemapFresh as Boolean,
-        asyncProcessing as Boolean
+        taskQueue as TaskQueue
     ) {
         // Obtain the item part of the element
         _switchItem = new SwitchItem( json.getObject( "item", "Switch '" + getLabel() + "' has no item" ) );
@@ -50,8 +50,8 @@ class SitemapSwitch extends SitemapWidget {
             json, 
             _switchItem,
             null,
-            isSitemapFresh, 
-            asyncProcessing 
+            isSitemapFresh,
+            taskQueue
         );
 
         // Read the mappings ...

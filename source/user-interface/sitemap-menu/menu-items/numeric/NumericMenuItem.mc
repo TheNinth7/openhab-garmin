@@ -39,7 +39,8 @@ class NumericMenuItem extends BaseWidgetMenuItem {
     // the Drawable for the displayed state and the superclass
     public function initialize( 
         sitemapNumeric as SitemapNumeric,
-        parent as BasePageMenu 
+        parent as BasePageMenu,
+        taskQueue as TaskQueue
     ) {
         _sitemapNumeric = sitemapNumeric;
         _commandRequest = BaseCommandRequest.get( self );
@@ -55,7 +56,8 @@ class NumericMenuItem extends BaseWidgetMenuItem {
                 :sitemapWidget => sitemapNumeric,
                 :stateDrawable => _stateText,
                 :isActionable => true,
-                :parent => parent
+                :parent => parent,
+                :taskQueue => taskQueue
             }
         );
     }

@@ -12,19 +12,19 @@ class SitemapFrame extends SitemapWidget {
 
     public function initialize( 
         json as JsonAdapter, 
-        isSitemapFresh as Boolean, 
-        asyncProcessing as Boolean 
+        isSitemapFresh as Boolean,
+        taskQueue as TaskQueue
     ) {
         SitemapWidget.initialize( 
             json, 
             null,
             new SitemapFramePage( 
                 json, 
-                isSitemapFresh, 
-                asyncProcessing 
+                isSitemapFresh,
+                taskQueue
             ),
-            isSitemapFresh, 
-            asyncProcessing 
+            isSitemapFresh,
+            taskQueue
         );
     }
 }

@@ -21,9 +21,9 @@ class SitemapPage extends SitemapContainer {
     public function initialize( 
         json as JsonAdapter, 
         isSitemapFresh as Boolean,
-        asyncProcessing as Boolean
+        taskQueue as TaskQueue
     ) {
-        SitemapContainer.initialize( json, isSitemapFresh, asyncProcessing );
+        SitemapContainer.initialize( json, isSitemapFresh, taskQueue );
         title = parseLabelState( json, "title", "Page title is missing" )[0];
     }
 }

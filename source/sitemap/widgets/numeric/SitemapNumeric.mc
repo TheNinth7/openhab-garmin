@@ -21,7 +21,7 @@ class SitemapNumeric extends SitemapWidget {
     public function initialize( 
         json as JsonAdapter, 
         isSitemapFresh as Boolean,
-        asyncProcessing as Boolean
+        taskQueue as TaskQueue
     ) {
         // Obtain the item part of the element
         try {
@@ -39,8 +39,8 @@ class SitemapNumeric extends SitemapWidget {
             json, 
             _numericItem, 
             null, 
-            isSitemapFresh, 
-            asyncProcessing 
+            isSitemapFresh,
+            taskQueue
         );
 
         _minValue = json.getNumber( "minValue", 0 );

@@ -17,9 +17,14 @@ class PageMenu extends BasePageMenu {
 
     public function initialize( 
         sitemapContainer as SitemapContainerImplementation,
-        parent as BasePageMenu 
+        parent as BasePageMenu,
+        taskQueue as TaskQueue
     ) {
-        BasePageMenu.initialize( sitemapContainer, null );
+        BasePageMenu.initialize( 
+            sitemapContainer, 
+            null, 
+            taskQueue 
+        );
         _parent = parent;
     }
 }

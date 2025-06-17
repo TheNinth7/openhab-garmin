@@ -30,14 +30,16 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // Constructor
     public function initialize( 
         sitemapSwitch as SitemapSwitch,
-        parent as BasePageMenu
+        parent as BasePageMenu,
+        taskQueue as TaskQueue
     ) {
         // Initialize the superclass
         BaseSwitchMenuItem.initialize( {
                 :sitemapWidget => sitemapSwitch,
                 :stateTextResponsive => sitemapSwitch.getDisplayState(),
                 :isActionable => true,
-                :parent => parent
+                :parent => parent,
+                :taskQueue => taskQueue
             }
         );
     }
