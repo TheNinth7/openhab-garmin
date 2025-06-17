@@ -18,31 +18,32 @@ class SyncTaskQueue {
         function invoke() as Void;
     };
 
-    // Array for storing the tasks
+    // Array for storing tasks. In this class, index 0 represents the back of the queue,
+    // and the last index represents the front, which is executed first.
+    // Since tasks are always added to the front, this layout improves performance and efficiency.
     private var _tasks as Array<Task> = [];
     
-    // Add a task
-    public function add( task as Task ) as Void {
-        _tasks.add( task );
-    }
-
-    // Add a task to the front of the queue, for cases where a task
-    // should skip the line and be executed before all others
+    // Adds a task to the front of the queue. Each new task will be executed
+    // before any tasks already in the queue. This preserves the execution
+    // order that would naturally occur with recursive processing.
+    //
+    // In recursive processing, each hierarchy level generates tasks,
+    // and as each task executes, it creates new tasks for its sub-levels.
+    // By inserting tasks at the front, this behavior is replicated:
+    // child-level tasks are processed before the remaining sibling-level tasks
+    // of their parent.
     public function addToFront( task as Task ) as Void {
-        var tasks = new Array<Task>[0];
-        tasks.add( task );
-        if( _tasks.size() > 0 ) {
-            tasks.addAll( _tasks );
-        }
-        _tasks = tasks;
+        _tasks.add( task );
     }
 
     // Execute the tasks
     public function executeTasks() as Void {
-        while( _tasks.size() > 0 ) {
-            var task = _tasks[0];
-            task.invoke();
-            _tasks.remove( task );
+        // The last index is considered the front of the queue,
+        // from where we'll execute till we reach index 0.
+        // See the _tasks definition
+        for( var i = _tasks.size() - 1; i >= 0; i-- ) {
+            _tasks[i].invoke();
         }
+        _tasks = new Array<Task>[0];
     }
 }
