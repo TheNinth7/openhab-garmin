@@ -126,7 +126,8 @@ class SitemapRequest extends BaseRequest {
         // requests anymore
         if( _stopCount <= 0 && ! _hasPendingRequest ) {
             _requestCount++;
-            // Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
+            Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
+            Logger.debugMemory( null );
             
             // _hasPendingRequest has to be set to true BEFORE makeWebRequest
             // For some errors (like -104/no phone), on receive is called
@@ -197,7 +198,16 @@ class SitemapRequest extends BaseRequest {
     // - the error polling interval, or
     // - the configured regular polling interval.
     public function handleException( ex as Exception ) as Void {
-        // Logger.debug( "SitemapRequest.handleException" );
+        Logger.debug( "SitemapRequest.handleException" );
+        
+        Logger.debugMemory( null );
+
+        if( ex instanceof OutOfMemoryException ) {
+            HomepageMenu.clear();
+        }
+
+        Logger.debugMemory( null );
+
         ExceptionHandler.handleException( ex );
         triggerNextRequestInternal( 
             _pollingInterval > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL

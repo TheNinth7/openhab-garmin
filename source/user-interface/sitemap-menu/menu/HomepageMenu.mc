@@ -75,6 +75,10 @@ class HomepageMenu extends BasePageMenu {
     // See BasePageMenu.invalidateStructure for details
     private var _structureRemainsValid as Boolean = true;
 
+    public static function clear() as Void {
+        _instance = null;
+    }
+    
     // See BasePageMenu.invalidateStructure for details
     public function invalidateStructure() as Void {
         _structureRemainsValid = false;

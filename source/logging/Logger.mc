@@ -55,6 +55,8 @@ public class Logger {
                 ex instanceof ConfigException
                 ||
                 ex instanceof JsonParsingException
+                ||
+                ex instanceof OutOfMemoryException
             ) )
             {
             ex.printStackTrace();

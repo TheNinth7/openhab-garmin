@@ -13,6 +13,7 @@ class MenuItemFactory {
         parent as BasePageMenu,
         taskQueue as TaskQueue
     ) as BaseWidgetMenuItem {
+        MemoryManager.ensureMemory();
         if( ContainerMenuItem.isMyType( sitemapWidget ) ) {
             return new ContainerMenuItem( 
                 sitemapWidget as SitemapFrame or SitemapGroup, 

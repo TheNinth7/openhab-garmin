@@ -9,7 +9,7 @@ import Toybox.WatchUi;
 class CreateMenuItemTask extends BaseSitemapProcessorTask {
     private var _widget as SitemapWidget;
     private var _menu as BasePageMenu;
-    private var _taskQueue as TaskQueue;
+    private var _weakTaskQueue as WeakReference;
 
     // Constructor
     public function initialize( 
@@ -20,11 +20,15 @@ class CreateMenuItemTask extends BaseSitemapProcessorTask {
         BaseSitemapProcessorTask.initialize();
         _widget = widget;
         _menu = menu;
-        _taskQueue = taskQueue;
+        _weakTaskQueue = taskQueue.weak();
     }
 
     public function invoke() as Void {
-        _menu.addItem( MenuItemFactory.createMenuItem( _widget, _menu, _taskQueue ) );
+        var taskQueue = _weakTaskQueue.get() as TaskQueue?;
+        if( taskQueue == null ) {
+            throw new GeneralException( "TaskQueue reference is no longer valid" );
+        }
+        _menu.addItem( MenuItemFactory.createMenuItem( _widget, _menu, taskQueue ) );
     }
 }
 

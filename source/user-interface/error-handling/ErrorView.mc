@@ -96,14 +96,16 @@ import Toybox.System;
 
     // Draw the error
     public function onUpdate( dc as Dc ) as Void {
-        // Logger.debug( "ErrorView.onUpdate" );
+        Logger.debug( "ErrorView.onUpdate" );
+        Logger.debugMemory( null );
         
         // We need to clear the clip, because there is bug in Garmin SDK,
         // with a clip in the menu title setting a clip in subsequent views
         // being displayed. See here for more details:
         // https://github.com/TheNinth7/ohg/issues/81
         dc.clearClip();
-        
+
+
         // Set the colors
         dc.setColor( Graphics.COLOR_RED, Constants.UI_COLOR_BACKGROUND );
         dc.clear();
