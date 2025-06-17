@@ -4,12 +4,18 @@ typedef TestOptions as {
 
 class TestClass {
     public static function test() as Void {
+        var options = {
+            :option => "Hello World"
+        };
+
+        new TestClass( options );
+
         new TestClass( {
             :option => "Hello World!"
         } );
     }
     public function initialize( options as TestOptions ) {
-        // options[:option].doSomething();
+        //options[:option].doSomething();
         ( options[:option] as TestOption ).doSomething();
     }
 }
