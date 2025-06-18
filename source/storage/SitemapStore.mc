@@ -88,7 +88,6 @@ class SitemapStore  {
             true, 
             asyncProcessing 
         );
-        
         _title = homepage.title;
         return homepage;
     }

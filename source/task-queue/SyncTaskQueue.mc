@@ -41,8 +41,10 @@ class SyncTaskQueue {
         // The last index is considered the front of the queue,
         // from where we'll execute till we reach index 0.
         // See the _tasks definition
-        for( var i = _tasks.size() - 1; i >= 0; i-- ) {
-            _tasks[i].invoke();
+        for( var i = _tasks.size() - 1; i >= 0; i = _tasks.size() - 1 ) {
+            var task = _tasks[i];
+            task.invoke();
+            _tasks.remove( task );
         }
         _tasks = new Array<Task>[0];
     }
