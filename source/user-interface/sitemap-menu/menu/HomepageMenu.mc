@@ -18,11 +18,21 @@ import Toybox.System;
  */
 class HomepageMenu extends BasePageMenu {
     
-    /***** STATIC *****/
+
+    /******* STATIC *******/
+
 
     // The Singleton instance
     private static var _instance as HomepageMenu?;
     
+    // Completely removes the current menu structure.
+    // Used to start fresh after out-of-memory errors,
+    // which can occur if old and new sitemaps differ greatly
+    // and their menu structures partially coexist during updates.
+    public static function clear() as Void {
+        _instance = null;
+    }
+
     // Creates the menu from a sitemap.
     // This function uses a synchronous task queue to iterate over the entire sitemap,
     // instead of relying on recursive function calls. CIQ apps have a relatively small
@@ -70,14 +80,11 @@ class HomepageMenu extends BasePageMenu {
     }
 
     
-    /***** INSTANCE *****/
+    /******* INSTANCE *******/
+
 
     // See BasePageMenu.invalidateStructure for details
     private var _structureRemainsValid as Boolean = true;
-
-    public static function clear() as Void {
-        _instance = null;
-    }
     
     // See BasePageMenu.invalidateStructure for details
     public function invalidateStructure() as Void {

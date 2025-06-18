@@ -198,15 +198,15 @@ class SitemapRequest extends BaseRequest {
     // - the error polling interval, or
     // - the configured regular polling interval.
     public function handleException( ex as Exception ) as Void {
-        Logger.debug( "SitemapRequest.handleException" );
-        
-        Logger.debugMemory( null );
+        // Logger.debug( "SitemapRequest.handleException" );
+        // Logger.debugMemory( null );
 
+        // If an out-of-memory error occurs, it might be due to a sitemap change
+        // where parts of the old and new menu structures coexist in memory.
+        // To prevent this, we clear the menu so the next request starts fresh.
         if( ex instanceof OutOfMemoryException ) {
             HomepageMenu.clear();
         }
-
-        Logger.debugMemory( null );
 
         ExceptionHandler.handleException( ex );
         triggerNextRequestInternal( 

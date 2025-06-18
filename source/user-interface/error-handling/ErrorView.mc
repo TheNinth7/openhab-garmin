@@ -12,13 +12,7 @@ import Toybox.System;
  */
  class ErrorView extends WatchUi.View {
 
-    // STATIC
-    
-    // _errorView only holds an error view as long as it is displayed
-    private static var _errorView as ErrorView?;
-    public static function isShowingErrorView() as Boolean {
-        return _errorView != null;
-    }
+    /******* STATIC *******/
     
     /*
     * Retrieves the error view to display an error message.
@@ -29,14 +23,31 @@ import Toybox.System;
     * as well as by the `showOrUpdate()` function below.
     */
     public static function createOrUpdate( ex as Exception ) as ErrorView {
-        if( _errorView == null ) {
+        var errorView = get();
+
+        if( errorView == null ) {
             // Logger.debug( "ErrorView.createOrUpdate: creating error view" );
-            _errorView = new ErrorView( ex );
+            errorView = new ErrorView( ex );
         } else {
-            _errorView.update( ex );
+            errorView.update( ex );
             // Logger.debug( "ErrorView.createOrUpdate: updating error view" );
         }
-        return _errorView as ErrorView;
+        return errorView;
+    }
+
+    // Returns the error view if is shown, or otherwise null
+    private static function get() as ErrorView? {
+        var view = WatchUi.getCurrentView()[0];
+        if( view instanceof ErrorView ) {
+            return view;
+        } else {
+            return null;
+        }
+    }
+
+    // Determins whether an error view is currently showing
+    public static function isShowing() as Boolean {
+        return WatchUi.getCurrentView()[0] instanceof ErrorView;
     }
 
     /*
@@ -47,25 +58,15 @@ import Toybox.System;
     public static function showOrUpdate( ex as Exception ) as Void {
         // We use the function above, and only if the error view
         // was not yet displayed switch to it
-        var alreadyShowsErrorView = _errorView != null;
-        createOrUpdate( ex );
+        var alreadyShowsErrorView = isShowing();
+        var errorView = createOrUpdate( ex );
         if( ! alreadyShowsErrorView ) {
             // Logger.debug( "ErrorView.showOrUpdate: switching to error view" );
-            ViewHandler.popToBottomAndSwitch( _errorView as ErrorView, null );
+            ViewHandler.popToBottomAndSwitch( errorView, null );
         }
     }
 
-    /*
-    * Call this function to replace the currently displayed error view with another view.
-    * This is used, for example, by `SitemapRequest` when a subsequent request 
-    * succeeds after a fatal error.
-    */
-    public static function replace( view as Views, delegate as InputDelegates or Null ) as Void {
-        _errorView = null;
-        ViewHandler.popToBottomAndSwitch( view, delegate );
-    }
-
-    // INSTANCE
+    /******* INSTANCE *******/
     
     // The exception to be displayed
     private var _exception as Exception;

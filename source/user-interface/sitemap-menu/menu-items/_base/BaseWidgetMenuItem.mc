@@ -35,8 +35,9 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
     // Reference to the parent menu is required so that submenus
     // can navigate back. Submenus may be created not only in the
     // constructor, but also dynamically in updateWidget(), so we
-    // store the parent menu as a member variable.
-    private var _parent as BasePageMenu;
+    // store the parent menu as a member variable and use a weak
+    // reference to avoid memory leaks due to circular references.
+    private var _weakParent as WeakReference;
 
     // Store whether the subclass indicated that an action icon should be shown
     // This information is passed into the constructor as option, but needed 
@@ -48,7 +49,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
         options as BaseWidgetMenuItemOptions
     ) {
         // Store the parent
-        _parent = options[:parent] as BasePageMenu;
+        _weakParent = ( options[:parent] as BasePageMenu ).weak();
 
         var isActionable = options[:isActionable] as Boolean?;
         _isActionable = isActionable != null && isActionable;
@@ -127,7 +128,11 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
             if( _page != null ) {
                 _page.update( linkedPage );
             } else {
-                _page = new PageMenu( linkedPage, _parent, taskQueue );
+                var parent = _weakParent.get() as BasePageMenu?;
+                if( parent == null ) {
+                    throw new GeneralException( "Parent reference is no longer valid" );
+                }
+                _page = new PageMenu( linkedPage, parent, taskQueue );
             }
         } else if( _isActionable ) {
             _page = null;

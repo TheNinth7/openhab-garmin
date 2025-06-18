@@ -28,16 +28,6 @@ typedef CommandRequestDelegate as interface {
 
 class BaseCommandRequest extends BaseRequest {
     
-    private var _url as String;
-    
-    private var _item as CommandRequestDelegate;
-
-    // We count the currently open requests for this item
-    // If there is more than one, we cancel all requests in the
-    // queue, to avoid BLE_QUEUE_FULL errors.
-    // See makeWebRequest() for details.    
-    private var _requestCounter as Number = 0;
-
     // Depending on the settings, either a native REST API command request 
     // or a custom Webhook command request is instantiated.
     // If neither is configured, no command request is created, and items 
@@ -51,10 +41,23 @@ class BaseCommandRequest extends BaseRequest {
         return null;
     }
 
+    // The URL for the command request
+    private var _url as String;
+    
+    // The item is kept as weak reference, to avoid
+    // memory leaks due to circular references
+    private var _weakItem as WeakReference;
+
+    // We count the currently open requests for this item
+    // If there is more than one, we cancel all requests in the
+    // queue, to avoid BLE_QUEUE_FULL errors.
+    // See makeWebRequest() for details.    
+    private var _requestCounter as Number = 0;
+
     // Constructor
     protected function initialize( item as CommandRequestDelegate, url as String, method as Communications.HttpRequestMethod ) {
         BaseRequest.initialize( method );
-        _item = item;
+        _weakItem = item.weak();
         _url = url;
     }
 
@@ -101,16 +104,24 @@ class BaseCommandRequest extends BaseRequest {
     // If the request was successful, onCommandComplete() is called
     // If there was an error, onException() is being called
     public function onReceive( responseCode as Number, data as Dictionary<String,Object?> or String or PersistedContent.Iterator or Null ) as Void {
-        try {
-            _requestCounter--;
-            // Logger.debug( "BaseCommandRequest.onReceive: restarting sitemap request" );
-            SitemapRequest.get().start();
-            if( checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND ) ) {
-                _item.onCommandComplete();
+        var item = _weakItem.get() as CommandRequestDelegate?;
+        
+        if( item == null ) {
+            ExceptionHandler.handleException(
+                new GeneralException( "Item reference is no longer valid" )
+            );
+        } else {
+            try {
+                _requestCounter--;
+                // Logger.debug( "BaseCommandRequest.onReceive: restarting sitemap request" );
+                SitemapRequest.get().start();
+                if( checkResponseCode( responseCode, CommunicationException.EX_SOURCE_COMMAND ) ) {
+                    item.onCommandComplete();
+                }
+            } catch( ex ) {
+                item.onException( ex );
+                ExceptionHandler.handleException( ex );
             }
-        } catch( ex ) {
-            _item.onException( ex );
-            ExceptionHandler.handleException( ex );
         }
     }
 }   

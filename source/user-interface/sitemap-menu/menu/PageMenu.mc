@@ -9,12 +9,10 @@ import Toybox.System;
  */
 class PageMenu extends BasePageMenu {
 
-    // See BasePageMenu.invalidateStructure for details
-    private var _parent as BasePageMenu;
-    public function invalidateStructure() as Void {
-        _parent.invalidateStructure();
-    }
-
+    // Parent is kept as weak reference to avoid
+    // memory leaks due to circular references
+    private var _weakParent as WeakReference;
+    
     public function initialize( 
         sitemapContainer as SitemapContainerImplementation,
         parent as BasePageMenu,
@@ -25,6 +23,15 @@ class PageMenu extends BasePageMenu {
             null, 
             taskQueue 
         );
-        _parent = parent;
+        _weakParent = parent.weak();
+    }
+
+    // See BasePageMenu.invalidateStructure for details
+    public function invalidateStructure() as Void {
+        var parent = _weakParent.get() as BasePageMenu?;
+        if( parent == null ) {
+            throw new GeneralException( "Parent reference is no longer valid" );
+        }
+        parent.invalidateStructure();
     }
 }

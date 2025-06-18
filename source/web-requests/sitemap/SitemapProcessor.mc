@@ -26,9 +26,11 @@ class SitemapProcessor {
     public static function process( incomingJson as SitemapJsonIncoming ) as Void {
         // Logger.debug( "SitemapProcessor: start processing incoming JSON" );
         if( ! HomepageMenu.exists() ) {
-            // There is no menu yet, so we process the JSON
-            // synchronously and switch from the LoadingView 
-            //to the menu
+            // No menu exists yet, so we process the JSON synchronously
+            // and transition from the LoadingView to the menu.
+            // This can also happen after an out-of-memory exception,
+            // where the menu was cleared — in that case, we switch
+            // from the ErrorView to the new menu.
             switchToHomepage( incomingJson );
         } else {
             // There is already a menu, so we update it,
