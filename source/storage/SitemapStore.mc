@@ -78,15 +78,14 @@ class SitemapStore  {
     // as well as the label
     (:typecheck(disableGlanceCheck))
     public static function updateSitemapFromJson( 
-        incomingJson as SitemapJsonIncoming,
-        asyncProcessing as Boolean
+        incomingJson as SitemapJsonIncoming
     ) as SitemapHomepage {
         _json = incomingJson.getForStorage();
         _estimatedSitemapSize = incomingJson.estimatedSize;
         var homepage = new SitemapHomepage( 
             new JsonAdapter( incomingJson.json ), 
             true, 
-            asyncProcessing 
+            true 
         );
         _title = homepage.title;
         return homepage;

@@ -2,11 +2,11 @@ import Toybox.Lang;
 
 /*
  * This file contains all classes representing asynchronous tasks used to
- * process incoming responses from `SitemapRequest`.
+ * update an existing menu structure with incoming responses from `SitemapRequest`.
  *
  * The response is handled by the following tasks:
  *
- * 1) CreateSitemapTask:
+ * 1) StartUpdateMenuTask:
  *     Triggered by `SitemapProcessor` with a JSON dictionary as input.
  *     It creates a `SitemapHomepage` and then schedules the next task.
  *     NOTE: Parsing the JSON dictionary is a time-consuming operation.
@@ -30,15 +30,6 @@ import Toybox.Lang;
  *     Initiates the next web request to update the sitemap.
  */
 
-// Base class that provides the exception handling
-class BaseSitemapProcessorTask {
-    protected function initialize() {
-    }
-    public function handleException( ex as Exception ) as Void {
-        SitemapRequest.get().handleException( ex );
-    }
-}
-
 // The first task initalizes with the incoming JSON
 // and a instantiates a SitemapHomepage to reepresent it
 // This is a recursive process, and SitemapPage, the base
@@ -46,7 +37,7 @@ class BaseSitemapProcessorTask {
 // for the processing. These tasks are added to THE FRONT
 // OF THE QUEUE, and therefore will be executed before 
 // the next step is triggered, the UpdateUiTask.
-class CreateSitemapTask extends BaseSitemapProcessorTask {
+class StartUpdateMenuTask extends BaseSitemapProcessorTask {
 
     private var _json as SitemapJsonIncoming;
     public function initialize( json as SitemapJsonIncoming ) {
@@ -55,14 +46,11 @@ class CreateSitemapTask extends BaseSitemapProcessorTask {
     }
 
     public function invoke() as Void {
-        // Logger.debug( "CreateSitemapTask.invoke" );
+        // Logger.debug( "StartUpdateMenuTask.invoke" );
 
         AsyncTaskQueue.get().add( 
             new UpdateMenuTask(
-                SitemapStore.updateSitemapFromJson( 
-                    _json,
-                    true
-                )
+                SitemapStore.updateSitemapFromJson( _json )
             )
         );
     }

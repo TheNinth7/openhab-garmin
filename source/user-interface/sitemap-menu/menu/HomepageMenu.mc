@@ -38,11 +38,9 @@ class HomepageMenu extends BasePageMenu {
     // instead of relying on recursive function calls. CIQ apps have a relatively small
     // maximum stack size, so this approach helps avoid stack overflow errors when
     // processing sitemaps with many levels of hierarchy.
-    public static function create( sitemapHomepage as SitemapHomepage ) as HomepageMenu {
+    public static function create( sitemapHomepage as SitemapHomepage, asyncProcessing as Boolean ) as HomepageMenu {
         if( _instance == null ) {
-            var syncTaskQueue = new SyncTaskQueue();
-            _instance = new HomepageMenu( sitemapHomepage, syncTaskQueue );
-            syncTaskQueue.executeTasks();
+            _instance = new HomepageMenu( sitemapHomepage, asyncProcessing );
         }
         return _instance as HomepageMenu;
     }
@@ -57,7 +55,7 @@ class HomepageMenu extends BasePageMenu {
         try {
             var sitemapHomepage = SitemapStore.getSitemapFromStorage();
             if( sitemapHomepage != null ) {
-                homepageMenu = HomepageMenu.create( sitemapHomepage );
+                homepageMenu = HomepageMenu.create( sitemapHomepage, false );
             }
         } catch( ex ) {
             Logger.debugException( ex );
@@ -115,16 +113,30 @@ class HomepageMenu extends BasePageMenu {
     (:exclForTouch)
     private function initialize(
         sitemapHomepage as SitemapHomepage,
-        syncTaskQueue as SyncTaskQueue 
+        asyncProcessing as Boolean
     ) {
+        var taskQueue = 
+            asyncProcessing
+            ? AsyncTaskQueue.get()
+            : new SyncTaskQueue();
+
         BasePageMenu.initialize( 
             sitemapHomepage, 
             new Bitmap( {
                     :rezId => Rez.Drawables.iconDownToSettings,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } ),
-            syncTaskQueue
+            taskQueue
         );
+
+        // The base class always creates tasks to process its elements
+        // If synchronous processing has been requested, we execute
+        // those tasks immediately.
+        // Processing the elements sequentially instead of recursively
+        // is needed to avoid stack overflow withs larger sitemaps
+        if( taskQueue instanceof SyncTaskQueue ) {
+            taskQueue.executeTasks();
+        }
     }
 
     // For touch-based devices there is a dedicated menu item for
