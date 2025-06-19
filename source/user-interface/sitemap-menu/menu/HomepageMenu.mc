@@ -39,10 +39,8 @@ class HomepageMenu extends BasePageMenu {
     // maximum stack size, so this approach helps avoid stack overflow errors when
     // processing sitemaps with many levels of hierarchy.
     public static function create( sitemapHomepage as SitemapHomepage, asyncProcessing as Boolean ) as HomepageMenu {
-        if( _instance == null ) {
-            _instance = new HomepageMenu( sitemapHomepage, asyncProcessing );
-        }
-        return _instance as HomepageMenu;
+        _instance = new HomepageMenu( sitemapHomepage, asyncProcessing );
+        return _instance;
     }
     
     // This function is called on startup by OHApp, and 

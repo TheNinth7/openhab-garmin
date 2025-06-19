@@ -6,6 +6,6 @@ import Toybox.Lang;
  (:glance)
 class OutOfMemoryException extends GeneralException {
     function initialize() {
-        GeneralException.initialize( "Out of Memory. Please restart the app. If the issue continues, try reducing the sitemap size." );
+        GeneralException.initialize( "Out of memory. Attempting recovery. If the issue persists, try reducing the sitemap size." );
     }
 }
