@@ -30,14 +30,19 @@ import Toybox.Timer;
  */
 class SitemapRequest extends BaseRequest {
     
+    /******* STATIC *******/ 
+
     // Singleton instance and accessor
     private static var _instance as SitemapRequest?;
+
     public static function get() as SitemapRequest {
         if( _instance == null ) {
             _instance = new SitemapRequest();
         }
         return _instance as SitemapRequest;
     }
+
+    /******* INSTANCE *******/ 
 
     public const SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL as Number = 1000;
 
@@ -90,34 +95,28 @@ class SitemapRequest extends BaseRequest {
         _url = AppSettings.getUrl() + "rest/sitemaps/" + AppSettings.getSitemap();
     }
 
-    // Start and stop the repeated makeRequest
-    public function start() as Void {
-        // Logger.debug( "SitemapRequest.start" );
-        if( _stopCount <= 0 ) {
-            throw new GeneralException( "Tried to start already running sitemap request" );
-        } else {
-            _stopCount--;
-            // Logger.debug( "SitemapRequest.start: new count=" + _stopCount );
+    // Handles exceptions from onReceive() and the SitemapProcessor.
+    // The exception is passed to the ExceptionHandler, and the next
+    // request is scheduled using a delay based on the greater of:
+    // - the error polling interval, or
+    // - the configured regular polling interval.
+    public function handleException( ex as Exception ) as Void {
+        // Logger.debug( "SitemapRequest.handleException" );
+        // Logger.debugMemory( null );
+
+        // If an out-of-memory error occurs, it might be due to a sitemap change
+        // where parts of the old and new menu structures coexist in memory.
+        // To prevent this, we clear the menu so the next request starts fresh.
+        if( ex instanceof OutOfMemoryException ) {
+            HomepageMenu.clear();
         }
-        if( _stopCount == 0 ) {
-            // Logger.debug( "SitemapRequest.start: making request" );
-            makeRequest();
-        }
-    }
-    // Stops the request loop
-    // If there is a pending request, onReceive() is instructed to
-    // ignore the next response
-    public function stop() as Void {
-        _stopCount++;
-        // When the SitemapRequest is stopped, all ongoing asynchronous
-        // processing is also halted. Tasks in the task queue are atomic
-        // in the sense that stopping between tasks will not cause any
-        // data inconsistencies.
-        AsyncTaskQueue.get().removeAll();
-        if( _hasPendingRequest ) {
-            // Logger.debug( "SitemapRequest.stop: pending request, will ignore the next response" );
-            _ignoreNextResponse = true;
-        }
+
+        ExceptionHandler.handleException( ex );
+        triggerNextRequestInternal( 
+            _pollingInterval > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
+                ? _pollingInterval
+                : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL 
+        );
     }
 
     // Makes the web request
@@ -170,12 +169,8 @@ class SitemapRequest extends BaseRequest {
                 // false in conditions where no error is raised but the response
                 // shall be ignored
                 if( checkResponseCode( responseCode, SOURCE ) ) {
-                    // The JSON is passed to the SitemapProcessor, which will:
-                    // - Update the SitemapStore
-                    // - Synchronously create or asynchronously update the menu structure
-                    // - Pass any exceptions to the handleException() function below
-                    // - Trigger the next request
-                    SitemapProcessor.process( 
+                    // The JSON is processed by processIncomingJson()
+                    processIncomingJson( 
                         new SitemapJsonIncoming( 
                             checkResponse( data, SOURCE ), 
                             System.getSystemStats().usedMemory
@@ -192,29 +187,77 @@ class SitemapRequest extends BaseRequest {
         // Logger.debug( "SitemapRequest.onReceive: end");
     }
 
-    // Handles exceptions from onReceive() and the SitemapProcessor.
-    // The exception is passed to the ExceptionHandler, and the next
-    // request is scheduled using a delay based on the greater of:
-    // - the error polling interval, or
-    // - the configured regular polling interval.
-    public function handleException( ex as Exception ) as Void {
-        // Logger.debug( "SitemapRequest.handleException" );
-        // Logger.debugMemory( null );
+    /*
+    * Processes the incoming JSON data by:
+    * - Updating the SitemapStore
+    * - Asynchronously creating or updating the menu structure
+    * - Passing any exceptions to the handleException() function below
+    * - Triggering the next request
+    *
+    * The work is broken down into small tasks and processed via the AsyncTaskQueue.
+    * This allows recursive data structures to be handled iteratively, avoiding stack overflows
+    * and reducing the risk of prolonged code execution errors
+    * (e.g., "Watchdog Tripped Error - Code Executed Too Long").
+    * It also helps maintain UI responsiveness.
+    *
+    * For task sequencing details, see SitemapRequestTasks.mc.
+    */
+    private function processIncomingJson( incomingJson as SitemapJsonIncoming ) as Void {
+        // Logger.debug( "SitemapRequest.incomingJson" );
 
-        // If an out-of-memory error occurs, it might be due to a sitemap change
-        // where parts of the old and new menu structures coexist in memory.
-        // To prevent this, we clear the menu so the next request starts fresh.
-        if( ex instanceof OutOfMemoryException ) {
-            HomepageMenu.clear();
+        var taskQueue = AsyncTaskQueue.get();
+
+        // If the menu does not yet exist, we are in a non-interactive
+        // loading or error view. In this case, we prioritize speed
+        // over responsiveness to complete processing more quickly.
+        if( ! HomepageMenu.exists() ) {
+            taskQueue.prioritizeSpeed();
+        } else {
+            taskQueue.prioritizeResponsiveness();
         }
 
-        ExceptionHandler.handleException( ex );
-        triggerNextRequestInternal( 
-            _pollingInterval > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
-                ? _pollingInterval
-                : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL 
-        );
+        // At this point, the queue should always be empty, since
+        // the next request is triggered only as final task of
+        // any previous processing
+        if( ! taskQueue.isEmpty() ) {
+            throw new GeneralException( "SitemapProcessor encountered non-empty task queue" );
+        }
+        
+        // Start with the first task
+        taskQueue.add( new ProcessIncomingJsonTask( incomingJson ) );
     }
+
+    // Start the request loop
+    public function start() as Void {
+        // Logger.debug( "SitemapRequest.start" );
+        if( _stopCount <= 0 ) {
+            throw new GeneralException( "Tried to start already running sitemap request" );
+        } else {
+            _stopCount--;
+            // Logger.debug( "SitemapRequest.start: new count=" + _stopCount );
+        }
+        if( _stopCount == 0 ) {
+            // Logger.debug( "SitemapRequest.start: making request" );
+            makeRequest();
+        }
+    }
+
+    // Stops the request loop
+    // If there is a pending request, onReceive() is instructed to
+    // ignore the next response
+    public function stop() as Void {
+        _stopCount++;
+        // When the SitemapRequest is stopped, all ongoing asynchronous
+        // processing is also halted. Tasks in the task queue are atomic
+        // in the sense that stopping between tasks will not cause any
+        // data inconsistencies.
+        AsyncTaskQueue.get().removeAll();
+        if( _hasPendingRequest ) {
+            // Logger.debug( "SitemapRequest.stop: pending request, will ignore the next response" );
+            _ignoreNextResponse = true;
+        }
+    }
+
 
     // Used by the SitemapProcessor and TriggerNextRequestTask
     // to trigger the next request after the current response has been
