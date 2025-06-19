@@ -21,18 +21,15 @@ class NumericMenuItem extends BaseWidgetMenuItem {
             && sitemapWidget.getNumericItem().hasState();
     }
 
-    // The text state Drawable
-    private var _stateText as Text;
+    // For changing the state of the item
+    private var _commandRequest as BaseCommandRequest?;
 
     // Since we need a bunch of values from the sitemap configuration,
     // we just keep the SitemapNumeric
     private var _sitemapNumeric as SitemapNumeric;
-    public function getSitemapNumeric() as SitemapNumeric {
-        return _sitemapNumeric;
-    }
-    
-    // For changing the state of the item
-    private var _commandRequest as BaseCommandRequest?;
+
+    // The text state Drawable
+    private var _stateText as Text;
 
     // Constructor
     // Initializes the BaseCommandRequest used for changing the state,
@@ -62,16 +59,25 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         );
     }
 
-    // Updates the menu item
-    // This function is called when new data comes in from the
-    // sitemap polling
-    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
-        BaseWidgetMenuItem.updateWidget( sitemapWidget );
-        if( ! ( sitemapWidget instanceof SitemapNumeric ) ) {
-            throw new GeneralException( "Sitemap element '" + sitemapWidget.getLabel() + "' was passed into NumericMenuItem but is of a different type" );
-        }
-        _sitemapNumeric = sitemapWidget;
-        _stateText.setText( sitemapWidget.getDisplayState() );
+    // This function is called during a command request to identify
+    // the target item that the command should be sent to.
+    public function getItemName() as String {
+        return _sitemapNumeric.getNumericItem().getName();
+    }
+
+    // Returns the SitemapNumeric widget associated with this menu item
+    public function getSitemapNumeric() as SitemapNumeric {
+        return _sitemapNumeric;
+    }
+
+    // Nothing to be done, but needed to fullfil the delegate interface
+    function onCommandComplete() as Void {
+    }
+
+    // Exceptions from the command request are handed
+    // over to the ExceptionHandler
+    function onException( ex as Exception ) as Void {
+        ExceptionHandler.handleException( ex );
     }
 
     // When the menu item is selected, the CustomPicker is initialized
@@ -90,12 +96,6 @@ class NumericMenuItem extends BaseWidgetMenuItem {
             }
         }
         return true;
-    }
-
-    // This function is called during a command request to identify
-    // the target item that the command should be sent to.
-    public function getItemName() as String {
-        return _sitemapNumeric.getNumericItem().getName();
     }
 
     // The Picker uses this function to update the state
@@ -117,13 +117,15 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         );
     }
 
-    // Nothing to be done, but needed to fullfil the delegate interface
-    function onCommandComplete() as Void {
-    }
-
-    // Exceptions from the command request are handed
-    // over to the ExceptionHandler
-    function onException( ex as Exception ) as Void {
-        ExceptionHandler.handleException( ex );
+    // Updates the menu item
+    // This function is called when new data comes in from the
+    // sitemap polling
+    public function updateWidget( sitemapWidget as SitemapWidget ) as Void {
+        BaseWidgetMenuItem.updateWidget( sitemapWidget );
+        if( ! ( sitemapWidget instanceof SitemapNumeric ) ) {
+            throw new GeneralException( "Sitemap element '" + sitemapWidget.getLabel() + "' was passed into NumericMenuItem but is of a different type" );
+        }
+        _sitemapNumeric = sitemapWidget;
+        _stateText.setText( sitemapWidget.getDisplayState() );
     }
 }
