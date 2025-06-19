@@ -285,10 +285,17 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     }
 
     // Sets or updates the icon.
+    //
     // Although this class doesn't require it directly, the API's CustomMenu
     // class (which this is based on) inherits setIcon from MenuItem.
     // Therefore, we must follow that function signature, even though
     // we only support ResourceId as input.
+    //
+    // This class does not create the BitmapDrawable itself. Instead, it relies on the
+    // BitmapCache, which enables re-use of Bitmap objects in cases where multiple
+    // menu items use the same icon—a common scenario. This approach reduces memory
+    // usage and improves performance, as instantiating Bitmaps and loading resources
+    // is time-consuming.
     protected function setIcon( 
         iconResourceId as 
             Graphics.BitmapType 
@@ -301,18 +308,15 @@ class BaseSitemapMenuItem extends BaseMenuItem {
             if( ! ( iconResourceId instanceof ResourceId ) ) {
                 throw new GeneralException( "Only ResourceId supported" );
             }
-            if( _icon == null ) {
+            // If there was no icon before or the resourceId has changed
+            // we create a new tuple and get the Bitmap from the cache
+            if( _icon == null || ! iconResourceId.equals( _icon[0] ) ) {
                 // If there was no icon before, create the tuple
+                // and get the Bitmap from the cache
                 _icon = [
                     iconResourceId,
-                    new Bitmap( { :rezId => iconResourceId } )
+                    BitmapCache.get( iconResourceId )
                 ];
-                requestLayoutUpdate();
-            } else if( ! iconResourceId.equals( _icon[0] ) ) {
-                // Otherwise update it, but only when the ResourceId
-                // has changed
-                _icon[0] = iconResourceId;
-                _icon[1].setBitmap( iconResourceId );
                 requestLayoutUpdate();
             }
         } else if( _icon != null ) {
