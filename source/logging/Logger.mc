@@ -9,7 +9,7 @@ import Toybox.System;
  * This class provides functions for printing debug output 
  * to the debug console or log file.
  */
-//(:glance)
+(:glance)
 public class Logger {
 
     // `Info` should be used where the output is a permanent part of the code,
