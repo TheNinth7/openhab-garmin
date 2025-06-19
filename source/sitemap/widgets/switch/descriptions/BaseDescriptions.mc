@@ -1,14 +1,24 @@
 import Toybox.Lang;
 
+/*
+ * Base class for representing value/description pairs.
+ * Common use cases include sitemap mappings, item command descriptions,
+ * and item state descriptions.
+ */
 public class BaseDescriptions {
-    public var _descriptions as Array<BaseDescription>;
+    
+    private var _descriptions as Array<BaseDescription>;
+    
+    // We cache the size for faster access
+    private var _size as Number;
 
     public function initialize( descriptions as Array<BaseDescription> ) {
         _descriptions = descriptions;
+        _size = _descriptions.size();
     }
 
     public function hasDescriptions() as Boolean {
-        return _descriptions.size() > 0;
+        return _size > 0;
     }
 
     public function get( i as Number ) as BaseDescription {
@@ -27,6 +37,6 @@ public class BaseDescriptions {
     }
 
     public function size() as Number {
-        return _descriptions.size();
+        return _size;
     }
 }
