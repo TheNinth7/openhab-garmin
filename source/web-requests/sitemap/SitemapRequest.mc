@@ -207,23 +207,29 @@ class SitemapRequest extends BaseRequest {
 
         var taskQueue = AsyncTaskQueue.get();
 
-        // If the menu does not yet exist, we are in a non-interactive
-        // loading or error view. In this case, we prioritize speed
-        // over responsiveness to complete processing more quickly.
+        // Under normal circumstances, the queue should be empty at this point,
+        // as each new request is only triggered as the final step of processing
+        // the previous one. The only exception is during startup, when an initial
+        // request is sent immediately and processed in parallel with the asynchronous
+        // loading of the sitemap from storage. In this case, it's possible that the
+        // response arrives before the sitemap has finished loading. If that happens,
+        // we cancel any remaining tasks and proceed directly with processing the response.
+        if( ! taskQueue.isEmpty() ) {
+            Logger.debug( "SitemapRequest encountered non-empty task queue" );
+            taskQueue.removeAll();
+        }
+
+        // If the menu hasn’t been created yet, we're likely in a non-interactive
+        // loading or error view. In this state, we prioritize speed over responsiveness
+        // to complete processing as quickly as possible.
         if( ! HomepageMenu.exists() ) {
             taskQueue.prioritizeSpeed();
         } else {
             taskQueue.prioritizeResponsiveness();
         }
 
-        // At this point, the queue should always be empty, since
-        // the next request is triggered only as final task of
-        // any previous processing
-        if( ! taskQueue.isEmpty() ) {
-            throw new GeneralException( "SitemapProcessor encountered non-empty task queue" );
-        }
-        
-        // Start with the first task
+        // Start with the first task; it will handle scheduling all 
+        // subsequent tasks as needed.
         taskQueue.add( new ProcessIncomingJsonTask( incomingJson ) );
     }
 
