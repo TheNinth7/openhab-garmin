@@ -70,7 +70,11 @@ class AsyncTaskQueue {
     // Starts the timer for executing tasks
     private function startTimer() as Void {
         // Logger.debug( "AsyncTaskQueue: starting timer" );
-        _timer.start( method( :executeTasks ), 50, false );
+        
+        // Setting the timer to 0 will set it to the minimum
+        // interval supported by the device, which is 50ms
+        // for most devices
+        _timer.start( method( :executeTasks ), 0, false );
     }
 
     // Determines if the task list ist empty
