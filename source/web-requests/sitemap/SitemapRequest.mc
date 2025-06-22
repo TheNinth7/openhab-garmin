@@ -112,11 +112,17 @@ class SitemapRequest extends BaseRequest {
         }
 
         ExceptionHandler.handleException( ex );
-        triggerNextRequestInternal( 
-            _pollingInterval > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
-                ? _pollingInterval
-                : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL 
-        );
+        
+        // If an error occurs during processing the sitemap from
+        // storage, the request is already schedule and we do 
+        // not need to to it anymore
+        if( ! _hasPendingRequest ) {
+            triggerNextRequestInternal( 
+                _pollingInterval > SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL
+                    ? _pollingInterval
+                    : SITEMAP_ERROR_MINIMUM_POLLING_INTERVAL 
+            );
+        }
     }
 
     // Makes the web request
@@ -125,8 +131,8 @@ class SitemapRequest extends BaseRequest {
         // requests anymore
         if( _stopCount <= 0 && ! _hasPendingRequest ) {
             _requestCount++;
-            Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
-            Logger.debugMemory( null );
+            // Logger.debug( "SitemapRequest.makeRequest (#" + _requestCount + ")" );
+            // Logger.debugMemory( null );
             
             // _hasPendingRequest has to be set to true BEFORE makeWebRequest
             // For some errors (like -104/no phone), on receive is called

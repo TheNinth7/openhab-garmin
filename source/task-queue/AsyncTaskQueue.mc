@@ -115,7 +115,7 @@ class AsyncTaskQueue {
             do {
                 var task = _tasks[0];
                 try {
-                    Logger.debug( "AsyncTaskQueue: invoking task (" + ( System.getTimer() - startTime ) + "ms since batch start)" );
+                    // Logger.debug( "AsyncTaskQueue: invoking task (" + ( System.getTimer() - startTime ) + "ms since batch start)" );
                     task.invoke();
                    _tasks.remove( task );
                 } catch( ex ) {

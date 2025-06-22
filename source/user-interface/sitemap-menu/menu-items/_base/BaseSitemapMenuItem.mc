@@ -169,7 +169,7 @@ class BaseSitemapMenuItem extends BaseMenuItem {
     * and their relationships are visually explained.
     */
     private function onLayout( dc as Dc ) as Void {
-        Logger.debug( "onLayout" );
+        // Logger.debug( "BaseSitemapMenuItem.onLayout" );
         var dcWidth = dc.getWidth();
         var dcHeight = dc.getHeight();
         var yCenter = dcHeight/2;

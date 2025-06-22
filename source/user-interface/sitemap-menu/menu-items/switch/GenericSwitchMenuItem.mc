@@ -31,7 +31,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     public function initialize( 
         sitemapSwitch as SitemapSwitch,
         parent as BasePageMenu,
-        taskQueue as TaskQueue
+        processingMode as BasePageMenu.ProcessingMode
     ) {
         // Initialize the superclass
         BaseSwitchMenuItem.initialize( {
@@ -39,7 +39,7 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
                 :stateTextResponsive => sitemapSwitch.getDisplayState(),
                 :isActionable => true,
                 :parent => parent,
-                :taskQueue => taskQueue
+                :processingMode => processingMode
             }
         );
     }

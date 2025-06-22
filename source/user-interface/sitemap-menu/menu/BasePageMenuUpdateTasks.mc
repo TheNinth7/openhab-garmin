@@ -14,7 +14,7 @@ import Toybox.WatchUi;
  * 2) DeleteUnusedMenuItemsTask
  *    Removes any menu items that no longer have a corresponding sitemap element.
  *
- * 3) SwitchViewIfItemCountChangedTask
+ * 3) SwitchViewIfVisibleAndItemCountChangedTask
  *    Implements a workaround for a Garmin SDK bug. See the class description for details.
  */
 
@@ -58,7 +58,7 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
                 MenuItemFactory.createMenuItem( 
                     _sitemapWidget, 
                     _pageMenu,
-                    AsyncTaskQueue.get()
+                    BasePageMenu.PROCESSING_ASYNC
                 ) 
             );
             // Logger.debug( "PageMenu.update: adding new item to page '" + _pageMenu.getLabel() + "'" );
@@ -75,7 +75,7 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
                 var newItem = MenuItemFactory.createMenuItem( 
                     _sitemapWidget, 
                     _pageMenu,
-                    AsyncTaskQueue.get()
+                    BasePageMenu.PROCESSING_ASYNC
                 );
 
                 if( item.hasPage() || newItem.hasPage() ) {
@@ -132,17 +132,12 @@ class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
 
 
 /*
- * A bug in Garmin's native device implementation of CustomMenu/Menu2
- * affects updates to the currently displayed menu:
- * - Newly added menu items are not displayed.
- * - Even worse, deleting menu items can cause the app to crash.
- *
- * This issue can be avoided by replacing the current view with itself
- * using switchToView(). This appears to trigger the necessary refresh
- * inside CustomMenu to properly handle the updated number of items.
+ * Due to a bug in Garmin's native implementation of CustomMenu/Menu2,
+ * adding or removing items does not properly update the currently displayed menu.
+ * As a workaround, the view must be reloaded manually.
+ * See the SwitchViewIfVisibleTask base class for further details.
  */
-class SwitchViewIfItemCountChangedTask extends BaseSitemapProcessorTask {
-    private var _pageMenu as BasePageMenu;
+class SwitchViewIfVisibleAndItemCountChangedTask extends SwitchViewIfVisibleTask {
     private var _previousItemCount as Number;
 
     // Constructor
@@ -153,29 +148,19 @@ class SwitchViewIfItemCountChangedTask extends BaseSitemapProcessorTask {
     public function initialize( 
         pageMenu as BasePageMenu 
     ) {
-        BaseSitemapProcessorTask.initialize();
-        _pageMenu = pageMenu;
+        SwitchViewIfVisibleTask.initialize( pageMenu );
         _previousItemCount = pageMenu.getItemCount();
     }
     
-    // Add the element
+    // Perform the switch if needed
     public function invoke() as Void {
-        // Logger.debug( "SwitchViewIfItemCountChangedTask.invoke" );
+        // Logger.debug( "SwitchViewIfVisibleAndItemCountChangedTask.invoke" );
         // Replacing items works as expected, so only when 
         // the item count has changed ...
-        if( _previousItemCount != _pageMenu.getItemCount() ) {
-            // Logger.debug( "SwitchViewIfItemCountChangedTask.invoke: item count has changed" );
-            // ... and this menu is the current view ...
-            if( _pageMenu.equals( WatchUi.getCurrentView()[0] ) ) {
-                // Logger.debug( "SwitchViewIfItemCountChangedTask.invoke: switching the view!" );
-                
-                // ... we do the switch to itself
-                WatchUi.switchToView(
-                    WatchUi.getCurrentView()[0] as View,
-                    WatchUi.getCurrentView()[1] as InputDelegate,
-                    WatchUi.SLIDE_IMMEDIATE
-                );
-            }            
+        if( _previousItemCount != getPageMenu().getItemCount() ) {
+            // ... we invoke the base class, which checks if the menu
+            // is visible and if yes switches it.
+            SwitchViewIfVisibleTask.invoke();
         }
     }
 }

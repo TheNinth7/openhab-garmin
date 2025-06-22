@@ -6,28 +6,61 @@ import Toybox.Graphics;
 /*
  * Base class for page menus.
  *
- * Page menus act as containers for primitive sitemap elements. 
- * These containers correspond to elements like the Homepage and Frames, 
- * while primitive elements include items such as Switches and Text elements.
+ * Page menus serve as containers for primitive sitemap elements. These containers 
+ * correspond to elements such as the Homepage and Frames, while primitive elements 
+ * include Switches, Text elements, and similar controls.
  *
- * This class handles both the creation of menu items based on the sitemap 
- * and the logic for updating the menu in response to changes in the sitemap.
+ * This class is responsible for both creating menu items based on the sitemap and 
+ * updating the menu in response to changes in the sitemap.
  *
- * Since updates can take time and CIQ apps are single-threaded, the update 
- * is broken into multiple tasks. These tasks are managed by the AsyncTaskQueue, 
- * allowing gaps between them for user input to be processed. This avoids 
- * noticeable lag or UI unresponsiveness when handling large sitemaps.
+ * Because Connect IQ apps are single-threaded and processing can be time-consuming, 
+ * the logic is divided into multiple tasks. These tasks are managed by an 
+ * AsyncTaskQueue, allowing brief pauses between them so that user input can be 
+ * processed. This approach helps prevent noticeable lag or UI unresponsiveness 
+ * when dealing with large sitemaps.
+ *
+ * Updates are always handled fully asynchronously. Initialization, however, can 
+ * be performed either in a synchronous/asynchronous hybrid mode or fully 
+ * asynchronously. In the hybrid mode, the top-level menu is initialized 
+ * synchronously for immediate display, while lower-level elements are populated 
+ * asynchronously.
  */
 class BasePageMenu extends BaseMenu {
     
+    // Constants used to identify the initialization processing mode:
+    //
+    // PROCESSING_TOP_LEVEL_SYNC:
+    //   Indicates that this menu level should be processed synchronously,
+    //   while subsequent levels will be processed asynchronously.
+    //
+    // PROCESSING_ASYNC_AFTER_SYNC:
+    //   Marks the first menu level that is populated asynchronously after a
+    //   synchronous top-level. This case requires special handling because
+    //   the user may already have opened the (initially empty) menu that was
+    //   created synchronously. A workaround for a Garmin bug affecting visible
+    //   menus must be applied, along with a UI update.
+    //
+    // PROCESSING_ASYNC:
+    //   Indicates full asynchronous processing. Used for lower levels in hybrid mode
+    //   (second level and below), but can also be applied to the root (e.g., HomepageMenu)
+    //   if full asynchronous initialization is desired.
+    public enum ProcessingMode {
+        PROCESSING_TOP_LEVEL_SYNC,
+        PROCESSING_ASYNC_AFTER_SYNC,
+        PROCESSING_ASYNC
+    }
+
     // The label for the menu
     private var _title as String;
 
     // Constructor
+    // Initializes the menu and adds menu items for each widget in the
+    // provided sitemapContainer.
+    // See above for details on the processingMode parameter.
     protected function initialize( 
         sitemapContainer as SitemapContainerImplementation, 
         footer as Drawable?,
-        taskQueue as TaskQueue 
+        processingMode as ProcessingMode 
     ) {
         _title = sitemapContainer.title;
         
@@ -38,13 +71,47 @@ class BasePageMenu extends BaseMenu {
                 :footer => footer
             } );
 
-        // For each element in the page, create a menu item
-        // The menu item is not created directly but by a
-        // task in the passed in task queue. See 
-        // HomepageMenu.create() and SyncTaskQueue for details
         var widgets = sitemapContainer.getWidgets();
-        for( var i = widgets.size() - 1; i >= 0; i-- ) {
-            taskQueue.addToFront( new CreateMenuItemTask( widgets[i], self, taskQueue ) );
+
+        // For all modes, we first obtain the task queue.
+        var taskQueue = AsyncTaskQueue.get();
+
+        // Create a menu item for each widget.
+        if( processingMode == PROCESSING_TOP_LEVEL_SYNC ) {
+            Logger.debug( "BasePageMenu.initialize: synchronous processing" );
+            // In top-level sync mode, menu items are created synchronously.
+            // The next level is then initialized in PROCESSING_ASYNC_AFTER_SYNC mode.
+            for( var i = 0; i < widgets.size(); i++ ) {
+                addItem( MenuItemFactory.createMenuItem( widgets[i], self, PROCESSING_ASYNC_AFTER_SYNC ) );
+            }
+            // Since now we are showing the UI, we prioritize responsiveness over
+            // speed
+            taskQueue.prioritizeResponsiveness();
+        } else {
+            if( processingMode == PROCESSING_ASYNC_AFTER_SYNC ) {
+                // If we are the first async level, we schedule the tasks
+                // needed to update the UI if the user has already navigated
+                // to this level.
+                Logger.debug( "BasePageMenu.initialize: first asynchronous processing" );
+                
+                // Not needed as long as SwitchViewIfVisibleTask is required,
+                // which remains the case until Garmin fixes the related bug.
+                // SwitchViewIfVisibleTask implicitly refreshes the UI, so an explicit
+                // refresh is not necessary.
+                // See SwitchViewIfVisibleTask for details.
+                // taskQueue.addToFront( new RequestWatchUiUpdateIfVisibleTask( self ) );
+                
+                taskQueue.addToFront( new SwitchViewIfVisibleTask( self ) );
+            } else {
+                Logger.debug( "BasePageMenu.initialize: asynchronous processing" );
+            }
+
+            // Now add the tasks for creating the menu items. Since we schedule
+            // them to the front of the queue they'll be executed BEFORE the UI
+            // update tasks above.
+            for( var i = widgets.size() - 1; i >= 0; i-- ) {
+                taskQueue.addToFront( new CreateMenuItemTask( widgets[i], self ) );
+            }
         }
     }
 
@@ -105,15 +172,15 @@ class BasePageMenu extends BaseMenu {
         // Since the `SitemapProcessor` has already added tasks that should run
         // AFTER the menu update, we prepend all tasks to the queue.
         // As a result, the tasks here are added in REVERSE order of their
-        // intended execution. For example, we add the `SwitchViewIfItemCountChangedTask`
+        // intended execution. For example, we add the `SwitchViewIfVisibleAndItemCountChangedTask`
         // first, because it is meant to be executed last.
 
         // Workaround for a bug in Garmin's native device implementation 
-        // of the CustomMenu/Menu2. See `SwitchViewIfItemCountChangedTask`
+        // of the CustomMenu/Menu2. See `SwitchViewIfVisibleAndItemCountChangedTask`
         // for details. This task needs to be created before any modifications
         // to the menu structure, because on initialization it needs to save the
         // current number of menu items.
-        taskQueue.addToFront( new SwitchViewIfItemCountChangedTask( self ) );
+        taskQueue.addToFront( new SwitchViewIfVisibleAndItemCountChangedTask( self ) );
 
         // After we have cycled through all sitemap elements, 
         // we'll delete any menu items that are not used anymore

@@ -37,7 +37,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
     public function initialize( 
         sitemapNumeric as SitemapNumeric,
         parent as BasePageMenu,
-        taskQueue as TaskQueue
+        processingMode as BasePageMenu.ProcessingMode
     ) {
         _sitemapNumeric = sitemapNumeric;
         _commandRequest = BaseCommandRequest.get( self );
@@ -54,7 +54,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
                 :stateDrawable => _stateText,
                 :isActionable => true,
                 :parent => parent,
-                :taskQueue => taskQueue
+                :processingMode => processingMode
             }
         );
     }
