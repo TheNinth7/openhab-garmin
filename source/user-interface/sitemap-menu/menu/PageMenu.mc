@@ -16,12 +16,12 @@ class PageMenu extends BasePageMenu {
     public function initialize( 
         sitemapContainer as SitemapContainerImplementation,
         parent as BasePageMenu,
-        taskQueue as TaskQueue
+        processingMode as BasePageMenu.ProcessingMode
     ) {
         BasePageMenu.initialize( 
             sitemapContainer, 
             null, 
-            taskQueue 
+            processingMode 
         );
         _weakParent = parent.weak();
     }

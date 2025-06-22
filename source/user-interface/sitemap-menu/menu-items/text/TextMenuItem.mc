@@ -15,13 +15,13 @@ class TextMenuItem extends BaseWidgetMenuItem {
     public function initialize( 
         sitemapText as SitemapText,
         parent as BasePageMenu,
-        taskQueue as TaskQueue
+        processingMode as BasePageMenu.ProcessingMode
     ) {
         BaseWidgetMenuItem.initialize( {
             :sitemapWidget => sitemapText,
             :stateTextResponsive => sitemapText.getDisplayState(),
             :parent => parent,
-            :taskQueue => taskQueue
+            :processingMode => processingMode
         } );
     }
 

@@ -33,32 +33,41 @@ class HomepageMenu extends BasePageMenu {
         _instance = null;
     }
 
-    // Creates the menu from a sitemap.
-    // This function uses a synchronous task queue to iterate over the entire sitemap,
-    // instead of relying on recursive function calls. CIQ apps have a relatively small
-    // maximum stack size, so this approach helps avoid stack overflow errors when
-    // processing sitemaps with many levels of hierarchy.
-    public static function create( sitemapHomepage as SitemapHomepage, asyncProcessing as Boolean ) as HomepageMenu {
-        _instance = new HomepageMenu( sitemapHomepage, asyncProcessing );
+    // Creates the menu from a sitemap received via a web response.
+    // 
+    // This function uses an asynchronous task queue to process the entire sitemap
+    // instead of recursive function calls. Garmin CIQ apps have a relatively small
+    // maximum stack size, so this approach helps prevent stack overflow when handling
+    // deeply nested sitemaps.
+    //
+    // Additionally, the asynchronous task queue processes tasks in small batches,
+    // allowing user input to be handled between batches to improve UI responsiveness.
+    public static function createFromWebResponse( sitemapHomepage as SitemapHomepage ) as HomepageMenu {
+        _instance = new HomepageMenu( sitemapHomepage, false );
         return _instance;
     }
     
-    // This function is called on startup by OHApp, and 
-    // if available initializes the menu from sitemap data
-    // in storage
+    // Used on startup by OHApp to initialize the menu from a stored sitemap,
+    // if one is available. While UI responsiveness is not a concern during startup,
+    // the Watchdog still enforces a limit on consecutive code execution time.
+    //
+    // Large sitemaps, especially those with many unique icons, may exceed this limit.
+    // To avoid this, only the first level is processed synchronously,
+    // allowing the menu to open immediately. The remaining levels are populated
+    // asynchronously after startup.
     public static function createFromStorage() as HomepageMenu? {
-        var homepageMenu = null;
         // Reading the JSON from storage is not critical,
-        // if it fails, we just move ahead and request it from the server
+        // if it fails, we just show the LoadingView and wait
+        // for the first response from the server to arrive
         try {
             var sitemapHomepage = SitemapStore.getSitemapFromStorage();
             if( sitemapHomepage != null ) {
-                homepageMenu = HomepageMenu.create( sitemapHomepage, false );
+                _instance = new HomepageMenu( sitemapHomepage, true );
             }
         } catch( ex ) {
             Logger.debugException( ex );
         }
-        return homepageMenu;
+        return _instance;
     }
 
     // True if the menu was already created
@@ -75,7 +84,7 @@ class HomepageMenu extends BasePageMenu {
         return _instance as HomepageMenu;
     }
 
-    
+
     /******* INSTANCE *******/
 
 
@@ -107,50 +116,61 @@ class HomepageMenu extends BasePageMenu {
         BasePageMenu.update( sitemapContainer );
     }
 
-    // On button-based devices, the settings icon is displayed in the footer
+    /******* BUTTON-BASED DEVICES *******/
+
+    // Constructor for button-based devices. On these devices,
+    // the settings icon is displayed in the footer.
+    // The syncTopLevel parameter indicates that the HomepageMenu
+    // should add its menu items synchronously, with only the lower levels
+    // initialized asynchronously.
     (:exclForTouch)
     private function initialize(
         sitemapHomepage as SitemapHomepage,
-        asyncProcessing as Boolean
+        syncTopLevel as Boolean
     ) {
-        var taskQueue = 
-            asyncProcessing
-            ? AsyncTaskQueue.get()
-            : new SyncTaskQueue();
-
         BasePageMenu.initialize( 
             sitemapHomepage, 
             new Bitmap( {
                     :rezId => Rez.Drawables.iconDownToSettings,
                     :locX => WatchUi.LAYOUT_HALIGN_CENTER,
                     :locY => WatchUi.LAYOUT_VALIGN_CENTER } ),
-            taskQueue
+            syncTopLevel
+                ? PROCESSING_TOP_LEVEL_SYNC
+                : PROCESSING_ASYNC
         );
-
-        // The base class always creates tasks to process its elements
-        // If synchronous processing has been requested, we execute
-        // those tasks immediately.
-        // Processing the elements sequentially instead of recursively
-        // is needed to avoid stack overflow withs larger sitemaps
-        if( taskQueue instanceof SyncTaskQueue ) {
-            taskQueue.executeTasks();
-        }
     }
+
+
+    /******* TOUCH-BASED DEVICES *******/
+
 
     // For touch-based devices there is a dedicated menu item for
     // showing the settings menu
     // This member tracks whether the settings menu has been added
     (:exclForButton)
     private var _hasSettingsMenu as Boolean = false;
+
+    // Constructor for touched-based devices. On these devices,
+    // there is a dedicated settings menu item added to the HomepageMenu.
+    // The syncTopLevel parameter indicates that the HomepageMenu
+    // should add its menu items synchronously, with only the lower levels
+    // initialized asynchronously.
     (:exclForButton)
     private function initialize(
         sitemapHomepage as SitemapHomepage,
-        syncTaskQueue as SyncTaskQueue 
+        syncTopLevel as Boolean
     ) {
-        BasePageMenu.initialize( sitemapHomepage, null, syncTaskQueue );
+        BasePageMenu.initialize( 
+            sitemapHomepage, 
+            null, 
+            syncTopLevel
+                ? PROCESSING_TOP_LEVEL_SYNC
+                : PROCESSING_ASYNC 
+        );
         BasePageMenu.addItem( SettingsMenuItem.get() );
         _hasSettingsMenu = true;
     }
+
     // The update function syncs the menu structure with the sitemap
     // The following two functions are overriden to "hide" the last
     // entry, the settings menu item, from the update procedure

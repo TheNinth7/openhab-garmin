@@ -102,10 +102,7 @@ class CreateHomepageTask extends BaseSitemapProcessorTask {
         // the SwitchToHomepageTask and schedule that task
         AsyncTaskQueue.get().add(
             new SwitchToHomepageTask(
-                HomepageMenu.create( 
-                    _sitemapHomepage,
-                    true 
-                )
+                HomepageMenu.createFromWebResponse( _sitemapHomepage )
             )
         );
     }

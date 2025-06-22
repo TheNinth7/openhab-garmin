@@ -36,7 +36,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
     public function initialize( 
         sitemapSwitch as SitemapSwitch,
         parent as BasePageMenu,
-        taskQueue as TaskQueue
+        processingMode as BasePageMenu.ProcessingMode
     ) {
         _sitemapSwitch = sitemapSwitch;
         
@@ -50,7 +50,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
                 :stateDrawable => _stateDrawable,
                 :isActionable => true,
                 :parent => parent,
-                :taskQueue => taskQueue
+                :processingMode => processingMode
             }
         );
     }

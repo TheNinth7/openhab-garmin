@@ -16,7 +16,7 @@ typedef BaseSwitchMenuItemOptions as {
     :stateDrawable as BaseSitemapMenuItem.StateDrawable?,
     :isActionable as Boolean?, // if true, the action icon is displayed
     :parent as BasePageMenu,
-    :taskQueue as TaskQueue
+    :processingMode as BasePageMenu.ProcessingMode
 };
 
 class BaseSwitchMenuItem extends BaseWidgetMenuItem {

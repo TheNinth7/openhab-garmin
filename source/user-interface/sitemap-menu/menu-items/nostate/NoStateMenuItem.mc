@@ -7,13 +7,13 @@ class NoStateMenuItem extends BaseWidgetMenuItem {
     public function initialize( 
         sitemapWidget as SitemapWidget, 
         parent as BasePageMenu,
-        taskQueue as TaskQueue 
+        processingMode as BasePageMenu.ProcessingMode 
     ) {
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapWidget,
                 :stateDrawable => new StateText( "—" ),
                 :parent => parent,
-                :taskQueue => taskQueue
+                :processingMode => processingMode
             }
         );
     }

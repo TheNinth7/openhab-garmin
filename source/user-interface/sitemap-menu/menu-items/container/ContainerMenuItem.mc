@@ -14,13 +14,13 @@ class ContainerMenuItem extends BaseWidgetMenuItem {
     public function initialize( 
         sitemapContainer as SitemapFrame or SitemapGroup, 
         parent as BasePageMenu,
-        taskQueue as TaskQueue
+        processingMode as BasePageMenu.ProcessingMode
     ) {
         BaseWidgetMenuItem.initialize( { 
             :sitemapWidget => sitemapContainer,
             :stateTextResponsive => sitemapContainer.getDisplayStateOrNull(),
             :parent => parent,
-            :taskQueue => taskQueue
+            :processingMode => processingMode
         } );
     }
 

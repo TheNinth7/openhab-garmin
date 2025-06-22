@@ -24,7 +24,7 @@ typedef BaseWidgetMenuItemOptions as {
     :stateDrawable as BaseSitemapMenuItem.StateDrawable?,
     :isActionable as Boolean?, // if true, the action icon is displayed
     :parent as BasePageMenu,
-    :taskQueue as TaskQueue
+    :processingMode as BasePageMenu.ProcessingMode
 };
 
 class BaseWidgetMenuItem extends BaseSitemapMenuItem {
@@ -63,7 +63,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
 
         processWidget( 
             options[:sitemapWidget] as SitemapWidget,
-            options[:taskQueue] as TaskQueue
+            options[:processingMode] as BasePageMenu.ProcessingMode
         );
     }
 
@@ -106,7 +106,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
     public function updateWidget( sitemapWidget as SitemapWidget ) as Void { 
         // When creating a PageMenu during an update, we always
         // use the async task queue
-        processWidget( sitemapWidget, AsyncTaskQueue.get() );
+        processWidget( sitemapWidget, BasePageMenu.PROCESSING_ASYNC );
     }
 
     /*
@@ -115,7 +115,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
      */
     private function processWidget( 
         sitemapWidget as SitemapWidget,
-        taskQueue as TaskQueue
+        processingMode as BasePageMenu.ProcessingMode
     ) as Void { 
         setIcon( sitemapWidget.getIcon() );
         setLabel( sitemapWidget.getLabel() );
@@ -132,7 +132,7 @@ class BaseWidgetMenuItem extends BaseSitemapMenuItem {
                 if( parent == null ) {
                     throw new GeneralException( "Parent reference is no longer valid" );
                 }
-                _page = new PageMenu( linkedPage, parent, taskQueue );
+                _page = new PageMenu( linkedPage, parent, processingMode );
             }
         } else if( _isActionable ) {
             _page = null;
