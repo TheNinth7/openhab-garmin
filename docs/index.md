@@ -46,7 +46,7 @@
   - [Supported Elements](#supported-elements)
     - [Nested Elements](#nested-elements)
   - [`Frame`](#frame)
-  - [`Frame`](#default)
+  - [`Default`](#default)
   - [`Text`](#text)
   - [`Group`](#group)
   - [`Switch` and `Selection`](#switch-and-selection)
