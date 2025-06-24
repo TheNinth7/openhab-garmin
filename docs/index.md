@@ -186,6 +186,8 @@ The following element types are currently supported:
 
 - [`Frame`](#frame)
 
+- [`Default`](#default)
+
 - [`Text`](#text)
 
 - [`Group`](#group)
