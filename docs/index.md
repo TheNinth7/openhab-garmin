@@ -135,13 +135,13 @@ To connect using ➡️ [myopenHAB](https://myopenhab.org):
 
 ## Sending Commands
 
-Starting with openHAB 5, a built-in JSON-based REST API enables this app to send commands directly—no additional setup required.
+Starting with openHAB 5, a built-in JSON-based REST API allows the app to send commands directly—no extra setup needed.
 
-For earlier versions (openHAB 4.x), you can either install a backported version of the API or configure a custom webhook.
+For earlier versions, you can either install the backported API (available for openHAB 4.3.x) or set up a custom webhook.
 
 ### Option 1: Install the Backport
 
-To enable JSON-based command support on openHAB 4.x, install the backported API bundle. Follow the instructions here:
+To enable JSON-based command support on openHAB 4.3.x, install the backported API bundle. Follow the instructions here:
 
 ➡️ [Backport Installation Guide](https://github.com/florian-h05/openhab-core/releases/tag/4.3.x-command-json)
 
