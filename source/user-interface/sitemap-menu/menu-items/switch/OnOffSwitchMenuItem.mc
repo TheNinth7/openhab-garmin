@@ -77,9 +77,12 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     private static function getStateTextResponsive( 
         sitemapSwitch as SitemapSwitch 
     ) as String? {
+        var switchItem = sitemapSwitch.getSwitchItem();
         return
-            sitemapSwitch.getSwitchItem().getType().equals( "Dimmer" )
-            ? sitemapSwitch.getDisplayState()
+            switchItem.getType().equals( "Dimmer" )
+            ? switchItem.getState().equals( "0" )
+                ? null
+                : sitemapSwitch.getDisplayState()
             : sitemapSwitch.hasRemoteDisplayState()
                 ? sitemapSwitch.getRemoteDisplayState()
                 : null;
