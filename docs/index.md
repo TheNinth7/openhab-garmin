@@ -345,7 +345,7 @@ As a result, `Selection` is treated as a **synonym for `Switch`**, and both beha
 
 The widget supports three usage variants:
 
-1. **Toggle Switch** – for binary items (`ON`/`OFF`).
+1. **Toggle Switch** – for binary items (`ON`/`OFF`) and `Dimmer` items.
 2. **Rollershutter Control** – a full-screen view for `Rollershutter` items with `UP`, `DOWN`, and `STOP` buttons.
 3. **Generic Switch** – for items with custom or multiple commands, defined via `mappings` or item metadata.
 
@@ -359,7 +359,9 @@ This is the default behavior when:
 - The item has no command descriptions,
 - The item is **not** of type `Rollershutter`.
 
-The switch simply toggles between `ON` and `OFF`.
+The switch simply toggles between `ON` and `OFF`. 
+
+**Note:** If an item of type `Dimmer` is linked to a `Switch` and no state mappings are defined, a toggle switch will be displayed. The toggle will send `ON` and `OFF` commands. For display purposes, a `Dimmer` state of `0` is treated as `OFF`, while any value from `1` to `100` is considered `ON`.
 
 **Example:**
 
