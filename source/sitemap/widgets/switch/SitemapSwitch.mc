@@ -110,7 +110,9 @@ class SitemapSwitch extends SitemapWidget {
         var switchDisplayState = _mappings.lookup( _switchItem.getState() );
 
         if( switchDisplayState == null ) {
-            if( hasRemoteDisplayState() ) {
+            if( _switchItem.getType().equals( "Dimmer" ) ) {
+                switchDisplayState = _switchItem.getState() + _switchItem.getUnit();
+            } else if( hasRemoteDisplayState() ) {
                 // Second priority: 
                 // If we got the state from the server, then the remoteDisplayState
                 // may be filled and we'll just use it. 
