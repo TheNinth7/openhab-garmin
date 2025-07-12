@@ -601,11 +601,13 @@ Currently supported icons are:
 
 * `batterylevel`
 * `blinds`
+* `door`
 * `garagedoor`
 * `humidity`
 * `light`
 * `lightbulb`
 * `lowbattery`
+* `poweroutlet`
 * `radiator`
 * `rollershutter`
 * `screen`

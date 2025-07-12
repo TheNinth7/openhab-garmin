@@ -123,6 +123,24 @@ class IconParser {
                     }
                 }
  
+                case "poweroutlet": {
+                    if( itemState.equals( SwitchItem.ITEM_STATE_ON ) ) {
+                        return Rez.Drawables.menuPowerOutletOn;
+                    } else if( itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) {
+                        return Rez.Drawables.menuPowerOutletOff;
+                    } else {
+                        return Rez.Drawables.menuPowerOutlet;
+                    }
+                }
+
+                case "door": {
+                    if( itemState.equals( SwitchItem.ITEM_STATE_CLOSED ) ) {
+                        return Rez.Drawables.menuDoorClosed;
+                    } else {
+                        return Rez.Drawables.menuDoorOpen;
+                    }
+                }
+
                 case "screen": {
                     if( itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) {
                         return Rez.Drawables.menuScreenOff;

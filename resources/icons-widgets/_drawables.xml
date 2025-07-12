@@ -11,6 +11,9 @@
     <bitmap id="menuBatteryLevel09" scaleY="12%" filename="batterylevel-09.svg" dithering="none"/>
     <bitmap id="menuBatteryLevel10" scaleY="12%" filename="batterylevel-10.svg" dithering="none"/>
 
+    <bitmap id="menuDoorClosed" scaleY="12%" filename="door-closed.svg" dithering="none"/>
+    <bitmap id="menuDoorOpen" scaleY="12%" filename="door-open.svg" dithering="none"/>
+
     <bitmap id="menuGaragedoor00" scaleY="10%" filename="garagedoor-00.svg" dithering="none"/>
     <bitmap id="menuGaragedoor01" scaleY="10%" filename="garagedoor-01.svg" dithering="none"/>
     <bitmap id="menuGaragedoor02" scaleY="10%" filename="garagedoor-02.svg" dithering="none"/>
@@ -46,6 +49,10 @@
     <bitmap id="menuLight08" scaleY="12%" filename="light-08.svg" dithering="none"/>
     <bitmap id="menuLight09" scaleY="12%" filename="light-09.svg" dithering="none"/>
     <bitmap id="menuLight10" scaleY="12%" filename="light-10.svg" dithering="none"/>
+
+    <bitmap id="menuPowerOutlet" scaleY="12%" filename="poweroutlet.svg" dithering="none"/>
+    <bitmap id="menuPowerOutletOff" scaleY="12%" filename="poweroutlet-off.svg" dithering="none"/>
+    <bitmap id="menuPowerOutletOn" scaleY="12%" filename="poweroutlet-on.svg" dithering="none"/>
 
     <bitmap id="menuRadiator" scaleY="11%" filename="radiator.svg" dithering="none"/>
 
