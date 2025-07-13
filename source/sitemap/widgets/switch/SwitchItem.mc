@@ -27,8 +27,8 @@ class SwitchItem extends Item {
     private var _stateDescriptions as StateDescriptions?;
 
     // Constructor
-    public function initialize( json as JsonAdapter ) {
-        Item.initialize( json );
+    public function initialize( json as JsonAdapter, isSitemapFresh as Boolean ) {
+        Item.initialize( json, isSitemapFresh );
 
         // Then we read the item's command descriptions, if there are any ...
         var jsonCommandDescriptions = json.getOptionalObject( "commandDescription" );
@@ -47,14 +47,17 @@ class SwitchItem extends Item {
         }
     }
 
+    // Returns the command descriptions
     public function getCommandDescriptions() as CommandDescriptions? {
         return _commandDescriptions;
     }
 
+    // Returns the state descriptions
     public function getStateDescriptions() as StateDescriptions? {
         return _stateDescriptions;
     }
 
+    // Look up one specific command in the command descriptions
     public function lookupCommandDescription( command as String ) as String? {
         if( _commandDescriptions != null ) {
             return _commandDescriptions.lookup( command );
@@ -63,6 +66,7 @@ class SwitchItem extends Item {
         }
     }
 
+    // Look up one specific state in the state descriptions
     public function lookupStateDescription( state as String ) as String? {
         if( _stateDescriptions != null ) {
             return _stateDescriptions.lookup( state );

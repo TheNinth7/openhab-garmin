@@ -13,7 +13,7 @@ import Toybox.Graphics;
  */
 class SitemapElement {
 
-    protected static const NO_DISPLAY_STATE as String = "-";
+    protected static const NO_DISPLAY_STATE as String = "—";
 
     private var _isSitemapFresh as Boolean;
 

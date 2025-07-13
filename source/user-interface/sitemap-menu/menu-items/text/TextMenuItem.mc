@@ -11,6 +11,11 @@ import Toybox.WatchUi;
  */
 class TextMenuItem extends BaseWidgetMenuItem {
     
+    // Returns true if the given widget matches the type handled by this menu item.
+    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
+        return sitemapWidget instanceof SitemapText;
+    }
+
     // Constructor
     public function initialize( 
         sitemapText as SitemapText,
@@ -23,13 +28,6 @@ class TextMenuItem extends BaseWidgetMenuItem {
             :parent => parent,
             :processingMode => processingMode
         } );
-    }
-
-    // Returns true if the given widget matches the type handled by this menu item.
-    public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
-        return 
-            sitemapWidget instanceof SitemapText
-            && sitemapWidget.hasDisplayState(); 
     }
 
     // Updates the menu item

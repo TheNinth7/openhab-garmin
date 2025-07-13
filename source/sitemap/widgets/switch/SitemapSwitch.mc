@@ -42,7 +42,10 @@ class SitemapSwitch extends SitemapWidget {
         taskQueue as TaskQueue
     ) {
         // Obtain the item part of the element
-        _switchItem = new SwitchItem( json.getObject( "item", "Switch '" + getLabel() + "' has no item" ) );
+        _switchItem = new SwitchItem( 
+            json.getObject( "item", "Switch '" + getLabel() + "' has no item" ),
+            isSitemapFresh 
+        );
  
         // The superclass relies on the item for parsing the icon, 
         // therefore we initialize it after the item was created
@@ -105,40 +108,47 @@ class SitemapSwitch extends SitemapWidget {
     // 4. A matching entry in the item’s command descriptions.
     // 5. The raw state itself. If the state is numeric and a unit is defined for the item, the unit is appended.
     private function generateSwitchDisplayState() as String {
+        var switchDisplayState = null;
 
-        // First priority: lookup the mappings defined for the widget
-        var switchDisplayState = _mappings.lookup( _switchItem.getState() );
+        if(    ! _switchItem.getType().equals( "Dimmer" )
+            && ! _switchItem.getType().equals( "Rollershutter" )
+        ) {
+            // First priority: lookup the mappings defined for the widget
+            switchDisplayState = _mappings.lookup( _switchItem.getState() );
 
-        if( switchDisplayState == null ) {
-            if( _switchItem.getType().equals( "Dimmer" ) ) {
-                switchDisplayState = _switchItem.getState() + _switchItem.getUnit();
-            } else if( hasRemoteDisplayState() ) {
-                // Second priority: 
-                // If we got the state from the server, then the remoteDisplayState
-                // may be filled and we'll just use it. 
-                // For internal updates this is never the case, since we
-                // set the displayState to NO_STATE before calling this function
-                switchDisplayState = getRemoteDisplayState();
-            } else {
-                // Third priority: lookup the state description
-                switchDisplayState = _switchItem.lookupStateDescription( _switchItem.getState() ); 
+            if( switchDisplayState == null ) {
+                if( hasRemoteDisplayState() ) {
+                    // Second priority: 
+                    // If we got the state from the server, then the remoteDisplayState
+                    // may be filled and we'll just use it.
+                    // For internal updates this is never the case, since we
+                    // set the displayState to NO_STATE before calling this function
+                    switchDisplayState = getRemoteDisplayState();
+                } else {
+                    // Third priority: lookup the state description
+                    switchDisplayState = _switchItem.lookupStateDescription( _switchItem.getState() ); 
+                }
+            }
+
+            // Fourth priority: we lookup the command descriptions
+            if( switchDisplayState == null ) {
+                switchDisplayState = _switchItem.lookupCommandDescription( _switchItem.getState() );
             }
         }
 
-        // Fourth priority: we lookup the command descriptions
+        // If all has failed (or the item is a Dimmer or Rollershutter), 
+        // we just use the raw state, and if it is numeric add the unit
         if( switchDisplayState == null ) {
-            switchDisplayState = _switchItem.lookupCommandDescription( _switchItem.getState() );
-        }
-
-        // If all has failed, we just use the raw state
-        if( switchDisplayState == null ) {
-            switchDisplayState = _switchItem.getState();
-            // If the display state is numeric, then we
-            // add the unit
-            switchDisplayState = 
-                switchDisplayState.toFloat() != null
-                ? switchDisplayState + _switchItem.getUnit()
-                : switchDisplayState;
+            if( _switchItem.hasState() ) {
+                switchDisplayState = _switchItem.getState();
+                // If the display state is numeric, then we
+                // add the unit
+                if( switchDisplayState.toFloat() != null ) {
+                    switchDisplayState += _switchItem.getUnit();
+                }
+            } else {
+                switchDisplayState = NO_DISPLAY_STATE;
+            }
         }
 
         return switchDisplayState;

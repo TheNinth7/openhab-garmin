@@ -25,7 +25,10 @@ class SitemapNumeric extends SitemapWidget {
     ) {
         // Obtain the item part of the element
         try {
-            _numericItem = new NumericItem( json.getObject( "item", "no item" ) );
+            _numericItem = new NumericItem( 
+                json.getObject( "item", "no item" ),
+                isSitemapFresh 
+            );
         } catch( ex ) {
             // The item does not have the type/label, so we add it to any
             // exception thrown when creating the item
@@ -51,7 +54,9 @@ class SitemapNumeric extends SitemapWidget {
         // For numeric sitemap widgets we override the display state to
         // achieve consistent formatting with the full-screen
         // widgets that allow changing the number
-        _numericDisplayState = _numericItem.getState() + _numericItem.getUnit();
+        _numericDisplayState = _numericItem.hasState()
+            ? _numericItem.getState() + _numericItem.getUnit()
+            : NO_DISPLAY_STATE;
     }
 
     // Display state for numeric items is build from

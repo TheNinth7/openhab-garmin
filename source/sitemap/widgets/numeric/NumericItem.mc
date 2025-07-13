@@ -13,8 +13,8 @@ class NumericItem extends Item {
     private var _numericState as Number = 0;
 
     // Constructor
-    public function initialize( json as JsonAdapter ) {
-        Item.initialize( json );
+    public function initialize( json as JsonAdapter, isSitemapFresh as Boolean ) {
+        Item.initialize( json, isSitemapFresh );
 
         // If there is no state, we leave the numeric
         // state at 0, analogue to how the 

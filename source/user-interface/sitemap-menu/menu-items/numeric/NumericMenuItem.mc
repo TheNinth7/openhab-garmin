@@ -41,11 +41,8 @@ class NumericMenuItem extends BaseWidgetMenuItem {
         _commandRequest = BaseCommandRequest.get( self );
 
         // The state shown in the menu item
-        var item = sitemapNumeric.getNumericItem();
-        _stateText = new StateText( 
-            item.getNumericState().toString() 
-            + item.getUnit()
-        );
+        //var item = sitemapNumeric.getNumericItem();
+        _stateText = new StateText( sitemapNumeric.getDisplayState() );
         
         BaseWidgetMenuItem.initialize( {
                 :sitemapWidget => sitemapNumeric,

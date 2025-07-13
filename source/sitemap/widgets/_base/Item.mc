@@ -9,7 +9,7 @@ import Toybox.WatchUi;
  */
 class Item {
     // If state is missing, NULL or UNDEF it will be set to this constant.
-    public static const NO_STATE = "—";
+    public static const NO_STATE = "NULL";
 
     // See the get accessors for documentation
     private var _name as String;
@@ -19,7 +19,7 @@ class Item {
 
     //! Constructor
     //! @param json The JSON object from which this Item should be built.
-    public function initialize( json as JsonAdapter ) {
+    public function initialize( json as JsonAdapter, isSitemapFresh as Boolean ) {
         _name =  json.getString( "name", "Item name is missing" );
 
         // If the item is a Group, we apply the groupType
@@ -33,7 +33,8 @@ class Item {
 
         // If no state is available, it will be set to null
         _state = json.getOptionalString( "state" );
-        if( _state == null 
+        if( ! isSitemapFresh
+            || _state == null 
             || _state.equals( "" ) 
             || _state.equals( "NULL" )
             || _state.equals( "UNDEF" )

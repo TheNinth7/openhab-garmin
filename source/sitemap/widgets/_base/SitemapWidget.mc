@@ -56,16 +56,25 @@ class SitemapWidget extends SitemapElement {
 
         var fullLabel = parseLabelState( json, "label", "Widget label is missing" );
         _label = fullLabel[0];
-        _remoteDisplayState = fullLabel[1];
-        
-        // _displayState is initialized with the one from the server
-        // but may be updated with local logic by subclasses
-        _displayState = _remoteDisplayState != null
-                            ? _remoteDisplayState
-                            : _item != null
-                                ? _item.getState()
-                                : NO_DISPLAY_STATE;
 
+        // We fill the states only if the sitemap is fresh,
+        // otherwise they are set to NO_DISPLAY_STATE
+        if( isSitemapFresh ) {
+            _remoteDisplayState = fullLabel[1];
+            
+            // display state is filled by either remote
+            // display state or the item state
+            _displayState = 
+                ! _remoteDisplayState.equals( NO_DISPLAY_STATE )
+                    ? _remoteDisplayState
+                    : item != null && item.hasState()
+                        ? item.getState()
+                        : NO_DISPLAY_STATE;
+        } else {
+            _remoteDisplayState = NO_DISPLAY_STATE;
+            _displayState = NO_DISPLAY_STATE;
+        }
+        
         // If staticIcon is true, we do not use the
         // item state when selecting an icon but
         // use the default presentation of the
@@ -78,11 +87,13 @@ class SitemapWidget extends SitemapElement {
                 : _item           
         );
 
+        /*
         if( ! _iconType.equals( "" ) ) {
         } else {
             _iconType = json.getOptionalString( "staticIcon" );
             _icon = IconParser.parse( _iconType, null );
         }
+        */
 
         _labelColor = ColorParser.parse( json, "labelcolor", "Widget '" + _label + "': invalid label color" );
         _valueColor = ColorParser.parse( json, "valuecolor", "Widget '" + _label + "': invalid value color" );
@@ -135,6 +146,17 @@ class SitemapWidget extends SitemapElement {
     // Extracted from the item label in the format: "Label [_displayState]"
     // See SitemapElement.parseLabel()
     public function getRemoteDisplayState() as String { return _remoteDisplayState; }
+
+    // As default the remote display state is set to NO_DISPLAY_STATE if it
+    // is not available. This function can be used if absence of a remote
+    // display state should be expressed as null.
+    public function getRemoteDisplayStateOrNull() as String? { 
+        if( _remoteDisplayState.equals( NO_DISPLAY_STATE ) ) {
+            return null;
+        } else {
+            return _remoteDisplayState; 
+        }
+    }
 
     // The widget type
     public function getType() as String { return _type; }

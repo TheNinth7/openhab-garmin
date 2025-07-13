@@ -32,9 +32,7 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
         parent as BasePageMenu,
         processingMode as BasePageMenu.ProcessingMode
     ) {
-        if( sitemapSwitch.isSitemapFresh() ) {
-            _isEnabled = parseItemState( sitemapSwitch.getSwitchItem().getState() );
-        }
+        _isEnabled = parseItemState( sitemapSwitch.getSwitchItem().getState() );
 
         _smallIcon = sitemapSwitch.getLinkedPage() != null;
         _stateDrawable = new OnOffStateDrawable( _isEnabled, _smallIcon );
@@ -70,12 +68,10 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
         var switchItem = sitemapSwitch.getSwitchItem();
         return
             switchItem.getType().equals( "Dimmer" )
-            ? switchItem.getState().equals( "0" )
+            ? switchItem.getState().equals( "0" ) || ! switchItem.hasState()
                 ? null
                 : sitemapSwitch.getDisplayState()
-            : sitemapSwitch.hasRemoteDisplayState()
-                ? sitemapSwitch.getRemoteDisplayState()
-                : null;
+            : sitemapSwitch.getRemoteDisplayStateOrNull();
     }
 
     // Converts the string state to a nullable Boolean for _isEnabled

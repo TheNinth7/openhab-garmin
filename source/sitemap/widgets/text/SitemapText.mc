@@ -16,7 +16,7 @@ class SitemapText extends SitemapWidget {
         isSitemapFresh as Boolean,
         taskQueue as TaskQueue
     ) {
-        _item = new Item( json.getObject( "item", "Text '" + getLabel() + "' has no item" ) );
+        _item = new Item( json.getObject( "item", "Text '" + getLabel() + "' has no item" ), isSitemapFresh );
 
         // The superclass relies on the item for parsing the icon, 
         // therefore we initialize it after the item was created
