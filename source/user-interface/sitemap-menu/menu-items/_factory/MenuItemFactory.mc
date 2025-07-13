@@ -23,9 +23,6 @@ class MenuItemFactory {
                 sitemapWidget as SitemapFrame or SitemapGroup, 
                 parent,
                 processingMode );
-        } else if( ! sitemapWidget.isSitemapFresh() ) {
-            // If the sitemap is not fresh, we display no state - regardless of type matching
-            return new NoStateMenuItem( sitemapWidget, parent, processingMode );
         } else if( OnOffSwitchMenuItem.isMyType( sitemapWidget ) ) {
             return new OnOffSwitchMenuItem( sitemapWidget as SitemapSwitch, parent, processingMode );
         } else if( TextMenuItem.isMyType( sitemapWidget ) ) {
@@ -36,11 +33,6 @@ class MenuItemFactory {
             return new RollershutterMenuItem( sitemapWidget as SitemapSwitch, parent, processingMode );
         } else if( GenericSwitchMenuItem.isMyType( sitemapWidget ) ) {
             return new GenericSwitchMenuItem( sitemapWidget as SitemapSwitch, parent, processingMode );
-        } else if( NoStateMenuItem.isMyType( sitemapWidget ) ) {
-            // If none of the widgets was a match, we default to no state
-            // The widgets above verify if there is a valid state, so
-            // they won't trigger a match if there is none
-            return new NoStateMenuItem( sitemapWidget, parent, processingMode );
        } else {
             throw new JsonParsingException( "Element '" + sitemapWidget.getLabel() + "' is not supported" );
         }

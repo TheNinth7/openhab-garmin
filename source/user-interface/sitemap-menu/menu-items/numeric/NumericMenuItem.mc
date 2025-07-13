@@ -16,9 +16,7 @@ class NumericMenuItem extends BaseWidgetMenuItem {
 
     // Returns true if the given widget matches the type handled by this menu item.
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
-        return 
-            sitemapWidget instanceof SitemapNumeric
-            && sitemapWidget.getNumericItem().hasState();
+        return sitemapWidget instanceof SitemapNumeric;
     }
 
     // For changing the state of the item

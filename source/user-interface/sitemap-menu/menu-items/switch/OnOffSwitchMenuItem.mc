@@ -12,13 +12,12 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
                sitemapWidget instanceof SitemapSwitch 
-            && sitemapWidget.getSwitchItem().hasState()
             && ! sitemapWidget.hasMappings()
             && ! sitemapWidget.getSwitchItem().getType().equals( "Rollershutter" );
     }
 
     // True if the switch is on
-    private var _isEnabled as Boolean;
+    private var _isEnabled as Boolean?;
 
     // True if the widget has nested elements and
     // thus a smaller icon shall be displayed
@@ -33,8 +32,10 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
         parent as BasePageMenu,
         processingMode as BasePageMenu.ProcessingMode
     ) {
-        var itemState = sitemapSwitch.getSwitchItem().getState();
-        _isEnabled = parseItemState( itemState );
+        if( sitemapSwitch.isSitemapFresh() ) {
+            _isEnabled = parseItemState( sitemapSwitch.getSwitchItem().getState() );
+        }
+
         _smallIcon = sitemapSwitch.getLinkedPage() != null;
         _stateDrawable = new OnOffStateDrawable( _isEnabled, _smallIcon );
         
@@ -77,13 +78,16 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
                 : null;
     }
 
-    // Converts the string state to a Boolean for _isEnabled
+    // Converts the string state to a nullable Boolean for _isEnabled
     // The widget supports string states:
     // "ON" => true; "OFF" => false
     // And numeric states:
     // 0 => false; 1-100 => true
-    private function parseItemState( itemState as String ) as Boolean {
-        if( itemState.equals( SwitchItem.ITEM_STATE_ON ) ) {
+    // If the state is NO_STATE, then null will be returned.
+    private function parseItemState( itemState as String ) as Boolean? {
+        if( itemState.equals( Item.NO_STATE ) ) {
+            return null;
+        } else if( itemState.equals( SwitchItem.ITEM_STATE_ON ) ) {
             return true;            
         } else if( itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) {
             return false;

@@ -27,10 +27,16 @@ class OnOffStateBitmaps {
     // The circles are again defines as a factor the the WIDTH defined above
     private const OUTER_CIRCLE_FACTOR = 0.8;
     private const INNER_CIRCLE_FACTOR = 0.75;
+    
+    // Factors applied to the inner-circle radius, to determine
+    // the size of the line displayed if there is no state
+    private const NO_STATE_LINE_LENGTH_FACTOR = 0.7;
+    private const NO_STATE_LINE_WIDTH_FACTOR = 0.6;
 
     // The BufferedBitmaps for ON and OFF
     public var on as BufferedBitmapType;
     public var off as BufferedBitmapType;
+    public var nostate as BufferedBitmapType;
 
     // Constructor
     public function initialize() {
@@ -45,6 +51,12 @@ class OnOffStateBitmaps {
             :height => HEIGHT,
         } );
         draw( off, false );
+
+        nostate = BufferedBitmapFactory.createBufferedBitmap( {
+            :width => WIDTH,
+            :height => HEIGHT,
+        } );
+        draw( nostate, null );
     }
 
     // Draws the switch UI element.
@@ -52,7 +64,7 @@ class OnOffStateBitmaps {
     // - Colored in openHAB orange when "on"
     // - Colored in light grey when "off"
     // A smaller black circle indicates the current on/off position.
-    protected function draw( bufferedBitmap as BufferedBitmapType, isEnabled as Boolean ) as Void {
+    protected function draw( bufferedBitmap as BufferedBitmapType, isEnabled as Boolean? ) as Void {
         var dc = bufferedBitmap.getDc();
         dc.clear();
 
@@ -94,7 +106,15 @@ class OnOffStateBitmaps {
         // See the comment on the first setFill
         // dc.setFill( 0xFF000000 + Graphics.COLOR_BLACK );
 
-        var toggleCenter = isEnabled ? upperYCenter : lowerYCenter;
-        dc.fillCircle( xCenter, toggleCenter, radius * INNER_CIRCLE_FACTOR );
+        var innerRadius = radius * INNER_CIRCLE_FACTOR;
+        if( isEnabled != null ) {
+            var toggleCenter = isEnabled ? upperYCenter : lowerYCenter;
+            dc.fillCircle( xCenter, toggleCenter, innerRadius );
+        } else {
+            dc.setPenWidth( innerRadius * NO_STATE_LINE_WIDTH_FACTOR );
+            innerRadius = innerRadius * NO_STATE_LINE_LENGTH_FACTOR;
+            var yCenter = ( dc.getHeight()/2 ).toNumber();
+            dc.drawLine( xCenter - innerRadius, yCenter, xCenter + innerRadius, yCenter );
+        }
     }
 }

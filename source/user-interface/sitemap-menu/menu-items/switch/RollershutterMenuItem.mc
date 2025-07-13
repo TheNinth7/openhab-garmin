@@ -12,8 +12,7 @@ class RollershutterMenuItem extends BaseWidgetMenuItem {
     public static function isMyType( sitemapWidget as SitemapWidget ) as Boolean {
         return 
             sitemapWidget instanceof SitemapSwitch
-            && sitemapWidget.getSwitchItem().getType().equals( "Rollershutter" )
-            && sitemapWidget.getSwitchItem().hasState();
+            && sitemapWidget.getSwitchItem().getType().equals( "Rollershutter" );
     }
 
     // For sending commands

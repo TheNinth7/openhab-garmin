@@ -9,7 +9,7 @@ import Toybox.WatchUi;
  */
 class Item {
     // If state is missing, NULL or UNDEF it will be set to this constant.
-    private static const NO_STATE = "NULL";
+    public static const NO_STATE = "—";
 
     // See the get accessors for documentation
     private var _name as String;

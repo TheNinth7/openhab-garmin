@@ -12,12 +12,12 @@ class OnOffStateDrawable extends BufferedBitmapDrawable {
 
     // Storing the state helps us determining if there was an
     // actual change of state, when setEnabled is called.
-    private var _isEnabled as Boolean;
+    private var _isEnabled as Boolean?;
     private var _smallIcon as Boolean;
 
     // Constructor
     // Processes the initial state
-    public function initialize( isEnabled as Boolean, smallIcon as Boolean ) {
+    public function initialize( isEnabled as Boolean?, smallIcon as Boolean ) {
         _isEnabled = isEnabled;
         _smallIcon = smallIcon;
 
@@ -30,7 +30,7 @@ class OnOffStateDrawable extends BufferedBitmapDrawable {
     // setEnabled is called with every sitemap update
     // To improve performance, we only switch the BufferedBitmap
     // if the state changed
-    public function setEnabled( isEnabled as Boolean, smallIcon as Boolean ) as Void {
+    public function setEnabled( isEnabled as Boolean?, smallIcon as Boolean ) as Void {
         if( _isEnabled != isEnabled || _smallIcon != smallIcon ) {
             _isEnabled = isEnabled;
             _smallIcon = smallIcon;
@@ -39,15 +39,15 @@ class OnOffStateDrawable extends BufferedBitmapDrawable {
     }
 
     // Returns the right bitmap for a given state
-    private function getOnOffBitmap( isEnabled as Boolean, smallIcon as Boolean ) as BufferedBitmapType {
-        return
-            smallIcon
-                ? isEnabled
-                    ? SmallOnOffStateBitmaps.get().on
-                    : SmallOnOffStateBitmaps.get().off
+    private function getOnOffBitmap( isEnabled as Boolean?, smallIcon as Boolean ) as BufferedBitmapType {
+        var bitmaps = smallIcon
+                        ? SmallOnOffStateBitmaps.get()
+                        : OnOffStateBitmaps.get();
+        return isEnabled == null
+                ? bitmaps.nostate
                 : isEnabled
-                    ? OnOffStateBitmaps.get().on
-                    : OnOffStateBitmaps.get().off;
+                    ? bitmaps.on
+                    : bitmaps.off;
     }
 }
 
