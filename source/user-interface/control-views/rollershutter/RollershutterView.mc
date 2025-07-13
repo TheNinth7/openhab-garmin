@@ -136,11 +136,9 @@ class RollershutterView extends CustomView {
             // regardless of any mappings. If the state
             // is not numeric, we'll leave it at the previous
             // state.
-            if( _sitemapSwitch.getSwitchItem().getState().toNumber() != null ) {
-                stateDrawable.setText( 
-                    _sitemapSwitch.getSwitchItem().getState() 
-                    + _sitemapSwitch.getSwitchItem().getUnit()
-                );
+            var switchItem = _sitemapSwitch.getSwitchItem();
+            if( switchItem.getState().toNumber() != null || ! switchItem.hasState() ) {
+                stateDrawable.setText( _sitemapSwitch.getDisplayState() );
             }
         }
     }

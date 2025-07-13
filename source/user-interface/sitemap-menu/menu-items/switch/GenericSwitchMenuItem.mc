@@ -60,12 +60,14 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
     // Called by the superclass to determine the command
     // that shell be sent when the menu item is selected
     public function getNextCommand() as String? {
-        var itemState = _sitemapSwitch.getSwitchItem().getState();
+        var switchItem = _sitemapSwitch.getSwitchItem();
+        var hasState = switchItem.hasState(); 
+        var itemState = switchItem.getState();
         var commandDescriptions = _sitemapSwitch.getCommandDescriptions();
         if( commandDescriptions.size() == 1 ) {
             // For one mapping, we just send that command
             return commandDescriptions.getCommandDescription( 0 ).getCommand();
-        } else if ( commandDescriptions.size() == 2 ) {
+        } else if( commandDescriptions.size() == 2 && hasState ) {
             // For two mappings, we check if the current state equals
             // to one of them and then send the other
             var firstCommand = commandDescriptions.getCommandDescription( 0 ).getCommand();
@@ -84,14 +86,14 @@ class GenericSwitchMenuItem extends BaseSwitchMenuItem {
             var commandDescription = commandDescriptions.getCommandDescription( i );
             // We exclude the current state
             var command = commandDescription.getCommand();
-            if( ! command.equals( itemState ) ) {
+            if( ! ( hasState && command.equals( itemState ) ) ) {
                 actionMenu.addItem( new ActionMenuItem(
                     { :label => commandDescription.getLabel() },
                     command
                 ) );
             }
         }
-        WatchUi.showActionMenu( actionMenu, new GenericSwitchActionMenuDelegate( self ) );
+        WatchUi.showActionMenu( actionMenu, new SwitchActionMenuDelegate( self ) );
         // Returning null tells the super class to not
         // send any command and instead wait for the
         // action menu delegate to trigger the sending

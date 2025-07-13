@@ -53,10 +53,20 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
 
     // Toggle the state
     public function getNextCommand() as String? {
-        return 
-            _isEnabled 
-            ? SwitchItem.ITEM_STATE_OFF 
-            : SwitchItem.ITEM_STATE_ON;
+        // If we have a state, then we toggle,
+        // if there is none, we show an action menu
+        // with ON/OFF
+        if( _isEnabled != null ) {
+            return _isEnabled 
+                ? SwitchItem.ITEM_STATE_OFF 
+                : SwitchItem.ITEM_STATE_ON;
+        } else {
+            var actionMenu = new ActionMenu( null );
+            actionMenu.addItem( new ActionMenuItem( { :label => SwitchItem.ITEM_STATE_ON }, SwitchItem.ITEM_STATE_ON ) );
+            actionMenu.addItem( new ActionMenuItem( { :label => SwitchItem.ITEM_STATE_OFF }, SwitchItem.ITEM_STATE_OFF ) );
+            WatchUi.showActionMenu( actionMenu, new SwitchActionMenuDelegate( self ) );
+            return null;
+        }
     }
 
     // Determines the display state of a toggle switch.

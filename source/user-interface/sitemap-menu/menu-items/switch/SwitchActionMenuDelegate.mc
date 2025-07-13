@@ -8,25 +8,25 @@ import Toybox.WatchUi;
  * Once a command is selected, this delegate sends it via the
  * associated menu item.
  */
-class GenericSwitchActionMenuDelegate extends ActionMenuDelegate {
+class SwitchActionMenuDelegate extends ActionMenuDelegate {
 
-    var _menuItem as GenericSwitchMenuItem;
+    var _menuItem as BaseSwitchMenuItem;
 
     // Constructor
-    public function initialize( menuItem as GenericSwitchMenuItem ) {
+    public function initialize( menuItem as BaseSwitchMenuItem ) {
         ActionMenuDelegate.initialize();
         _menuItem = menuItem;
     }
 
     // on select, send the command
     public function onSelect( item as ActionMenuItem ) as Void {
-        // Logger.debu "GenericSwitchActionMenuDelegate.onSelect" );
+        // Logger.debu "SwitchActionMenuDelegate.onSelect" );
         // The action menu items have the command as Id
         var command = item.getId();
         if( command instanceof String ) {
             _menuItem.sendCommand( command );
         } else {
-            throw new GeneralException( "GenericSwitchActionMenuDelegate: invalid command" );
+            throw new GeneralException( "SwitchActionMenuDelegate: invalid command" );
         }
     }
 }
