@@ -78,7 +78,7 @@ class BasePageMenu extends BaseMenu {
 
         // Create a menu item for each widget.
         if( processingMode == PROCESSING_TOP_LEVEL_SYNC ) {
-            Logger.debug( "BasePageMenu.initialize: synchronous processing" );
+            // Logger.debug( "BasePageMenu.initialize: synchronous processing" );
             // In top-level sync mode, menu items are created synchronously.
             // The next level is then initialized in PROCESSING_ASYNC_AFTER_SYNC mode.
             for( var i = 0; i < widgets.size(); i++ ) {
@@ -92,7 +92,7 @@ class BasePageMenu extends BaseMenu {
                 // If we are the first async level, we schedule the tasks
                 // needed to update the UI if the user has already navigated
                 // to this level.
-                Logger.debug( "BasePageMenu.initialize: first asynchronous processing" );
+                // Logger.debug( "BasePageMenu.initialize: first asynchronous processing" );
                 
                 // Not needed as long as SwitchViewIfVisibleTask is required,
                 // which remains the case until Garmin fixes the related bug.
@@ -103,7 +103,7 @@ class BasePageMenu extends BaseMenu {
                 
                 taskQueue.addToFront( new SwitchViewIfVisibleTask( self ) );
             } else {
-                Logger.debug( "BasePageMenu.initialize: asynchronous processing" );
+                // Logger.debug( "BasePageMenu.initialize: asynchronous processing" );
             }
 
             // Now add the tasks for creating the menu items. Since we schedule

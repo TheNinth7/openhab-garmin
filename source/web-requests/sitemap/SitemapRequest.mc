@@ -221,7 +221,7 @@ class SitemapRequest extends BaseRequest {
         // response arrives before the sitemap has finished loading. If that happens,
         // we cancel any remaining tasks and proceed directly with processing the response.
         if( ! taskQueue.isEmpty() ) {
-            Logger.debug( "SitemapRequest encountered non-empty task queue" );
+            // Logger.debug( "SitemapRequest encountered non-empty task queue" );
             taskQueue.removeAll();
         }
 

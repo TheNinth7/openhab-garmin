@@ -38,17 +38,6 @@ class OnOffSwitchMenuItem extends BaseSwitchMenuItem {
         _smallIcon = sitemapSwitch.getLinkedPage() != null;
         _stateDrawable = new OnOffStateDrawable( _isEnabled, _smallIcon );
         
-        if( sitemapSwitch.getSwitchItem().getType().equals( "Dimmer" ) ) {
-            var displayState = sitemapSwitch.getDisplayState();
-            System.println( displayState );
-            var stateTextResponsive = sitemapSwitch.getSwitchItem().getType().equals( "Dimmer" )
-                    ? sitemapSwitch.getDisplayState()
-                    : sitemapSwitch.hasRemoteDisplayState()
-                        ? sitemapSwitch.getRemoteDisplayState()
-                        : null;
-            System.println( stateTextResponsive );
-        }
-
         // Initialize the superclass
         // For the toggle switch we support the display
         // of a display state, if provided by the server

@@ -107,7 +107,7 @@ class AsyncTaskQueue {
     // Executes the task next in the queue and then
     // if there are remaining tasks, start the timer again
     public function executeTasks() as Void {
-        Logger.debug( "AsyncTaskQueue: start executing tasks (" + _tasks.size() + " queued)" );
+        // Logger.debug( "AsyncTaskQueue: start executing tasks (" + _tasks.size() + " queued)" );
 
         try {
             var startTime = System.getTimer();
@@ -128,7 +128,7 @@ class AsyncTaskQueue {
                 && _tasks.size() > 0
             );
 
-            Logger.debug( "AsyncTaskQueue: stop executing tasks after " + ( System.getTimer() - startTime ) + "ms (" + _tasks.size() + " remaining)" );
+            // Logger.debug( "AsyncTaskQueue: stop executing tasks after " + ( System.getTimer() - startTime ) + "ms (" + _tasks.size() + " remaining)" );
 
             if( _tasks.size() > 0 ) {
                 startTimer();

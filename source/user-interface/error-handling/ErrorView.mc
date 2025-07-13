@@ -97,7 +97,7 @@ import Toybox.System;
 
     // Draw the error
     public function onUpdate( dc as Dc ) as Void {
-        Logger.debug( "ErrorView.onUpdate" );
+        // Logger.debug( "ErrorView.onUpdate" );
         // Logger.debugMemory( null );
         
         // We need to clear the clip, because there is bug in Garmin SDK,

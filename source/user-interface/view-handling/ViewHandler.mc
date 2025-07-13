@@ -19,27 +19,27 @@ class ViewHandler {
     public static function pushView( view as Views, delegate as InputDelegates or Null, transition as SlideType ) as Void {
         WatchUi.pushView( view, delegate, transition );
         _stackSize++;
-        Logger.debug( "ViewHandler.pushView: new stack size=" + _stackSize );
+        // Logger.debug( "ViewHandler.pushView: new stack size=" + _stackSize );
     }
     public static function popView( transition as SlideType ) as Void {
-        Logger.debug( "ViewHandler.popView: previous stack size=" + _stackSize );
+        // Logger.debug( "ViewHandler.popView: previous stack size=" + _stackSize );
         if( _stackSize < 1 ) {
             throw new GeneralException( "ViewHandler.popView called on zero view stack size" );
         }
         _stackSize--;
         WatchUi.popView( transition );
-        Logger.debug( "ViewHandler.popView: new stack size=" + _stackSize );
+        // Logger.debug( "ViewHandler.popView: new stack size=" + _stackSize );
     }
 
     // Removes all views from the stack except the base view,
     // and replaces the base view with the provided view.
     public static function popToBottomAndSwitch( view as Views, delegate as InputDelegates or Null ) as Void {
-        Logger.debug( "ViewHandler.popToBottomAndSwitch: previous stack size=" + _stackSize );
+        // Logger.debug( "ViewHandler.popToBottomAndSwitch: previous stack size=" + _stackSize );
         while( _stackSize > 0 ) {
             WatchUi.popView( WatchUi.SLIDE_IMMEDIATE );
             _stackSize--;
         }
-        Logger.debug( "ViewHandler.popToBottomAndSwitch: new stack size=" + _stackSize );
+        // Logger.debug( "ViewHandler.popToBottomAndSwitch: new stack size=" + _stackSize );
         WatchUi.switchToView( view, delegate, WatchUi.SLIDE_BLINK );
     }
 }

@@ -96,7 +96,7 @@ class CreateHomepageTask extends BaseSitemapProcessorTask {
     }
     
     public function invoke() as Void {
-        Logger.debug( "CreateHomepageMenuTask.invoke" );
+        // Logger.debug( "CreateHomepageMenuTask.invoke" );
         // The whole logic fits in one statement, we
         // create the new HomepageMenu, feed it into
         // the SwitchToHomepageTask and schedule that task
@@ -120,7 +120,7 @@ class SwitchToHomepageTask extends BaseSitemapProcessorTask {
     }
     
     public function invoke() as Void {
-        Logger.debug( "SwitchToHomepageTask.invoke" );
+        // Logger.debug( "SwitchToHomepageTask.invoke" );
         WatchUi.switchToView( 
             _homepageMenu, 
             HomepageMenuDelegate.get(), 

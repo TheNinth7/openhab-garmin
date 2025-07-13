@@ -80,8 +80,7 @@ class AddOrUpdateMenuItemTask extends BaseSitemapProcessorTask {
 
                 if( item.hasPage() || newItem.hasPage() ) {
                     _pageMenu.invalidateStructure();
-                    // Logger.debug( "PageMenu.update: page '" + _pageMenu.getLabel() + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
-
+                    // Logger.debug( "AddOrUpdateMenuItemTask: page '" + _pageMenu.getTitle() + "' invalid because item '" + item.getLabel() + "' changed type from/to page" );
                 }
                 _pageMenu.updateItem( newItem, _index );
             }
@@ -123,7 +122,7 @@ class DeleteUnusedMenuItemsTask extends BaseSitemapProcessorTask {
             var menuItem = _pageMenu.getItem( i ) as CustomMenuItem;
             if( menuItem instanceof ContainerMenuItem ) {
                 _pageMenu.invalidateStructure();
-                // Logger.debug( "PageMenu.update: page '" + _sitemapContainer.label + "' invalid because subpage was removed" );
+                // Logger.debug( "DeleteUnusedMenuItemsTask.update: page '" + _pageMenu.getTitle() + "' invalid because subpage was removed" );
             }
             _pageMenu.deleteItem( i );
         }

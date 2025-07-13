@@ -114,7 +114,7 @@ class RequestWatchUiUpdateIfVisibleTask extends BaseSitemapProcessorTask {
 
     public function invoke() as Void {
         if( _pageMenu.equals( WatchUi.getCurrentView()[0] ) ) {
-            Logger.debug( "RequestWatchUiUpdateIfVisibleTask.invoke: requesting an update!" );
+            // Logger.debug( "RequestWatchUiUpdateIfVisibleTask.invoke: requesting an update!" );
             WatchUi.requestUpdate();
         }            
     }
