@@ -46,15 +46,27 @@ class SitemapNumeric extends SitemapWidget {
             taskQueue
         );
 
+        var hasState = _numericItem.hasState();
+
         _minValue = json.getNumber( "minValue", 0 );
         _maxValue = json.getNumber( "maxValue", 100 );
         _step = json.getNumber( "step", 1 );
-        _releaseOnly = json.getBoolean( "releaseOnly" );
+        
+        // If there is no state, the releaseOnly mode makes more
+        // sense, since without release only, a known state is required
+        // for cancelling, and also in WLAN mode, it does not make
+        // sense to send a command for every step in the number picker
+        // Therefore without state, we enable it even if the parameter was not set
+        _releaseOnly = 
+            hasState
+            ? json.getBoolean( "releaseOnly" )
+            : true;
 
         // For numeric sitemap widgets we override the display state to
         // achieve consistent formatting with the full-screen
         // widgets that allow changing the number
-        _numericDisplayState = _numericItem.hasState()
+        _numericDisplayState = 
+            hasState
             ? _numericItem.getState() + _numericItem.getUnit()
             : NO_DISPLAY_STATE;
     }
@@ -87,6 +99,11 @@ class SitemapNumeric extends SitemapWidget {
         if( _numericItem.getNumericState() != numericState ) {
             _numericItem.updateNumericState( numericState );
             processUpdatedState();
+            // Without a state, we always operate in release only
+            // mode. See constructor for details.
+            if( ! _numericItem.hasState() ) {
+                _releaseOnly = true;
+            }
         }
     }
 }
