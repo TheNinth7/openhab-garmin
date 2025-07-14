@@ -159,6 +159,15 @@ class IconParser {
                     }
                 }
 
+                case "window": {
+                    var numericItemState = itemState.toNumber();
+                    if( itemState.equals( SwitchItem.ITEM_STATE_OPEN ) || ( numericItemState != null && numericItemState > 0 ) ) {
+                        return Rez.Drawables.menuWindowOpen;
+                    } else {
+                        return Rez.Drawables.menuWindowClosed;
+                    }                
+                }
+
                 case "screen": {
                     if( itemState.equals( SwitchItem.ITEM_STATE_OFF ) ) {
                         return Rez.Drawables.menuScreenOff;
