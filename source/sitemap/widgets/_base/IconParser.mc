@@ -1,11 +1,21 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Graphics;
+import Toybox.System;
 
 /**
  * Parses icon names from a JSON dictionary into a ResourceId.
  */
 class IconParser {
+
+    // For some icons we have different treatment for AMOLED/LCD devices
+    // with 64K colors and MIP devices with 64 colors.
+    // On CIQ 5.0.0+ devices, AMOLED/LCD devices have a System.getDisplayMode
+    // functions. Prior to that, the required burn in protection is a good
+    // indication for the device being AMOLED
+    private static function has64kColors() as Boolean {
+        return System has :getDisplayMode || System.getDeviceSettings().requiresBurnInProtection;
+    }
 
     // Get the ResourceId for the icon
     // Icon is optional, so this function may return null
@@ -28,28 +38,36 @@ class IconParser {
                             return Rez.Drawables.menuLight10;
                         }
                     } else {
-                        if( numericItemState >= 100 ) {
-                            return Rez.Drawables.menuLight10;
-                        } else if( numericItemState >= 90 ) {
-                            return Rez.Drawables.menuLight09;
-                        } else if( numericItemState >= 80 ) {
-                            return Rez.Drawables.menuLight08;
-                        } else if( numericItemState >= 70 ) {
-                            return Rez.Drawables.menuLight07;
-                        } else if( numericItemState >= 60 ) {
-                            return Rez.Drawables.menuLight06;
-                        } else if( numericItemState >= 50 ) {
-                            return Rez.Drawables.menuLight05;
-                        } else if( numericItemState >= 40 ) {
-                            return Rez.Drawables.menuLight04;
-                        } else if( numericItemState >= 30 ) {
-                            return Rez.Drawables.menuLight03;
-                        } else if( numericItemState >= 20 ) {
-                            return Rez.Drawables.menuLight02;
-                        } else if( numericItemState >= 10 ) {
-                            return Rez.Drawables.menuLight01;
+                        if( has64kColors() ) {
+                            if( numericItemState >= 100 ) {
+                                return Rez.Drawables.menuLight10;
+                            } else if( numericItemState >= 90 ) {
+                                return Rez.Drawables.menuLight09;
+                            } else if( numericItemState >= 80 ) {
+                                return Rez.Drawables.menuLight08;
+                            } else if( numericItemState >= 70 ) {
+                                return Rez.Drawables.menuLight07;
+                            } else if( numericItemState >= 60 ) {
+                                return Rez.Drawables.menuLight06;
+                            } else if( numericItemState >= 50 ) {
+                                return Rez.Drawables.menuLight05;
+                            } else if( numericItemState >= 40 ) {
+                                return Rez.Drawables.menuLight04;
+                            } else if( numericItemState >= 30 ) {
+                                return Rez.Drawables.menuLight03;
+                            } else if( numericItemState >= 20 ) {
+                                return Rez.Drawables.menuLight02;
+                            } else if( numericItemState >= 10 ) {
+                                return Rez.Drawables.menuLight01;
+                            } else {
+                                return Rez.Drawables.menuLight00;
+                            }
                         } else {
-                            return Rez.Drawables.menuLight00;
+                            if( numericItemState > 0 ) {
+                                return Rez.Drawables.menuLight10;
+                            } else {
+                                return Rez.Drawables.menuLight00;
+                            }
                         }
                     }
                 }
