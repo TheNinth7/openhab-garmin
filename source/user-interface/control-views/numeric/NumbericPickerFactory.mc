@@ -31,15 +31,23 @@ class NumericPickerFactory extends CustomPickerFactory {
         var numericItem = sitemapNumeric.getNumericItem();
 
         var unit = numericItem.getUnit();
-        var currentValue = numericItem.getNumericState();
 
         // Start at minValue and increment by step
         // until the next value would exceed maxValue.
         // If maxValue is not an exact multiple of the step,
         // the final entry will be the last step below maxValue.
+        var minValue = sitemapNumeric.getMinValue();
         var maxValue = sitemapNumeric.getMaxValue();
         var step = sitemapNumeric.getStep();
-        for( var i = sitemapNumeric.getMinValue(); i <= maxValue; i += step ) {
+
+        // If there is no valid state, we set the current
+        // value to the step closest to the middle of the range
+        var currentValue = 
+            numericItem.hasState()
+            ? numericItem.getNumericState()
+            : ( minValue + Math.round( ( maxValue-minValue ) / ( 2*step ) ) * step ).toNumber();
+
+        for( var i = minValue; i <= maxValue; i += step ) {
             if( _currentIndex == -1 && currentValue <= i ) {
                 _currentIndex = _pickables.size();
                 if( i != currentValue ) {
