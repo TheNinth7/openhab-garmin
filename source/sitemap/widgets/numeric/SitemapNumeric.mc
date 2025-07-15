@@ -26,12 +26,14 @@ class SitemapNumeric extends SitemapWidget {
         // Obtain the item part of the element
         try {
             _numericItem = new NumericItem( 
-                json.getObject( "item", "no item" ),
+                json.getObject( "item", "Item not found. Check if the name is correct." ),
                 isSitemapFresh 
             );
         } catch( ex ) {
             // The item does not have the type/label, so we add it to any
-            // exception thrown when creating the item
+            // exception thrown when creating the item. To be able to
+            // access the type/label, we need to initialize the base class
+            SitemapWidget.initialize( json, null, null, isSitemapFresh, taskQueue );
             throw new JsonParsingException( 
                 getType() + " '" + getLabel() + "': " + ex.getErrorMessage() );
         }

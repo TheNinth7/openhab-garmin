@@ -42,10 +42,19 @@ class SitemapSwitch extends SitemapWidget {
         taskQueue as TaskQueue
     ) {
         // Obtain the item part of the element
-        _switchItem = new SwitchItem( 
-            json.getObject( "item", "Switch '" + getLabel() + "' has no item" ),
-            isSitemapFresh 
-        );
+        try {
+            _switchItem = new SwitchItem( 
+                json.getObject( "item", "Item not found. Check if the name is correct." ),
+                isSitemapFresh 
+            );
+        } catch( ex ) {
+            // The item does not have the type/label, so we add it to any
+            // exception thrown when creating the item. To be able to
+            // access the type/label, we need to initialize the base class
+            SitemapWidget.initialize( json, null, null, isSitemapFresh, taskQueue );
+            throw new JsonParsingException( 
+                getType() + " '" + getLabel() + "': " + ex.getErrorMessage() );
+        }
  
         // The superclass relies on the item for parsing the icon, 
         // therefore we initialize it after the item was created
