@@ -6,7 +6,7 @@ You can find the app in the Garmin Connect IQ store:
 
 https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a
 
-The user manual is published via GitHub Pages at:<br>https://ohg.the-ninth.com
+The user manual is published via GitHub Pages at <https://next.openhab.org/docs/apps/garmin/>.
 
 <br>
 
@@ -62,7 +62,7 @@ The *Glance*:
 
 **Further reading**:
 
-- [openHAB for Garmin User Manual](https://ohg.the-ninth.com)
+- [openHAB for Garmin User Manual](https://next.openhab.org/docs/apps/garmin/)
 - [Connect IQ for Developers](https://developer.garmin.com/connect-iq)
 - [Connect IQ SDK](https://developer.garmin.com/connect-iq/sdk/)
 
@@ -95,7 +95,7 @@ Contains VS Code customizations.
 
 ## Folder `/docs`
 
-Contains the user manual, published at <https://ohg.the-ninth.com>.
+Contains the user manual, published at <https://next.openhab.org/docs/apps/garmin/>.
 
 <br>
 
