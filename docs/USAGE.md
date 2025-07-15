@@ -5,31 +5,33 @@ source: https://github.com/openhab/openhab-garmin/blob/main/docs/USAGE.md
 ---
 
 <style>
-  table.screenshot-table {
-    border-collapse: collapse;
-    border: none;
+.garmin-screenshot-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  img {
+    max-width: 300px !important;
+    padding: 0.325em;
+    background: white;
+  }
 }
-
-  table.screenshot-table tr {
-    background-color: white !important;
-    border-top: none !important;
-  }
-
-  table.screenshot-table td {
-    border: none;
-  }
 </style>
 
 # Garmin App
 
 The **openHAB Garmin** app connects your Garmin wearable to your [openHAB](https://www.openhab.org) smart home system, giving you convenient access to essential devices and real-time information.
 
-<a href="https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a">
-  <img alt="Get it on Connect IQ Store" src="images/connect_iq_badge.svg" width="240px">
-</a>
-
-➡️ [openHAB Community Discussion](https://community.openhab.org/t/openhab-for-garmin/163891)
-➡️ [Report an Issue on GitHub](https://github.com/openhab/openhab-garmin/issues)
+<div style="display: flex; flex-direction: row;">
+  <a href="https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a" target="_blank" class="external" style="margin-top: auto; margin-bottom: auto;">
+    <img alt="Get it on Connect IQ Store" src="images/connect_iq_badge.svg" width="240px">
+  </a>
+  <div style="margin-left: 20px;">
+    <p>➡️ <a href="https://community.openhab.org/t/openhab-for-garmin/163891" target="_blank">openHAB Community Discussion</a></p>
+    <p>➡️ <a href="https://github.com/openhab/openhab-garmin/issues" target="_blank" class="external">Report an Issue on GitHub</a></p>
+  </div>
+</div>
 
 [[toc]]
 
@@ -41,9 +43,9 @@ A sitemap allows you to specify which devices are accessible through the app and
 The app consists of two components: the **Glance** and the **Widget**.
 The **Glance** displays the name of the sitemap and acts as the entry point into the full-screen **Widget**, which shows the sitemap's content.
 
-<div align="left" class="row">
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/01-glance.png"/>
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/02-homepage.png"/>
+<div class="garmin-screenshot-container">
+  <img src="images/app/01-glance.png"/>
+  <img src="images/app/02-homepage.png"/>
 </div>
 
 Once opened, the **Widget** polls the sitemap at a configurable interval to fetch updates.
@@ -81,7 +83,7 @@ Garmin wearables rely on your smartphone for network access.
 If your phone can reach your openHAB instance (e.g. via local network or VPN like Tailscale), the watch can too.
 
 **Platform-specific Limitations:**
-- **iOS**: HTTP and HTTPS supported  
+- **iOS**: HTTP and HTTPS supported
 - **Android**: Only HTTPS with a valid certificate is supported due to Garmin SDK limitations
 
 You can use [myopenHAB](https://www.myopenhab.org) to securely access your local openHAB instance over the Internet using HTTPS.
@@ -220,7 +222,7 @@ This section explains how to set up your openHAB sitemap for use with the app, o
 
 ## Sitemap Setup
 
-Check the [Sitemaps documentation]({{base}}/ui/sitemaps.html) to learn more about how sitemaps work.
+Check the [Sitemaps documentation](/docs/ui/sitemaps.html) to learn more about how sitemaps work.
 
 The sitemap name configured in the app must match the filename of the sitemap, excluding the `.sitemap` extension.
 For example, if the file is named `garmin_demo.sitemap`, set the sitemap name in the app settings to `garmin_demo`.
@@ -262,11 +264,11 @@ The Garmin app adopts a menu-based navigation structure and implements nested el
 * For `Frame` and `Text`, nested elements must be defined manually. The only functional difference is that `Text` displays the associated item’s state, whereas `Frame` does not.
 * `Group` elements automatically populate their nested elements based on the members of the referenced group item.
 
-For more details, refer to the [sitemap documentation on nested elements]({{base}}/ui/sitemaps.html#nested-elements).
+For more details, refer to the [sitemap documentation on nested elements](/docs/ui/sitemaps.html#nested-elements).
 
-### `Frame`
+#### `Frame`
 
-The [`Frame`]({{base}}/ui/sitemaps.html#element-type-frame) element is [one of three](#nested-elements) sitemap elements that support hierarchical structuring.
+The ➡️ [`Frame`](/docs/ui/sitemaps.html#element-type-frame) element is [one of three](#nested-elements) sitemap elements that support hierarchical structuring.
 
 You can nest `Frame` elements within other `Frame` elements. While this is allowed by the specification, openHAB may log a warning when doing so — but it still functions as expected.
 
@@ -292,22 +294,22 @@ sitemap garmin_demo label="My Home" {
 
 This configuration produces the following display in the UI:
 
-<div align="left" class="row">
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/02-homepage.png"/>
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/03-entrance-gates.png"/>
+<div class="garmin-screenshot-container">
+  <img src="images/app/02-homepage.png"/>
+  <img src="images/app/03-entrance-gates.png"/>
 </div>
 
-### `Default`
+#### `Default`
 
-The [`Default`]({{base}}/ui/sitemaps.html#element-type-frame) element displays an item using the default widget determined by its type.
+The ➡️ [`Default`](/docs/ui/sitemaps.html#element-type-frame) element displays an item using the default widget determined by its type.
 This widget selection is handled automatically by openHAB.
 
 The Garmin app supports `Default` only if the item’s type maps to one of the app’s supported widgets.
 If this is not the case, an error will be shown instead.
 
-### `Text`
+#### `Text`
 
-The [`Text`]({{base}}/ui/sitemaps.html#element-type-text) Sitemap Widget is used to display the current state of an item without allowing any user interaction.
+The ➡️ [`Text`](/docs/ui/sitemaps.html#element-type-text) Sitemap Widget is used to display the current state of an item without allowing any user interaction.
 
 **Supported parameters:**
 
@@ -331,13 +333,13 @@ Frame label="Entrance Gates" {
 
 **Resulting UI:**
 
-<div align="left" class="row">
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/03-entrance-gates.png"/>
+<div class="garmin-screenshot-container">
+  <img src="images/app/03-entrance-gates.png"/>
 </div>
 
-### `Group`
+#### `Group`
 
-The [`Group`]({{base}}/ui/sitemaps.html#element-type-group) Sitemap Widget will present a submenu containing all the items in the associated item of type `Group`.
+The ➡️ [`Group`](/docs/ui/sitemaps.html#element-type-group) Sitemap Widget will present a submenu containing all the items in the associated item of type `Group`.
 This also works recursively, if the `Group` item itself contains other `Group` items, those will again open their own submenus.
 
 **Example configuration:**
@@ -353,15 +355,15 @@ sitemap garmin_demo label="My Home" {
 
 **Resulting UI:**
 
-<div align="left" class="row">
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/08-group-1.png"/>
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/08-group-2.png"/>
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/08-group-3.png"/>
+<div class="garmin-screenshot-container">
+  <img src="images/app/08-group-1.png"/>
+  <img src="images/app/08-group-2.png"/>
+  <img src="images/app/08-group-3.png"/>
 </div>
 
-### `Switch` and `Selection`
+#### `Switch` and `Selection`
 
-The [`Switch`]({{base}}/ui/sitemaps.html#element-type-switch) and [`Selection`]({{base}}/ui/sitemaps.html#element-type-switch) widgets display the current state of an item and allows the user to send commands to change it.
+The ➡️ [`Switch`](/docs/ui/sitemaps.html#element-type-switch) and ➡️ [`Selection`](/docs/ui/sitemaps.html#element-type-switch) widgets display the current state of an item and allows the user to send commands to change it.
 
 In other UIs, the `Switch` and `Selection` widgets behave differently:
 
@@ -384,7 +386,7 @@ The widget supports three usage variants:
 2. **Rollershutter Control** – a full-screen view for `Rollershutter` items with `UP`, `DOWN`, and `STOP` buttons.
 3. **Generic Switch** – for items with custom or multiple commands, defined via `mappings` or item metadata.
 
-#### Toggle Switch
+##### Toggle Switch
 
 This is the default behavior when:
 
@@ -392,7 +394,7 @@ This is the default behavior when:
 - The item has no command descriptions,
 - The item is **not** of type `Rollershutter`.
 
-The switch simply toggles between `ON` and `OFF`. 
+The switch simply toggles between `ON` and `OFF`.
 
 **Note:** If an item of type `Dimmer` is linked to a `Switch` and no state mappings are defined, a toggle switch will be displayed.
 The toggle will send `ON` and `OFF` commands. For display purposes, a `Dimmer` state of `0` is treated as `OFF`, while any value from `1` to `100` is considered `ON`.
@@ -407,11 +409,11 @@ Frame label="Switches" {
 
 **UI Preview:**
 
-<div align="left" class="row">
-  <img style="max-width: 30%; min-width: 250px;" src="images/app/06-switches-1-toggle.png"/>
+<div class="garmin-screenshot-container">
+  <img src="images/app/06-switches-1-toggle.png"/>
 </div>
 
-#### Rollershutter
+##### Rollershutter
 
 When the item type is `Rollershutter`, the widget opens a full-screen control with `UP`, `DOWN`, and `STOP` actions.
 
@@ -430,14 +432,14 @@ Frame label="Switches" {
 
 **UI Preview:**
 
-<div align="left" class="row">
-  <img style="max-width: 22.5%; min-width: 250px;" src="images/app/06-switches-2-rollershutter-1.png"/>
-  <img style="max-width: 22.5%; min-width: 250px;" src="images/app/06-switches-2-rollershutter-2.png"/>
-  <img style="max-width: 22.5%; min-width: 250px;" src="images/app/06-switches-2-rollershutter-3.png"/>
-  <img style="max-width: 22.5%; min-width: 250px;" src="images/app/06-switches-2-rollershutter-4.png"/>
+<div class="garmin-screenshot-container">
+  <img src="images/app/06-switches-2-rollershutter-1.png"/>
+  <img src="images/app/06-switches-2-rollershutter-2.png"/>
+  <img src="images/app/06-switches-2-rollershutter-3.png"/>
+  <img src="images/app/06-switches-2-rollershutter-4.png"/>
 </div>
 
-#### Generic Switch
+##### Generic Switch
 
 This variant is used for items that don’t fall under the previous two cases.
 
@@ -471,12 +473,10 @@ Frame label="Switches" {
 
 **UI Rendering:**
 
-<table class="screenshot-table">
-  <tr>
-    <td width="50%"><img src="images/app/06-switches-3-generic-1.png"></td>
-    <td><img src="images/app/06-switches-3-generic-2.png"></td>
-  </tr>
-</table>
+<div class="garmin-screenshot-container">
+  <img src="images/app/06-switches-3-generic-1.png">
+  <img src="images/app/06-switches-3-generic-2.png">
+</div>
 
 **Note:** The action menu shown in the right screenshot is a **mockup**.
 The actual appearance may vary depending on the device, as it uses a native UI component.
@@ -503,16 +503,13 @@ In this configuration:
 
 Here’s how the interface appears when the switch is in the `OFF` state:
 
-<table class="screenshot-table">
-  <tr>
-    <td width="50%"><img src="images/app/06-switches-3-generic-3.png"></td>
-    <td></td>
-  </tr>
-</table>
+<div class="garmin-screenshot-container">
+  <img src="images/app/06-switches-3-generic-3.png">
+</div>
 
-### `Setpoint` and `Slider`
+#### `Setpoint` and `Slider`
 
-The [`Setpoint`]({{base}}/ui/sitemaps.html#element-type-setpoint) and [`Slider`]({{base}}/ui/sitemaps.html#element-type-slider) widgets are **numeric controls** used to display and adjust the numeric state of an item.
+The ➡️ [`Setpoint`](/docs/ui/sitemaps.html#element-type-setpoint) and ➡️ [`Slider`](/docs/ui/sitemaps.html#element-type-slider) widgets are **numeric controls** used to display and adjust the numeric state of an item.
 
 When selected, both widgets open a full-screen view for choosing a new value, which is then sent as a command to the item.
 
@@ -543,16 +540,11 @@ Frame label="First Floor" {
 
 **Resulting UI:**
 
-<table class="screenshot-table">
-  <tr>
-    <td width="50%"><img src="images/app/07-slider-1.png"></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="images/app/07-slider-2.png"></td>
-    <td><img src="images/app/07-slider-3.png"></td>
-  </tr>
-</table>
+<div class="garmin-screenshot-container">
+  <img src="images/app/07-slider-1.png">
+  <img src="images/app/07-slider-2.png">
+  <img src="images/app/07-slider-3.png">
+</div>
 
 - The **lower-left** screenshot shows the slider on a button-based device.
 - The **lower-right** screenshot shows the slider on a touch-based device.
@@ -563,17 +555,17 @@ On **touch-based devices** simply **tap the icons** corresponding to the desired
 
 ### Dynamic Sitemaps
 
-Of the available [Dynamic Sitemaps]({{base}}/ui/sitemaps.html#dynamic-sitemaps) features, the `visibility` parameter as well as label and icon colors are supported. 
+Of the available [Dynamic Sitemaps](/docs/ui/sitemaps.html#dynamic-sitemaps) features, the `visibility` parameter as well as label and icon colors are supported.
 
 #### Visibility
 
-For usage details and examples, see the [visibility documentation]({{base}}/ui/sitemaps.html#visibility).
+For usage details and examples, see the [visibility documentation](/docs/ui/sitemaps.html#visibility).
 
 Here's an improved version with clearer phrasing, smoother flow, and a slightly more polished tone, while preserving the original structure:
 
 #### Label and Value Colors
 
-For usage details and examples, refer to the [label & value colors documentation]({{base}}/ui/sitemaps.html#label-value-and-icon-colors).
+For usage details and examples, refer to the [label & value colors documentation](/docs/ui/sitemaps.html#label-value-and-icon-colors).
 
 The app supports both `labelcolor` and `valuecolor` attributes. Color values can be specified using either hexadecimal color codes (e.g., `#FF0000`) or named colors (e.g., `red`) as listed in the documentation.
 
@@ -590,29 +582,23 @@ sitemap garmin_demo label="My Home" {
 
 This results in the following display:
 
-<table class="screenshot-table">
-  <tr>
-    <td width="50%"><img src="images/app/09-dynamics-colors.png"></td>
-    <td></td>
-  </tr>
-</table>
+<div class="garmin-screenshot-container">
+  <img src="images/app/09-dynamics-colors.png">
+</div>
 
 #### Icons
 
-For detailed usage and examples, refer to the [sitemap icons documentation]({{base}}/ui/sitemaps.html#icons).
+For detailed usage and examples, refer to the [sitemap icons documentation](/docs/ui/sitemaps.html#icons).
 
-The Garmin app supports both the `icon` and `staticIcon` parameters, using a subset of the [classic icon set]({{base}}/configuration/iconsets/classic/).
+The Garmin app supports both the `icon` and `staticIcon` parameters, using a subset of the [classic icon set](/docs/configuration/iconsets/classic/).
 Where applicable, the app automatically selects an icon variant based on the item's state—for example, showing different icons for a light that is `ON` or `OFF`.
 
 Below is a screenshot illustrating this behavior:
 The second menu item shows a filled lightbulb icon (indicating the light is ON), and the third item shows a state-aware rollershutter icon.
 
-<table class="screenshot-table">
-  <tr>
-    <td width="50%"><img src="images/app/11-icons.png"></td>
-    <td></td>
-  </tr>
-</table>
+<div class="garmin-screenshot-container">
+  <img src="images/app/11-icons.png">
+</div>
 
 **Tip:** Even if you don't explicitly define icons in your sitemap, some may be applied automatically based on item metadata. To suppress this behavior, you can set the icon to an empty string in the sitemap: `icon=""`.
 
@@ -644,12 +630,10 @@ To access the settings menu:
 
 The settings menu currently displays the app version and server URL. Additional features may be added in the future when the app evolves.
 
-<table class="screenshot-table">
-  <tr>
-    <td width="50%"><img src="images/app/05-settings-1.png"></td>
-    <td><img src="images/app/05-settings-2.png"></td>
-  </tr>
-</table>
+<div class="garmin-screenshot-container">
+  <img src="images/app/05-settings-1.png">
+  <img src="images/app/05-settings-2.png">
+</div>
 
 ## Troubleshooting
 
