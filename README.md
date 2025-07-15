@@ -4,9 +4,9 @@ An app that connects your Garmin wearable to your [openHAB](https://www.openhab.
 
 You can find the app in the Garmin Connect IQ store:
 
-https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a
+<https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a>
 
-The user manual is published via GitHub Pages at:<br>https://ohg.the-ninth.com
+The user manual is published via GitHub Pages at <https://next.openhab.org/docs/apps/garmin/>.
 
 <br>
 
@@ -23,13 +23,11 @@ This README covers the following topics:
   - [Folder `/resources`](#folder-resources)
   - [Folder `/source`](#folder-source)
   - [Folder `/source-constants`](#folder-source-constants)
-
 - [Build Instructions](#build-instructions)
   - [To Run the App in the Garmin Simulator](#to-run-the-app-in-the-garmin-simulator)
   - [To Compile for a Single Device](#to-compile-for-a-single-device)
   - [Generating the `.iq` File for Garmin Connect IQ Store Upload](#generating-the-iq-file-for-garmin-connect-iq-store-upload)
   - [To Add a New Device](#to-add-a-new-device)
-
 - [Helpful Tips and Notes](#helpful-tips-and-notes)
 
 <br>
@@ -40,33 +38,31 @@ This app is built using the Garmin Connect IQ SDK and is based on [openHAB sitem
 
 It includes two application types:
 
-* ***Glance***: A lightweight, quick-access entry point.
-* ***Widget***: The main, full-screen interface for interacting with the sitemap.
+- _**Glance**_: A lightweight, quick-access entry point.
+- _**Widget**_: The main, full-screen interface for interacting with the sitemap.
 
-### *Widget* Overview
+### _Widget_ Overview
 
-The *Widget*:
+The _Widget_:
 
-* Displays a hierarchical structure representing a single sitemap, using the SDK's `CustomMenu` and `CustomMenuItem`.
-* Requests sitemap updates at a configurable interval.
-* Updates the menu whenever a new response is received.
-* Caches the latest sitemap response in persistent storage.
-* Renders sitemap *Widget*s using specific `CustomMenuItem` implementations, which may also send commands to items.
+- Displays a hierarchical structure representing a single sitemap, using the SDK's `CustomMenu` and `CustomMenuItem`.
+- Requests sitemap updates at a configurable interval.
+- Updates the menu whenever a new response is received.
+- Caches the latest sitemap response in persistent storage.
+- Renders sitemap *Widget*s using specific `CustomMenuItem` implementations, which may also send commands to items.
 
-### *Glance* Overview
+### _Glance_ Overview
 
-The *Glance*:
+The _Glance_:
 
-* Displays the sitemap label.
-* If sufficient memory is available, it also requests the sitemap at the same interval as the *Widget* and caches it in storage, allowing the *Widget* to start with a fresh state.
+- Displays the sitemap label.
+- If sufficient memory is available, it also requests the sitemap at the same interval as the _Widget_ and caches it in storage, allowing the _Widget_ to start with a fresh state.
 
 **Further reading**:
 
-- [openHAB for Garmin User Manual](https://ohg.the-ninth.com)
+- [openHAB for Garmin User Manual](https://next.openhab.org/docs/apps/garmin/)
 - [Connect IQ for Developers](https://developer.garmin.com/connect-iq)
 - [Connect IQ SDK](https://developer.garmin.com/connect-iq/sdk/)
-
-<br>
 
 # Project Structure
 
@@ -95,7 +91,7 @@ Contains VS Code customizations.
 
 ## Folder `/docs`
 
-Contains the user manual, published at <https://ohg.the-ninth.com>.
+Contains the user manual, published at <https://next.openhab.org/docs/apps/garmin/>.
 
 <br>
 
@@ -109,7 +105,8 @@ This folder contains compiled binary releases of the app, intended for upload to
 
 In the Connect IQ SDK, resources define:
 
-* **Properties**: Parameters stored outside the app and not visible to the user. These are currently *not* used by the app; instead, more flexible **Constants** are used. See [Folder `source-constants`](#folder-source-constants) for details.
+- **Properties**: Parameters stored outside the app and not visible to the user. These are currently _not_ used by the app; instead, more flexible **Constants** are used. See [Folder `source-constants`](#folder-source-constants) for details.
+
 - **Settings**: User-facing configurations
 - **Drawables**: Image assets used by the app
 - **Strings**: Text values like app name and version
@@ -120,11 +117,8 @@ In the Connect IQ SDK, resources define:
   - `/resources/base/drawables.xml`: Defines image assets used in the app (referenced as `Drawable` elements).
   - `/resources/base/settings.xml`: Specifies the app’s configuration settings, including default values, types, and user-facing descriptions.
   - `/resources/base/string.xml`: Contains static string values such as the app name and version number.
-
 - `/resources/edge`: Contains resources specific to Garmin Edge devices. Some `Drawable` elements are overridden here to account for different sizing requirements.
-
 - `/resources/launcher-icons`: Contains one subdirectory per launcher icon size. Each subdirectory includes a resource definition for that specific size. The correct icon is selected via the resource path in the `monkey.jungle` build file, depending on the target device.
-
 - `/resources/svg`: Contains the original SVG files used to generate `Drawable` resources.
 
 **Further reading:**
@@ -143,7 +137,7 @@ For more details, continue reading the folder’s [README](https://github.com/Th
 
 ## Folder `/source-constants`
 
-This folder defines device-specific configuration using code-based *Constants*, which replace Garmin SDK *Properties* due to their limitations. Unlike *Properties*, *Constants* are embedded in the code, update automatically with new app versions, and benefit from compiler validation.
+This folder defines device-specific configuration using code-based _Constants_, which replace Garmin SDK _Properties_ due to their limitations. Unlike _Properties_, _Constants_ are embedded in the code, update automatically with new app versions, and benefit from compiler validation.
 
 For more details, continue reading the folder’s [README](https://github.com/TheNinth7/ohg/tree/main/source-constants#folder-source-constants).
 
@@ -162,10 +156,10 @@ Follow the steps below to build, run, and test the app using the Connect IQ SDK 
    - [Connect IQ SDK](https://developer.garmin.com/connect-iq/sdk/)
    - Monkey C extension for VS Code
 
-2. Open VS Code and clone the `ohg` repository
-3. Open any file in the `/source` folder
-4. Press **F5** to start the simulator and select a target device
-5. Go to `File` → `Edit Persistent Storage` → `Edit Application.Properties` and configure as needed  
+1. Open VS Code and clone the `ohg` repository
+1. Open any file in the `/source` folder
+1. Press **F5** to start the simulator and select a target device
+1. Go to `File` → `Edit Persistent Storage` → `Edit Application.Properties` and configure as needed  
    - To allow HTTP URLs, uncheck `Settings > Use Device HTTPS Requirements`
 
 <br>
@@ -185,20 +179,20 @@ Follow these steps to prepare and export your app for upload to the Garmin Conne
    Ensure all debug logging or print statements are commented out or removed.
    See [Removing Debug Statements](#removing-debug-statements) for guidance.
 
-3. **Update the Version Number**
+1. **Update the Version Number**
 
    Edit the file `resources/base/strings.xml` and set the correct version number for this release.
 
-5. **Set the Correct App ID**
+1. **Set the Correct App ID**
 
    Open `manifest.xml` and set the appropriate app ID:
 
-   * Use the *stable* app ID for production releases.
-   * Use the *beta* app ID for test releases.
+   - Use the _stable_ app ID for production releases.
+   - Use the _beta_ app ID for test releases.
 
    > 🛠 You’ll need to switch to XML mode in your editor to change this value manually.
 
-7. **Export the Project**
+1. **Export the Project**
 
    Use the command palette:
    `CTRL + SHIFT + P` → `Monkey C: Export Project`
@@ -211,19 +205,15 @@ Follow these steps to prepare and export your app for upload to the Garmin Conne
 To support a new device:
 
 1. If the device isn't available in your current SDK, launch the **SDK Manager** and download/activate the latest version.
+1. In `manifest.xml`, check the new device in the supported device list.
+1. Configure device-specific features in the `monkey.jungle` build file (see [Root Folder `/`](#root-folder-)).
+1. Test in the simulator (see [above](#to-run-the-app-in-the-garmin-simulator))
+1. Export the project (`CTRL+SHIFT+P` → `Monkey C: Export Project`) and upload the `.iq` file to the Connect IQ Store
 
-2. In `manifest.xml`, check the new device in the supported device list.
-
-3. Configure device-specific features in the `monkey.jungle` build file (see [Root Folder `/`](#root-folder-)).
-
-6. Test in the simulator (see [above](#to-run-the-app-in-the-garmin-simulator))
-
-7. Export the project (`CTRL+SHIFT+P` → `Monkey C: Export Project`) and upload the `.iq` file to the Connect IQ Store
-
-**Further reading**
+**Further reading:**
 
 - [Connect IQ SDK - Compatible Devices](https://developer.garmin.com/connect-iq/compatible-devices/)
-- [Connect IQ SDK - Device Reference](https://developer.garmin.com/connect-iq/reference-guides/devices-reference)
+- [Connect IQ SDK - Device Reference](https://developer.garmin.com/connect-iq/device-reference/)
 
 <br>
 
@@ -237,13 +227,13 @@ While debug statements are only printed in debug builds, they still occupy code 
 
 To find all active debug statements in VS Code, press `CTRL+SHIFT+H` to open the global search and replace panel. Enable regular expressions by clicking the `.*` icon next to the search field, and use the following pattern to locate all active debug statements:
 
-```
+```regexp
 (?<!\/\/ )Logger\.debug\(
 ```
 
 To deactivate the debug statements, replace them with:
 
-```
+```text
 // Logger.debug(
 ```
 

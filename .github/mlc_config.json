@@ -1,0 +1,19 @@
+{
+  "replacementPatterns": [
+    {
+      "pattern": "^%7B%7Bbase%7D%7D/(?<path>)",
+      "replacement": "https://next.openhab.org/docs/$<path>",
+      "global": true
+    },
+    {
+      "pattern": "^/docs/(?<path>)",
+      "replacement": "https://next.openhab.org/docs/$<path>",
+      "global": true
+    },
+    {
+      "pattern": "^/addons/(?<path>)",
+      "replacement": "https://next.openhab.org/addons/$<path>",
+      "global": true
+    }
+  ]
+}
