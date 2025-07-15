@@ -1,0 +1,9 @@
+{
+  "replacementPatterns": [
+    {
+      "pattern": "^{{base}}/(?<docpath>)",
+      "replacement": "https://next.openhab.org/docs/$<docpath>",
+      "global": true
+    }
+  ]
+}
