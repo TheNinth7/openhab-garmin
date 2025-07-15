@@ -1,0 +1,5 @@
+# This file helps GitHub doing automatic review requests for new PRs.
+# It should always list the active maintainers of the Garmin app.
+
+# Assign all PRs to the Garmin app maintainers:
+*       @openhab/garmin-maintainers
