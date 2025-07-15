@@ -10,7 +10,7 @@ Follow the steps below to set it up:
 
 Install the [Webhook HTTP binding](https://community.openhab.org/t/webhook-http-binding/152184).
 
-![Webhook Installation](screenshots/custom-webhook/1_Webhook_installation.png)
+![Webhook Installation](images/custom-webhook/1_Webhook_installation.png)
 
 ---
 
@@ -18,7 +18,7 @@ Install the [Webhook HTTP binding](https://community.openhab.org/t/webhook-http-
 
 Create a new Webhook Thing.
 
-![Thing Creation](screenshots/custom-webhook/2_1_Thing_creation.png)
+![Thing Creation](images/custom-webhook/2_1_Thing_creation.png)
 
 Go to the **Code** tab and enter the following YAML (replace `UID` with your own):
 
@@ -50,7 +50,7 @@ channels:
         }
 ```
 
-![Thing Channels](screenshots/custom-webhook/2_4_Thing_channels.png)
+![Thing Channels](images/custom-webhook/2_4_Thing_channels.png)
 
 ---
 
@@ -101,6 +101,6 @@ https://yourserver:yourport/webhook/d1097152a4?action=toggle&itemName=LightBedro
 
 Then enter the Webhook ID (`d1097152a4`) in the app settings:
 
-![App Settings](screenshots/app-settings/app-settings-webhook.png)
+![App Settings](images/app-settings/app-settings-webhook.png)
 
 ---
