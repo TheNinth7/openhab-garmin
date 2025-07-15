@@ -15,7 +15,6 @@ The user manual is published via GitHub Pages at <https://next.openhab.org/docs/
 This README covers the following topics:
 
 - [Introduction](#introduction)
-
 - [Project Structure](#project-structure)
   - [Root Folder `/`](#root-folder-)
   - [Folder `/docs`](#folder-docs)
@@ -238,3 +237,7 @@ To deactivate the debug statements, replace them with:
 ```
 
 This will comment them out without affecting any lines that are already commented.
+
+## Attributions
+
+The [interface icons](resources/icons-interface), except for the openHAB logo, are licensed under CC BY 3.0 [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/).
