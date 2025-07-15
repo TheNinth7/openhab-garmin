@@ -213,7 +213,7 @@ To support a new device:
 **Further reading:**
 
 - [Connect IQ SDK - Compatible Devices](https://developer.garmin.com/connect-iq/compatible-devices/)
-- [Connect IQ SDK - Device Reference](https://developer.garmin.com/connect-iq/reference-guides/devices-reference)
+- [Connect IQ SDK - Device Reference](https://developer.garmin.com/connect-iq/device-reference/)
 
 <br>
 

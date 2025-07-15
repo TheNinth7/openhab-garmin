@@ -14,17 +14,6 @@
       "pattern": "^/addons/(?<path>)",
       "replacement": "https://next.openhab.org/addons/$<path>",
       "global": true
-    },
-    {
-      "pattern": "^/(?<path>).md",
-      "replacement": "file://$<path>.md",
-      "global": true
-    },
-    {
-      "pattern": "^/(?<path>).md#(?<anchor>)",
-      "replacement": "file://$<path>.md#$<anchor>",
-      "global": true
     }
-
   ]
 }

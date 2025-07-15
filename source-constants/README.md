@@ -62,14 +62,14 @@ To support a new device:
 
 1. If the device isn't available in your current SDK, launch the **SDK Manager** and download/activate the latest version.
 1. In `manifest.xml`, check the new device in the supported device list.
-1. Configure device-specific features in the `monkey.jungle` build file (see [Root Folder `/`](/README.md#root-folder-)).
+1. Configure device-specific features in the `monkey.jungle` build file (see [Root Folder `/`](../README.md#root-folder-)).
 1. Test in the simulator (see [above](#to-run-the-app-in-the-garmin-simulator))
 1. Export the project (`CTRL+SHIFT+P` → `Monkey C: Export Project`) and upload the `.iq` file to the Connect IQ Store
 
 **Further reading:**
 
 - [Connect IQ SDK - Compatible Devices](https://developer.garmin.com/connect-iq/compatible-devices/)
-- [Connect IQ SDK - Device Reference](https://developer.garmin.com/connect-iq/reference-guides/devices-reference)
+- [Connect IQ SDK - Device Reference](https://developer.garmin.com/connect-iq/device-reference/)
 
 # Helpful Tips and Notes
 
