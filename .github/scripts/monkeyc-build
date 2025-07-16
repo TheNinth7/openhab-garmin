@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Define colors for output
+BLUE='\033[0;34m'
+NOCOLOR='\033[0m'
+
+# Define path constants
+MONKEYC_COMPILER="$HOME/.Garmin/ConnectIQ/Sdks/connectiq-sdk-lin-8.2.1-2025-06-19-f69b94140/bin/monkeyc"
+PRIVATE_KEY="$RUNNER_TEMP/developer_key.der"
+
+echo -e "${BLUE}Current working directory: $(pwd)${NOCOLOR}"
+
+# Create a temporary developer key required by the MonkeyC compiler
+echo -en "${BLUE}Creating developer key ...${NOCOLOR}"
+openssl genrsa -out "$RUNNER_TEMP/developer_key.pem" 4096
+openssl pkcs8 -topk8 -inform PEM -outform DER -in "$RUNNER_TEMP/developer_key.pem" -out "$PRIVATE_KEY" -nocrypt
+echo -e "${BLUE} DONE${NOCOLOR}"
+
+# Copy the Sdk into the user home
+echo -en "${BLUE}Copying ConnectIQ to user home ...${NOCOLOR}"
+mkdir -p "$HOME/.Garmin"
+cp -r .github/ConnectIQ "$HOME/.Garmin/"
+echo -e "${BLUE} DONE${NOCOLOR}"
+
+# Build the MonkeyC project
+echo -e "${BLUE}Compiling with monkeyc ...${NOCOLOR}"
+$MONKEYC_COMPILER -v
+$MONKEYC_COMPILER --jungles .github/ci.jungle --private-key "$PRIVATE_KEY" --typecheck 3 --unit-test --warn --device fenix847mm --output "$RUNNER_TEMP/compiled"
+echo -e "${BLUE}Finished compilation.${NOCOLOR}"
