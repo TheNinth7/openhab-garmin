@@ -1,0 +1,364 @@
+{
+    "alphaBlendingSupport": true,
+    "appTypes": [
+        {
+            "memoryLimit": 524288,
+            "type": "audioContentProvider"
+        },
+        {
+            "memoryLimit": 65536,
+            "type": "background"
+        },
+        {
+            "memoryLimit": 131072,
+            "type": "datafield"
+        },
+        {
+            "memoryLimit": 65536,
+            "type": "glance"
+        },
+        {
+            "memoryLimit": 786432,
+            "type": "watchApp"
+        },
+        {
+            "memoryLimit": 131072,
+            "type": "watchFace"
+        }
+    ],
+    "bitsPerPixel": 16,
+    "codePageSize": 4096,
+    "complicationIcon": {
+        "height": 45,
+        "width": 45
+    },
+    "deviceFamily": "round-454x454",
+    "deviceGroup": "Watches/Wearables",
+    "deviceId": "fenix847mm",
+    "deviceVersion": "e209d3315b4e1fc8b664c65cc7361cadabb1d285",
+    "displayName": "fēnix® 8 47mm / 51mm / tactix® 8 47mm / 51mm / quatix® 8 47mm / 51mm",
+    "displayType": "amoled",
+    "enhancedGraphicSupport": true,
+    "hardwarePartNumber": "010-02905-00",
+    "imageFormats": [
+        "yuv",
+        "jpg",
+        "png"
+    ],
+    "imageUrl": "https://res.garmin.com/en/products/010-02905-00/v/cf-sm.jpg",
+    "launcherIcon": {
+        "height": 65,
+        "width": 65
+    },
+    "orientation": 0,
+    "partNumbers": [
+        {
+            "connectIQVersion": "5.1.1",
+            "firmwareVersion": 1331,
+            "languages": [
+                {
+                    "code": "ara",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "bul",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ces",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "dan",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "deu",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "dut",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "eng",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "est",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "fin",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "fre",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "gre",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "heb",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "hrv",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "hun",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ita",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "lav",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "lit",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "nob",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "pol",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "por",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ron",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "rus",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "slo",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "slv",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "spa",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "swe",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "tur",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ukr",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ind",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "zsm",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "vie",
+                    "fontSet": "apac_vie"
+                },
+                {
+                    "code": "zhs",
+                    "fontSet": "apac_twcn"
+                },
+                {
+                    "code": "zht",
+                    "fontSet": "apac_twcn"
+                },
+                {
+                    "code": "jpn",
+                    "fontSet": "apac_jpn"
+                },
+                {
+                    "code": "kor",
+                    "fontSet": "apac_kor"
+                },
+                {
+                    "code": "tha",
+                    "fontSet": "apac_tha"
+                }
+            ],
+            "number": "006-B4536-00"
+        },
+        {
+            "connectIQVersion": "5.1.1",
+            "firmwareVersion": 1331,
+            "languages": [
+                {
+                    "code": "ara",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "bul",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ces",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "dan",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "deu",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "dut",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "eng",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "est",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "fin",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "fre",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "gre",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "heb",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "hrv",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "hun",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ita",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "lav",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "lit",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "nob",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "pol",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "por",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ron",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "rus",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "slo",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "slv",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "spa",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "swe",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "tur",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ukr",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "ind",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "zsm",
+                    "fontSet": "ww"
+                },
+                {
+                    "code": "vie",
+                    "fontSet": "apac_vie"
+                },
+                {
+                    "code": "zhs",
+                    "fontSet": "apac_twcn"
+                },
+                {
+                    "code": "zht",
+                    "fontSet": "apac_twcn"
+                },
+                {
+                    "code": "jpn",
+                    "fontSet": "apac_jpn"
+                },
+                {
+                    "code": "kor",
+                    "fontSet": "apac_kor"
+                },
+                {
+                    "code": "tha",
+                    "fontSet": "apac_tha"
+                }
+            ],
+            "number": "006-B4775-00"
+        }
+    ],
+    "resolution": {
+        "height": 454,
+        "width": 454
+    },
+    "screenRotationSupport": false,
+    "worldWidePartNumber": "006-B4536-00"
+}

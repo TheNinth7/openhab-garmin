@@ -157,10 +157,10 @@ Follow the steps below to build, run, and test the app using the Connect IQ SDK 
 1. Install:
    - Visual Studio Code
    - Git
-   - [Connect IQ SDK](https://developer.garmin.com/connect-iq/sdk/)
+   - [Connect IQ SDK](https://developer.garmin.com/connect-iq/sdk/) (see [Connect IQ SDK Installation](docs/SDK_INSTALLATION.md) for troubleshooting)
    - Monkey C extension for VS Code
 
-1. Open VS Code and clone the `ohg` repository
+1. Open VS Code and clone the `openhab-garmin` repository
 1. Open any file in the `/source` folder
 1. Press **F5** to start the simulator and select a target device
 1. Go to `File` → `Edit Persistent Storage` → `Edit Application.Properties` and configure as needed  

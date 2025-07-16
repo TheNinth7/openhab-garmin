@@ -1,0 +1,22 @@
+The content of this directory is originated from the Connect IQ SDK, which is subject to the Connect IQ Developer Agreement.
+The use of these binaries is governed by the terms and conditions set forth in the Connect IQ Developer Agreement provided by Garmin International, Inc.
+
+== Copyright Holders
+
+Connect IQ SDK
+Copyright (c) Garmin International, Inc.
+
+The Connect IQ SDK is provided under a limited, non-exclusive, personal, revocable, non-assignable, non-sublicensable, and non-transferable license for the sole purpose of developing and testing Applications.
+For more details, please refer to the Connect IQ Developer Agreement available at https://developer.garmin.com/connect-iq/sdk/.
+
+The binaries included in this directory are used in accordance with the terms of the Connect IQ Developer Agreement.
+You may not use, modify, distribute, or sublicense these binaries except as expressly permitted by the agreement.
+
+=== Additional Notices
+
+1. The binaries included in this directory are provided "as is" without warranty of any kind.
+2. You are responsible for ensuring that your use of these binaries complies with the Connect IQ Developer Agreement and all applicable laws and regulations.
+3. Garmin International, Inc. retains all rights, title, and interest in and to the Connect IQ SDK and related materials.
+
+For the full text of the Connect IQ Developer Agreement, please visit:
+https://developer.garmin.com/connect-iq/sdk/
