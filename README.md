@@ -31,6 +31,7 @@ This README covers the following topics:
   - [Generating the `.iq` File for Garmin Connect IQ Store Upload](#generating-the-iq-file-for-garmin-connect-iq-store-upload)
   - [To Add a New Device](#to-add-a-new-device)
 - [Helpful Tips and Notes](#helpful-tips-and-notes)
+- [Copyright Notice](#copyright-notice)
 - [Attributions](#attributions)
 
 <br>
@@ -241,6 +242,18 @@ To deactivate the debug statements, replace them with:
 ```
 
 This will comment them out without affecting any lines that are already commented.
+
+# Copyright Notice
+
+```text
+Copyright (c) 2025 Contributors to the openHAB project
+
+The contents of this repository are made available under the
+terms of the Eclipse Public License 2.0 which is available at
+http://www.eclipse.org/legal/epl-2.0
+
+SPDX-License-Identifier: EPL-2.0
+```
 
 # Attributions
 
