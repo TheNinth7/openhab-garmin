@@ -1,3 +1,4 @@
-bin
 .vscode/settings.json
 .idea
+
+/bin
