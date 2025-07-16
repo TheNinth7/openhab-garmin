@@ -1,0 +1,4 @@
+#!/bin/bash
+
+MB_HOME="$( cd "$( dirname "$0" )" && pwd )"
+java -Xms1g -Dfile.encoding=UTF-8 -Dapple.awt.UIElement=true -classpath "$MB_HOME"/monkeybrains.jar com.garmin.monkeybrains.Monkeybrains "$@"

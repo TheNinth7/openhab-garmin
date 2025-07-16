@@ -1,0 +1,67 @@
+<compilerInfo>
+
+    <!--
+    The version of the compiler. This format should be
+    <int>.<int>.<int>.betaN, where the "betaN" portion is optional
+    and N must be < 10.
+
+    For example 1.2.0.beta1 would be valid, 1.2.dev is not valid.
+    -->
+    <version>8.2.1</version>
+
+    <!--
+    Information about the exit codes the compiler returns.
+    -->
+    <exitCodes>
+
+        <code meaning="success" value="0" />
+
+        <!--
+        Compiler Errors
+        -->
+        <code meaning="general error" value="100" />
+        <code meaning="bad parameters" value="101" />
+        <code meaning="bad manifest file" value="102" />
+        <code meaning="given device not found" value="103" />
+        <code meaning="bad jungle file" value="104" />
+        <code meaning="type checker error" value="105" />
+        <code meaning="debug logging error" value="106" />
+
+        <!--
+        Package Errors
+        -->
+        <code meaning="general package error" value="200" />
+        <code meaning="problems with the provided compiled programs" value="201" />
+        <code meaning="provided compiled program isn't a CIQ program" value="202" />
+        <code meaning="couldn't verify compiled program" value="203" />
+        <code meaning="bad manifest file (packaging)" value="204" />
+        <code meaning="bad output directory (packaging)" value="205" />
+        <code meaning="no package option exists" value="206" />
+        <code meaning="invalid Monkey Barrel" value="207" />
+
+    </exitCodes>
+
+    <targetSdkVersions>
+        <version supportsBarrels="false" systemLevel="1">1.2.0</version>
+        <version supportsBarrels="false" systemLevel="1">1.3.0</version>
+        <version supportsBarrels="true" systemLevel="1">1.4.0</version>
+        <version supportsBarrels="true" systemLevel="1">1.5.0</version>
+        <version supportsBarrels="false" systemLevel="2">2.1.0</version>
+        <version supportsBarrels="false" systemLevel="2">2.2.0</version>
+        <version supportsBarrels="false" systemLevel="2">2.3.0</version>
+        <version supportsBarrels="true" systemLevel="2">2.4.0</version>
+        <version supportsBarrels="true" systemLevel="3">3.0.0</version>
+        <version supportsBarrels="true" systemLevel="3">3.1.0</version>
+        <version supportsBarrels="true" systemLevel="4">3.2.0</version>
+        <version supportsBarrels="true" systemLevel="5">3.3.0</version>
+        <version supportsBarrels="true" systemLevel="6">3.4.0</version>
+        <version supportsBarrels="true" systemLevel="4">4.0.0</version>
+        <version supportsBarrels="true" systemLevel="5">4.1.0</version>
+        <version supportsBarrels="true" systemLevel="6">4.2.0</version>
+        <version supportsBarrels="true" systemLevel="7">5.0.0</version>
+        <version supportsBarrels="true" systemLevel="7">5.0.1</version>
+        <version supportsBarrels="true" systemLevel="8">5.1.0</version>
+        <version supportsBarrels="true" systemLevel="8">5.1.1</version>
+    </targetSdkVersions>
+
+</compilerInfo>
