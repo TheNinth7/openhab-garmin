@@ -31,6 +31,7 @@ This README covers the following topics:
   - [Generating the `.iq` File for Garmin Connect IQ Store Upload](#generating-the-iq-file-for-garmin-connect-iq-store-upload)
   - [To Add a New Device](#to-add-a-new-device)
 - [Helpful Tips and Notes](#helpful-tips-and-notes)
+- [Attributions](#attributions)
 
 <br>
 
@@ -60,7 +61,7 @@ The _Glance_:
 - Displays the sitemap label.
 - If sufficient memory is available, it also requests the sitemap at the same interval as the _Widget_ and caches it in storage, allowing the _Widget_ to start with a fresh state.
 
-**Further reading**:
+**Further reading:**
 
 - [openHAB for Garmin User Manual](https://next.openhab.org/docs/apps/garmin/)
 - [Connect IQ for Developers](https://developer.garmin.com/connect-iq)
@@ -68,7 +69,7 @@ The _Glance_:
 
 # Project Structure
 
-The project is organized into the following directories:
+The project is organised into the following directories:
 
 ## Root Folder `/`
 
@@ -241,6 +242,6 @@ To deactivate the debug statements, replace them with:
 
 This will comment them out without affecting any lines that are already commented.
 
-## Attributions
+# Attributions
 
-The [interface icons](resources/icons-interface), except for the openHAB logo, are licensed under CC BY 3.0 [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/).
+The [interface icons](resources/icons-interface), except for the openHAB logo, are licensed under CC BY 3.0 by [Adrien Coquet](https://adrien-coquet.com/) from [Noun Project](https://thenounproject.com/browse/icons/).

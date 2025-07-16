@@ -8,7 +8,7 @@ labels: enhancement
 <!-- Provide a general summary of the feature request in the *Title* above -->
 
 <!-- Important: Please contact the openHAB community forum for questions or -->
-<!-- for configuration and usage guidance: https://community.openhab.org -->
+<!-- for configuration and usage guidance: https://community.openhab.org/c/apps-services/garmin-app/ -->
 
 <!-- Feel free to delete any comment lines in the template (starting with "<!--") -->
 
