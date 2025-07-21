@@ -114,7 +114,7 @@ Starting with openHAB 5.0, the REST API allows the app to send commands directly
 For earlier versions, you can either:
 
 <details>
-<summary>➡️ Install the backported API (available for openHAB 4.3.x)</summary>
+<summary>Install the backported API (available for openHAB 4.3.x)</summary>
 
 To enable JSON-based command support on openHAB 4.3.x, install the backported API bundle.
 
@@ -127,7 +127,7 @@ Follow the instructions here: [Backport Installation Guide](https://github.com/f
 or
 
 <details>
-<summary>➡️ Set up a custom webhook</summary>
+<summary>Set up a custom webhook</summary>
 
 If your openHAB setup does not support the JSON-based REST API for sending commands, you can configure a custom Webhook using the Webhook binding instead.
 
