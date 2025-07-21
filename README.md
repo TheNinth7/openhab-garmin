@@ -2,7 +2,7 @@
 
 An app that connects your Garmin wearable to your [openHAB](https://www.openhab.org) smart home system, giving you convenient access to essential devices and real-time information.
 
-<a href="https://apps.garmin.com/apps/93fd8044-1cf4-450c-b8aa-1c80a6730d1a" target="_blank" class="external" style="margin-top: auto; margin-bottom: auto; margin-right: 20px;">
+<a href="https://apps.garmin.com/apps/d83b5e1b-4a12-4eda-bbad-26f88952a959" target="_blank" class="external" style="margin-top: auto; margin-bottom: auto; margin-right: 20px;">
   <img alt="Get it on Connect IQ Store" src="docs/images/connect_iq_badge.svg" width="240px">
 </a>
 
