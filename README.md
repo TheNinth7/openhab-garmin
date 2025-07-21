@@ -9,7 +9,7 @@ An app that connects your Garmin wearable to your [openHAB](https://www.openhab.
 <br>
 <br>
 
-The user manual is published via GitHub Pages at <https://next.openhab.org/docs/apps/garmin/>.
+The user manual is available in the openHAB documentation at <https://next.openhab.org/docs/apps/garmin/>.
 
 <br>
 
