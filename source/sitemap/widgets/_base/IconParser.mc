@@ -159,6 +159,14 @@ class IconParser {
                     }
                 }
 
+                case "frontdoor": {
+                    if( itemState.equals( SwitchItem.ITEM_STATE_CLOSED ) ) {
+                        return Rez.Drawables.menuFrontDoorClosed;
+                    } else {
+                        return Rez.Drawables.menuFrontDoorOpen;
+                    }
+                }
+
                 case "window": {
                     var numericItemState = itemState.toNumber();
                     if( itemState.equals( SwitchItem.ITEM_STATE_OPEN ) || ( numericItemState != null && numericItemState > 0 ) ) {

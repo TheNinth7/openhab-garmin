@@ -14,6 +14,9 @@
     <bitmap id="menuDoorClosed" scaleY="12%" filename="door-closed.svg" dithering="none"/>
     <bitmap id="menuDoorOpen" scaleY="12%" filename="door-open.svg" dithering="none"/>
 
+    <bitmap id="menuFrontDoorClosed" scaleY="12%" filename="frontdoor-closed.svg" dithering="none"/>
+    <bitmap id="menuFrontDoorOpen" scaleY="12%" filename="frontdoor-open.svg" dithering="none"/>
+
     <bitmap id="menuGaragedoor00" scaleY="10%" filename="garagedoor-00.svg" dithering="none"/>
     <bitmap id="menuGaragedoor01" scaleY="10%" filename="garagedoor-01.svg" dithering="none"/>
     <bitmap id="menuGaragedoor02" scaleY="10%" filename="garagedoor-02.svg" dithering="none"/>
