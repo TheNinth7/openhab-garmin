@@ -75,7 +75,7 @@ class AppSettings {
         url = getString( URL_PREFIX + _index, "Configuration: URL is missing" );
         // Other code assumes the server URL ends with a slash (e.g., https://home.myopenhab.org/).
         // If it’s missing, append one here.
-        var lastChar = url.substring( url.length()-1, null );
+        var lastChar = url.substring( url.length()-1, url.length() );
         if( lastChar != null && ! lastChar.equals( "/" ) ) {
             url += "/";
         }
